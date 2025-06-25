@@ -6,7 +6,7 @@ return [
         'action' => 'register'
     ],
     'user/login' => [
-        'controller' => 'User',
+        'controller' => 'Auth',
         'action' => 'login'
     ],
     'dashboard/home' => [

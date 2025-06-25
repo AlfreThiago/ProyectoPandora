@@ -1,10 +1,7 @@
 <?php
 
-// Cargar archivo de rutas
 $routes = require_once __DIR__ . '../../routes/web.php';
-
-// Obtener ruta actual desde la URL
-$route = $_GET['route'] ?? 'user/register'; // Ruta por defecto
+$route = $_GET['route'] ?? 'user/register'; // RUTA POR DEFECTO CAMBIAR :> nico anda re pipupipu.
 
 if (isset($routes[$route])) {
     $controllerName = $routes[$route]['controller'];

@@ -20,4 +20,15 @@ class UserModel
         }
         return false;
     }
+    public function findByEmail($email)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM users WHERE email = ?");
+        if ($stmt) {
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_assoc();
+        }
+        return null;
+    }
 }

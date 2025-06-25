@@ -18,7 +18,6 @@ class UserController
             header(header: 'Location: ../Views/Dashboard/dashboard.php');
             exit;
         } else {
-            // Muestra el formulario de registro
             include 'Views/User/Register.php';
         }
     }
@@ -26,7 +25,7 @@ class UserController
     public function RegisterUser($username, $email, $password)
     {
         $db = new Database();
-        $db->conectDatabase(); // Asegúrate de llamar a este método
+        $db->conectDatabase();
         $userModel = new UserModel($db->getConnection());
 
         if ($userModel->createUser($username, $email, $password)) {
