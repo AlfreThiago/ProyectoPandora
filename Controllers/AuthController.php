@@ -6,21 +6,22 @@ class AuthController
 {
     public function login()
     {
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
-
             $db = new Database();
             $db->conectDatabase();
             $userModel = new UserModel($db->getConnection());
 
+            echo "Estoy en login() de AuthController<br>";
+            var_dump($_POST);
+
             $user = $userModel->findByEmail($email);
             if ($user && password_verify($password, $user['password'])) {
-                // Start session and set user data
                 session_start();
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                header('Location: ../Views/Dashboard/dashboard.php');
+                $_SESSION['user'] = $user; // Guarda el usuario en la sesión
+                header('Location: /ProyectoPandora/Views/Dashboard/dashboard.php');
                 exit;
             } else {
                 echo "Invalid email or password.";

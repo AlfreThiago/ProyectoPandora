@@ -15,7 +15,7 @@ class UserController
             $result = $controllerRegister->RegisterUser($username, $email, $password);
 
             echo $result;
-            header(header: 'Location: ../Views/Dashboard/dashboard.php');
+            header(header: 'Location: ../Views/Auth/Login.php');
             exit;
         } else {
             include 'Views/User/Register.php';

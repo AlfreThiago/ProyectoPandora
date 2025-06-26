@@ -5,7 +5,7 @@ return [
         'controller' => 'User',
         'action' => 'register'
     ],
-    'user/login' => [
+    'Auth/login' => [
         'controller' => 'Auth',
         'action' => 'login'
     ],
