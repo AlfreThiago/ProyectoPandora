@@ -18,6 +18,17 @@ include_once __DIR__ . '/../Shared/AdminHeader.php';
             </select>
 
             <button type="submit" name="change_role">Cambiar rol</button>
+            <div class="table-conteiner">
+
+                <table>
+                    <tr>
+                        <td>Nombre</td>
+                        <td>Correo</td>
+                        <td>Rol</td>
+                        <td>Tiempo de Creacion</td>
+                    </tr>
+            </table>
+                </div>
         </form>
     <?php endif; ?>
 </body>
