@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/ProyectoPandora/Public/css/Style.css">
+    <link rel="stylesheet" href="/ProyectoPandora/Public/css/StyleDash.css">
 </head>
 
 <body>
@@ -21,7 +21,6 @@
             <br>
             <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout">Cerrar Sesion</a>
         </h2>
-        <a href="ProyectoPandora/"></a>
     </div>
 </body>
 

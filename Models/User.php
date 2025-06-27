@@ -12,7 +12,7 @@ class UserModel
 
     public function createUser($username, $email, $password, $role = 'Cliente')
     {
-        $stmt = $this->connection->prepare("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)");
+        $stmt = $this->connection->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
         if ($stmt) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $stmt->bind_param("ssss", $username, $email, $hashed_password, $role);

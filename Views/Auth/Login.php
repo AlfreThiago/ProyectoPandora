@@ -11,7 +11,7 @@
 <body>
     <div class="formulario">
         <div class="Form-conteiner">
-            <h2>Log in</h2>
+            <h2>Iniciar Sesión</h2>
             <form method="POST" action="/ProyectoPandora/Public/index.php?route=Auth/Login">
                 <label for="email">Email</label>
                 <input type="email" name="email" required>

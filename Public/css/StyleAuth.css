@@ -1,0 +1,105 @@
+/* Reset básico */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Animación fondo degradado fullscreen */
+@keyframes gradientBG {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Estilos generales para body y html */
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: Arial, sans-serif;
+  color: white;
+  overflow: hidden;
+  background: linear-gradient(-45deg, #141e30, #243b55, #141e30, #243b55);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+
+  /* Centramos contenido con flexbox */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenedor principal del formulario */
+.formulario {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  background: rgba(255 255 255 / 0.07);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* Título del formulario */
+.formulario h2 {
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #f0f4ff;
+  text-shadow: 0 0 8px rgba(255 255 255 / 0.5);
+}
+
+/* Estilos para inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: #2c2c2c;
+  color: #fff;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+/* Focus en inputs */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  background-color: #3a3a3a;
+  outline: none;
+  transform: scale(1.05);
+  box-shadow: 0 0 8px #00c6ff;
+}
+
+/* Botón submit */
+input[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+  background-image: linear-gradient(to right, #0072ff, #00c6ff);
+  transition: background-image 0.4s ease, box-shadow 0.4s ease, transform 0.2s ease, color 0.4s ease;
+  user-select: none;
+}
+
+/* Hover botón */
+input[type="submit"]:hover {
+  background-image: linear-gradient(to right, #00c6ff, #0072ff);
+  box-shadow: 0 0 15px #00c6ff;
+  color: #141e30;
+  transform: scale(1.05);
+}
+
+/* Click activo botón */
+input[type="submit"]:active {
+  transform: scale(0.95);
+}

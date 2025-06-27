@@ -25,7 +25,8 @@ class AuthController
                     exit;
                 }
             } else {
-                echo "Correo o contraseña incorrectos.";
+                header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+                exit;
             }
         } else {
             include_once __DIR__ . '/../Views/Auth/Login.php';
