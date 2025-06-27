@@ -25,8 +25,9 @@ class RegisterController
         $db = new Database();
         $db->conectDatabase();
         $userModel = new UserModel($db->getConnection());
+        $role = ($email === 'admin@admin.com') ? 'Administrador' : 'Cliente';
 
-        if ($userModel->createUser($username, $email, $password)) {
+        if ($userModel->createUser($username, $email, $password, $role)) {
             return "User registered successfully.";
         } else {
             return "Error registering user.";
