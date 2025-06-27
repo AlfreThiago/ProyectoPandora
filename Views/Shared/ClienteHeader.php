@@ -1,32 +1,28 @@
-<?php
-?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../../Public/css/Style.css">
+    <link rel="stylesheet" href="/ProyectoPandora/Public/css/Style.css">
 </head>
 
 <body>
     <div class="dash-conteiner">
 
         <h2>
-            Bienvenido al Dashboard!
-            <br>
             <?php
-            session_start();
             if (isset($_SESSION['user'])) {
-                echo 'Bienvenido, ' . htmlspecialchars($_SESSION['user']['username']);
+                echo 'Bienvenido, ' . htmlspecialchars($_SESSION['user']['name']);
             } else {
                 echo 'Por favor, inicie sesión.';
             }
             ?>
+            <br>
+            <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout">Cerrar Sesion</a>
         </h2>
+        <a href="ProyectoPandora/"></a>
     </div>
-
 </body>
 
 </html>

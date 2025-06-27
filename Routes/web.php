@@ -1,16 +1,36 @@
 <?php
 
 return [
-    'user/register' => [
-        'controller' => 'User',
-        'action' => 'register'
+    //Ruta de Registro
+    'Register/Register' => [
+        'controller' => 'Register',
+        'action' => 'Register'
     ],
-    'Auth/login' => [
+    //Ruta de Inicio de sesión
+    'Auth/Login' => [
         'controller' => 'Auth',
-        'action' => 'login'
+        'action' => 'Login'
     ],
-    'dashboard/home' => [
-        'controller' => 'Dashboard',
+    'Auth/Logout' => [
+        'controller' => 'Auth',
+        'action' => 'Logout'
+    ],
+    //Rutas de Dashboards
+    'Dash/home' => [
+        'controller' => 'Dash',
         'action' => 'home'
-    ]
+    ],
+    'Dash/AdminDash' => [
+        'controller' => 'Dash',
+        'action' => 'AdminDash'
+    ],
+    'Dash/ClienteDash' => [
+        'controller' => 'Dash',
+        'action' => 'ClienteDash'
+    ],
+    //Rutas de Administración
+    'Admin/change-role' => [
+        'controller' => 'Admin',
+        'action' => 'changeRole'
+    ],
 ];

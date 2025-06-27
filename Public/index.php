@@ -1,7 +1,6 @@
 <?php
-
 $routes = require_once __DIR__ . '../../routes/web.php';
-$route = $_GET['route'] ?? 'user/register'; // RUTA POR DEFECTO CAMBIAR :> nico anda re pipupipu.
+$route = $_GET['route'] ?? 'Auth/Login'; // RUTA POR DEFECTO CAMBIAR :> nico anda re pipupipu.
 
 if (isset($routes[$route])) {
     $controllerName = $routes[$route]['controller'];
@@ -20,14 +19,14 @@ if (isset($routes[$route])) {
             if (method_exists($controller, $action)) {
                 $controller->$action();
             } else {
-                echo "❌ Acción '$action' no encontrada.";
+                echo " Acción '$action' no encontrada.";
             }
         } else {
-            echo "❌ Clase '$className' no existe.";
+            echo " Clase '$className' no existe.";
         }
     } else {
-        echo "❌ Controlador '$controllerFile' no encontrado.";
+        echo " Controlador '$controllerFile' no encontrado.";
     }
 } else {
-    echo "❌ Ruta '$route' no registrada.";
+    echo " Ruta '$route' no registrada.";
 }

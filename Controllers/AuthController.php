@@ -4,38 +4,39 @@ require_once __DIR__ . '/../Core/Database.php';
 
 class AuthController
 {
-    public function login()
+    public function Login()
     {
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
             $db = new Database();
             $db->conectDatabase();
             $userModel = new UserModel($db->getConnection());
-
-            echo "Estoy en login() de AuthController<br>";
-            var_dump($_POST);
-
             $user = $userModel->findByEmail($email);
+
             if ($user && password_verify($password, $user['password'])) {
                 session_start();
-                $_SESSION['user'] = $user; // Guarda el usuario en la sesión
-                header('Location: /ProyectoPandora/Views/Dashboard/dashboard.php');
-                exit;
+                $_SESSION['user'] = $user;
+                if ($user['role'] === 'Administrador') {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/AdminDash');
+                    exit;
+                } else {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/ClienteDash');
+                    exit;
+                }
             } else {
-                echo "Invalid email or password.";
+                echo "Correo o contraseña incorrectos.";
             }
         } else {
-            include 'Views/Auth/Login.php';
+            include_once __DIR__ . '/../Views/Auth/Login.php';
         }
     }
-
-    public function logout()
+    public function Logout()
     {
         session_start();
+        session_unset();
         session_destroy();
-        header('Location: ../Views/Auth/Login.php');
+        header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
         exit;
     }
 }

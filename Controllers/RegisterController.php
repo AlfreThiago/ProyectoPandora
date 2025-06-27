@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/../Core/Database.php';
 
-class UserController
+class RegisterController
 {
     public function Register()
     {
@@ -11,14 +11,12 @@ class UserController
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
 
-            $controllerRegister = new UserController();
-            $result = $controllerRegister->RegisterUser($username, $email, $password);
-
-            echo $result;
-            header(header: 'Location: ../Views/Auth/Login.php');
+            $controllerRegister = new RegisterController();
+            $controllerRegister->RegisterUser($username, $email, $password);
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/ClienteDash');
             exit;
         } else {
-            include 'Views/User/Register.php';
+            include_once __DIR__ . '/../Views/Auth/Register.php';
         }
     }
 

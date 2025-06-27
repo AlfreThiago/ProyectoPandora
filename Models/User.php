@@ -10,12 +10,12 @@ class UserModel
         $this->connection = $dbConnection;
     }
 
-    public function createUser($username, $email, $password)
+    public function createUser($username, $email, $password, $role = 'Cliente')
     {
-        $stmt = $this->connection->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+        $stmt = $this->connection->prepare("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)");
         if ($stmt) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $stmt->bind_param("sss", $username, $email, $hashed_password);
+            $stmt->bind_param("ssss", $username, $email, $hashed_password, $role);
             return $stmt->execute();
         }
         return false;
@@ -30,5 +30,14 @@ class UserModel
             return $result->fetch_assoc();
         }
         return null;
+    }
+    public function updateRole($userId, $newRole)
+    {
+        $stmt = $this->connection->prepare("UPDATE users SET role = ? WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("si", $newRole, $userId);
+            return $stmt->execute();
+        }
+        return false;
     }
 }
