@@ -27,6 +27,7 @@ include_once __DIR__ . '/../Shared/AdminHeader.php';
                         <td>Rol</td>
                         <td>Tiempo de Creacion</td>
                     </tr>
+                    
             </table>
                 </div>
         </form>
