@@ -29,6 +29,42 @@ html, body {
   align-items: center;
 }
 
+/* Header  */
+.conteiner{
+    width: 90%;
+    margin: auto;
+}
+header{
+     padding: 40px 0;
+     margin: 30px;
+     background-color: #262a66;
+        }
+header .conteiner{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+header .logo{
+            font-family: "Bebas Neue", sans-serif;
+            font-weight: bold;
+            color: white;
+            font-size: 45px;
+        }
+header nav a {
+    color: #000000;
+    text-decoration: none;
+    margin-right: 20px;
+    font-size: 20px;
+    transition: transform 0.1s ease, color 0.2s ease;
+    display:inline-block; 
+}
+
+header nav a:hover,
+header nav a.activo {
+    color: rgb(255, 255, 255);
+    transform: scale(1.0);
+}
+
 /* Contenedor principal del formulario */
 .formulario {
   width: 100%;

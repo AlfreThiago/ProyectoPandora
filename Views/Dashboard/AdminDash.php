@@ -32,4 +32,5 @@ include_once __DIR__ . '/../Shared/AdminHeader.php';
                 </div>
         </form>
     <?php endif; ?>
+    <footer>@Pandora</footer>
 </body>

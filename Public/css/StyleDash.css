@@ -22,3 +22,10 @@ th{
     background-color: #222;
     color: #00bcd4;
 }
+footer{
+    display: flex;
+    position: fixed;
+    background-color: black;
+    padding: 10px;
+    text-align: center;
+}
