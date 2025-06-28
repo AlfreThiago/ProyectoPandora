@@ -20,6 +20,12 @@ class AuthController
                 if ($user['role'] === 'Administrador') {
                     header('Location: /ProyectoPandora/Public/index.php?route=Dash/AdminDash');
                     exit;
+                } elseif ($user['role'] === 'Supervisor') {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/SupervisorDash');
+                    exit;
+                } elseif ($user['role'] === 'Tecnico') {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/TecnicoDash');
+                    exit;
                 } else {
                     header('Location: /ProyectoPandora/Public/index.php?route=Dash/ClienteDash');
                     exit;

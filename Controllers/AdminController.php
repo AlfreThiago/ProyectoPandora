@@ -22,4 +22,44 @@ class AdminController
         header('Location: /ProyectoPandora/Public/index.php?route=Dash/AdminDash');
         exit;
     }
+    public function EditUser()
+    {
+        session_start();
+        if ($_SESSION['user']['role'] !== 'Administrador') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/ClienteDash');
+            exit;
+        }
+
+        $userId = $_GET['id'];
+        $db = new Database();
+        $db->conectDatabase();
+        $userModel = new UserModel($db->getConnection());
+        $user = $userModel->findById($userId);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = $_POST['name'];
+            $role = $_POST['role'];
+            $userModel->updateUser($userId, $name, $user['email'], $role); // Solo cambia nombre y rol
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/AdminDash');
+            exit;
+        }
+        // Hace disponible $user para la vista
+        include __DIR__ . '/../Views/Dashboard/ActualizarUser.php';
+    }
+    public function DeleteUser()
+    {
+        session_start();
+        if ($_SESSION['user']['role'] !== 'Administrador') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/ClienteDash');
+            exit;
+        }
+
+        $userId = $_GET['id'];
+        $db = new Database();
+        $db->conectDatabase();
+        $userModel = new UserModel($db->getConnection());
+        $userModel->deleteUser($userId);
+        header('Location: /ProyectoPandora/Public/index.php?route=Dash/AdminDash');
+        exit;
+    }
 }
