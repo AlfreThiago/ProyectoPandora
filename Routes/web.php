@@ -16,13 +16,21 @@ return [
         'action' => 'Logout'
     ],
     //Rutas de Dashboards
-    'Dash/home' => [
+    'Dash/Home' => [
         'controller' => 'Dash',
-        'action' => 'home'
+        'action' => 'Home'
     ],
     'Dash/AdminDash' => [
         'controller' => 'Dash',
         'action' => 'AdminDash'
+    ],
+    'Dash/SupervisorDash' => [
+        'controller' => 'Dash',
+        'action' => 'SupervisorDash'
+    ],
+    'Dash/TecnicoDash' => [
+        'controller' => 'Dash',
+        'action' => 'TecnicoDash'
     ],
     'Dash/ClienteDash' => [
         'controller' => 'Dash',
@@ -32,5 +40,13 @@ return [
     'Admin/change-role' => [
         'controller' => 'Admin',
         'action' => 'changeRole'
+    ],
+    'Admin/Edit-user' => [
+        'controller' => 'Admin',
+        'action' => 'EditUser'
+    ],
+    'Admin/Delete-user' => [
+        'controller' => 'Admin',
+        'action' => 'DeleteUser'
     ],
 ];

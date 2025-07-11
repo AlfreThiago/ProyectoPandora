@@ -40,4 +40,43 @@ class UserModel
         }
         return false;
     }
+    public function getAllUsers()
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM users");
+        if ($stmt) {
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+        return [];
+    }
+    public function findById($userId)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM users WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_assoc();
+        }
+        return null;
+    }
+    public function updateUser($userId, $name, $email, $role)
+    {
+        $stmt = $this->connection->prepare("UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("sssi", $name, $email, $role, $userId);
+            return $stmt->execute();
+        }
+        return false;
+    }
+    public function deleteUser($userId)
+    {
+        $stmt = $this->connection->prepare("DELETE FROM users WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $userId);
+            return $stmt->execute();
+        }
+        return false;
+    }
 }
