@@ -8,21 +8,20 @@
 </head>
 
 <body>
-    <div class="dash-conteiner">
-
-        <h2>
+    <header class="admin-header">
+        <div class="header-izquierda">
             <?php
             if (isset($_SESSION['user'])) {
-                echo 'Bienvenido, ' . htmlspecialchars($_SESSION['user']['name']);
+                echo '<h2>Bienvenido, ' . htmlspecialchars($_SESSION['user']['name']) . '</h2>';
             } else {
-                echo 'Por favor, inicie sesión.';
+                echo '<h2>Por favor, inicie sesión.</h2>';
             }
             ?>
-            <br>
-            <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout">Cerrar Sesion</a>
-
-        </h2>
-    </div>
+        </div>
+        <div class="header-derecha">
+            <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" class="logout-btn">Cerrar sesión</a>
+        </div>
+    </header>
 </body>
 
 </html>

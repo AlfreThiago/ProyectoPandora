@@ -9,12 +9,183 @@
   --fondo:linear-gradient(-45deg, #141e30, #243b55, #141e30, #243b55);
   --fondo-header:#262a66;
   --fondo-formulario:rgba(255 255 255 / 0.07);
-  --sombra:#3d3838;
+  --sombra:#303030;
+  --sombra-formulario:#111328;
   --tipografia:Arial, sans-serif;
 }
 
 body{
+  background: var(--fondo);
+  min-height: 100vh;
+  color: white;
+  font-family: var(--tipografia);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+ul, li{
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  background: var(--fondo-header);
+  padding: 15px;
+  border-radius: 10px;
+  margin-inline: auto;
+}
+
+.auth-header {
+  background-color: var(--fondo-header);
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 4px solid #1f047b;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 0 0 10px 10px;
+}
+
+.auth-header h2 {
+  margin: 0;
+  font-size: 1.8em;
+}
+
+.auth-header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.auth-header nav ul li a {
+  font-size: 20px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  padding: 8px 16px;
+  background-color: #033c82;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.auth-header nav ul li a:hover {
+  background-color: #005fc1;
+  transform: scale(1.05);
+}
+
+a:hover{
+  transform: scale(1.1);
+}
+
+.Conenedor-formulario-principal{
+  width: 100%;
+  margin-inline: auto;
+  margin-bottom: 70px;
+  margin-top: 20px;
+  max-width: 600px;
+  background: var(--fondo-formulario);
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 1px 6px 5px var(--sombra);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+
+
+    h2{
+      text-align: center;
+      font-size: 30px;
+      font-weight: bold;
+      padding-bottom: 20px;
+      margin-top: 15px;
+    }
+  
+  border: 1px solid var(--sombra-formulario);
+}
+
+.Formulario-general{
+  box-shadow: var(--secundario);
+  border-radius: 10px;
+  max-width: 500px;
+  margin-inline: auto;
+}
+
+.Formulario-general, .Formulario-contenedor{
+  padding: 20px;
+}
+.Formulario-contenedor{
+  border-radius: 0 10px 10px 0;
+}
+
+.Formulario-contenedor form{
   display: grid;
-  grid-gap: 20px;
-  background-color: red;
+  gap: 5px;
+}
+.Formulario-contenedor form p label{
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  
+}
+
+form p input{
+  width: 100%;
+  background: none;
+  outline: none;
+  border: 0;
+  margin-top: 5px;
+  color: white;
+}
+
+form p button {
+  width: 100%;
+  border: 0;
+  display: inline-block;
+  padding: 10px 0;
+  background-image: linear-gradient(to right, #0072ff, #00c6ff);
+  transition: background-image 0.4s ease, box-shadow 0.4s ease, transform 0.2s ease, color 0.4s ease;
+  user-select: none;
+  font-weight: bolder;
+  font-size: 16px;
+  border-radius: 10px;
+}
+button:hover{
+  background-image: linear-gradient(to right, #00c6ff, #0072ff);
+  box-shadow: 0 0 15px #00c8ffa2;
+  color: #141e30;
+  transform: scale(1.05);
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--sombra);
+  color: #fff;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+/* Focus en inputs */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  background-color: #3a3a3a;
+  outline: none;
+  transform: scale(1.05);
+  box-shadow: 0 0 8px #016682;
+}
+
+/* Animaciones */
+
+@keyframes gradientBG {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

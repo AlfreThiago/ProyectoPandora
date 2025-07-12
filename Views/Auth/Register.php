@@ -9,22 +9,38 @@
 </head>
 
 <body>
-    <div class="formulario">
-        <div class="Form-conteiner">
-            <h2>Registrarse</h2>
-            <form action="/ProyectoPandora/Public/index.php?route=Register/Register" method="POST">
-                <br><label for="name">Nombre</label>
-                <input type="text" name="name" required>
-                <br><label for="email">Email</label>
-                <input type="email" name="email" required>
-                <br><label for="password">Contraseña</label>
-                <input type="password" name="password" required>
-                <br>
+    <main>
 
-                <input type="submit" value="Registrar">
-            </form>
-        </div>
-    </div>
+        <section class="Conenedor-formulario-principal">
+            <h2>Registrarse</h2>
+
+            <div class="Formulario-general">
+                <div class="Formulario-contenedor">
+                    <form action="/ProyectoPandora/Public/index.php?route=Register/Register" method="POST">
+                        <p>
+                            <label for="name">Nombre:</label>
+                            <input type="text" name="name">
+                        </p>
+
+                        <p>
+                            <label for="email">Email</label>
+                            <input type="email" name="email" required>
+                        </p>
+
+                        <p>
+                            <label for="password">password</label>
+                            <input type="password" name="password" required>
+                        </p>
+
+                        <p>
+                            <button type="submit">Registrar</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+    </main>
 </body>
 
 </html>
