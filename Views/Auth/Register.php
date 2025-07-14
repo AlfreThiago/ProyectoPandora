@@ -1,4 +1,11 @@
 <?php include_once __DIR__ . '/../Shared/AuthHeader.php'; ?>
+<?php
+// Mostrar mensaje de error si el email ya está registrado
+if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
+    <div style="color: red; margin-bottom: 10px;">
+        El correo electrónico ya está registrado. Por favor, usa otro.
+    </div>
+<?php endif; ?>
 <!DOCTYPE html>
 <html lang="en">
 

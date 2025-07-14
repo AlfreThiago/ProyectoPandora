@@ -25,6 +25,15 @@ class RegisterController
         $db = new Database();
         $db->conectDatabase();
         $userModel = new UserModel($db->getConnection());
+
+        // Verifica si el email ya existe
+        $existingUser = $userModel->findByEmail($email);
+        if ($existingUser) {
+            // Puedes mostrar un mensaje o redirigir con error
+            header('Location: /ProyectoPandora/Public/index.php?route=Register/Register&error=EmailYaRegistrado');
+            exit;
+        }
+
         $role = ($email === 'admin@admin.com') ? 'Administrador' : 'Cliente';
 
         if ($userModel->createUser($username, $email, $password, $role)) {
