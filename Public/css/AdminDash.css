@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+@keyframes gradientBG {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+html, body {
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    color: white;
+    overflow: hidden;
+    background: linear-gradient(-45deg, #141e30, #243b55, #141e30, #243b55);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
+.table-container{
+    max-width: 800px;
+    margin: auto;
+    border-radius: 10px;
+    overflow: hidden;
+}
+table{
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1e1e1e;
+}
+th, td{
+    padding: 12px 15px;
+    border: 1px solid #333;
+    text-align: left;
+}
+th{
+    background-color: #222;
+    color: #00bcd4;
+}

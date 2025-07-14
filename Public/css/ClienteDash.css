@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+@keyframes gradientBG {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+html, body {
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    color: white;
+    overflow: hidden;
+    background: linear-gradient(-45deg, #141e30, #243b55, #141e30, #243b55);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}

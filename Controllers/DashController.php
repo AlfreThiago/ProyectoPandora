@@ -29,4 +29,12 @@ class DashController
         include_once __DIR__ . '/../Views/Shared/ClienteHeader.php';
         include_once __DIR__ . '/../Views/Dashboard/ClienteDash.php';
     }
+    public function HomeDash()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        session_start();
+        $user = $_SESSION['user'] ?? null;
+        include_once __DIR__ . '/../Views/Shared/HomeHeader.php';
+        include_once __DIR__ . '/../Views/Dashboard/HomeDash.php';
+    }
 }

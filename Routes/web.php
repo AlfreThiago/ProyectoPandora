@@ -18,21 +18,21 @@ return [
     //Rutas de Dashboards
     'Dash/Home' => [
         'controller' => 'Dash',
-        'action' => 'Home'
+        'action' => 'HomeDash'
     ],
-    'Dash/AdminDash' => [
+    'Dash/Admin' => [
         'controller' => 'Dash',
         'action' => 'AdminDash'
     ],
-    'Dash/SupervisorDash' => [
+    'Dash/Supervisor' => [
         'controller' => 'Dash',
         'action' => 'SupervisorDash'
     ],
-    'Dash/TecnicoDash' => [
+    'Dash/Tecnico' => [
         'controller' => 'Dash',
         'action' => 'TecnicoDash'
     ],
-    'Dash/ClienteDash' => [
+    'Dash/Cliente' => [
         'controller' => 'Dash',
         'action' => 'ClienteDash'
     ],

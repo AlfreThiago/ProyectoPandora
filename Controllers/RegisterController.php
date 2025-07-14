@@ -13,7 +13,7 @@ class RegisterController
 
             $controllerRegister = new RegisterController();
             $controllerRegister->RegisterUser($username, $email, $password);
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/ClienteDash');
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
             exit;
         } else {
             include_once __DIR__ . '/../Views/Auth/Register.php';

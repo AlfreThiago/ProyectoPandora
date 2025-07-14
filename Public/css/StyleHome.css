@@ -1,0 +1,79 @@
+/* ===========================
+    StyleHome.css
+    Estilos para el portal de inicio/Home para los panas
+    header, body y footer
+    Creado por: Misa >:3 ando re pipupipu.
+    =========================== */
+* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Arial', sans-serif;
+}
+
+/* ===== Header ===== */
+.header {
+     width: 100%;
+     background-color: rgb(4, 3, 32);
+     text-align: left;
+     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+}
+.header-title {
+        color: rgb(255, 255, 255);
+        font-weight: bold;
+        text-transform: uppercase;
+        display: flex;
+        align-items: flex-start;
+}
+.header-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-right: 5px;
+        margin-top: 1px;
+        padding-right: 10px ;
+        color: rgb(255, 255, 255);
+}
+
+.header-logo {
+        width: 101px;
+        height: auto;
+}
+
+.header-nav {
+     margin-top: 10px;
+}
+
+.header-nav a {
+     color: #ffffff;
+     text-decoration: none;
+     margin: 0px;
+     font-size: 1rem;
+     transition: color 0.2s;
+}
+
+.header-nav a:hover {
+     color: #eebbc3;
+}
+
+/* ===== Body ===== */
+@keyframes gradientBG {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Estilos generales para body y html */
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: Arial, sans-serif;
+  color: white;
+  overflow: hidden;
+  background: linear-gradient(-45deg, #141e30, #243b55, #141e30, #243b55);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}

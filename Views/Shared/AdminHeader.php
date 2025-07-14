@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/ProyectoPandora/Public/css/StyleDash.css">
+    <link rel="stylesheet" href="/ProyectoPandora/Public/css/AdminDash.css">
 </head>
 
 <body>
@@ -19,9 +19,14 @@
             }
             ?>
             <br>
-            <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout">Cerrar Sesion</a>
-
         </h2>
+        <div>
+            <ul>
+                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/Home">Portal</a></li>
+                <li><a href="/ProyectoPandora/Public/index.php?route=Auth/Logout">Cerrar Sesion</a></li>
+            </ul>
+        </div>
+
     </div>
 </body>
 

@@ -12,21 +12,21 @@ class AdminController
 
         session_start();
         if ($_SESSION['user']['role'] !== 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/ClienteDash');
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
             exit;
         }
         $db = new Database();
         $db->conectDatabase();
         $userModel = new UserModel($db->getConnection());
         $userModel->updateRole($userId, $newRole);
-        header('Location: /ProyectoPandora/Public/index.php?route=Dash/AdminDash');
+        header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
         exit;
     }
     public function EditUser()
     {
         session_start();
         if ($_SESSION['user']['role'] !== 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/ClienteDash');
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
             exit;
         }
 
@@ -39,8 +39,8 @@ class AdminController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'];
             $role = $_POST['role'];
-            $userModel->updateUser($userId, $name, $user['email'], $role); // Solo cambia nombre y rol
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/AdminDash');
+            $userModel->updateUser($userId, $name, $user['email'], $role);
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
             exit;
         }
         // Hace disponible $user para la vista
@@ -50,7 +50,7 @@ class AdminController
     {
         session_start();
         if ($_SESSION['user']['role'] !== 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/ClienteDash');
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
             exit;
         }
 
@@ -59,7 +59,7 @@ class AdminController
         $db->conectDatabase();
         $userModel = new UserModel($db->getConnection());
         $userModel->deleteUser($userId);
-        header('Location: /ProyectoPandora/Public/index.php?route=Dash/AdminDash');
+        header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
         exit;
     }
 }

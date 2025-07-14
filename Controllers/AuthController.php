@@ -18,16 +18,16 @@ class AuthController
                 session_start();
                 $_SESSION['user'] = $user;
                 if ($user['role'] === 'Administrador') {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/AdminDash');
+                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
                     exit;
                 } elseif ($user['role'] === 'Supervisor') {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/SupervisorDash');
+                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
                     exit;
                 } elseif ($user['role'] === 'Tecnico') {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/TecnicoDash');
+                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
                     exit;
                 } else {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/ClienteDash');
+                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
                     exit;
                 }
             } else {
@@ -43,7 +43,7 @@ class AuthController
         session_start();
         session_unset();
         session_destroy();
-        header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+        header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
         exit;
     }
 }
