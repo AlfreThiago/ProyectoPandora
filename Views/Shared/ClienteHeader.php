@@ -8,20 +8,25 @@
 </head>
 
 <body>
-    <div class="dash-conteiner">
-
-        <h2>
-            <?php
+    <header class="cliente-header">
+        <div class="dash-conteiner">
+            
+            <h2>
+                <?php
             if (isset($_SESSION['user'])) {
                 echo 'Bienvenido, ' . htmlspecialchars($_SESSION['user']['name']);
             } else {
                 echo 'Por favor, inicie sesión.';
             }
             ?>
+            </h2>
+            </div>
             <br>
-            <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout">Cerrar Sesion</a>
-        </h2>
-    </div>
+            <div class="header-derecha">
+                <a href="/ProyectoPandora/Public/index.php?route=Dash/Home" class="home-btn">home</a>
+                <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" class="logout-btn">Cerrar Sesion</a>
+            </div>
+</header>
 </body>
 
 </html>

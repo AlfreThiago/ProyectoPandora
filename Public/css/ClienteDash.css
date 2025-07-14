@@ -1,21 +1,70 @@
-* {
-  margin: 0;
+*{
   padding: 0;
+  margin: 0;
   box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
 }
+:root{
+  --primario:#2c2c2c;
+  --secundario:linear-gradient(to right, #0072ff, #00c6ff);
+  --fondo:linear-gradient(-45deg, #141e30, #243b55, #141e30, #243b55);
+  --fondo-header:#262a66;
+  --sombra:#303030;
+  --tipografia:Arial, sans-serif;
+}
+
+body{
+  background: var(--fondo);
+  min-height: 100vh;
+  color: black;
+  font-family: var(--tipografia);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+.cliente-header {
+  background-color: var(--fondo-header);
+  color: #ecf0f1;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 4px solid #130443;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cliente-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.logout-btn {
+  background-color: #e74c3c;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.home-btn{
+  background-color: #0072ff;
+  color: white;
+  padding: 8px 16px;
+  margin: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
+}
+
+
 @keyframes gradientBG {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
-}
-html, body {
-    height: 100%;
-    width: 100%;
-    font-family: Arial, sans-serif;
-    color: white;
-    overflow: hidden;
-    background: linear-gradient(-45deg, #141e30, #243b55, #141e30, #243b55);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
 }
