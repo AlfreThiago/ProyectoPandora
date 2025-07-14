@@ -13,10 +13,25 @@ class RegisterController
 
             $controllerRegister = new RegisterController();
             $controllerRegister->RegisterUser($username, $email, $password);
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         } else {
             include_once __DIR__ . '/../Views/Auth/Register.php';
+        }
+    }
+    public function RegisterAdminPortal()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $username = $_POST['name'] ?? '';
+            $email = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
+
+            $controllerRegister = new RegisterController();
+            $controllerRegister->RegisterUser($username, $email, $password);
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
+            exit;
+        } else {
+            include_once __DIR__ . '/../Views/Auth/RegisterAdminPortal.php';
         }
     }
 

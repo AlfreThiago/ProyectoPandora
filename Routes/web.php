@@ -6,6 +6,10 @@ return [
         'controller' => 'Register',
         'action' => 'Register'
     ],
+    'Register/RegisterAdminPortal' => [
+        'controller' => 'Register',
+        'action' => 'RegisterAdminPortal'
+    ],
     //Ruta de Inicio de sesión
     'Auth/Login' => [
         'controller' => 'Auth',

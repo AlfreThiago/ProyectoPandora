@@ -46,6 +46,16 @@ body{
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
+.add-btn{
+  background-color: #5be73c;
+  color: white;
+  padding: 8px 16px;
+  margin: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
 
 .home-btn{
   background-color: #0072ff;
