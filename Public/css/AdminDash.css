@@ -1,41 +1,137 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
+.logout-btn:hover {
+  background-color: #c0392b;
 }
+
+/* Buscador */
+.search-container {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  transition: 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #0072ff;
+  box-shadow: 0 0 8px #0072ff88;
+}
+
+/* Zona de Admin */
+.Tabla-Contenedor{
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+th {
+  background-color: #f4f4f4;
+  color: #333;
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 600;
+  border-bottom: 2px solid #ddd;
+}
+
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+table td:first-child,
+table th:first-child {
+  width: 50px; 
+  text-align: center;
+}
+
+table td:last-child,
+table th:last-child {
+  width: 180px; 
+}
+
+.role {
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: black;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.role.Administrador {
+  background-color: #d32f2f;
+}
+
+.role.Cliente {
+  background-color: #1976d2;
+}
+
+.role.Supervisor {
+  background-color: #388e3c;
+}
+
+.role.Tecnico{
+    background-color: #00c6ff;
+}
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 6px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: white;
+  font-size: 0.9em;
+  transition: background 0.2s ease;
+}
+
+.edit-btn {
+  background-color: #1976d2;
+}
+
+.edit-btn:hover {
+  background-color: #1565c0;
+}
+
+.delete-btn {
+  background-color: #d32f2f;
+}
+
+.delete-btn:hover {
+  background-color: #c62828;
+}
+
+
+.created-at {
+  color: #777;
+  font-size: 0.85em;
+} 
+/* Animaciones */
 @keyframes gradientBG {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
-}
-html, body {
-    height: 100%;
-    width: 100%;
-    font-family: Arial, sans-serif;
-    color: white;
-    overflow: hidden;
-    background: linear-gradient(-45deg, #141e30, #243b55, #141e30, #243b55);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-}
-.table-container{
-    max-width: 800px;
-    margin: auto;
-    border-radius: 10px;
-    overflow: hidden;
-}
-table{
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #1e1e1e;
-}
-th, td{
-    padding: 12px 15px;
-    border: 1px solid #333;
-    text-align: left;
-}
-th{
-    background-color: #222;
-    color: #00bcd4;
 }
