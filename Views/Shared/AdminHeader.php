@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/ProyectoPandora/Public/css/AdminDash.css">
+    <link rel="stylesheet" href="/ProyectoPandora/Public/css/AdminDash.css"> <!-- Ale hay q crear un nuevo header q sea una copia de este pero q tenga una ruta de css nueva q vas a tener q crear, combianando el StyleAuth.css y el AdminDash.css y ese header dejamelo pronto y yo lo configuro en las redireciones globales, hasta entonces el Añadir de el Panle del administrador no va a tener Css funcional. -->
 </head>
 
 <body>
