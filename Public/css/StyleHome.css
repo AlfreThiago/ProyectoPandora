@@ -10,16 +10,67 @@
         box-sizing: border-box;
         font-family: 'Arial', sans-serif;
 }
+:root{
+  --primario:#2c2c2c;
+  --secundario:linear-gradient(to right, #0072ff, #00c6ff);
+  --fondo:linear-gradient(-45deg, #141e30, #243b55, #141e30, #243b55);
+  --fondo-header:#262a66;
+  --sombra:#303030;
+  --tipografia:Arial, sans-serif;
+}
+
+body{
+  background: var(--fondo);
+  min-height: 100vh;
+  color: black;
+  font-family: var(--tipografia);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
 
 /* ===== Header ===== */
-.header {
+ul, li{
+  list-style: none;
+  display: flex;
+  border-radius: 10px;
+  margin-inline: auto;
+}
+.home-header {
      width: 100%;
      background-color: rgb(4, 3, 32);
      text-align: left;
-     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+     box-shadow: 0 2px 8px rgba(234, 122, 122, 0.05);
      display: flex;
      justify-content: space-between;
      align-items: center;
+}
+.home-header nav ul{
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        padding: 0;
+        margin: 0;
+}
+.home-header nav ul li a {
+    padding:8px 10px;
+    margin: 4px 0;
+    border-radius: 6px;
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s;
+}
+
+
+.home-header nav ul li a:hover {
+  background-color: #005fc1;
+  transform: scale(1.05);
+}
+
+a:hover{
+  transform: scale(1.1);
 }
 .header-title {
         color: rgb(255, 255, 255);
@@ -37,27 +88,50 @@
         padding-right: 10px ;
         color: rgb(255, 255, 255);
 }
-
 .header-logo {
         width: 101px;
         height: auto;
 }
 
-.header-nav {
-     margin-top: 10px;
+/* Estilos específicos por rol */
+.admin {
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
 }
 
-.header-nav a {
-     color: #ffffff;
-     text-decoration: none;
-     margin: 0px;
-     font-size: 1rem;
-     transition: color 0.2s;
+.super {
+    background: linear-gradient(to right, #11998e, #38ef7d);
 }
 
-.header-nav a:hover {
-     color: #eebbc3;
+.tec {
+    background: linear-gradient(to right, #396afc, #2948ff);
 }
+
+.cliente {
+    background: linear-gradient(to right, #f7971e, #ffd200);
+}
+
+.logout {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.user-action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+.user-action p {
+    margin: 0;
+    color: white;
+    font-size: 0.95rem;
+}
+.botones {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+
+
 
 /* ===== Body ===== */
 @keyframes gradientBG {
@@ -66,14 +140,3 @@
   100% { background-position: 0% 50%; }
 }
 
-/* Estilos generales para body y html */
-html, body {
-  height: 100%;
-  width: 100%;
-  font-family: Arial, sans-serif;
-  color: white;
-  overflow: hidden;
-  background: linear-gradient(-45deg, #141e30, #243b55, #141e30, #243b55);
-  background-size: 400% 400%;
-  animation: gradientBG 15s ease infinite;
-}

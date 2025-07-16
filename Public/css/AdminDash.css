@@ -193,12 +193,81 @@ table th:last-child {
 .delete-btn:hover {
   background-color: #c62828;
 }
-
-
 .created-at {
   color: #777;
   font-size: 0.85em;
-} 
+}
+
+/* Zona de actualizar */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 75vh;
+  padding: 20px;
+}
+h2{
+  text-align: center;
+}
+.contenedor {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  color: #fff;
+  width: 100%;
+  max-width: 500px;
+  backdrop-filter: blur(6px);
+}
+
+.contenedor form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contenedor label {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.contenedor input,
+.contenedor select {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background-color: #ffffff10;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.contenedor input:focus,
+.contenedor select:focus {
+  outline: none;
+  border: 1px solid #00c6ff;
+  background-color: #353131a8;
+  font-weight: bold;
+}
+
+.contenedor button {
+  background-color: #0072ff;
+  color: #fff;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.contenedor button:hover {
+  background-color: #005fc1;
+}
+
+
+
 /* Animaciones */
 @keyframes gradientBG {
   0%   { background-position: 0% 50%; }

@@ -7,7 +7,7 @@
   --primario:#2c2c2c;
   --secundario:linear-gradient(to right, #0072ff, #00c6ff);
   --fondo:linear-gradient(-45deg, #141e30, #243b55, #141e30, #243b55);
-  --fondo-header:#262a66;
+  --fondo-header:rgb(4, 3, 32);
   --fondo-formulario:rgba(255 255 255 / 0.07);
   --sombra:#303030;
   --sombra-formulario:#111328;
@@ -26,9 +26,7 @@ body{
 ul, li{
   list-style: none;
   display: flex;
-  gap: 10px;
   background: var(--fondo-header);
-  padding: 15px;
   border-radius: 10px;
   margin-inline: auto;
 }
@@ -43,6 +41,10 @@ ul, li{
   border-bottom: 4px solid #1f047b;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   border-radius: 0 0 10px 10px;
+}
+.header-logo {
+        width: 101px;
+        height: auto;
 }
 
 .auth-header h2 {
@@ -64,7 +66,7 @@ ul, li{
   color: white;
   font-weight: bold;
   padding: 8px 16px;
-  background-color: #033c82;
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 6px;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }

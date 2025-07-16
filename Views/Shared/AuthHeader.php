@@ -8,7 +8,7 @@ require_once __DIR__ . '/../../Routes/web.php';
 
 <header class="auth-header">
     <div class="header-izquierda">
-        <h2>Proyecto Pandora</h2>
+        <img src="/ProyectoPandora/Public/img/LogoSinFondo.png" class="header-logo" alt="Logo">
     </div>
     <div class="header-derecha">
         <nav>
