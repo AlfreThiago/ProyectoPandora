@@ -1,13 +1,4 @@
-<?php ?>
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Usuario</title>
-    <link rel="stylesheet" href="../../Public/css/StyleDash.css">
-</head>
+<?php include_once __DIR__ . '/../Shared/AdminHeader.php'; ?>
 
 <body>
     <h2>Editar Usuario</h2>
@@ -26,10 +17,7 @@
                 <option value="Cliente" <?= $user['role'] === 'Cliente' ? 'selected' : '' ?>>Cliente
                 </option>
             </select>
-
             <button type="submit" name="update_user">Actualizar Usuario</button>
         </form>
     </div>
 </body>
-
-</html>
