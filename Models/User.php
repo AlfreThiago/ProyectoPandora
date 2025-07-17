@@ -16,7 +16,27 @@ class UserModel
         if ($stmt) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $stmt->bind_param("ssss", $username, $email, $hashed_password, $role);
-            return $stmt->execute();
+            if ($stmt->execute()) {
+                $userId = $this->connection->insert_id;
+
+                // Insertar en la tabla correspondiente según el rol
+                switch ($role) {
+                    case 'Cliente':
+                        $this->connection->prepare("INSERT INTO clientes (user_id) VALUES (?)")->bind_param("i", $userId)->execute();
+                        break;
+                    case 'Tecnico':
+                        $this->connection->prepare("INSERT INTO tecnicos (user_id, disponibilidad) VALUES (?, 'Disponible')")->bind_param("i", $userId)->execute();
+                        break;
+                    case 'Supervisor':
+                        $this->connection->prepare("INSERT INTO supervisores (user_id) VALUES (?)")->bind_param("i", $userId)->execute();
+                        break;
+                    case 'Administrador':
+                        $this->connection->prepare("INSERT INTO administradores (user_id) VALUES (?)")->bind_param("i", $userId)->execute();
+                        break;
+                }
+
+                return true;
+            }
         }
         return false;
     }

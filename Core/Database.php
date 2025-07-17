@@ -2,7 +2,7 @@
 class Database
 {
     private $connection;
-    function conectDatabase()
+    function connectDatabase()
     {
         $host = 'localhost';
         $user = 'root';

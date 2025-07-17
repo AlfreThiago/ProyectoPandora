@@ -19,7 +19,7 @@ include_once __DIR__ . '/../../Core/Database.php';
         <tbody>
             <?php
             $db = new Database();
-            $db->conectDatabase();
+            $db->connectDatabase();
             $userModel = new UserModel($db->getConnection());
             $users = $userModel->getAllUsers();
             if ($users) {

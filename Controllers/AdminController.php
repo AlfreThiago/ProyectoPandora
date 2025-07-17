@@ -16,7 +16,7 @@ class AdminController
             exit;
         }
         $db = new Database();
-        $db->conectDatabase();
+        $db->connectDatabase();
         $userModel = new UserModel($db->getConnection());
         $userModel->updateRole($userId, $newRole);
         header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
@@ -32,7 +32,7 @@ class AdminController
 
         $userId = $_GET['id'];
         $db = new Database();
-        $db->conectDatabase();
+        $db->connectDatabase();
         $userModel = new UserModel($db->getConnection());
         $user = $userModel->findById($userId);
 
@@ -56,7 +56,7 @@ class AdminController
 
         $userId = $_GET['id'];
         $db = new Database();
-        $db->conectDatabase();
+        $db->connectDatabase();
         $userModel = new UserModel($db->getConnection());
         $userModel->deleteUser($userId);
         header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');

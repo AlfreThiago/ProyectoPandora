@@ -10,7 +10,7 @@ class AuthController
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
             $db = new Database();
-            $db->conectDatabase();
+            $db->connectDatabase();
             $userModel = new UserModel($db->getConnection());
             $user = $userModel->findByEmail($email);
 

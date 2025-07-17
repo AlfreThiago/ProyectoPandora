@@ -45,7 +45,7 @@ class RegisterController
     public function RegisterUser($username, $email, $password)
     {
         $db = new Database();
-        $db->conectDatabase();
+        $db->connectDatabase();
         $userModel = new UserModel($db->getConnection());
 
         // Verifica si el email ya existe
