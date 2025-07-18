@@ -22,7 +22,12 @@ class UserModel
                 // Insertar en la tabla correspondiente según el rol
                 switch ($role) {
                     case 'Cliente':
-                        $this->connection->prepare("INSERT INTO clientes (user_id) VALUES (?)")->bind_param("i", $userId)->execute();
+                        $stmtCliente = $this->connection->prepare("INSERT INTO clientes (user_id) VALUES (?)");
+                        if (!$stmtCliente) {
+                            die("Error en prepare clientes: " . $this->connection->error);
+                        }
+                        $stmtCliente->bind_param("i", $userId);
+                        $stmtCliente->execute();
                         break;
                     case 'Tecnico':
                         $this->connection->prepare("INSERT INTO tecnicos (user_id, disponibilidad) VALUES (?, 'Disponible')")->bind_param("i", $userId)->execute();
