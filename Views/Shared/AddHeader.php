@@ -8,12 +8,12 @@
 </head>
 
 <body>
-    <header class="Header-Add">
+    <header class="admin-header">
         <div class="header-izquierda">
 
         </div>
         <div class="header-derecha">
-            <a href="" class="home-btn"> Home </a>
+            <a href="" class="home-btn">Home</a>
             <a href="" class="add-btn">Añadir</a>
             <a href="" class="logout-btn">Cerrar sesión</a>
         </div>

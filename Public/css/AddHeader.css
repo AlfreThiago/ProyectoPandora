@@ -1,0 +1,453 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+:root{
+  --primario:#2c2c2c;
+  --secundario:linear-gradient(to right, #0072ff, #00c6ff);
+  --fondo:linear-gradient(-45deg, #141e30, #243b55, #141e30, #243b55);
+  --fondo-header:rgb(4, 3, 32);
+  --fondo-formulario:rgba(255 255 255 / 0.07);
+  --sombra:#303030;
+  --sombra-formulario:#111328;
+  --tipografia:Arial, sans-serif;
+}
+
+body {
+  background: var(--fondo);
+  min-height: 100vh;
+  color: black;
+  font-family: var(--tipografia);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+/* Zona del Header */
+.admin-header {
+  background-color: var(--fondo-header);
+  color: #ecf0f1;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 4px solid #130443;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.logout-btn {
+  background-color: #e74c3c;
+  color: white;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.add-btn{
+  background-color: #5be73c;
+  color: white;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.admin-btn {
+  background-color: #ff00a6;
+  color: white;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.super-btn {
+  background-color: #00ffb3;
+  color: white;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.tec-btn{
+  background-color: #a600ff;
+  color: white;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.client-btn{
+  background-color: #d4ff00;
+  color: white;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.user-btn{
+  background-color: #ff5e00;
+  color: white;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.home-btn{
+  background-color: #0072ff;
+  color: white;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Buscador */
+.search-container {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  transition: 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #0072ff;
+  box-shadow: 0 0 8px #0072ff88;
+}
+
+/* Zona de Admin */
+.Tabla-Contenedor{
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+th {
+  background-color: #f4f4f4;
+  color: #333;
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 600;
+  border-bottom: 2px solid #ddd;
+}
+
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+table td:first-child,
+table th:first-child {
+  width: 50px; 
+  text-align: center;
+}
+
+table td:last-child,
+table th:last-child {
+  width: 180px; 
+}
+
+.role {
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: black;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.role.Administrador {
+  background-color: #d32f2f;
+}
+
+.role.Cliente {
+  background-color: #1976d2;
+}
+
+.role.Supervisor {
+  background-color: #388e3c;
+}
+
+.role.Tecnico{
+    background-color: #00c6ff;
+}
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 6px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: white;
+  font-size: 0.9em;
+  transition: background 0.2s ease;
+}
+
+.edit-btn {
+  background-color: #1976d2;
+}
+
+.edit-btn:hover {
+  background-color: #1565c0;
+}
+
+.delete-btn {
+  background-color: #d32f2f;
+}
+
+.delete-btn:hover {
+  background-color: #c62828;
+}
+.created-at {
+  color: #777;
+  font-size: 0.85em;
+}
+
+/* Zona de actualizar */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 75vh;
+  padding: 20px;
+}
+h2{
+  text-align: center;
+}
+.contenedor {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  color: #fff;
+  width: 100%;
+  max-width: 500px;
+  backdrop-filter: blur(6px);
+}
+
+.contenedor form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contenedor label {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.contenedor input,
+.contenedor select {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background-color: #ffffff10;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.contenedor input:focus,
+.contenedor select:focus {
+  outline: none;
+  border: 1px solid #00c6ff;
+  background-color: #353131a8;
+  font-weight: bold;
+}
+
+.contenedor button {
+  background-color: #0072ff;
+  color: #fff;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.contenedor button:hover {
+  background-color: #005fc1;
+}
+
+
+
+/* Animaciones */
+@keyframes gradientBG {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+ul, li{
+  list-style: none;
+  display: flex;
+  background: var(--fondo-header);
+  border-radius: 10px;
+  margin-inline: auto;
+}
+
+.Conenedor-formulario-principal{
+  width: 100%;
+  margin-inline: auto;
+  margin-bottom: 70px;
+  margin-top: 20px;
+  max-width: 600px;
+  background: var(--fondo-formulario);
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 1px 6px 5px var(--sombra);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+
+    h2{
+      text-align: center;
+      font-size: 30px;
+      font-weight: bold;
+      padding-bottom: 20px;
+      margin-top: 15px;
+    }
+
+.Formulario-general{
+  box-shadow: var(--secundario);
+  border-radius: 10px;
+  max-width: 500px;
+  margin-inline: auto;
+}
+
+.Formulario-general, .Formulario-contenedor{
+  padding: 20px;
+}
+.Formulario-contenedor{
+  border-radius: 0 10px 10px 0;
+}
+
+.Formulario-contenedor form{
+  display: grid;
+  gap: 5px;
+}
+.Formulario-contenedor form p label{
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  
+}
+
+form p input{
+  width: 100%;
+  background: none;
+  outline: none;
+  border: 0;
+  margin-top: 5px;
+  color: white;
+}
+
+form p button {
+  width: 100%;
+  border: 0;
+  display: inline-block;
+  padding: 10px 0;
+  background-image: linear-gradient(to right, #0072ff, #00c6ff);
+  transition: background-image 0.4s ease, box-shadow 0.4s ease, transform 0.2s ease, color 0.4s ease;
+  user-select: none;
+  font-weight: bolder;
+  font-size: 16px;
+  border-radius: 10px;
+}
+button:hover{
+  background-image: linear-gradient(to right, #00c6ff, #0072ff);
+  box-shadow: 0 0 15px #00c8ffa2;
+  color: #141e30;
+  transform: scale(1.05);
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--sombra);
+  color: #fff;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+/* Focus en inputs */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  background-color: #3a3a3a;
+  outline: none;
+  transform: scale(1.05);
+  box-shadow: 0 0 8px #016682;
+}
+
+/* Animaciones */
+
+@keyframes gradientBG {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

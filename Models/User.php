@@ -70,6 +70,42 @@ class UserModel
         }
         return [];
     }
+    public function getAllClientes()
+    {
+        $sql = "SELECT u.id, u.name, u.email, u.role, c.telefono, c.direccion, u.created_at
+            FROM users u
+            INNER JOIN clientes c ON u.id = c.user_id";
+        $result = $this->connection->query($sql);
+        return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+    }
+
+    public function getAllTecnicos()
+    {
+        $sql = "SELECT u.id, u.name, u.email, u.role,t.disponibilidad, t.especialidad, u.created_at
+            FROM users u
+            INNER JOIN tecnicos t ON u.id = t.user_id";
+        $result = $this->connection->query($sql);
+        return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+    }
+
+    public function getAllSupervisores()
+    {
+        $sql = "SELECT u.id, u.name, u.email, u.role, u.created_at
+            FROM users u
+            INNER JOIN supervisores s ON u.id = s.user_id";
+        $result = $this->connection->query($sql);
+        return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+    }
+
+    public function getAllAdministradores()
+    {
+        $sql = "SELECT u.id, u.name, u.email, u.role, u.created_at
+            FROM users u
+            INNER JOIN administradores a ON u.id = a.user_id";
+        $result = $this->connection->query($sql);
+        return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+    }
+
     public function findById($userId)
     {
         $stmt = $this->connection->prepare("SELECT * FROM users WHERE id = ?");

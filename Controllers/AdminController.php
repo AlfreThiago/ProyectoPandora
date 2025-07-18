@@ -44,7 +44,8 @@ class AdminController
             exit;
         }
         // Hace disponible $user para la vista
-        include __DIR__ . '/../Views/Dashboard/ActualizarUser.php';
+        include_once __DIR__ . '/../Views/Shared/AdminHeader.php';
+        include_once __DIR__ . '/../Views/Dashboard/AdminDash/ActualizarUser.php';
     }
     public function DeleteUser()
     {

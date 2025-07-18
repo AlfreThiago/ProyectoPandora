@@ -37,7 +37,7 @@ class RegisterController
                 header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
                 exit;
             }
-            include_once __DIR__ . '/../Views/Shared/AdminHeader.php';
+            include_once __DIR__ . '/../Views/Shared/AddHeader.php';
             include_once __DIR__ . '/../Views/Auth/RegisterAdminPortal.php';
         }
     }

@@ -40,6 +40,22 @@ return [
         'controller' => 'Dash',
         'action' => 'ClienteDash'
     ],
+    'Dash/TablaCliente' => [
+        'controller' => 'Dash',
+        'action' => 'TablaCliente'
+    ],
+    'Dash/TablaTecnico' => [
+        'controller' => 'Dash',
+        'action' => 'TablaTecnico'
+    ],
+    'Dash/TablaSupervisor' => [
+        'controller' => 'Dash',
+        'action' => 'TablaSupervisor'
+    ],
+    'Dash/TablaAdmin' => [
+        'controller' => 'Dash',
+        'action' => 'TablaAdmin'
+    ],
     //Rutas de Administración
     'Admin/change-role' => [
         'controller' => 'Admin',

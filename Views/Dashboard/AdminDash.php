@@ -1,10 +1,13 @@
 <?php
 include_once __DIR__ . '/../../Core/Database.php';
 ?>
+
 <div class="Tabla-Contenedor">
+    <h2>Lista de Usuarios</h2>
     <div class="search-container">
         <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
     </div>
+
     <table id="userTable">
         <thead>
             <tr>
