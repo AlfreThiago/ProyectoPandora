@@ -1,7 +1,10 @@
 <?php
 include_once __DIR__ . '/../../Core/Database.php';
 ?>
-
+<head>
+        <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+</head>
+<main>
 <div class="Tabla-Contenedor">
     <h2>Lista de Usuarios</h2>
     <div class="search-container">
@@ -49,6 +52,12 @@ include_once __DIR__ . '/../../Core/Database.php';
         </tbody>
     </table>
 </div>
+
+    <div class="dark-mode-btn" id="dark-mode-btn">
+        <i class='bx  bx-sun'  ></i> 
+        <i class='bx  bx-moon'  ></i> 
+    </div>
+</main>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const input = document.getElementById("userSearchInput");
@@ -61,4 +70,8 @@ include_once __DIR__ . '/../../Core/Database.php';
             });
         });
     });
+    const darkModeBtn = document.getElementById("dark-mode-btn");
+    darkModeBtn.addEventListener("click",()=>{
+        document.body.classList.toggle("dark-mode");
+});
 </script>

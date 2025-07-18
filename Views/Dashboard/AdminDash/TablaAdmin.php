@@ -1,3 +1,7 @@
+ <head>
+        <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+</head>
+ <main>
  <div class="Tabla-Contenedor">
      <h2>Admins</h2>
      <div class="search-container">
@@ -22,7 +26,8 @@
                 $administradores = $userModel->getAllAdministradores();
                 if ($administradores) {
                     foreach ($administradores as $admin) {
-                        echo "<tr>";
+                        $role = htmlspecialchars($admin['role']);
+                        echo "<tr class='row-role-$role'>";
                         echo "<td>{$admin['id']}</td>";
                         echo "<td>{$admin['name']}</td>";
                         echo "<td>{$admin['email']}</td>";
@@ -40,6 +45,11 @@
          </tbody>
      </table>
  </div>
+     <div class="dark-mode-btn" id="dark-mode-btn">
+        <i class='bx  bx-sun'  ></i> 
+        <i class='bx  bx-moon'  ></i> 
+    </div>
+ </main>
  <script>
      document.addEventListener("DOMContentLoaded", function() {
          const input = document.getElementById("userSearchInput");
@@ -52,4 +62,8 @@
              });
          });
      });
+         const darkModeBtn = document.getElementById("dark-mode-btn");
+    darkModeBtn.addEventListener("click",()=>{
+        document.body.classList.toggle("dark-mode");
+});
  </script>

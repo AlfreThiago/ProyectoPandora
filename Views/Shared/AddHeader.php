@@ -13,9 +13,8 @@
 
         </div>
         <div class="header-derecha">
-            <a href="" class="home-btn">Home</a>
-            <a href="" class="add-btn">Añadir</a>
-            <a href="" class="logout-btn">Cerrar sesión</a>
+            <a href="/ProyectoPandora/Public/index.php?route=Dash/Home" class="home-btn">Home</a>
+            <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" class="logout-btn">Cerrar sesión</a>
         </div>
     </header>
 </body>
