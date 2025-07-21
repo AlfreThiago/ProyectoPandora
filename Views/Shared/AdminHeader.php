@@ -2,6 +2,7 @@
 <html lang="es">
 
 <head>
+    <!-- son Configuraciones básicas y estilos del panel para admins -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/ProyectoPandora/Public/css/AdminDash.css">
@@ -9,65 +10,83 @@
 
 <body>
 
+    <!-- es un Botón que aparece flotando para abrir o cerrar el menú lateral -->
     <div class="menu-btn sidebar-btn" id="sidebar-btn">
-        <i class='bx  bx-menu-wider'  ></i> 
-        <i class='bx  bx-x'  ></i> 
+        <i class='bx bx-menu-wider'></i> 
+        <i class='bx bx-x'></i> 
     </div>
+
+    <!-- Es el menú lateral del dashboard -->
     <div class="sidebar" id="sidebar">
+
+        <!-- Es la parte de arriba del menu lateral: logo y botón para contraer -->
         <div class="header">
             <div class="menu-btn" id="menu-btn">
-                <i class='bx  bx-arrow-left'  ></i> 
+                <i class='bx bx-arrow-left'></i> 
             </div>
-             <div class="brand">
-               <img class="brand-light" src="img/LogoSinFondo.png" alt="logo">
-               <img class="brand-dark" src="img/Logo.png" alt="logo">
+            <div class="brand">
+                <!-- Son dos versiones del logo para cambiar el tema claro o oscuro -->
+                <img class="brand-light" src="img/LogoSinFondo.png" alt="logo">
+                <img class="brand-dark" src="img/Logo.png" alt="logo">
                 <span>Hefesto</span>
-               </div>
+            </div>
         </div>
+
+                <!-- Opciones del menú que el usuario puede elegir -->
         <div class="menu-conteiner">
             <ul class="menu">
+
+               <!-- Opción para ir al inicio del panel -->
                 <li class="menu-item menu-item-static active">
                     <a href="/ProyectoPandora/Public/index.php?route=Dash/Home" class="menu-link">
-                        <i class='bx  bx-home'  ></i> 
+                        <i class='bx bx-home'></i> 
                         <span>Home</span>
                     </a>
                 </li>
+
+               <!-- Acceso a funciones para editar o ver usuarios -->
                 <li class="menu-item menu-item-dropdown">
                     <a href="#" class="menu-link">
-                        <i class='bx  bx-user'  ></i> 
+                        <i class='bx bx-user'></i> 
                         <span>Usuarios</span>
-                        <i class='bx  bx-arrow-down-stroke'  ></i> 
+                        <i class='bx bx-arrow-down-stroke'></i> 
                     </a>
                     <ul class="sub-menu">
                         <li><a href="/ProyectoPandora/Public/index.php?route=Dash/TablaCliente" class="sub-menu-link">Clientes</a></li>
-                        <li><a href="/ProyectoPandora/Public/index.php?route=Dash/TablaTecnico" class="sub-menu-link">Tecnicos</a></li>
+                        <li><a href="/ProyectoPandora/Public/index.php?route=Dash/TablaTecnico" class="sub-menu-link">Técnicos</a></li>
                         <li><a href="/ProyectoPandora/Public/index.php?route=Dash/TablaSupervisor" class="sub-menu-link">Supervisor</a></li>
                         <li><a href="/ProyectoPandora/Public/index.php?route=Dash/TablaAdmin" class="sub-menu-link">Admins</a></li>
                     </ul>
                 </li>
+
+                <!-- Botón para registrar un nuevo admin -->
                 <li class="menu-item menu-item-static">
                     <a href="/ProyectoPandora/Public/index.php?route=Register/RegisterAdminPortal" class="menu-link">
-                        <i class='bx  bx-plus-square'  ></i> 
+                        <i class='bx bx-plus-square'></i> 
                         <span>Añadir</span>
                     </a>
                 </li>
-        </ul>
+            </ul>
         </div>
-            <div class="footer">
+
+<!-- Parte de abajo del menú con accesos rápidos y el usuario que está usando el sistema -->
+        <div class="footer">
             <ul class="menu">
                 <li class="menu-item menu-item-static">
                     <a href="#" class="menu-link">
-                        <i class='bx  bx-bell-minus'  ></i> 
+                        <i class='bx bx-bell-minus'></i> 
                         <span>Notification</span>
                     </a>
                 </li>
                 <li class="menu-item menu-item-static">
                     <a href="#" class="menu-link">
-                        <i class='bx  bx-bell-minus'  ></i> 
-                        <span>setting</span>
+                        <i class='bx bx-bell-minus'></i> 
+                        <span>Setting</span>
                     </a>
                 </li>
             </ul>
+
+            <!-- Muestra el nombre y correo del usuario conectado -->
             <div class="user">
                 <div class="user-data">
                     <span class="name">
@@ -77,6 +96,8 @@
                         <?php echo isset($_SESSION['user']['email']) ? htmlspecialchars($_SESSION['user']['email']) : 'correo@ejemplo.com'; ?>
                     </span>
                 </div>
+
+                <!-- Es el icono para cerrar la sesión -->
                 <div class="user-icon">
                     <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout">
                         <i class='bx bx-arrow-out-right-square-half'></i>
@@ -85,18 +106,20 @@
             </div>
         </div>
     </div>
-    
-    </div>
-<script>
-    const MenuItemDropdown = document.querySelectorAll(".menu-item-dropdown");
-    const MenuItemStatic = document.querySelectorAll(".menu-item-static");
-    const sidebar = document.getElementById("sidebar");
-    const menuBtn = document.getElementById("menu-btn");
 
+   <!-- Script que hace funcionar el menú de la izquierda -->
+    <script>
+        const MenuItemDropdown = document.querySelectorAll(".menu-item-dropdown");
+        const MenuItemStatic = document.querySelectorAll(".menu-item-static");
+        const sidebar = document.getElementById("sidebar");
+        const menuBtn = document.getElementById("menu-btn");
+
+      // Abre o cierra el menú lateral al pulsar el botón
         menuBtn.addEventListener("click", () => {
             sidebar.classList.toggle("minimize");
         });
 
+     // Hace que los submenús se abran o cierren según la interacción
         MenuItemDropdown.forEach((menuItem) => {
             menuItem.addEventListener("click", () => {
                 const subMenu = menuItem.querySelector(".sub-menu");
@@ -107,6 +130,7 @@
                     subMenu.style.padding = isActive ? "0.2rem 0" : "0";
                 }
 
+                // Cierra los otros submenús si este se abre
                 MenuItemDropdown.forEach((item) => {
                     if (item !== menuItem) {
                         const otherSubmenu = item.querySelector(".sub-menu");
@@ -120,6 +144,7 @@
             });
         });
 
+        // Si el menú está minimizado y pasás el mouse por otro ítem, se cierran los submenús
         MenuItemStatic.forEach((menuItem) => {
             menuItem.addEventListener("mouseenter", () => {
                 if (!sidebar.classList.contains("minimize")) return;
@@ -135,11 +160,11 @@
             });
         });
 
+// Restablece el estado del menú lateral cuando cambia el tamaño de la ventana
         function checkWindowsSize() {
             sidebar.classList.remove("minimize");
         }
         checkWindowsSize();
         window.addEventListener("resize", checkWindowsSize);
-
-</script>
+    </script>
 </body>
