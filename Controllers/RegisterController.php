@@ -47,11 +47,8 @@ class RegisterController
         $db = new Database();
         $db->connectDatabase();
         $userModel = new UserModel($db->getConnection());
-
-        // Verifica si el email ya existe
         $existingUser = $userModel->findByEmail($email);
         if ($existingUser) {
-            // Detecta desde dónde se llamó (admin o usuario normal)
             $isAdmin = isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'RegisterAdminPortal') !== false;
             $route = $isAdmin ? 'Register/RegisterAdminPortal' : 'Register/Register';
             header("Location: /ProyectoPandora/Public/index.php?route=$route&error=EmailYaRegistrado");
