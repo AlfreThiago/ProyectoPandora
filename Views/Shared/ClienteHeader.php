@@ -1,32 +1,23 @@
-<!DOCTYPE html>
-<html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/ProyectoPandora/Public/css/ClienteDash.css">
+     <!-- CSS exclusivo para la parte de autenticación (login/registro) -->
+    <link rel="stylesheet" href="/ProyectoPandora/Public/css/StyleAuth.css">
 </head>
 
-<body>
-    <header class="cliente-header">
-        <div class="dash-conteiner">
+<!-- Encabezado común para las páginas de autenticación -->
+<header class="auth-header">
+    <div class="header-izquierda">
 
-            <h2>
-                <?php
-                if (isset($_SESSION['user'])) {
-                    echo 'Bienvenido, ' . htmlspecialchars($_SESSION['user']['name']);
-                } else {
-                    echo 'Por favor, inicie sesión.';
-                }
-                ?>
-            </h2>
-        </div>
-        <br>
-        <div class="header-derecha">
-            <a href="/ProyectoPandora/Public/index.php?route=Dash/Home" class="home-btn">home</a>
-            <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" class="logout-btn">Cerrar Sesion</a>
-        </div>
-    </header>
-</body>
+        <!-- Se muesra el logo de la aplicación -->
+        <img src="/ProyectoPandora/Public/img/LogoSinFondo.png" class="header-logo" alt="Logo">
+    </div>
+    <div class="header-derecha">
 
-</html>
+        <!-- Son los enlaces de navegación para iniciar sesión o registrarse -->
+        <nav>
+            <ul>
+                <li><a href="/ProyectoPandora/Public/index.php?route=Auth/Login">Iniciar sesión</a></li>
+                <li><a href="/ProyectoPandora/Public/index.php?route=Register/Register">Registrarse</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>

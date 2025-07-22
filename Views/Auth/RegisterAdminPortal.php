@@ -1,14 +1,17 @@
 <?php
+// Si la URL tiene error=EmailYaRegistrado, mostramos un mensaje de error en rojo
 if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
     <div style="color: red; margin-bottom: 10px;">
         El correo electrónico ya está registrado. Por favor, usa otro.
     </div>
 <?php endif; ?>
+
 <main>
     <section class="Conenedor-formulario-principal">
         <h2>Registrarse</h2>
         <div class="Formulario-general">
             <div class="Formulario-contenedor">
+           <!-- Formulario para registrar un nuevo usuario administrador -->
                 <form action="/ProyectoPandora/Public/index.php?route=Register/RegisterAdminPortal" method="POST">
                     <p>
                         <label for="name">Nombre:</label>
@@ -28,3 +31,5 @@ if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
                 </form>
             </div>
         </div>
+    </section>
+</main>

@@ -1,9 +1,15 @@
-<?php include_once __DIR__ . '/../Shared/AuthHeader.php'; ?>
+<?php 
+// Esta parte carga el header general y el módulo de autenticación
+include_once __DIR__ . '/../Shared/AuthHeader.php'; 
+?>
 <main>
     <section class="Conenedor-formulario-principal">
         <h2>Iniciar Sesión</h2>
+
         <div class="Formulario-general">
             <div class="Formulario-contenedor">
+               <!-- Aca el usuario ingrese su email y contraseña -->
+               <!-- Al enviar, los datos se envían a la ruta Auth/Login -->
                 <form action="/ProyectoPandora/Public/index.php?route=Auth/Login" method="POST">
                     <p>
                         <label for="email">Email</label>
