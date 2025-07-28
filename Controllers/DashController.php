@@ -1,4 +1,7 @@
 <?php
+//Este archivo es parte del controlador de Dash, que maneja las vistas del panel de administración y otros roles.
+//Se utilzaza para mostrar diferentes dashboards según el rol del usuario autenticado.
+//Ya en la propia redirecion se incluye el header correspondiente al rol del usuario.
 class DashController
 {
     public function AdminDash()

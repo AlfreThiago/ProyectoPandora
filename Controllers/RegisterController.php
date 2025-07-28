@@ -1,9 +1,13 @@
 <?php
+//"require_once" es una función que incluye y evalúa el contenido de un archivo especificado. La diferencia clave con require() es que require_once() verifica si el archivo ya ha sido incluido en la ejecución actual del script, y si es así, no lo incluye nuevamente. Esto ayuda a prevenir errores causados por la inclusión duplicada de archivos, como la redefinición de funciones o variables. 
 require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/../Core/Database.php';
 
+//es un controlador que maneja el registro de nuevos usuarios en la aplicación.
 class RegisterController
 {
+    // Maneja el registro de un nuevo usuario
+    // Si el registro es exitoso, redirige al usuario a la página de inicio de sesión
     public function Register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -19,6 +23,9 @@ class RegisterController
             include_once __DIR__ . '/../Views/Auth/Register.php';
         }
     }
+
+    // Maneja el registro de un nuevo usuario desde el portal de administración
+    // Si el registro es exitoso, redirige al usuario a la página de administración
     public function RegisterAdminPortal()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -42,6 +49,8 @@ class RegisterController
         }
     }
 
+    // Registra un nuevo usuario en la base de datos
+    // Si el correo electrónico ya está registrado, redirige al usuario a la página de registro con un mensaje de error o al portal de administración si tu rol es administrador con el mismo mensaje de error
     public function RegisterUser($username, $email, $password)
     {
         $db = new Database();

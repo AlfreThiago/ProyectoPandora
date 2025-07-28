@@ -2,9 +2,12 @@
 require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/Database.php';
 
+// Auth es una clase que maneja la autenticación y autorización de usuarios en la aplicación.
+// Proporciona métodos para verificar si un usuario está logueado, obtener el usuario actual,
+// y verificar si el usuario tiene un rol específico.
 class Auth
 {
-    // Verifica si el usuario está logueado
+    // Se verifica si el usuario está logueado
     public static function check()
     {
         session_start();
