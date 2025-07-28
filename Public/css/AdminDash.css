@@ -6,7 +6,7 @@
 :root{
   --tipografia:Arial, sans-serif;
     --color-bg:#3a3d4d;
-    --color-surface:#12141a;
+    --color-surface:#101a29;
     --color-border:#2b2d3b;
     --fondo-header:rgb(4, 3, 32);
     --color-texto-primario:#ffffff;
@@ -39,104 +39,7 @@ body{
   transition: color 0.5s ease;
   background-color: 0.3s ease, left 0.5s ease;
 }
-/* Zona del Header */
-.admin-header {
-  background-color: var(--fondo-header);
-  color: #ecf0f1;
-  padding: 20px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 4px solid #130443;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.admin-header h2 {
-  margin: 0;
-  font-size: 1.5em;
-}
-
-.logout-btn {
-  background-color: #e74c3c;
-  color: white;
-  padding: 8px 16px;
-  margin: 5px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.add-btn{
-  background-color: #5be73c;
-  color: white;
-  padding: 8px 16px;
-  margin: 5px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.admin-btn {
-  background-color: #ff00a6;
-  color: white;
-  padding: 8px 16px;
-  margin: 5px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.super-btn {
-  background-color: #00ffb3;
-  color: white;
-  padding: 8px 16px;
-  margin: 5px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.tec-btn{
-  background-color: #a600ff;
-  color: white;
-  padding: 8px 16px;
-  margin: 5px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.client-btn{
-  background-color: #d4ff00;
-  color: white;
-  padding: 8px 16px;
-  margin: 5px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-.home-btn{
-  background-color: #0072ff;
-  color: white;
-  padding: 8px 16px;
-  margin: 5px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.logout-btn:hover {
-  background-color: #c0392b;
-}
-
-/* Buscador */
+/* BUSCADOR DE USER */
 .search-container {
   margin-bottom: 15px;
   width: 100%;
@@ -158,17 +61,13 @@ body{
   box-shadow: 0 0 8px #0072ff88;
 }
 
-/* Zona de Admin */
+/* ZONA DEL ADMIN */
 main {
-  margin-left: 15rem; /* ancho del sidebar */
+  margin-left: 15rem; 
   max-width: calc(100% - 15rem);
   padding: 20px;
   transition: margin-left 0.3s ease, max-width 0.3s ease;
 }
-
-
-
-
 .Tabla-Contenedor {
   width: 100%;
   max-width: 100%;
@@ -179,8 +78,6 @@ main {
   box-shadow: 0 0 15px var(--shadow-border);
   padding: 1rem;
 }
-
-
 table {
   width: 100%;
   border-collapse: collapse;
@@ -189,34 +86,29 @@ table {
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 th {
   text-align: left;
   padding: 12px 16px;
   font-weight: bold;
   border-bottom: 2px solid #ddd;
 }
-
 td {
   padding: 12px 16px;
   border-bottom: 1px solid var(--color-border);
 }
-
 tr:hover {
-  background-color: var(--color-texto-primario);
+  background-color: rgb(221, 221, 221);
 }
-
 table td:first-child,
 table th:first-child {
   width: 50px; 
   text-align: center;
 }
-
 table td:last-child,
 table th:last-child {
   width: 180px; 
 }
-/* Estilos De Roles */
+/* ESILO DE ROLES */
 .role {
   padding: 4px 10px;
   border-radius: 4px;
@@ -267,29 +159,18 @@ table th:last-child {
 table tr {
     border-bottom: 3px solid transparent;
 }
-
-/* Supervisor = verde */
 .row-role-Supervisor {
     border-bottom: 5px solid #267a36;
 }
-
-/* Admin = azul */
 .row-role-Admin {
     border-bottom: 5px solid #ff0000;
 }
-
-/* Tecnico = naranja */
 .row-role-Tecnico {
     border-bottom: 5px solid #00bbff;
 }
-
-/* Cliente = violeta */
 .row-role-Cliente {
     border-bottom: 5px solid #7e22ce;
 }
-
-
-/* Zona de actualizar */
 main {
   display: flex;
   justify-content: center;
@@ -312,18 +193,15 @@ h2{
   max-width: 500px;
   backdrop-filter: blur(6px);
 }
-
 .contenedor form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-
 .contenedor label {
   font-weight: bold;
   font-size: 1rem;
 }
-
 .contenedor input,
 .contenedor select {
   padding: 10px 14px;
@@ -334,7 +212,6 @@ h2{
   font-size: 1rem;
   transition: all 0.3s ease;
 }
-
 .contenedor input:focus,
 .contenedor select:focus {
   outline: none;
@@ -342,7 +219,6 @@ h2{
   background-color: #353131a8;
   font-weight: bold;
 }
-
 .contenedor button {
   background-color: #0072ff;
   color: #fff;
@@ -354,11 +230,10 @@ h2{
   font-weight: bold;
   transition: background 0.3s ease;
 }
-
 .contenedor button:hover {
   background-color: #005fc1;
 }
-/* Zona del sidebar */
+/* ZONA DEL SIDEBAR */
 .sidebar{
     position: fixed;
     display: flex;
@@ -378,9 +253,7 @@ h2{
 .header{
     width: 100%;
 }
-
-/* menu-btn */
-
+/* MENU-BTN */
 .menu-btn{
     position: absolute;
     top: 3.5%;
@@ -462,13 +335,10 @@ h2{
     background-color: transparent;
     color: var(--color-texto-primario);
 }
-
 .brand img{
     width: 12rem;
 }
-
-/* menu */
-
+/* MENU */
 .menu{
     width: 100%;
     display: flex;
@@ -511,7 +381,6 @@ h2{
     font-size: 0.8rem;
     font-weight: 500;
 }
-
 .sidebar.minimize .menu-item:hover,
 .sidebar.minimize .menu-item.sub-menu-toggle{
     overflow: visible;
@@ -526,8 +395,7 @@ h2{
     color: var(--color-tooltip-text);
     transition: all 0.3s ease;
 }
-
-/* Submenu */
+/* SUBMENU */
 .sub-menu{
     height: 0;
     transition: all 0.3s ease;
@@ -538,10 +406,9 @@ h2{
     position: absolute;
     left: 4.2rem;
     top: 3rem;
-    background-color: var(--color-surface);
+    background-color: var(--fondo-header);
     border-radius: 0.2rem;
 }
-
 .sub-menu .sub-menu-link{
     display: flex;
     margin-left: 2.5rem;
@@ -566,7 +433,7 @@ h2{
 .sidebar.minimize .sub-menu a{
     margin: 0 0.5rem;
 }
-/* Footer */
+/* FOOTER */
 .footer{
     width: 100%;
     padding: 1rem 0;
@@ -613,14 +480,43 @@ h2{
 .user-icon i{
   color: white;
 }
-
-
-/* Boton menu */
-.sidebar-btn{
+/* Ocultar nombre/email si sidebar está minimizado */
+.sidebar.minimize .user-data {
+  display: none;
+}
+.sidebar.minimize .user .name {
+    display: none;
+}
+.sidebar.minimize .user .email {
     display: none;
 }
 
-/* Zona DarkMode */
+.sidebar.minimize .logout-icon {
+    margin-left: auto;
+}
+.sidebar.minimize .user .user-icon {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 10px;
+}
+.sidebar.minimize .user .profile {
+    justify-content: center;
+}
+.sidebar.minimize .user-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.sidebar.minimize .user .logout-icon i {
+    font-size: 1.6rem;
+}
+/* BOTON MENU */
+.sidebar-btn{
+    display: none;
+}
+/* ZONA DARKMODE */
 .brand-dark{
     display: none;
 }
@@ -660,9 +556,7 @@ body.dark-mode .dark-mode-btn i:last-child{
 body.dark-mode .dark-mode-btn i:first-child{
     transform: translateY(-150%);
 }
-
-
-/* Responsive */
+/* ANIMACIONES Y RESPONSIVE */
 @media (max-height: 683px) {
     .footer{
         box-shadow: none;
@@ -713,7 +607,6 @@ body.dark-mode .dark-mode-btn i:first-child{
         padding: 2rem;
     }
 }
-/* Animaciones */
 @keyframes gradientBG {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }

@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/ProyectoPandora/Public/css/AdminDash.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
@@ -15,8 +16,7 @@
         <i class='bx bx-menu-wider'></i>
         <i class='bx bx-x'></i>
     </div>
-
-    <!-- Es el menú lateral del dashboard -->
+            <!-- Es el menú lateral del dashboard -->
     <div class="sidebar" id="sidebar">
 
         <!-- Es la parte de arriba del menu lateral: logo y botón para contraer -->
@@ -27,7 +27,7 @@
             <div class="brand">
                 <!-- Son dos versiones del logo para cambiar el tema claro o oscuro -->
                 <img class="brand-light" src="img/Innovasys_V2.png" alt="logo">
-                <img class="brand-dark" src="img/Logo.png" alt="logo">
+                <img class="brand-dark" src="img/Innovasys_V2.png" alt="logo">
                 <span></span>
             </div>
         </div>
@@ -52,6 +52,7 @@
                         <i class='bx bx-arrow-down-stroke'></i>
                     </a>
                     <ul class="sub-menu">
+                        <li><a href="index.php?route=Dash/Admin" class="sub-menu-link" >Todos los users</a></li>
                         <li><a href="/ProyectoPandora/Public/index.php?route=Dash/TablaCliente" class="sub-menu-link">Clientes</a></li>
                         <li><a href="/ProyectoPandora/Public/index.php?route=Dash/TablaTecnico" class="sub-menu-link">Técnicos</a></li>
                         <li><a href="/ProyectoPandora/Public/index.php?route=Dash/TablaSupervisor" class="sub-menu-link">Supervisor</a></li>
@@ -75,13 +76,13 @@
                 <li class="menu-item menu-item-static">
                     <a href="#" class="menu-link">
                         <i class='bx bx-bell-minus'></i>
-                        <span>Notification</span>
+                        <span>Notificaciones</span>
                     </a>
                 </li>
                 <li class="menu-item menu-item-static">
                     <a href="#" class="menu-link">
-                        <i class='bx bx-bell-minus'></i>
-                        <span>Setting</span>
+                        <i class='bxr  bx-cog'  ></i> 
+                        <span>Ajustes</span>
                     </a>
                 </li>
             </ul>
@@ -98,15 +99,14 @@
                 </div>
 
                 <!-- Es el icono para cerrar la sesión -->
-                <div class="user-icon">
+                <div class="user-icon logout-icon">
                     <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout">
-                        <i class='bx bx-arrow-out-right-square-half'></i>
+                        <i class='bxr  bx-arrow-out-left-square-half'  ></i>
                     </a>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Script que hace funcionar el menú de la izquierda -->
     <script>
         const MenuItemDropdown = document.querySelectorAll(".menu-item-dropdown");

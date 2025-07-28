@@ -11,6 +11,7 @@ if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
 
 <body>
     <main>
+        <div class="Contenedor">
         <section class="Conenedor-formulario-principal">
             <h2>Registrarse</h2>
             <div class="Formulario-general">
@@ -36,5 +37,6 @@ if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
                 </div>
             </div>
         </section>
+        </div>
     </main>
 </body>
