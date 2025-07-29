@@ -86,16 +86,18 @@
                             </li>
 
                         <?php elseif ($role === 'tecnico'): ?>
-                            <!-- Técnico: solo ve clientes -->
+                            <!-- Técnico: solo ve Reparaciones y tickets -->
+                            <li class="menu-item menu-item-dropdown">
+                                <a href="index.php?route=Dash/Tecnico" class="menu-link">
+                                    <i class='bxr  bx-spanner'  ></i> 
+                                    <span>Reparaciones</span>
+                                </a>
+                            </li>
                             <li class="menu-item menu-item-dropdown">
                                 <a href="#" class="menu-link">
-                                    <i class='bx bx-user'></i>
-                                    <span>Clientes</span>
-                                    <i class='bx bx-arrow-down-stroke'></i>
+                                    <i class='bxr  bx-ticket'  ></i> 
+                                    <span>Tickets</span>
                                 </a>
-                                <ul class="sub-menu">
-                                    <li><a href="/ProyectoPandora/Public/index.php?route=Dash/TablaCliente" class="sub-menu-link">Clientes</a></li>
-                                </ul>
                             </li>
 
                         <?php elseif ($role === 'cliente'): ?>

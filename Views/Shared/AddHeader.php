@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
-
+    
     <!-- Estilos específicos para el encabezado -->
     <link rel="stylesheet" href="/ProyectoPandora/Public/css/AddHeader.css">
 </head>
