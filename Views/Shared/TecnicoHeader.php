@@ -12,28 +12,6 @@
 </head>
 
 <body>
-
-  <!--  va toda la información y contenido principal del panel -->
-    <!-- <div class="dash-conteiner">
-
-        <h2>
-            <?php
-           // Confirma si hay un usuario en logueado
-            if (isset($_SESSION['user'])) {
-                // Le dama la bienvenida mostrando su nombre
-                echo 'Bienvenido, ' . htmlspecialchars($_SESSION['user']['name']);
-            } else {
-                // Si no está logueado, se le pede que inicie sesión
-                echo 'Por favor, inicie sesión.';
-            }
-            ?>
-            <br>
-            <!-- Es el botón para cerrar la sesión 
-            <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout">Cerrar Sesion</a>
-        </h2>
-    </div> -->
-        
-    
     <!-- es un Botón que aparece flotando para abrir o cerrar el menú lateral -->
     <div class="menu-btn sidebar-btn" id="sidebar-btn">
         <i class='bx bx-menu-wider'></i>
@@ -67,16 +45,16 @@
                         <span>Home</span>
                     </a>
                 </li>
-                <li class="menu-item menu-item-static">
-                    <a href="/ProyectoPandora/Public/index.php?route=Auth/Login" class="menu-link">
-                        <i class='bx bx-arrow-out-right-square-half'></i>
-                        <span>Iniciar Sesión</span>
-                    </a>
+                <li class="menu-item menu-item-dropdown">
+                    <a href="index.php?route=Dash/Tecnico" class="menu-link">
+                        <i class='bxr  bx-spanner'  ></i> 
+                        <span>Reparaciones</span>
+                     </a>
                 </li>
-                <li class="menu-item menu-item-static">
-                    <a href="/ProyectoPandora/Public/index.php?route=Register/Register" class="menu-link">
-                        <i class='bxr  bx-form'  ></i> 
-                        <span>Registrarse</span>
+                <li class="menu-item menu-item-dropdown">
+                    <a href="#" class="menu-link">
+                        <i class='bxr  bx-ticket'  ></i> 
+                        <span>Tickets</span>
                     </a>
                 </li>
             </ul>
@@ -99,12 +77,28 @@
                 </li>
             </ul>
             </div>
+              <!-- Muestra el nombre y correo del usuario conectado -->
+            <!-- <div class="user">
+                <div class="user-data">
+                    <span class="name">
+                        <?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : 'Usuario'; ?>
+                    </span>
+                    <span class="email">
+                        <?php echo isset($_SESSION['user']['email']) ? htmlspecialchars($_SESSION['user']['email']) : 'correo@ejemplo.com'; ?>
+                    </span>
+                </div> -->
+            <!-- Es el icono para cerrar la sesión -->
+                <div class="user-icon logout-icon">
+                    <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout">
+                        <i class='bxr  bx-arrow-out-left-square-half'  ></i>
+                    </a>
+                </div>
         </div>
     </div>
 
-    <!-- Script que hace funcionar el menú de la izquierda -->
+ <!-- Script que hace funcionar el menú de la izquierda -->
     <script>
-        const MenuItemDropdown = document.querySelectorAll(".menu-item-dropdown");
+       const MenuItemDropdown = document.querySelectorAll(".menu-item-dropdown");
         const MenuItemStatic = document.querySelectorAll(".menu-item-static");
         const sidebar = document.getElementById("sidebar");
         const menuBtn = document.getElementById("menu-btn");
@@ -154,18 +148,18 @@
                 });
             });
         });
-
         // Restablece el estado del menú lateral cuando cambia el tamaño de la ventana
         function checkWindowsSize() {
             sidebar.classList.remove("minimize");
         }
         checkWindowsSize();
         window.addEventListener("resize", checkWindowsSize);
- const menuBtn = document.getElementById('menu-btn');
-  menuBtn.addEventListener('click', () => {
-    document.body.classList.toggle('sidebar-expanded');
-  });
-    </script>
+        // Botón para cambiar entre modo claro y oscuro
+    const darkModeBtn = document.getElementById("dark-mode-btn");
+    darkModeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+    });
+  </script>
 
 
 
