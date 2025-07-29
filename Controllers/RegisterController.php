@@ -38,12 +38,8 @@ class RegisterController
             header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
             exit;
         } else {
-            include_once __DIR__ . '/../Core/Requirements.php';
-            $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
-            if (!$user || $user['role'] !== 'Administrador') {
-                header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
-                exit;
-            }
+            require_once __DIR__ . '/../Core/Auth.php';
+            Auth::checkRole('Administrador');
             include_once __DIR__ . '/../Views/Shared/AddHeader.php';
             include_once __DIR__ . '/../Views/Auth/RegisterAdminPortal.php';
         }
@@ -51,7 +47,7 @@ class RegisterController
 
     // Registra un nuevo usuario en la base de datos
     // Si el correo electrónico ya está registrado, redirige al usuario a la página de registro con un mensaje de error o al portal de administración si tu rol es administrador con el mismo mensaje de error
-    public function RegisterUser($username, $email, $password)
+    function RegisterUser($username, $email, $password)
     {
         $db = new Database();
         $db->connectDatabase();
