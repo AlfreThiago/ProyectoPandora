@@ -132,9 +132,5 @@
         }
         checkWindowsSize();
         window.addEventListener("resize", checkWindowsSize);
- const menuBtn = document.getElementById('menu-btn');
-  menuBtn.addEventListener('click', () => {
-    document.body.classList.toggle('sidebar-expanded');
-  });
     </script>
 </body>
