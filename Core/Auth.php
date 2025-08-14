@@ -22,18 +22,25 @@ class Auth
     }
 
     // Verifica si el usuario tiene el rol requerido
-    public static function checkRole($requiredRole)
+    public static function checkRole($requiredRoles)
     {
         session_start();
         if (!isset($_SESSION['user'])) {
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         }
-
         $user = $_SESSION['user'];
-        if ($user['role'] !== $requiredRole) {
-            echo "Acceso denegado: se requiere el rol $requiredRole.";
-            exit;
+        // Permitir array de roles
+        if (is_array($requiredRoles)) {
+            if (!in_array($user['role'], $requiredRoles)) {
+                echo "Acceso denegado: se requiere uno de los roles " . implode(', ', $requiredRoles) . ".";
+                exit;
+            }
+        } else {
+            if ($user['role'] !== $requiredRoles) {
+                echo "Acceso denegado: se requiere el rol $requiredRoles.";
+                exit;
+            }
         }
     }
 }

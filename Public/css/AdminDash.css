@@ -470,7 +470,7 @@ h2{
     color: var(--color-texto-secundario);
 }
 .user-icon{
-    margin-left: auto;
+    margin-left: 190px;
     display: flex;
     margin-top: auto;
     align-items: center;

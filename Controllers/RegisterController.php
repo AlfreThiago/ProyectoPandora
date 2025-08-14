@@ -40,7 +40,7 @@ class RegisterController
         } else {
             require_once __DIR__ . '/../Core/Auth.php';
             Auth::checkRole('Administrador');
-            include_once __DIR__ . '/../Views/Shared/AddHeader.php';
+            include_once __DIR__ . '/../Views/Includes/AddHeader.php';
             include_once __DIR__ . '/../Views/Auth/RegisterAdminPortal.php';
         }
     }
