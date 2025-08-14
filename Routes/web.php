@@ -20,6 +20,18 @@ return [
         'action' => 'Logout'
     ],
     //Rutas de Dashboards
+    'Dash/Login' => [
+        'controller' => 'Dash',
+        'action' => 'LoginDash'
+    ],
+    'Dash/Register' => [
+        'controller' => 'Dash',
+        'action' => 'RegisterDash'
+    ],
+    'Dash/RegisterAdminPortal' => [
+        'controller' => 'Dash',
+        'action' => 'RegisterAdminPortal'
+    ],
     'Dash/Home' => [
         'controller' => 'Dash',
         'action' => 'HomeDash'

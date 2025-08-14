@@ -51,7 +51,7 @@ class AdminController
             header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
             exit;
         }
-        include_once __DIR__ . '/../Views/Includes/HomeHeader.php';
+        include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Dashboard/AdminDash/ActualizarUser.php';
     }
 

@@ -36,11 +36,11 @@ class AuthController
                     exit;
                 }
             } else {
-                header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+                header('Location: /ProyectoPandora/Public/index.php?route=Dash/Login');
                 exit;
             }
         } else {
-            include_once __DIR__ . '/../Views/Auth/Login.php';
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Login');
         }
     }
 

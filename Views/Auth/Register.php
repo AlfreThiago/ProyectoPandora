@@ -1,8 +1,4 @@
-<?php
-// Esta parte carga el header general y el módulo de autenticación
-include_once __DIR__ . '/../Includes/AuthHeader.php';
-
-// Si se detecta el error 'EmailYaRegistrado', avisamos que el correo está registrado
+<?phP
 if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
     <div style="color: red; margin-bottom: 10px;">
         El correo electrónico ya está registrado. Por favor, usa otro.
