@@ -1,13 +1,8 @@
-<head>  
-     <!-- Archivo CSS de Boxicons para los íconos de la UI -->
-    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
-</head>
-
 <main>
     <div class="Tabla-Contenedor">
         <h2>Técnicos</h2>
 
- <!-- sirve para buscar usuarios en la tabla mientras escribís -->
+        <!-- sirve para buscar usuarios en la tabla mientras escribís -->
         <div class="search-container">
             <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
         </div>
@@ -27,11 +22,11 @@
             </thead>
             <tbody>
                 <?php
-                 // Sirve para conectarse a la base de datos
+                // Sirve para conectarse a la base de datos
                 $db = new Database();
                 $db->connectDatabase();
 
-                 // Creo el modelo de usuarios usando la conexión a la base de datos
+                // Creo el modelo de usuarios usando la conexión a la base de datos
                 $userModel = new UserModel($db->getConnection());
 
                 // Busco todos los usuarios con rol de técnico
@@ -70,25 +65,5 @@
         <i class='bx bx-sun'></i>
         <i class='bx bx-moon'></i>
     </div>
+    <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>
-
-<script>
-  // Filtra los resultados de la tabla mientras escribís en el buscador
-    document.addEventListener("DOMContentLoaded", function() {
-        const input = document.getElementById("userSearchInput");
-        input.addEventListener("input", function() {
-            const searchTerm = input.value.toLowerCase();
-            const rows = document.querySelectorAll("#userTable tbody tr");
-            rows.forEach(row => {
-                const rowText = row.textContent.toLowerCase();
-                // Solo muestra las filas que coincidan con lo que buscás
-                row.style.display = rowText.includes(searchTerm) ? "" : "none";
-            });
-        });
-    });
-        // Cambio el tema a oscuro o claro al hacer clic en el botón
-    const darkModeBtn = document.getElementById("dark-mode-btn");
-    darkModeBtn.addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-    });
-</script>

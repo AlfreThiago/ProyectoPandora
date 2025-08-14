@@ -94,9 +94,9 @@
 
                     <?php elseif ($role === 'cliente'): ?>
                         <li class="menu-item menu-item-dropdown">
-                            <a href="index.php?route=Dash/Cliente" class="menu-link">
+                            <a href="index.php?route=Dash/Device" class="menu-link">
                                 <i class='bx bx-user'></i>
-                                <span>Clientes</span>
+                                <span>Agregar Dispositivo</span>
                             </a>
                         </li>
                     <?php endif; ?>
@@ -118,7 +118,5 @@
                 <?php endif; ?>
             </ul>
         </div>
-        <?php include_once __DIR__ . "/Footer.php"   ?>
+        <script src="/ProyectoPandora/Public/js/Sidebar.js"></script>
     </div>
-    <script src="/ProyectoPandora/Public/js/Sidebar.js"></script>
-</body>

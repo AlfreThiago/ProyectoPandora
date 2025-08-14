@@ -68,6 +68,10 @@ return [
         'controller' => 'Dash',
         'action' => 'TablaAdmin'
     ],
+    'Dash/Device' => [
+        'controller' => 'Dash',
+        'action' => 'DeviceDash'
+    ],
     //Rutas de Administración
     'Admin/change-role' => [
         'controller' => 'Admin',
@@ -80,5 +84,10 @@ return [
     'Admin/Delete-user' => [
         'controller' => 'Admin',
         'action' => 'DeleteUser'
+    ],
+    // Rutas de Dispositivos
+    'Device/Agregar' => [
+        'controller' => 'Device',
+        'action' => 'AgregarDispositivo'
     ],
 ];

@@ -1,13 +1,11 @@
-<?php
-// Si la URL tiene error=EmailYaRegistrado, mostramos un mensaje de error en rojo
-if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
-    <div style="color: red; margin-bottom: 10px;">
-        El correo electrónico ya está registrado. Por favor, usa otro.
-    </div>
-<?php endif; ?>
-
-<body>
     <main>
+        <?php
+        // Si la URL tiene error=EmailYaRegistrado, mostramos un mensaje de error en rojo
+        if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
+            <div style="color: red; margin-bottom: 10px;">
+                El correo electrónico ya está registrado. Por favor, usa otro.
+            </div>
+        <?php endif; ?>
         <div class="Contenedor">
             <section class="Conenedor-formulario-principal">
                 <h2>Registrarse</h2>
@@ -36,4 +34,3 @@ if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
             </section>
         </div>
     </main>
-</body>
