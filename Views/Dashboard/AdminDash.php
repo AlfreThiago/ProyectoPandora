@@ -1,15 +1,11 @@
-<?php
-// Traigo la clase para conectar con la base de datos
-include_once __DIR__ . '/../../Core/Database.php';
-?>
-<head>
- <!--  se cargan los íconos de Boxicons para botones e interfaz -->
-    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
-</head>
 <main>
+    <?php
+    // Traigo la clase para conectar con la base de datos
+    include_once __DIR__ . '/../../Core/Database.php';
+    ?>
     <div class="Tabla-Contenedor">
         <h2>Lista de Usuarios</h2>
- <!-- sirve para buscar usuarios en la tabla mientras escribís -->
+        <!-- sirve para buscar usuarios en la tabla mientras escribís -->
         <div class="search-container">
             <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
         </div>
@@ -27,7 +23,7 @@ include_once __DIR__ . '/../../Core/Database.php';
             </thead>
             <tbody>
                 <?php
-                 // Sirve para conectarse a la base de datos
+                // Sirve para conectarse a la base de datos
                 $db = new Database();
                 $db->connectDatabase();
                 // traer todos los usuarios registrados
@@ -42,7 +38,7 @@ include_once __DIR__ . '/../../Core/Database.php';
                         echo "<td>" . htmlspecialchars($user['name']) . "</td>";
                         echo "<td>" . htmlspecialchars($user['email']) . "</td>";
 
-                      // Muestra el rol aplicando una clase para darle estilo
+                        // Muestra el rol aplicando una clase para darle estilo
                         $role = htmlspecialchars($user['role']);
                         echo "<td><span class='role $role'>$role</span></td>";
 
@@ -69,28 +65,8 @@ include_once __DIR__ . '/../../Core/Database.php';
 
     <!-- Botón para activar o desactivar el modo oscuro -->
     <div class="dark-mode-btn" id="dark-mode-btn">
-        <i class='bx bx-sun'></i> 
-        <i class='bx bx-moon'></i> 
+        <i class='bx bx-sun'></i>
+        <i class='bx bx-moon'></i>
     </div>
+    <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>
-
-<script>// Filtra los resultados de la tabla mientras escribís en el buscador
-    document.addEventListener("DOMContentLoaded", function() {
-        const input = document.getElementById("userSearchInput");
-        input.addEventListener("input", function() {
-            const searchTerm = input.value.toLowerCase();
-            const rows = document.querySelectorAll("#userTable tbody tr");
-            rows.forEach(row => {
-                const rowText = row.textContent.toLowerCase();
-                // Muestra o oculto la fila según si contiene el texto buscado
-                row.style.display = rowText.includes(searchTerm) ? "" : "none";
-            });
-        });
-    });
-
-    // Botón para cambiar entre modo claro y oscuro
-    const darkModeBtn = document.getElementById("dark-mode-btn");
-    darkModeBtn.addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-    });
-</script>

@@ -1,9 +1,3 @@
-<head>
-    <!-- se cargan los íconos de Boxicons y los estilos especiales del panel del supervisor -->
-    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="/ProyectoPandora/Public/css/supervisores.css">
-</head>
-
 <main>
     <div class="Tabla-Contenedor">
         <h2>Supervisores</h2>
@@ -26,11 +20,11 @@
             </thead>
             <tbody>
                 <?php
-              // Sirve para conectarse a la base de datos
+                // Sirve para conectarse a la base de datos
                 $db = new Database();
                 $db->connectDatabase();
 
-                 // Creo el modelo de usuarios usando la conexión a la base de datos
+                // Creo el modelo de usuarios usando la conexión a la base de datos
                 $userModel = new UserModel($db->getConnection());
 
                 // Traigo todos los supervisores
@@ -67,25 +61,5 @@
         <i class='bx bx-sun'></i>
         <i class='bx bx-moon'></i>
     </div>
+    <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>
-
-<script>
-// Filtra los resultados de la tabla mientras escribís en el buscador
-    document.addEventListener("DOMContentLoaded", function () {
-        const input = document.getElementById("userSearchInput");
-        input.addEventListener("input", function () {
-            const searchTerm = input.value.toLowerCase();
-            const rows = document.querySelectorAll("#userTable tbody tr");
-            rows.forEach(row => {
-                const rowText = row.textContent.toLowerCase();
-                // Muestra solo las filas que coincidan con lo que busco
-                row.style.display = rowText.includes(searchTerm) ? "" : "none";
-            });
-        });
-    });
-        // Cambio el tema a oscuro o claro al hacer clic en el botón
-    const darkModeBtn = document.getElementById("dark-mode-btn");
-    darkModeBtn.addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-    });
-</script>
