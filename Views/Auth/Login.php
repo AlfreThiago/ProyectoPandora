@@ -11,12 +11,12 @@
                     <form action="/ProyectoPandora/Public/index.php?route=Auth/Login" method="POST">
                         <p>
                             <label for="email">Email</label>
-                            <input type="email" name="email" required>
+                            <input type="email" name="email" autocomplete="off" required>
                         </p>
 
                         <p>
                             <label for="password">Password</label>
-                            <input type="password" name="password" required>
+                            <input type="password" name="password" autocomplete="off" required>
                         </p>
 
                         <p class="btn">

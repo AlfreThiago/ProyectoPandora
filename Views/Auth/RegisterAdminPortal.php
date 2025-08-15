@@ -8,22 +8,22 @@
         <?php endif; ?>
         <div class="Contenedor">
             <section class="Conenedor-formulario-principal">
-                <h2>Registrarse</h2>
+                <h2>Añadir Usuario</h2>
                 <div class="Formulario-general">
                     <div class="Formulario-contenedor">
                         <!-- Formulario para registrar un nuevo usuario administrador -->
                         <form action="/ProyectoPandora/Public/index.php?route=Register/RegisterAdminPortal" method="POST">
                             <p>
                                 <label for="name">Nombre:</label>
-                                <input type="text" name="name">
+                                <input type="text" name="name" autocomplete="off" required>
                             </p>
                             <p>
                                 <label for="email">Email</label>
-                                <input type="email" name="email" required>
+                                <input type="email" name="email" autocomplete="off" required>
                             </p>
                             <p>
                                 <label for="password">password</label>
-                                <input type="password" name="password" required>
+                                <input type="password" name="password" autocomplete="off" required>
                             </p>
                             <p>
                                 <button type="submit">Registrar</button>

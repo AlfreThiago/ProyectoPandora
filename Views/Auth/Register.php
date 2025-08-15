@@ -14,15 +14,15 @@
                     <form action="/ProyectoPandora/Public/index.php?route=Register/Register" method="POST">
                         <p>
                             <label for="name">Nombre:</label>
-                            <input type="text" name="name">
+                            <input type="text" name="name" autocomplete="off" required>
                         </p>
                         <p>
                             <label for="email">Email</label>
-                            <input type="email" name="email" required>
+                            <input type="email" name="email" autocomplete="off" required>
                         </p>
                         <p>
                             <label for="password">password</label>
-                            <input type="password" name="password" required>
+                            <input type="password" name="password" autocomplete="off" required>
                         </p>
                         <p>
                             <button type="submit">Registrar</button>

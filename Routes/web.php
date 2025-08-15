@@ -72,6 +72,14 @@ return [
         'controller' => 'Dash',
         'action' => 'DeviceDash'
     ],
+    'Dash/TablaDispositivos' => [
+        'controller' => 'Dash',
+        'action' => 'TablaDispositivos'
+    ],
+    'Dash/Category' => [
+        'controller' => 'Dash',
+        'action' => 'CategoryDash'
+    ],
     //Rutas de Administración
     'Admin/change-role' => [
         'controller' => 'Admin',
@@ -89,5 +97,17 @@ return [
     'Device/Agregar' => [
         'controller' => 'Device',
         'action' => 'AgregarDispositivo'
+    ],
+    'Device/AgregarCategoria' => [
+        'controller' => 'Device',
+        'action' => 'AgregarCategoria'
+    ],
+    'Device/Edit-device' => [
+        'controller' => 'Device',
+        'action' => 'EditDevice'
+    ],
+    'Device/Delete-device' => [
+        'controller' => 'Device',
+        'action' => 'DeleteDevice'
     ],
 ];

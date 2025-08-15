@@ -1,25 +1,14 @@
-    <main>
-        <div class="Contenedor">
+<main>
+    <div class="Contenedor">
 
-            <section class="Conenedor-formulario-principal">
-                <h2>Agregar Dispositivo
-                </h2>
+        <section class="Conenedor-formulario-principal">
+            <h2>Agregar Dispositivo
+            </h2>
 
-                <div class="Formulario-general">
-                    <div class="Formulario-contenedor">
-                        <form action="/ProyectoPandora/Public/index.php?route=Device/Agregar" method="POST">
-                            <div class="Formulario-campo">
-                                <label for="device_name">Nombre del Dispositivo:</label>
-                                <input type="text" id="device_name" name="device_name" required>
-                            </div>
-                            <div class="Formulario-campo">
-                                <label for="device_type">Tipo de Dispositivo:</label>
-                                <input type="text" id="device_type" name="device_type" required>
-                            </div>
-                            <div class="Formulario-campo">
-                                <label for="device_location"></label>
-                                <input type="text" id="device_location" name="device_location" required>
-                            </div>
+            <div class="Formulario-general">
+                <div class="Formulario-contenedor">
+                    <form action="/ProyectoPandora/Public/index.php?route=Device/Agregar" method="POST" enctype="multipart/form-data">
+                        <div class="Formulario-campo">
                             <div class="Formulario-campo">
                                 <label for="categoria_id">Categoría del Dispositivo:</label>
                                 <select id="categoria_id" name="categoria_id" required>
@@ -30,12 +19,28 @@
                                     <option value="5">Electrodomésticos</option>
                                 </select>
                             </div>
-                            <div class="Formulario-boton">
-                                <button type="submit">Agregar Dispositivo</button>
-                            </div>
-                        </form>
-                    </div>
+                            <label for="marca">Marca:</label>
+                            <input type="text" id="marca" name="marca" required>
+                        </div>
+                        <div class="Formulario-campo">
+                            <label for="modelo">Modelo:</label>
+                            <input type="text" id="modelo" name="modelo" required>
+                        </div>
+                        <div class="Formulario-campo">
+                            <label for="descripcion_falla">Descripcion de Falla:</label>
+                            <input type="text" id="descripcion_falla" name="descripcion_falla" required>
+                        </div>
+                        <div class="Formulario-campo">
+                            <label for="img_dispositivo">Imagen del Dispositivo:</label>
+                            <input type="file" id="img_dispositivo" name="img_dispositivo" accept="image/*" required>
+                        </div>
+
+                        <div class="Formulario-boton">
+                            <button type="submit">Agregar Dispositivo</button>
+                        </div>
+                    </form>
                 </div>
-            </section>
-        </div>
-    </main>
+            </div>
+        </section>
+    </div>
+</main>

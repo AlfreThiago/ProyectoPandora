@@ -40,7 +40,6 @@
                     <?php $role = strtolower($_SESSION['user']['role']); ?>
 
                     <?php if ($role === 'administrador'): ?>
-                        <!-- Admin: ve todos los usuarios y opción de añadir -->
                         <li class="menu-item menu-item-dropdown">
                             <a href="#" class="menu-link">
                                 <i class='bx bx-user'></i>
@@ -55,12 +54,27 @@
                                 <li><a href="/ProyectoPandora/Public/index.php?route=Dash/TablaAdmin" class="sub-menu-link">Admins</a></li>
                             </ul>
                         </li>
-
-                        <li class="menu-item menu-item-static">
-                            <a href="/ProyectoPandora/Public/index.php?route=Register/RegisterAdminPortal" class="menu-link">
+                        <li class="menu-item menu-item-dropdown">
+                            <a href="#" class="menu-link">
+                                <i class='bx bx-plus-square'></i>
+                                <span>Dispositivos</span>
+                                <i class='bx bx-arrow-down-stroke'></i>
+                            </a>
+                            <ul class="sub-menu">
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/TablaDispositivos" class="sub-menu-link">Lista</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu-item menu-item-dropdown">
+                            <a href="#" class="menu-link">
                                 <i class='bx bx-plus-square'></i>
                                 <span>Añadir</span>
+                                <i class='bx bx-arrow-down-stroke'></i>
                             </a>
+                            <ul class="sub-menu">
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Register/RegisterAdminPortal" class="sub-menu-link">Usuarios</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/Device" class="sub-menu-link">Dispositivos</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Device/AgregarCategoria" class="sub-menu-link">Categorias</a></li>
+                            </ul>
                         </li>
 
                     <?php elseif ($role === 'supervisor'): ?>

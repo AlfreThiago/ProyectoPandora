@@ -12,6 +12,14 @@ class DashController
         include_once __DIR__ . '/../Views/Dashboard/AdminDash.php';
         include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
+    public function TablaDispositivos()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole('Administrador');
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Dashboard/AdminDash/TablaDispositivos.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
     public function TablaCliente()
     {
         require_once __DIR__ . '/../Core/Auth.php';
@@ -103,6 +111,14 @@ class DashController
         Auth::checkRole(['Administrador', 'Cliente', 'Tecnico', 'Supervisor']);
         include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Dashboard/DeviceDash.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
+    public function CategoryDash()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole('Administrador');
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Dashboard/CategoryD.php';
         include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
 }
