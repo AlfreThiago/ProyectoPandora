@@ -1,7 +1,7 @@
 <?php
 
 return [
-    //Ruta de Registro
+
     'Register/Register' => [
         'controller' => 'Register',
         'action' => 'Register'
@@ -10,7 +10,7 @@ return [
         'controller' => 'Register',
         'action' => 'RegisterAdminPortal'
     ],
-    //Ruta de Inicio de sesión
+
     'Auth/Login' => [
         'controller' => 'Auth',
         'action' => 'Login'

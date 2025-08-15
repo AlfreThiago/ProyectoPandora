@@ -5,7 +5,6 @@
     ?>
     <div class="Tabla-Contenedor">
         <h2>Lista de Usuarios</h2>
-        <!-- sirve para buscar usuarios en la tabla mientras escribís -->
         <div class="search-container">
             <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
         </div>
@@ -23,29 +22,28 @@
             </thead>
             <tbody>
                 <?php
-                // Sirve para conectarse a la base de datos
+
                 $db = new Database();
                 $db->connectDatabase();
-                // traer todos los usuarios registrados
+
                 $userModel = new UserModel($db->getConnection());
                 $users = $userModel->getAllUsers();
 
                 if ($users) {
-                    // Recorre todos los usuarios y los muestro en la tabla
+
                     foreach ($users as $user) {
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($user['id']) . "</td>";
                         echo "<td>" . htmlspecialchars($user['name']) . "</td>";
                         echo "<td>" . htmlspecialchars($user['email']) . "</td>";
 
-                        // Muestra el rol aplicando una clase para darle estilo
+
                         $role = htmlspecialchars($user['role']);
                         echo "<td><span class='role $role'>$role</span></td>";
 
-                        // Fecha de creación 
+
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($user['created_at']) . "</span></td>";
 
-                        // Botones para editar o eliminar al usuario
                         echo "<td>";
                         echo "<div class='action-buttons'>";
                         echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/Edit-user&id=" . htmlspecialchars($user['id']) . "' class='btn edit-btn'>Editar</a>";
@@ -55,7 +53,7 @@
                         echo "</tr>";
                     }
                 } else {
-                    // Aviso si no hay usuarios cargados
+
                     echo "<tr><td colspan='6'>No hay usuarios registrados.</td></tr>";
                 }
                 ?>
@@ -63,7 +61,6 @@
         </table>
     </div>
 
-    <!-- Botón para activar o desactivar el modo oscuro -->
     <div class="dark-mode-btn" id="dark-mode-btn">
         <i class='bx bx-sun'></i>
         <i class='bx bx-moon'></i>

@@ -1,6 +1,4 @@
 <?php
-// Database es una clase que maneja la conexión a la base de datos.
-// Proporciona un método para conectarse a la base de datos y obtener la conexión actual.
 class Database
 {
     private $connection;

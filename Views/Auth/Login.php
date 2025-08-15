@@ -6,12 +6,11 @@
 
             <div class="Formulario-general">
                 <div class="Formulario-contenedor">
-                    <!-- Aca el usuario ingrese su email y contraseña -->
-                    <!-- Al enviar, los datos se envían a la ruta Auth/Login -->
+
                     <form action="/ProyectoPandora/Public/index.php?route=Auth/Login" method="POST">
                         <p>
                             <label for="email">Email</label>
-                            <input type="email" name="email" autocomplete="off" required>
+                            <input type="email" name="email" required>
                         </p>
 
                         <p>

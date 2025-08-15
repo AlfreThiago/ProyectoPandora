@@ -2,7 +2,7 @@
     <div class="Tabla-Contenedor">
         <h2>Clientes</h2>
 
-        <!-- sirve para buscar usuarios en la tabla mientras escribís -->
+
         <div class="search-container">
             <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
         </div>
@@ -20,17 +20,15 @@
             </thead>
             <tbody>
                 <?php
-                // Sirve para conectarse a la base de datos
                 $db = new Database();
                 $db->connectDatabase();
 
-                // Creo el modelo de usuarios usando la conexión a la base de datos
                 $userModel = new UserModel($db->getConnection());
-                // Recupero la lista completa de clientes
+
                 $clientes = $userModel->getAllClientes();
 
                 if ($clientes) {
-                    // Muestra los datos de cada cliente en la tabla
+
                     foreach ($clientes as $cliente) {
                         $role = htmlspecialchars($cliente['role']);
 
@@ -41,7 +39,6 @@
                         echo "<td><span class='role $role'>$role</span></td>";
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($cliente['created_at']) . "</span></td>";
 
-                        // Botones para editar o borrar ese cliente
                         echo "<td>
                                     <a href='/ProyectoPandora/Public/index.php?route=Admin/Edit-user&id={$cliente['id']}' class='btn edit-btn'>Editar</a>
                                     <a href='/ProyectoPandora/Public/index.php?route=Admin/Delete-user&id={$cliente['id']}' class='btn delete-btn'>Eliminar</a>
@@ -49,7 +46,6 @@
                         echo "</tr>";
                     }
                 } else {
-                    // Si no hay clientes, aviso con este mensaje
                     echo "<tr><td colspan='6'>No hay clientes registrados.</td></tr>";
                 }
                 ?>
@@ -57,7 +53,6 @@
         </table>
     </div>
 
-    <!-- Botón para cambiar entre modo claro y oscuro -->
     <div class="dark-mode-btn" id="dark-mode-btn">
         <i class='bx bx-sun'></i>
         <i class='bx bx-moon'></i>

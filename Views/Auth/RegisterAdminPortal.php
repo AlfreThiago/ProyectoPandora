@@ -26,6 +26,15 @@
                                 <input type="password" name="password" autocomplete="off" required>
                             </p>
                             <p>
+                                <label for="role">Rol:</label>
+                                <select name="role" required>
+                                    <option value="Administrador">Administrador</option>
+                                    <option value="Supervisor">Supervisor</option>
+                                    <option value="Tecnico">Técnico</option>
+                                    <option value="Cliente">Cliente</option>
+                                </select>
+                            </p>
+                            <p>
                                 <button type="submit">Registrar</button>
                             </p>
                         </form>

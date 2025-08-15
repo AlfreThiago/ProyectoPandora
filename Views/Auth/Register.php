@@ -10,7 +10,7 @@
             <h2>Registrarse</h2>
             <div class="Formulario-general">
                 <div class="Formulario-contenedor">
-                    <!-- Formulario para registrar un nuevo usuario -->
+
                     <form action="/ProyectoPandora/Public/index.php?route=Register/Register" method="POST">
                         <p>
                             <label for="name">Nombre:</label>

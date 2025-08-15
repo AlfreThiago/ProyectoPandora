@@ -10,8 +10,6 @@
     ?>
     <div class="Tabla-Contenedor">
         <h2>Dispositivos</h2>
-
-        <!-- sirve para buscar usuarios en la tabla mientras escribís -->
         <div class="search-container">
             <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
         </div>
@@ -36,7 +34,7 @@
                         echo "<>";
                         echo "<td>{$dispositivo['id']}</td>";
                         echo "<td>{$dispositivo['users']}</td>";
-                        echo "<td>{$dispositivo['categoria']}</td>"; // ← aquí el nombre
+                        echo "<td>{$dispositivo['categoria']}</td>";
                         echo "<td>{$dispositivo['marca']}</td>";
                         echo "<td>{$dispositivo['modelo']}</td>";
                         echo "<td>{$dispositivo['descripcion_falla']}</td>";
