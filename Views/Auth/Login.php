@@ -1,10 +1,4 @@
-<?php
-// Esta parte carga el header general y el módulo de autenticación
-include_once __DIR__ . '/../Includes/AuthHeader.php';
-?>
-
 <body>
-
     <main>
         <div class="Contenedor">
 

@@ -20,7 +20,7 @@ class RegisterController
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         } else {
-            include_once __DIR__ . '/../Views/Auth/Register.php';
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Register');
         }
     }
 
@@ -38,10 +38,7 @@ class RegisterController
             header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
             exit;
         } else {
-            require_once __DIR__ . '/../Core/Auth.php';
-            Auth::checkRole('Administrador');
-            include_once __DIR__ . '/../Views/Includes/AddHeader.php';
-            include_once __DIR__ . '/../Views/Auth/RegisterAdminPortal.php';
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/RegisterAdminPortal');
         }
     }
 

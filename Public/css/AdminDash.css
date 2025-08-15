@@ -80,6 +80,16 @@ body{
   box-shadow: 0 0 8px #0072ff88;
 }
 
+
+
+
+/*-----------------------------------------------------------------------------------------------------///
+
+
+
+
+
+
 /* ZONA DEL ADMIN */
 main {
   margin-left: 15rem; 
@@ -264,8 +274,9 @@ h2{
   left: 0;
   height: 100%;
   width: 270px;
-  background: #fff;
+  background: var(--color-surface);
   padding: 15px 10px;
+  color: var(--color-texto-primario);
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
   transition: all 0.4s ease;
 }
@@ -282,7 +293,7 @@ h2{
     overflow: hidden;
 }
 .brand img{
-    width: 15rem;
+    width: 12rem;
 }
 .sidebar.close .logo_name,
 .sidebar.close #lock-icon,
@@ -333,7 +344,7 @@ h2{
   height: 3px;
   width: 20px;
   border-radius: 25px;
-  background: #aaa;
+  background: var(--color-texto-primario);
   transition: all 0.3s ease;
 }
 .menu_title .line {
@@ -349,7 +360,7 @@ h2{
   text-decoration: none;
   border-radius: 8px;
   margin-bottom: 8px;
-  color: #707070;
+  color: var(--color-texto-primario);
 }
 .link:hover {
   color: #fff;
@@ -389,31 +400,15 @@ h2{
   top: 0;
   left: 60%;
   transform: translateX(-50%);
-  background: #fff;
+  background: red;
   padding: 10px 20px;
   border-radius: 0 0 8px 8px;
   justify-content: space-between;
 }
 #sidebar-open {
   font-size: 30px;
-  color: #333;
+  color: red;
   cursor: pointer;
   margin-right: 20px;
   display: none;
-}
-.search_box {
-  height: 46px;
-  max-width: 500px;
-  width: 100%;
-  border: 1px solid #aaa;
-  outline: none;
-  border-radius: 8px;
-  padding: 0 15px;
-  font-size: 18px;
-  color: #333;
-}
-.navbar img {
-  height: 40px;
-  width: 40px;
-  margin-left: 20px;
 }
