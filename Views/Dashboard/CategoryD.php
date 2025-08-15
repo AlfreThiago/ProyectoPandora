@@ -49,7 +49,6 @@
             </section>
         </div>
     </main>
-    <script src="/ProyectoPandora/Public/js/DarkMode.js"></script>
 </body>
 
 </html>

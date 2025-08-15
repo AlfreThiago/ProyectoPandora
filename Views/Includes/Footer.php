@@ -1,20 +1,21 @@
-        <div class="footer">
-            <ul class="menu">
-                <li class="menu-item menu-item-static">
-                    <a href="#" class="menu-link">
+<body>
+    <nav class="footer">
+        <div class="menu-conteiner">
+            <ul class="menu-items">
+                <li class="item">
+                    <a href="#" class="link flex">
                         <i class='bx bx-bell-minus'></i>
                         <span>Notificaciones</span>
                     </a>
                 </li>
-                <li class="menu-item menu-item-static">
-                    <a href="#" class="menu-link">
+                <li class="item">
+                    <a href="#" class="link flex">
                         <i class='bxr  bx-cog'></i>
                         <span>Ajustes</span>
                     </a>
                 </li>
             </ul>
-
-            <!-- Muestra el nombre y correo del usuario conectado -->
+                <!-- Muestra el nombre y correo del usuario conectado -->
             <div class="user">
                 <div class="user-data">
                     <?php if (isset($_SESSION['user'])): ?>
@@ -27,7 +28,7 @@
                             </span>
                         </div>
                     <?php endif; ?>
-                    <!-- Mostrar esto SOLO si NO hay sesión iniciada -->
+                <!-- Mostrar esto SOLO si NO hay sesión iniciada -->
                     <?php if (!isset($_SESSION['user'])): ?>
                         <div class="profile">
                             <div class="profile-info">
@@ -36,14 +37,14 @@
                             </div>
                         </div>
                     <?php endif; ?>
-                    <div class="user-icon logout-icon">
-                        <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout">
-                            <i class='bxr  bx-arrow-out-left-square-half'></i>
+                    <div class=" user-icon logout-icon">
+                        <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" >
+                            <i class='bxr  bx-arrow-out-left-square-half logout-icon'></i>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-        </body>
-
-        </html>
+    </nav>
+    <script src="/ProyectoPandora/Public/js/Sidebar.js"></script>
+</body>

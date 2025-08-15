@@ -11,7 +11,7 @@
                 <h2>Añadir Usuario</h2>
                 <div class="Formulario-general">
                     <div class="Formulario-contenedor">
-                        <!-- Formulario para registrar un nuevo usuario administrador -->
+
                         <form action="/ProyectoPandora/Public/index.php?route=Register/RegisterAdminPortal" method="POST">
                             <p>
                                 <label for="name">Nombre:</label>

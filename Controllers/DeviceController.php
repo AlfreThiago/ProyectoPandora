@@ -42,7 +42,7 @@ class DeviceController
             $deviceModel = new DeviceModel($db->getConnection());
 
             if ($deviceModel->createDevice($userId, $categoriaId, $marca, $modelo, $descripcion, $img_dispositivo)) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Dash/TablaDispositivos&success=1');
+                header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home&success=1');
                 exit;
             } else {
                 echo "Error al registrar el dispositivo.";
