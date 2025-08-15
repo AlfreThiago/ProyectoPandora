@@ -743,7 +743,8 @@ button:hover{
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="file"] {
   width: 100%;
   padding: 12px;
   margin-bottom: 20px;
@@ -754,6 +755,23 @@ input[type="password"] {
   font-size: 16px;
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
+.Formulario-contenedor select{
+  width: 100%;
+  text-align: center;
+  margin-top: 15px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+    background-color: #ffffff10;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+.Formulario-contenedor select:focus {
+  color: black; /* Cambia el color de la letra cuando está activo */
+  outline: none; /* Quita el borde de enfoque por defecto */
+}
+
 /* Focus en inputs */
 input[type="text"]:focus,
 input[type="email"]:focus,
