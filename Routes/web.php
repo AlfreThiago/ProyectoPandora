@@ -1,7 +1,7 @@
 <?php
 
 return [
-    //Ruta de Registro
+    
     'Register/Register' => [
         'controller' => 'Register',
         'action' => 'Register'
@@ -10,7 +10,7 @@ return [
         'controller' => 'Register',
         'action' => 'RegisterAdminPortal'
     ],
-    //Ruta de Inicio de sesión
+  
     'Auth/Login' => [
         'controller' => 'Auth',
         'action' => 'Login'
@@ -19,7 +19,7 @@ return [
         'controller' => 'Auth',
         'action' => 'Logout'
     ],
-    //Rutas de Dashboards
+   
     'Dash/Home' => [
         'controller' => 'Dash',
         'action' => 'HomeDash'
@@ -56,7 +56,7 @@ return [
         'controller' => 'Dash',
         'action' => 'TablaAdmin'
     ],
-    //Rutas de Administración
+   
     'Admin/change-role' => [
         'controller' => 'Admin',
         'action' => 'changeRole'

@@ -1,5 +1,5 @@
 <head>  
-     <!-- Archivo CSS de Boxicons para los íconos de la UI -->
+ 
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 
@@ -7,7 +7,7 @@
     <div class="Tabla-Contenedor">
         <h2>Técnicos</h2>
 
- <!-- sirve para buscar usuarios en la tabla mientras escribís -->
+
         <div class="search-container">
             <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
         </div>
@@ -27,18 +27,18 @@
             </thead>
             <tbody>
                 <?php
-                 // Sirve para conectarse a la base de datos
+               
                 $db = new Database();
                 $db->connectDatabase();
 
-                 // Creo el modelo de usuarios usando la conexión a la base de datos
+        
                 $userModel = new UserModel($db->getConnection());
 
-                // Busco todos los usuarios con rol de técnico
+
                 $Tecnicos = $userModel->getAllTecnicos();
 
                 if ($Tecnicos) {
-                    // Recorro y muestro cada técnico en una fila de la tabla
+                  
                     foreach ($Tecnicos as $tec) {
                         $role = htmlspecialchars($tec['role']);
                         echo "<tr class='row-role-$role'>";
@@ -49,7 +49,7 @@
                         echo "<td>{$tec['disponibilidad']}</td>";
                         echo "<td>{$tec['especialidad']}</td>";
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($tec['created_at']) . "</span></td>";
-                        // Botones para editar o borrar al técnico
+                      
                         echo "<td>
                                 <a href='/ProyectoPandora/Public/index.php?route=Admin/Edit-user&id={$tec['id']}' class='btn edit-btn'>Editar</a>
                                 <a href='/ProyectoPandora/Public/index.php?route=Admin/Delete-user&id={$tec['id']}' class='btn delete-btn'>Eliminar</a>
@@ -57,7 +57,7 @@
                         echo "</tr>";
                     }
                 } else {
-                    // Si no hay técnicos, aviso acá
+                 
                     echo "<tr><td colspan='8'>No hay técnicos registrados.</td></tr>";
                 }
                 ?>
@@ -65,7 +65,6 @@
         </table>
     </div>
 
-    <!-- Botón para activar o desactivar el modo oscuro -->
     <div class="dark-mode-btn" id="dark-mode-btn">
         <i class='bx bx-sun'></i>
         <i class='bx bx-moon'></i>
@@ -73,7 +72,7 @@
 </main>
 
 <script>
-  // Filtra los resultados de la tabla mientras escribís en el buscador
+  
     document.addEventListener("DOMContentLoaded", function() {
         const input = document.getElementById("userSearchInput");
         input.addEventListener("input", function() {
@@ -81,12 +80,12 @@
             const rows = document.querySelectorAll("#userTable tbody tr");
             rows.forEach(row => {
                 const rowText = row.textContent.toLowerCase();
-                // Solo muestra las filas que coincidan con lo que buscás
+              
                 row.style.display = rowText.includes(searchTerm) ? "" : "none";
             });
         });
     });
-        // Cambio el tema a oscuro o claro al hacer clic en el botón
+       
     const darkModeBtn = document.getElementById("dark-mode-btn");
     darkModeBtn.addEventListener("click", () => {
         document.body.classList.toggle("dark-mode");

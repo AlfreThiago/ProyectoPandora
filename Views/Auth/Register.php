@@ -1,8 +1,6 @@
 <?php 
-// Esta parte carga el header general y el módulo de autenticación
 include_once __DIR__ . '/../Shared/AuthHeader.php'; 
 
-// Si se detecta el error 'EmailYaRegistrado', avisamos que el correo está registrado
 if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
     <div style="color: red; margin-bottom: 10px;">
         El correo electrónico ya está registrado. Por favor, usa otro.
@@ -16,7 +14,7 @@ if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
             <h2>Registrarse</h2>
             <div class="Formulario-general">
                 <div class="Formulario-contenedor">
-                  <!-- Formulario para registrar un nuevo usuario -->
+                 
                     <form action="/ProyectoPandora/Public/index.php?route=Register/Register" method="POST">
                         <p>
                             <label for="name">Nombre:</label>
