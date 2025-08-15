@@ -1,3 +1,4 @@
+<main>
     <div class="contenedorPrincipal">
         <h2>Panel de Supervisor</h2>
         <ul>
@@ -7,3 +8,4 @@
             <li><a href="reportes.php">Ver Reportes Técnicos</a></li>
         </ul>
     </div>
+</main>

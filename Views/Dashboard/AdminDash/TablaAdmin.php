@@ -1,12 +1,7 @@
-<head>
-        <!-- Archivo CSS de Boxicons para los íconos de la UI -->
-    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
-</head>
-
 <main>
     <div class="Tabla-Contenedor">
         <h2>Admins</h2>
-        
+
         <!-- sirve para buscar usuarios en la tabla mientras escribís -->
         <div class="search-container">
             <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
@@ -29,17 +24,17 @@
                 $db = new Database();
                 $db->connectDatabase();
 
-             // Creo el modelo de usuarios usando la conexión a la base de datos
+                // Creo el modelo de usuarios usando la conexión a la base de datos
                 $userModel = new UserModel($db->getConnection());
 
-           // Traigo la lista completa de administradores
+                // Traigo la lista completa de administradores
                 $administradores = $userModel->getAllAdministradores();
 
                 if ($administradores) {
                     foreach ($administradores as $admin) {
                         $role = htmlspecialchars($admin['role']);
 
-                      // Muestro cada admini en una fila con su información
+                        // Muestro cada admini en una fila con su información
                         echo "<tr class='row-role-$role'>";
                         echo "<td>{$admin['id']}</td>";
                         echo "<td>{$admin['name']}</td>";
@@ -65,28 +60,8 @@
 
     <!-- Botón para cambiar entre modo claro y oscuro -->
     <div class="dark-mode-btn" id="dark-mode-btn">
-        <i class='bx bx-sun'></i> 
-        <i class='bx bx-moon'></i> 
+        <i class='bx bx-sun'></i>
+        <i class='bx bx-moon'></i>
     </div>
+    <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>
-
-<script>
-// Filtra los resultados de la tabla mientras escribís en el buscador
-    document.addEventListener("DOMContentLoaded", function() {
-        const input = document.getElementById("userSearchInput");
-        input.addEventListener("input", function() {
-            const searchTerm = input.value.toLowerCase();
-            const rows = document.querySelectorAll("#userTable tbody tr");
-            rows.forEach(row => {
-                const rowText = row.textContent.toLowerCase();
-                row.style.display = rowText.includes(searchTerm) ? "" : "none";
-            });
-        });
-    });
-
-// Cambia entre el modo claro y oscuro cuando hacés clic en el botón
-    const darkModeBtn = document.getElementById("dark-mode-btn");
-    darkModeBtn.addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-    });
-</script>

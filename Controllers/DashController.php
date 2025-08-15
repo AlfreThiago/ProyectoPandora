@@ -10,6 +10,7 @@ class DashController
         Auth::checkRole('Administrador');
         include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Dashboard/AdminDash.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
     public function TablaCliente()
     {
@@ -17,6 +18,7 @@ class DashController
         Auth::checkRole(['Administrador', 'Supervisor']);
         include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Dashboard/AdminDash/TablaCliente.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
     public function TablaTecnico()
     {
@@ -24,6 +26,7 @@ class DashController
         Auth::checkRole(['Administrador', 'Supervisor']);
         include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Dashboard/AdminDash/TablaTecnico.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
     public function TablaSupervisor()
     {
@@ -31,6 +34,7 @@ class DashController
         Auth::checkRole('Administrador');
         include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Dashboard/AdminDash/TablaSupervisor.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
     public function TablaAdmin()
     {
@@ -38,6 +42,7 @@ class DashController
         Auth::checkRole('Administrador');
         include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Dashboard/AdminDash/TablaAdmin.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
     public function SupervisorDash()
     {
@@ -45,6 +50,7 @@ class DashController
         Auth::checkRole('Supervisor');
         include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Dashboard/SupervisorDash.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
     public function TecnicoDash()
     {
@@ -52,6 +58,7 @@ class DashController
         Auth::checkRole('Tecnico');
         include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Dashboard/TecnicoDash.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
     public function ClienteDash()
     {
@@ -59,6 +66,7 @@ class DashController
         Auth::checkRole('Cliente');
         include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Dashboard/ClienteDash.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
     public function HomeDash()
     {
@@ -67,16 +75,19 @@ class DashController
         $user = $_SESSION['user'] ?? null;
         include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Dashboard/HomeDash.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
     public function LoginDash()
     {
         include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Auth/Login.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
     public function RegisterDash()
     {
         include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Auth/Register.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
     public function RegisterAdminPortal()
     {
@@ -84,5 +95,14 @@ class DashController
         Auth::checkRole('Administrador');
         include_once __DIR__ . '/../Views/Includes/Header.php';
         include_once __DIR__ . '/../Views/Auth/RegisterAdminPortal.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
+    public function DeviceDash()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole(['Administrador', 'Cliente', 'Tecnico', 'Supervisor']);
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Dashboard/DeviceDash.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
 }

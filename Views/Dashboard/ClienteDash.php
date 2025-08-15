@@ -1,4 +1,4 @@
-<body>
+<main>
     <div class="ContenedorPrincipal">
         <!-- Encabezado principal del panel para clientes -->
         <h2>Panel del Cliente</h2>
@@ -27,4 +27,4 @@
         <i class='bx bx-sun'></i>
         <i class='bx bx-moon'></i>
     </div>
-</body>
+</main>
