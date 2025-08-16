@@ -12,9 +12,9 @@
 <body>
     <nav class="sidebar locked" id="sidebar">
         <div class="header">
-            <div class="menu-btn">
+            <!-- <div class="menu-btn">
                 <i class='bxr bx-lock lock-icon' id="lock-icon" title="Unlock sidebar"></i>
-            </div>
+            </div> -->
             <div class="nav_image flex">
                 <div class="brand">
                     <img class="brand-light" src="img/Innovasys_V2.png" alt="logo">
@@ -23,12 +23,12 @@
                 </div>
             </div>
         </div>
-        <div class="menu-conteiner
-            <ul class=" menu-items">
-            <div class="menu_title flex">
-                <span class="title">Menu</span>
-                <span class="line"></span>
-            </div>
+        <div class="menu-conteiner">
+            <ul class="menu-items">
+                <div class="menu_title flex">
+                    <span class="title">Menu</span>
+                    <span class="line"></span>
+                </div>
             <li class="item">
                 <a href="/ProyectoPandora/Public/index.php?route=Dash/Home" class="link flex">
                     <i class='bx bx-home'></i>
@@ -56,7 +56,7 @@
                             <li><a href="/ProyectoPandora/Public/index.php?route=Dash/TablaAdmin" class="sub-menu-link">Admins</a></li>
                         </ul>
                     </li>
-
+                    
                     <li class="item">
                         <a href="/ProyectoPandora/Public/index.php?route=Dash/TablaDispositivos" class="link flex">
                             <i class='bx bx-home'></i>
@@ -100,7 +100,7 @@
                         </a>
                     </li>
                     <li class="menu-item menu-item-dropdown">
-                        <a href="#" class="menu-link">
+                        <a href="#" class="link flex">
                             <i class='bxr  bx-ticket'></i>
                             <span>Tickets</span>
                         </a>
