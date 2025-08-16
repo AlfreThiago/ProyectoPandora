@@ -15,4 +15,8 @@ class HistorialController
     {
         return $this->historialModel->agregarAccion($accion, $detalle);
     }
+    public function obtenerHistorial()
+    {
+        return $this->historialModel->obtenerHistorial();
+    }
 }

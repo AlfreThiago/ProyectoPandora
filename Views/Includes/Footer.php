@@ -15,7 +15,7 @@
                     </a>
                 </li>
             </ul>
-                <!-- Muestra el nombre y correo del usuario conectado -->
+            <!-- Muestra el nombre y correo del usuario conectado -->
             <div class="user">
                 <div class="user-data">
                     <?php if (isset($_SESSION['user'])): ?>
@@ -28,7 +28,7 @@
                             </span>
                         </div>
                     <?php endif; ?>
-                <!-- Mostrar esto SOLO si NO hay sesión iniciada -->
+                    <!-- Mostrar esto SOLO si NO hay sesión iniciada -->
                     <?php if (!isset($_SESSION['user'])): ?>
                         <div class="profile">
                             <div class="profile-info">
@@ -38,7 +38,7 @@
                         </div>
                     <?php endif; ?>
                     <div class=" user-icon logout-icon">
-                        <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" >
+                        <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout">
                             <i class='bxr  bx-arrow-out-left-square-half logout-icon'></i>
                         </a>
                     </div>
