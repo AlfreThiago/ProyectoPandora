@@ -13,35 +13,35 @@ const footer = document.querySelector(".footer");
 // ====== FUNCIONES ======
 
 // Sincroniza footer con estado del sidebar
-const syncFooterClass = () => {
-  if (!footer) return;
+// const syncFooterClass = () => {
+//   if (!footer) return;
 
-  // Limpiar clases previas
-  footer.classList.remove("footer-close", "hoverable", "locked");
+//   // Limpiar clases previas
+//   footer.classList.remove("footer-close", "hoverable", "locked");
 
-  // Copiar clases de estado de sidebar
-  if (sidebar.classList.contains("close")) {
-    footer.classList.add("footer-close");
-  }
-  if (sidebar.classList.contains("hoverable")) {
-    footer.classList.add("hoverable");
-  }
-  if (sidebar.classList.contains("locked")) {
-    footer.classList.add("locked");
-  }
-};
+//   // Copiar clases de estado de sidebar
+//   if (sidebar.classList.contains("close")) {
+//     footer.classList.add("footer-close");
+//   }
+//   if (sidebar.classList.contains("hoverable")) {
+//     footer.classList.add("hoverable");
+//   }
+//   if (sidebar.classList.contains("locked")) {
+//     footer.classList.add("locked");
+//   }
+// };
 
 // Bloquear/desbloquear sidebar (modo hover)
-const toggleLock = () => {
-  sidebar.classList.toggle("locked");
-  if (!sidebar.classList.contains("locked")) {
-    sidebar.classList.add("hoverable");
-    if (sidebarLockBtn) sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
-  } else {
-    sidebar.classList.remove("hoverable");
-    if (sidebarLockBtn) sidebarLockBtn.classList.replace("bxr  bx-lock", "bx bx-x");
-  }
-};
+// const toggleLock = () => {
+//   sidebar.classList.toggle("locked");
+//   if (!sidebar.classList.contains("locked")) {
+//     sidebar.classList.add("hoverable");
+//     if (sidebarLockBtn) sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
+//   } else {
+//     sidebar.classList.remove("hoverable");
+//     if (sidebarLockBtn) sidebarLockBtn.classList.replace("bxr  bx-lock", "bx bx-x");
+//   }
+// };
 
 // Mostrar/ocultar submenús
 MenuItemDropdown.forEach((menuItem) => {
@@ -62,48 +62,48 @@ MenuItemDropdown.forEach((menuItem) => {
 });
 
 // Ocultar sidebar en modo hover
-const hideSidebar = () => {
-  if (sidebar.classList.contains("hoverable")) {
-    sidebar.classList.add("close");
-    syncFooterClass();
-  }
-};
+// const hideSidebar = () => {
+//   if (sidebar.classList.contains("hoverable")) {
+//     sidebar.classList.add("close");
+//     syncFooterClass();
+//   }
+// };
 
 // Mostrar sidebar en modo hover
-const showSidebar = () => {
-  if (sidebar.classList.contains("hoverable")) {
-    sidebar.classList.remove("close");
-    syncFooterClass();
-  }
-};
+// const showSidebar = () => {
+//   if (sidebar.classList.contains("hoverable")) {
+//     sidebar.classList.remove("close");
+//     syncFooterClass();
+//   }
+// };
 
-// Toggle close/open sidebar
-const toggleSidebar = () => {
-  sidebar.classList.toggle("close");
-  syncFooterClass();
-};
+// // Toggle close/open sidebar
+// const toggleSidebar = () => {
+//   sidebar.classList.toggle("close");
+//   syncFooterClass();
+// };
 
 
 
 // Ajustar en pantallas pequeñas
-if (window.innerWidth < 800) {
-  sidebar.classList.add("close");
-  sidebar.classList.remove("locked", "hoverable", "minimize");
-  syncFooterClass();
-}
+// if (window.innerWidth < 800) {
+//   sidebar.classList.add("close");
+//   sidebar.classList.remove("locked", "hoverable", "minimize");
+//   syncFooterClass();
+// }
 
-// Eventos de interacción
-if (sidebarLockBtn) sidebarLockBtn.addEventListener("click", toggleLock);
-if (sidebar) {
-  sidebar.addEventListener("mouseleave", hideSidebar);
-  sidebar.addEventListener("mouseenter", showSidebar);
-}
-if (sidebarOpenBtn) sidebarOpenBtn.addEventListener("click", toggleSidebar);
-if (sidebarCloseBtn) sidebarCloseBtn.addEventListener("click", toggleSidebar);
+// // Eventos de interacción
+// if (sidebarLockBtn) sidebarLockBtn.addEventListener("click", toggleLock);
+// if (sidebar) {
+//   sidebar.addEventListener("mouseleave", hideSidebar);
+//   sidebar.addEventListener("mouseenter", showSidebar);
+// }
+// if (sidebarOpenBtn) sidebarOpenBtn.addEventListener("click", toggleSidebar);
+// if (sidebarCloseBtn) sidebarCloseBtn.addEventListener("click", toggleSidebar);
 
-// Ajuste de tamaño de ventana
-function checkWindowsSize() {
-  sidebar.classList.remove("minimize");
-}
-checkWindowsSize();
-window.addEventListener("resize", checkWindowsSize);
+// // Ajuste de tamaño de ventana
+// function checkWindowsSize() {
+//   sidebar.classList.remove("minimize");
+// }
+// checkWindowsSize();
+// window.addEventListener("resize", checkWindowsSize);

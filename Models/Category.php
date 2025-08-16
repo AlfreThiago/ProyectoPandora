@@ -9,7 +9,7 @@ class CategoryModel
     }
     public function createCategory($nombreCategoria)
     {
-        $stmt = $this->connection->prepare("INSERT INTO categorias (nombre) VALUES (?)");
+        $stmt = $this->connection->prepare("INSERT INTO categorias (name) VALUES (?)");
         if ($stmt) {
             $stmt->bind_param("s", $nombreCategoria);
             return $stmt->execute();

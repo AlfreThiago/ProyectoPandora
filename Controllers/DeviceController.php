@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/../Models/Device.php';
 require_once __DIR__ . '/../Models/Category.php';
+require_once __DIR__ . '/../Controllers/HistorialController.php';
 require_once __DIR__ . '/../Core/Auth.php';
 
 class DeviceController
