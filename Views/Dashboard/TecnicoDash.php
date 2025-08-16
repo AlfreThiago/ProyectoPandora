@@ -1,6 +1,8 @@
 <main>
     <div class="ContenedorPrincipal">
-        <h2>Panel de Técnico</h2>
+        <div class="textos">
+            <h2>Panel de Técnico</h2>
+        </div>
 
         <div class="panel-opciones">
             <a href="" class="opcion">

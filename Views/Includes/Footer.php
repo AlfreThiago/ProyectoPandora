@@ -2,18 +2,15 @@
     <nav class="footer">
         <div class="menu-conteiner">
             <ul class="menu-items">
-                <li class="item">
-                    <a href="#" class="link flex">
-                        <i class='bx bx-bell-minus'></i>
-                        <span>Notificaciones</span>
-                    </a>
-                </li>
+                <?php if (isset($_SESSION['user'])): ?>
+                    <?php $role = strtolower($_SESSION['user']['role']); ?>
                 <li class="item">
                     <a href="#" class="link flex">
                         <i class='bxr  bx-cog'></i>
                         <span>Ajustes</span>
                     </a>
                 </li>
+                <?php endif; ?>
             </ul>
                 <!-- Muestra el nombre y correo del usuario conectado -->
             <div class="user">
