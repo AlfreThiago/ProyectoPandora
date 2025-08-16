@@ -74,7 +74,7 @@
                     </li>
                 <?php endif; ?>
             </ul>
-                <!-- Muestra el nombre y correo del usuario conectado -->
+            <!-- Muestra el nombre y correo del usuario conectado -->
             <div class="user">
              <div class="user-data">
                     <?php if (isset($_SESSION['user'])): ?>
