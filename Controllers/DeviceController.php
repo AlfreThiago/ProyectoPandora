@@ -7,6 +7,12 @@ require_once __DIR__ . '/../Core/Auth.php';
 
 class DeviceController
 {
+    private $historialController;
+
+    public function __construct()
+    {
+        $this->historialController = new HistorialController();
+    }
 
     public function AgregarDispositivo()
     {
@@ -24,25 +30,26 @@ class DeviceController
             $descripcion = $_POST['descripcion_falla'] ?? '';
             $img_dispositivo = $_FILES['img_dispositivo']['name'] ?? '';
 
-            // Validación básica
             if (!$categoriaId || !$marca || !$modelo || !$img_dispositivo) {
                 echo "Todos los campos son obligatorios.";
                 return;
             }
 
-            // Guardar imagen
             $rutaDestino = __DIR__ . '/../Public/img/imgDispositivos/' . $img_dispositivo;
             if (!move_uploaded_file($_FILES['img_dispositivo']['tmp_name'], $rutaDestino)) {
                 echo "Error al subir la imagen.";
                 return;
             }
 
-            // Guardar dispositivo en la base de datos
             $db = new Database();
             $db->connectDatabase();
             $deviceModel = new DeviceModel($db->getConnection());
 
             if ($deviceModel->createDevice($userId, $categoriaId, $marca, $modelo, $descripcion, $img_dispositivo)) {
+                $accion = "Agregar dispositivo";
+                $detalle = "Usuario {$user['name']} agregó el dispositivo {$marca} {$modelo}";
+                $this->historialController->agregarAccion($accion, $detalle);
+
                 header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home&success=1');
                 exit;
             } else {
@@ -87,21 +94,22 @@ class DeviceController
             $img_dispositivo = $_FILES['img_dispositivo']['name'] ?? '';
             $rutaDestino = __DIR__ . '/../Public/img/imgDispositivos/' . $img_dispositivo;
 
-            // Validación básica
             if (!$categoriaId || !$marca || !$modelo || !$img_dispositivo) {
                 echo "Todos los campos son obligatorios.";
                 return;
             }
-            // Guardar imagen
             if (!move_uploaded_file($_FILES['img_dispositivo']['tmp_name'], $rutaDestino)) {
                 echo "Error al subir la imagen.";
                 return;
             }
-            // Actualizar dispositivo en la base de datos
             $db = new Database();
             $db->connectDatabase();
             $deviceModel = new DeviceModel($db->getConnection());
             if ($deviceModel->updateDevice($deviceId, $categoriaId, $marca, $modelo, $descripcion, $img_dispositivo)) {
+                $accion = "Editar dispositivo";
+                $detalle = "Usuario {$user['name']} editó el dispositivo {$marca} {$modelo} (ID: $deviceId)";
+                $this->historialController->agregarAccion($accion, $detalle);
+
                 header('Location: /ProyectoPandora/Public/index.php?route=Dash/TablaDispositivos&success=1');
                 exit;
             }
@@ -120,6 +128,11 @@ class DeviceController
     }
     public function DeleteDevice()
     {
+        $user = Auth::user();
+        if (!$user) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
         $deviceId = $_GET['id'] ?? 0;
         if (!$deviceId) {
             header('Location: /ProyectoPandora/Public/index.php?route=Dash/TablaDispositivos&error=DeviceNotFound');
@@ -129,6 +142,11 @@ class DeviceController
         $db->connectDatabase();
         $deviceModel = new DeviceModel($db->getConnection());
         if ($deviceModel->deleteDevice($deviceId)) {
+            // Guardar en historial
+            $accion = "Eliminar dispositivo";
+            $detalle = "Usuario {$user['name']} eliminó el dispositivo con ID: $deviceId";
+            $this->historialController->agregarAccion($accion, $detalle);
+
             header('Location: /ProyectoPandora/Public/index.php?route=Dash/TablaDispositivos&success=1');
             exit;
         }
