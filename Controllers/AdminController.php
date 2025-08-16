@@ -2,23 +2,19 @@
 
 require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/../Models/User.php';
-
+require_once __DIR__ . '/../Core/Auth.php';
+require_once __DIR__ . '/../Controllers/HistorialController.php';
 
 class AdminController
 {
 
-   
     public function changeRole()
     {
+        Auth::checkRole('Administrador');
+
         $userId = $_POST['user_id'];
         $newRole = $_POST['newRole'];
 
-       
-        session_start();
-        if ($_SESSION['user']['role'] !== 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-            exit;
-        }
         $db = new Database();
         $db->connectDatabase();
         $userModel = new UserModel($db->getConnection());
@@ -27,15 +23,9 @@ class AdminController
         exit;
     }
 
-   
     public function EditUser()
     {
-   
-        session_start();
-        if ($_SESSION['user']['role'] !== 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-            exit;
-        }
+        Auth::checkRole('Administrador');
 
         $userId = $_GET['id'];
         $db = new Database();
@@ -54,15 +44,9 @@ class AdminController
         include_once __DIR__ . '/../Views/Dashboard/AdminDash/ActualizarUser.php';
     }
 
-    
     public function DeleteUser()
     {
-       
-        session_start();
-        if ($_SESSION['user']['role'] !== 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-            exit;
-        }
+        Auth::checkRole('Administrador');
 
         $userId = $_GET['id'];
         $db = new Database();

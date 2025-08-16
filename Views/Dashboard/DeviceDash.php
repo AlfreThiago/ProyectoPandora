@@ -13,16 +13,16 @@
                                 <option value="1">Celulares</option>
                                 <option value="2">Computadora</option>
                                 <option value="3">Tablet</option>
-                                <option value="4">Televisores</option>
-                                <option value="5">Electrodomésticos</option>
+                                <option value="4">Electrodomésticos</option>
+                                <option value="5">Televisores</option>
                             </select>
                         </p>
-                        
-                       <p>
-                           <label for="marca">Marca:</label>
-                           <input type="text" id="marca" name="marca" required>
+
+                        <p>
+                            <label for="marca">Marca:</label>
+                            <input type="text" id="marca" name="marca" required>
                         </p>
-                           
+
                         <p>
                             <label for="modelo">Modelo:</label>
                             <input type="text" id="modelo" name="modelo" required>
@@ -39,7 +39,7 @@
                         <p>
                             <button type="submit">Agregar Dispositivo</button>
                         </p>
-                        
+
                     </form>
                 </div>
             </div>

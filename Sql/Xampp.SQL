@@ -27,7 +27,12 @@ CREATE TABLE users (
     telefono VARCHAR(20),
     direccion VARCHAR(100),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    role ENUM('Cliente', 'Tecnico', 'Supervisor', 'Administrador') NOT NULL DEFAULT 'Cliente',
+    role ENUM(
+        'Cliente',
+        'Tecnico',
+        'Supervisor',
+        'Administrador'
+    ) NOT NULL DEFAULT 'Cliente',
     PRIMARY KEY (id)
 );
 -- Tablas dependientes
@@ -85,14 +90,14 @@ CREATE TABLE tickets (
 );
 CREATE TABLE dispositivos (
     id INT(11) NOT NULL AUTO_INCREMENT,
-    cliente_id INT(11) NOT NULL,
+    user_id INT(11) NOT NULL,
     categoria_id INT(11) NOT NULL,
     marca VARCHAR(50),
     modelo VARCHAR(50),
     numero_serie VARCHAR(50),
     descripcion_falla TEXT,
     PRIMARY KEY (id),
-    FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE
 );
 CREATE TABLE inventarios (
@@ -101,9 +106,10 @@ CREATE TABLE inventarios (
     name_item VARCHAR(100) NOT NULL,
     valor_unitario DECIMAL(10, 2) NOT NULL,
     descripcion TEXT,
+    INT(11) NOT NULL DEFAULT 0,
+    foto_item VARCHAR(255) DEFAULT NULL,
     stock_actual INT(11) NOT NULL DEFAULT 0,
     stock_minimo INT(11) NOT NULL DEFAULT 0,
-    foto_item VARCHAR(255),
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (categoria_id) REFERENCES categorias_inventario(id) ON DELETE CASCADE
