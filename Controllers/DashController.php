@@ -119,4 +119,12 @@ class DashController
         include_once __DIR__ . '/../Views/Dashboard/CategoryD.php';
         include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
+    public function HistorialDash()
+    {require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole('Administrador');
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+         include_once __DIR__ . '/../Views/Dashboard/HistorialDash.php';
+         include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
+
 }
