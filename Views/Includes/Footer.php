@@ -4,12 +4,35 @@
             <ul class="menu-items">
                 <?php if (isset($_SESSION['user'])): ?>
                     <?php $role = strtolower($_SESSION['user']['role']); ?>
-                <li class="item">
-                    <a href="#" class="link flex">
-                        <i class='bxr  bx-cog'></i>
-                        <span>Ajustes</span>
-                    </a>
-                </li>
+
+                    <?php if ($role === 'administrador'): ?>
+                        <!-- Admin: ve todos los usuarios y opción de añadir --> 
+                    <?php elseif ($role === 'supervisor'): ?>
+                        <!-- Supervisor: ve técnicos y clientes -->
+
+
+                    <?php elseif ($role === 'tecnico'): ?>
+                        <!-- Técnico: solo ve Reparaciones y tickets -->
+
+                    <?php elseif ($role === 'cliente'): ?>
+                        <!-- Agregar Dispositivo -->
+
+                    <?php endif; ?>
+                    <?php else: ?>
+                        <!-- No logueado -->
+                        <!-- Iniciar sesion y Registro -->
+                        <li class="item ">
+                            <a href="/ProyectoPandora/Public/index.php?route=Auth/Login" class="link flex">
+                                <i class='bx bx-arrow-out-right-square-half'></i>
+                                <span>Iniciar sesión</span>
+                            </a>
+                        </li>
+                        <li class="item ">
+                            <a href="/ProyectoPandora/Public/index.php?route=Register/Register" class="link flex">
+                                <i class='bxr  bx-form'></i>
+                                <span>Registrarse</span>
+                            </a>
+                        </li>
                 <?php endif; ?>
             </ul>
                 <!-- Muestra el nombre y correo del usuario conectado -->
