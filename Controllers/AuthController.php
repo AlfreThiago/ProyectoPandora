@@ -1,11 +1,17 @@
 <?php
 require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/../Core/Database.php';
-
+require_once __DIR__ . '/../Core/Auth.php';
+require_once __DIR__ . '/../Controllers/HistorialController.php';
 
 class AuthController
 {
+    private $historialController;
 
+    public function __construct()
+    {
+        $this->historialController = new HistorialController();
+    }
 
     public function Login()
     {
@@ -18,21 +24,15 @@ class AuthController
             $user = $userModel->findByEmail($email);
 
             if ($user && password_verify($password, $user['password'])) {
-                session_start();
-                $_SESSION['user'] = $user;
-                if ($user['role'] === 'Administrador') {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-                    exit;
-                } elseif ($user['role'] === 'Supervisor') {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-                    exit;
-                } elseif ($user['role'] === 'Tecnico') {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-                    exit;
-                } else {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-                    exit;
-                }
+                Auth::login($user); // Usar método login de Auth
+
+                // Guardar en historial
+                $accion = "Login";
+                $detalle = "Usuario {$user['name']} inició sesión.";
+                $this->historialController->agregarAccion($accion, $detalle);
+
+                header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
+                exit;
             } else {
                 header('Location: /ProyectoPandora/Public/index.php?route=Dash/Login');
                 exit;
@@ -42,12 +42,17 @@ class AuthController
         }
     }
 
-
     public function Logout()
     {
-        session_start();
-        session_unset();
-        session_destroy();
+        $user = Auth::user();
+        if ($user) {
+            // Guardar en historial
+            $accion = "Logout";
+            $detalle = "Usuario {$user['name']} cerró sesión.";
+            $this->historialController->agregarAccion($accion, $detalle);
+        }
+
+        Auth::logout(); // Usar método logout de Auth
         header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
         exit;
     }

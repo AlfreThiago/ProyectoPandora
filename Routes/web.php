@@ -80,6 +80,10 @@ return [
         'controller' => 'Dash',
         'action' => 'CategoryDash'
     ],
+    'Dash/Historial' => [
+        'controller' => 'Dash',
+        'action' => 'HistorialDash'
+    ],
     //Rutas de Administración
     'Admin/change-role' => [
         'controller' => 'Admin',

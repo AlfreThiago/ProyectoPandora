@@ -167,7 +167,6 @@ CREATE TABLE item_ticket (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE historial (
     id INT NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
     acciones VARCHAR(255) NOT NULL,
     detalles TEXT,
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
