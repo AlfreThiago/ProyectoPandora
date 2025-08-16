@@ -29,7 +29,9 @@ class DeviceModel
     }
     public function getAllDevices()
     {
-        $stmt = $this->connection->prepare(" SELECT d.*, u.name as users, c.nombre as categoria FROM dispositivos d JOIN users u ON d.user_id = u.id JOIN categorias c ON d.categoria_id = c.id
+        $stmt = $this->connection->prepare(" SELECT d.*, u.name as users, c.name as categoria FROM dispositivos d 
+        JOIN users u ON d.user_id = u.id 
+        JOIN categorias c ON d.categoria_id = c.id
         ");
         if ($stmt) {
             $stmt->execute();

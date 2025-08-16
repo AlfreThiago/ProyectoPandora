@@ -132,6 +132,7 @@ CREATE TABLE dispositivos (
     modelo VARCHAR(50),
     numero_serie VARCHAR(50),
     descripcion_falla TEXT,
+    foto_dispositivo VARCHAR(255) DEFAULT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_dispositivos_cliente FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
     CONSTRAINT fk_dispositivos_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE
