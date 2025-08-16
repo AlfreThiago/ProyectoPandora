@@ -429,13 +429,27 @@ body.dark-mode .dark-mode-btn i:first-child { transform: translateY(-150%); }
   font-size: 50px;
   color: var(--color-texto-primario);
   text-align: center;
-  font-weight: 500;
-  font-family: "Bitcount", system-ui;
+  font-weight: 800;
+  font-family: "Rozha One", serif;
 }
 .Contenedor-home{
-  display: flex;
+  display: block;
   position: relative;
   bottom:200px;
+}
+
+.info-user{
+  font-size: 30px;
+  color: var(--color-texto-primario);
+  text-align: center;
+  display: block;
+  position: relative;
+  bottom: 180px;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: normal;
+  font-optical-sizing: auto;
+  font-style: normal;
+  text-transform: uppercase;
 }
 
 

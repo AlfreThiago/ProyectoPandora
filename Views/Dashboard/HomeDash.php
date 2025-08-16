@@ -1,48 +1,36 @@
 <main>
-    <div class="Contenedor">
-        <section class="Contenedor-home">
-            <nav class="Menu">
-                <ul class="Menu-lista">
-                    <li class="item menu-item-dropdown">
-                        <a href="#" class="link flex">
-                            <i class='bx bx-home'></i>
-                            <span>Inicio</span>
-                        </a>
-                        <?php if (isset($_SESSION['user'])): ?>
-                            <?php $role = strtolower($_SESSION['user']['role']); ?>
+    <div class="ContenedorPrincipal">
+        <div class="Contenedor-home texto">
+            <h2>Home Portal</h2>
+        </div>
 
-                            <?php if ($role === 'administrador'): ?>
-
-
-
-                                <div class="Contenedor-home">
-                                    <h2>ADMIN PORTAL</h2>
+        <section class="Contenido">
+            <div class="informacion">
+                <?php if (isset($_SESSION['user'])): ?>
+                    <?php $role = strtolower($_SESSION['user']['role']); ?>
+                        <?php if ($role === 'administrador'): ?>
+                                <div class="info-user">
+                                    <h2>BIENVENIDO <?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : 'Usuario'; ?></h2>
                                 </div>
 
                             <?php elseif ($role === 'supervisor'): ?>
-                                <div class="Contenedor-home">
+                                <div class="">
                                     <h2>SUPERVISOR PORTAL</h2>
                                 </div>
                             <?php elseif ($role === 'tecnico'): ?>
-                                <div class="Contenedor-home">
+                                <div class="panel-opciones">
                                     <h2>TECNICO PORTAL</h2>
                                 </div>
                             <?php elseif ($role === 'cliente'): ?>
-                                <div class="Contenedor-home">
+                                <div class="">
                                     <h2>CLIENTE PORTAL</h2>
                                 </div>
                             <?php endif; ?>
                         <?php else: ?>
-                            <div class="Contenedor-home">
-                                <h2>BIENVENIDO A Innovasys</h2>
-                                <p>Por favor, inicia sesión para continuar.</p>
+                            <div class="info-user">
+                                <h2>BIENVENIDO A INNOVASYS</h2>
                             </div>
                         <?php endif; ?>
-                    </li>
-                </ul>
-            </nav>
-            <div class="Contenedor-formulario-principal">
-                <h2>Agregar Dispositivo</h2>
             </div>
         </section>
     </div>
