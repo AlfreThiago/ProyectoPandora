@@ -9,7 +9,7 @@ class Database
         // $password = 'Bruno200@';
         // $database = 'pandoraDB';
 
-        $host = 'localhost';
+         $host = 'localhost';
         $user = 'root';
         $password = '';
         $database = 'pandoradb'; 

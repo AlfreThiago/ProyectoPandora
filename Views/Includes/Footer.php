@@ -6,66 +6,66 @@
                     <?php $role = strtolower($_SESSION['user']['role']); ?>
 
                     <?php if ($role === 'administrador'): ?>
-                        <!-- Admin: ve todos los usuarios y opción de añadir --> 
-                    <li class="item">
-                        <a href="#" class="link flex">
-                            <i class='bxr  bx-cog'></i>
-                            <span>Ajustes</span>
-                        </a>
-                    </li>
-                    <li class="item">
-                        <a href="#" class="link flex">
-                            <i class='bx bx-bell-minus'></i>
-                            <span>Notificaciones</span>
-                        </a>
-                    </li>
+                        <!-- Admin: ve todos los usuarios y opción de añadir -->
+                        <li class="item">
+                            <a href="#" class="link flex">
+                                <i class='bx bx-bell-minus'></i>
+                                <span>Notificaciones</span>
+                            </a>
+                        </li>
+                        <li class="item">
+                            <a href="#" class="link flex">
+                                <i class='bxr  bx-cog'></i>
+                                <span>Ajustes</span>
+                            </a>
+                        </li>
                     <?php elseif ($role === 'supervisor'): ?>
                         <!-- Supervisor: ve técnicos y clientes -->
-                    <li class="item">
-                        <a href="#" class="link flex">
-                            <i class='bxr  bx-cog'></i>
-                            <span>Ajustes</span>
-                        </a>
-                    </li>
-                    <li class="item">
-                        <a href="#" class="link flex">
-                            <i class='bx bx-bell-minus'></i>
-                            <span>Notificaciones</span>
-                        </a>
-                    </li>
+                        <li class="item">
+                            <a href="#" class="link flex">
+                                <i class='bxr  bx-cog'></i>
+                                <span>Ajustes</span>
+                            </a>
+                        </li>
+                        <li class="item">
+                            <a href="#" class="link flex">
+                                <i class='bx bx-bell-minus'></i>
+                                <span>Notificaciones</span>
+                            </a>
+                        </li>
 
                     <?php elseif ($role === 'tecnico'): ?>
                         <!-- Técnico: solo ve Reparaciones y tickets -->
-                    <li class="item">
-                        <a href="#" class="link flex">
-                            <i class='bxr  bx-cog'></i>
-                            <span>Ajustes</span>
-                        </a>
-                    </li>
-                    <li class="item">
-                        <a href="#" class="link flex">
-                            <i class='bx bx-bell-minus'></i>
-                            <span>Notificaciones</span>
-                        </a>
-                    </li>
+                        <li class="item">
+                            <a href="#" class="link flex">
+                                <i class='bxr  bx-cog'></i>
+                                <span>Ajustes</span>
+                            </a>
+                        </li>
+                        <li class="item">
+                            <a href="#" class="link flex">
+                                <i class='bx bx-bell-minus'></i>
+                                <span>Notificaciones</span>
+                            </a>
+                        </li>
                     <?php elseif ($role === 'cliente'): ?>
                         <!-- Agregar Dispositivo -->
-                    <li class="item">
-                        <a href="#" class="link flex">
-                            <i class='bxr  bx-cog'></i>
-                            <span>Ajustes</span>
-                        </a>
-                    </li>
-                    <li class="item">
-                        <a href="#" class="link flex">
-                            <i class='bx bx-bell-minus'></i>
-                            <span>Notificaciones</span>
-                        </a>
-                    </li>
+                        <li class="item">
+                            <a href="#" class="link flex">
+                                <i class='bxr  bx-cog'></i>
+                                <span>Ajustes</span>
+                            </a>
+                        </li>
+                        <li class="item">
+                            <a href="#" class="link flex">
+                                <i class='bx bx-bell-minus'></i>
+                                <span>Notificaciones</span>
+                            </a>
+                        </li>
                     <?php endif; ?>
-                    <?php else: ?>
-                        <!-- No logueado -->
-                        <!-- Ajustes -->
+                <?php else: ?>
+                    <!-- No logueado -->
+                    <!-- Ajustes -->
                     <li class="item">
                         <a href="#" class="link flex">
                             <i class='bxr  bx-cog'></i>
@@ -76,7 +76,7 @@
             </ul>
             <!-- Muestra el nombre y correo del usuario conectado -->
             <div class="user">
-             <div class="user-data">
+                <div class="user-data">
                     <?php if (isset($_SESSION['user'])): ?>
                         <div class="user-data">
                             <span class="name">

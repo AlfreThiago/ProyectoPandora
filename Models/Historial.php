@@ -11,7 +11,7 @@ class Historial
 
     public function agregarAccion($accion, $detalle)
     {
-        $stmt = $this->connection->prepare("INSERT INTO historial (accion, detalle, create_at) VALUES (?, ?, NOW())");
+        $stmt = $this->connection->prepare("INSERT INTO historial (acciones, detalles, fecha) VALUES (?, ?, NOW())");
         if ($stmt) {
             $stmt->bind_param("ss", $accion, $detalle);
             return $stmt->execute();
@@ -21,7 +21,7 @@ class Historial
 
     public function obtenerHistorial()
     {
-        $stmt = $this->connection->prepare("SELECT * FROM historial ORDER BY create_at DESC");
+        $stmt = $this->connection->prepare("SELECT * FROM historial ORDER BY fecha DESC");
         if ($stmt) {
             $stmt->execute();
             return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);

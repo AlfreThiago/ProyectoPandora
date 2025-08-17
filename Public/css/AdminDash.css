@@ -1,7 +1,6 @@
 /* ======= TIPOGRAFÍA Y VARIABLES ======= */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Bitcount:wght@100..900&display=swap");
-
 :root{
   --primario:#2c2c2c;
   --secundario:linear-gradient(to right, #0072ff, #00c6ff);
@@ -124,12 +123,12 @@ body {
 .menu-btn i{
     font-size: 1.5rem;
 }
-/* .sidebar.close .menu-btn{
+.sidebar.close .menu-btn{
   display: none;
 }
 .sidebar.close .menu-btn i{
   display: none;
-} */
+}
 
 /* ======= SIDEBAR ======= */
 .sidebar {
@@ -144,16 +143,16 @@ body {
   transition: width 0.3s ease;
 }
 
-/* .sidebar.close {
+.sidebar.close {
   width: 75px;
-} */
+}
 
-/* .sidebar.close .logo_name,
+.sidebar.close .logo_name,
 .sidebar.close #lock-icon,
 .sidebar.close #sidebar-close {
   opacity: 0;
   pointer-events: none;
-} */
+}
 
 /* ======= FOOTER ======= */
 .footer {
@@ -170,19 +169,19 @@ body {
   margin-left: 200px;
 }
 /* Forzar que el footer cerrado oculte cualquier texto que sobresalga */
-/* .footer.footer-close {
-  width: 78px; 
+.footer.footer-close {
+  width: 78px; /* ancho igual al sidebar cerrado */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: clip;
   height: auto;
-} */
+}
 .footer.footer-close logout-icon  i{
   margin-left: -200px;
 }
 .footer.footer-close span{
   display: none;
-} */
+}
 /* Asegurar que los datos de usuario y textos no se muestren en modo cerrado */
 /* .footer.footer-close .user,
 .footer.footer-close .user-data,
@@ -297,10 +296,7 @@ body {
   overflow: hidden;
   left: 0;
 }
-.sub-menu-link:hover{
-  color: black;
-  background-color: #4070f4;
-}
+
 .sidebar.close .sub-menu {
   position: absolute;
   left: 4.2rem;
@@ -315,27 +311,27 @@ body {
   padding: 0.55rem 0.5rem;
   font-size: 0.75rem;
   font-weight: 500;
+  color: var(--color-texto-secundario);
   text-decoration: none;
   border-radius: 0.3rem;
-  color: white;
 }
 
-/* .sub-menu::before {
+.sub-menu::before {
   content: '';
   position: absolute;
   height: 100%;
   width: 0.07rem;
   margin-left: 1.4rem;
   background-color: var(--color-border);
-} */
+}
 
-/* .sidebar.close .sub-menu::before {
+.sidebar.close .sub-menu::before {
   width: 0;
 }
 
 .sidebar.close .sub-menu a {
   margin: 0 0.5rem;
-} */
+}
 
 .sidebar.close .logo-text {
   display: none;
@@ -387,6 +383,28 @@ body {
 .user-icon i {
   color: white;
 }
+
+/* Ocultar texto/datos en sidebar cerrada */
+/* .sidebar.close .link span,
+.sidebar.close .user-data,
+.sidebar.close .title,
+.sidebar.close .name,
+.sidebar.close .email {
+  display: none !important;
+} */
+
+/* Centrar icono de logout minimizado */
+.footer.footer-close .user-icon .logout-icon {
+  margin-left: 10px;
+}
+
+.sidebar.close .user-data{
+  display: none;
+}
+.sidebar.close .user .profile-info{
+  display: none;
+}
+
 /* ======= DARK MODE ======= */
 .brand-dark { display: none; }
 body.dark-mode .brand-dark { display: block; }
@@ -418,41 +436,54 @@ body.dark-mode .brand-light { display: none; }
 body.dark-mode .dark-mode-btn i:last-child { transform: translateY(0%); color: white; }
 body.dark-mode .dark-mode-btn i:first-child { transform: translateY(-150%); }
 
+/* ======= NAVBAR ======= */
+.navbar {
+  max-width: 500px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 60%;
+  transform: translateX(-50%);
+  background: red;
+  padding: 10px 20px;
+  border-radius: 0 0 8px 8px;
+  justify-content: space-between;
+}
+
+#sidebar-open {
+  font-size: 30px;
+  color: red;
+  cursor: pointer;
+  margin-right: 20px;
+  display: none;
+}
 
 /*-----------------------------------------------⇑-------------------------------Parte Importante en toda la pagina-----------------------------------------------⇑-------------------------------*/
-
-
-/*-----------------------------------------------⇓-------------------------------ZONA DE LOS DASHBOARD-----------------------------------------------⇓-------------------------------*/
-
-/* ZONA DE HOME */
+/*-----------------------------------------------⇓-------------------------------Parte Importante en toda la pagina-----------------------------------------------⇓-------------------------------*/
+/* ZONA DEL HOME */
 .Contenedor-home{
   font-size: 50px;
   color: var(--color-texto-primario);
   text-align: center;
-  font-weight: 800;
+  font-weight: 500;
   font-family: "Rozha One", serif;
 }
 .Contenedor-home{
   display: block;
   position: relative;
-  bottom:200px;
+  bottom: 200px;
 }
-
 .info-user{
-  font-size: 30px;
+  font-size: 25px;
   color: var(--color-texto-primario);
   text-align: center;
+  font-weight: normal;
+  font-family: "Cormorant Garamond", serif;
   display: block;
   position: relative;
-  bottom: 180px;
-  font-family: "Cormorant Garamond", serif;
-  font-weight: normal;
-  font-optical-sizing: auto;
-  font-style: normal;
+  bottom: 190px;
   text-transform: uppercase;
 }
-
-
 
 /* ZONA DE ADMIN */
 /* BUSCADOR DE USER */
@@ -777,21 +808,14 @@ input[type="password"]:focus {
 }
 
 
-
-
-/* ZONA DEL TECNICO */
+/* ZONA DEL TECNICO*/
 .ContenedorPrincipal {
   padding: 40px;
   color: white;
 }
-.textos{
-  font-size: 40px;
-  color: var(--color-texto-primario);
+h2{
+  font-size: 50px;
   text-align: center;
-  font-weight: 500;
-  font-family: "Bitcount", system-ui;
-  position: relative;
-  bottom: 150px;
 }
 .panel-opciones {
   display: flex;
@@ -827,7 +851,43 @@ input[type="password"]:focus {
   transform: translateY(-5px);
 }
 
+.timeline {
+  border-left: 3px solid #4a90e2;
+  margin: 20px;
+  padding-left: 20px;
+  font-family: Arial, sans-serif;
+}
 
+.timeline-item {
+  margin-left: 250px;
+  color: blue;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  top: 8px;
+  width: 12px;
+  height: 12px;
+  background: #4a90e2;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px #ffffff;
+}
+
+.timeline-item .time {
+  font-size: 0.8rem;
+  color: white;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.timeline-item p {
+  margin: 0;
+  color: white;
+}
 
 
 

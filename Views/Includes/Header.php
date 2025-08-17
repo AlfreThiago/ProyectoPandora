@@ -46,6 +46,12 @@
                                 <span>Dispositivos</span>
                             </a>
                         </li>
+                        <li class="item">
+                            <a href="/ProyectoPandora/Public/index.php?route=Dash/Historial" class="link flex">
+                                <i class='bxr  bx-history'  ></i> 
+                                <span>Historial</span>
+                            </a>
+                        </li>
                         <!-- Usuarios -->
                         <li class="item menu-item-dropdown">
                             <a href="#" class="link flex">
