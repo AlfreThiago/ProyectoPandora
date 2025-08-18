@@ -1,4 +1,3 @@
--- Crear tablas base primero
 CREATE TABLE areas (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -50,6 +49,7 @@ CREATE TABLE tecnicos (
     disponibilidad ENUM('Disponible', 'Ocupado') DEFAULT 'Disponible',
     especialidad VARCHAR(100),
     ticket_count INT(11) DEFAULT 0,
+    -- Observación: contador de tickets asignados
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -106,7 +106,6 @@ CREATE TABLE inventarios (
     name_item VARCHAR(100) NOT NULL,
     valor_unitario DECIMAL(10, 2) NOT NULL,
     descripcion TEXT,
-    INT(11) NOT NULL DEFAULT 0,
     foto_item VARCHAR(255) DEFAULT NULL,
     stock_actual INT(11) NOT NULL DEFAULT 0,
     stock_minimo INT(11) NOT NULL DEFAULT 0,
@@ -131,12 +130,10 @@ CREATE TABLE item_ticket (
 );
 CREATE TABLE historial (
     id INT(11) NOT NULL AUTO_INCREMENT,
-    user_id INT(11) NOT NULL,
     acciones VARCHAR(255) NOT NULL,
     detalles TEXT,
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 -- Triggers
 DELIMITER $$ CREATE TRIGGER trigger_insertar_usuario_por_rol

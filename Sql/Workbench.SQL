@@ -24,9 +24,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- ----------------------
 CREATE TABLE users (
     id INT NOT NULL AUTO_INCREMENT,
-    `NAME` VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    `PASSWORD` VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     telefono VARCHAR(20),
     direccion VARCHAR(100),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -89,19 +89,19 @@ CREATE TABLE administradores (
 -- ----------------------
 CREATE TABLE categorias (
     id INT NOT NULL AUTO_INCREMENT,
-    `NAME` VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE categorias_inventario (
     id INT NOT NULL AUTO_INCREMENT,
-    `NAME` VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE estados_tickets (
     id INT NOT NULL AUTO_INCREMENT,
-    `NAME` VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY uq_estados_name (`NAME`)
+    UNIQUE KEY uq_estados_name (name)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 -- ----------------------
 -- Core entities
@@ -126,7 +126,7 @@ CREATE TABLE tickets (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE dispositivos (
     id INT NOT NULL AUTO_INCREMENT,
-    cliente_id INT NOT NULL,
+    user_id INT NOT NULL,
     categoria_id INT NOT NULL,
     marca VARCHAR(50),
     modelo VARCHAR(50),
@@ -134,7 +134,7 @@ CREATE TABLE dispositivos (
     descripcion_falla TEXT,
     foto_dispositivo VARCHAR(255) DEFAULT NULL,
     PRIMARY KEY (id),
-    CONSTRAINT fk_dispositivos_cliente FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
+    CONSTRAINT fk_dispositivos_cliente FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_dispositivos_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE inventarios (
