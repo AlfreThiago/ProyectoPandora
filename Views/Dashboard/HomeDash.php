@@ -9,22 +9,29 @@
                 <?php if (isset($_SESSION['user'])): ?>
                     <?php $role = strtolower($_SESSION['user']['role']); ?>
                         <?php if ($role === 'administrador'): ?>
-                                <div class="info-user">
-                                    <h2>BIENVENIDO <?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : 'Usuario'; ?></h2>
-                                </div>
-
-                            <?php elseif ($role === 'supervisor'): ?>
-                                <div class="">
-                                    <h2>SUPERVISOR PORTAL</h2>
-                                </div>
-                            <?php elseif ($role === 'tecnico'): ?>
-                                <div class="panel-opciones">
-                                    <h2>TECNICO PORTAL</h2>
-                                </div>
-                            <?php elseif ($role === 'cliente'): ?>
-                                <div class="">
-                                    <h2>CLIENTE PORTAL</h2>
-                                </div>
+                            <div class="info-user">
+                                <h2>BIENVENIDO <?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : 'Usuario'; ?></h2>
+                            </div>
+                            <div class="">
+                            </div>
+                        <?php elseif ($role === 'supervisor'): ?>
+                            <div class="info-user">
+                                <h2>BIENVENIDO <?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : 'Usuario'; ?></h2>
+                            </div>
+                            <div class="">
+                            </div>
+                        <?php elseif ($role === 'tecnico'): ?>
+                             <div class="info-user">
+                                <h2>BIENVENIDO <?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : 'Usuario'; ?></h2>
+                             </div>
+                            <div class="">
+                            </div>
+                        <?php elseif ($role === 'cliente'): ?>
+                            <div class="info-user">
+                                <h2>BIENVENIDO <?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : 'Usuario'; ?></h2>
+                            </div>
+                            <div class="">
+                            </div>
                             <?php endif; ?>
                         <?php else: ?>
                             <div class="info-user">
