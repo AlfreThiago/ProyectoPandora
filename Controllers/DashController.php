@@ -121,4 +121,12 @@ class DashController
         include_once __DIR__ . '/../Views/Admin/Historial.php';
         include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
+Public function Guia()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole(['Cliente', 'Tecnico', 'Supervisor', 'Administrador']);
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/AllUsers/Guia.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
 }

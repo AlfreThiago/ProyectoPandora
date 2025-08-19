@@ -125,4 +125,9 @@ return [
         'controller' => 'EstadoTicket',
         'action' => 'listar'
     ],
+    // Rutas de Guia
+    'Dash/Guia' => [
+        'controller' => 'Dash',
+        'action' => 'Guia'
+    ]
 ];
