@@ -33,13 +33,6 @@
                         <span>Home</span>
                     </a>
                 </li>
-                <li class="item menu-item menu-item-static">
-                    <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
-                        <i class="bx bx-guia">
-                            <span>Guia</span>
-                        </i>
-                    </a>
-                </li>
                 <!-----------------------------------------------⇑-------------------------------Parte obligatoria para todos los Dash-->
                 <?php if (isset($_SESSION['user'])): ?>
                     <?php $role = strtolower($_SESSION['user']['role']); ?>
@@ -81,7 +74,21 @@
                                 <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaAdmin" class="sub-menu-link">Admins</a></li>
                             </ul>
                         </li>
-                        <!-- Añadir -->
+                        <!-- Ticket -->
+                        <li class="item menu-item menu-item-dropdown">
+                            <a href="#" class="link flex">
+                                <i class='bx bx-ticket'></i>
+                                <span>Tickets</span>
+                                <i class="bx bx-arrow-down-stroke oculto"></i>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="sub-menu">
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/Ticket" class="sub-menu-link">Tickets</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaTicket" class="sub-menu-link">Lista de Tickets</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Listar" class="sub-menu-link">Lista de Estados</a></li>
+                            </ul>
+                        </li>
+
                         <li class="item menu-item-dropdown">
                             <a href="#" class="link flex">
                                 <i class='bx bx-plus-square'></i>
@@ -108,6 +115,13 @@
                                 <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaTecnico" class="sub-menu-link">Técnicos</a></li>
                             </ul>
                         </li>
+                        <li class="item menu-item menu-item-static">
+                            <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
+                                <i class="bx bx-guia">
+                                    <span>Guia</span>
+                                </i>
+                            </a>
+                        </li>
                     <?php elseif ($role === 'tecnico'): ?>
                         <!-- Técnico: solo ve Reparaciones y tickets -->
                         <!-- Reparaciones -->
@@ -124,12 +138,26 @@
                                 <span>Tickets</span>
                             </a>
                         </li>
+                        <li class="item menu-item menu-item-static">
+                            <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
+                                <i class="bx bx-guia">
+                                    <span>Guia</span>
+                                </i>
+                            </a>
+                        </li>
                     <?php elseif ($role === 'cliente'): ?>
                         <!-- Agregar Dispositivo -->
                         <li class="item menu-item-static">
                             <a href="index.php?route=Dash/Device" class="link flex">
                                 <i class='bx bx-user'></i>
                                 <span>Agregar Dispositivo</span>
+                            </a>
+                        </li>
+                        <li class="item menu-item menu-item-static">
+                            <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
+                                <i class="bx bx-guia">
+                                    <span>Guia</span>
+                                </i>
                             </a>
                         </li>
                     <?php endif; ?>

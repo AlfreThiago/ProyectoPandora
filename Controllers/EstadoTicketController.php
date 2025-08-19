@@ -10,13 +10,15 @@ class EstadoTicketController
     {
         $db = new Database();
         $db->connectDatabase();
-        $this->estadoModel = new EstadoTicket($db->getConnection());
+        $this->estadoModel = new EstadoTicketModel($db->getConnection());
     }
 
     public function listar()
     {
+        require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole('Administrador');
         $estados = $this->estadoModel->obtenerTodos();
-        include_once __DIR__ . '/../Views/EstadoTicket/Listar.php';
+        include_once __DIR__ . '/../../ProyectoPandora/Views/EstadoTicket/Listar.php';
     }
 
     public function crear()

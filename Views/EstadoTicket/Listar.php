@@ -1,37 +1,43 @@
-<main>
-    <div class="Contenedor">
-        <section class="Conenedor-formulario-principal">
-            <h2>Lista de Estados</h2>
-            <div class="Formulario-general">
-                <div class="Formulario-contenedor">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre del Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($estados as $estado): ?>
+    <?php
+    include_once __DIR__ . '/../Includes/Header.php'
+    ?>
+    <main>
+        <div class="Tabla-Contenedor">
+            <section class="Conenedor-formulario-principal">
+                <h2>Lista de Estados</h2>
+                <div class="Formulario-general">
+                    <div class="Formulario-contenedor">
+                        <table id="userTable">
+                            <thead>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($estado['id']); ?></td>
-                                    <td><?php echo htmlspecialchars($estado['name']); ?></td>
-                                    <td>
-                                        <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Eliminar&id=<?php echo $estado['id']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar este estado?');">Eliminar</a>
-                                    </td>
+                                    <th>ID</th>
+                                    <th>Nombre del Estado</th>
+                                    <th>Acciones</th>
                                 </tr>
-                            <?php endforeach;
-                            if (empty($estados)): ?>
-                                <tr>
-                                    <td colspan="3">No hay estados disponibles.</td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                    <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Agregar">Agregar Nuevo Estado</a>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($estados as $estado): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($estado['id']); ?></td>
+                                        <td><?php echo htmlspecialchars($estado['name']); ?></td>
+                                        <td>
+                                            <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Eliminar&id=<?php echo $estado['id']; ?>" class="btn delete-btn" onclick="return confirm('¿Estás seguro de que deseas eliminar este estado?');">Eliminar</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach;
+                                if (empty($estados)): ?>
+                                    <tr>
+                                        <td colspan="3">No hay estados disponibles.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                        <a href="/ProyectoPandora/Public/index.php?route=Dash/CrearEstadoTicket">Agregar Nuevo Estado</a>
+                    </div>
                 </div>
-            </div>
-        </section>
-    </div>
-</main>
+            </section>
+        </div>
+    </main>
+    <?php
+    include_once __DIR__ . '/../Includes/Footer.php'
+    ?>

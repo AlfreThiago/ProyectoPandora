@@ -78,6 +78,14 @@ return [
         'controller' => 'Dash',
         'action' => 'ActualizarDevice'
     ],
+    'Dash/CrearEstadoTicket' => [
+        'controller' => 'Dash',
+        'action' => 'CrearEstadoTicket'
+    ],
+    'Dash/ListaEstadoTicket' => [
+        'controller' => 'Dash',
+        'action' => 'ListaEstadoTicket'
+    ],
     //Rutas de Administración
     'Admin/change-role' => [
         'controller' => 'Admin',
@@ -117,7 +125,7 @@ return [
         'action' => 'deleteCategory'
     ],
     // Rutas de Estados de Ticket
-    'EstadoTicket/Agregar' => [
+    'EstadoTicket/crear' => [
         'controller' => 'EstadoTicket',
         'action' => 'crear'
     ],
