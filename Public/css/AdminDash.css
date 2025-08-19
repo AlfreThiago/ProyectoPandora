@@ -523,6 +523,20 @@ main {
   color: black;
   transition: margin-left 0.3s ease, max-width 0.3s ease;
 }
+.main-guia {
+  display:inline-block;
+    justify-content: center;
+    align-items: center;
+    min-height: 75vh;
+    padding: 20px;
+}
+.h1-guia {
+  color: white;
+}
+.p-guia {
+  color: white;
+}
+
 .Tabla-Contenedor {
   width: 100%;
   max-width: 100%;
