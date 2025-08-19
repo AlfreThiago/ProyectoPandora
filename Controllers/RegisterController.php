@@ -1,13 +1,18 @@
 <?php
-//"require_once" es una función que incluye y evalúa el contenido de un archivo especificado. La diferencia clave con require() es que require_once() verifica si el archivo ya ha sido incluido en la ejecución actual del script, y si es así, no lo incluye nuevamente. Esto ayuda a prevenir errores causados por la inclusión duplicada de archivos, como la redefinición de funciones o variables. 
 require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/../Core/Database.php';
+require_once __DIR__ . '/../Core/Auth.php';
+require_once __DIR__ . '/../Controllers/HistorialController.php';
 
-//es un controlador que maneja el registro de nuevos usuarios en la aplicación.
 class RegisterController
 {
-    // Maneja el registro de un nuevo usuario
-    // Si el registro es exitoso, redirige al usuario a la página de inicio de sesión
+    private $historialController;
+
+    public function __construct()
+    {
+        $this->historialController = new HistorialController();
+    }
+
     public function Register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -15,38 +20,41 @@ class RegisterController
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
 
-            $controllerRegister = new RegisterController();
-            $controllerRegister->RegisterUser($username, $email, $password);
+            $result = $this->RegisterUser($username, $email, $password);
+
+            // Guardar en historial
+            $accion = "Registro de usuario";
+            $detalle = "Se registró el usuario {$username} con email {$email}. Resultado: {$result}";
+            $this->historialController->agregarAccion($accion, $detalle);
+
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         } else {
-            include_once __DIR__ . '/../Views/Auth/Register.php';
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Register');
         }
     }
 
-    // Maneja el registro de un nuevo usuario desde el portal de administración
-    // Si el registro es exitoso, redirige al usuario a la página de administración
-    public function RegisterAdminPortal()
+    public function RegisterAdmin()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = $_POST['name'] ?? '';
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
+            $role = $_POST['role'] ?? 'Cliente';
 
-            $controllerRegister = new RegisterController();
-            $controllerRegister->RegisterUser($username, $email, $password);
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
+            $result = $this->RegisterUserWithRole($username, $email, $password, $role);
+
+            $accion = "Registro de usuario por admin";
+            $detalle = "El administrador registró el usuario {$username} con email {$email} y rol {$role}. Resultado: {$result}";
+            $this->historialController->agregarAccion($accion, $detalle);
+
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/RegisterAdmin');
             exit;
         } else {
-            require_once __DIR__ . '/../Core/Auth.php';
-            Auth::checkRole('Administrador');
-            include_once __DIR__ . '/../Views/Shared/AddHeader.php';
-            include_once __DIR__ . '/../Views/Auth/RegisterAdminPortal.php';
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/RegisterAdmin');
         }
     }
 
-    // Registra un nuevo usuario en la base de datos
-    // Si el correo electrónico ya está registrado, redirige al usuario a la página de registro con un mensaje de error o al portal de administración si tu rol es administrador con el mismo mensaje de error
     function RegisterUser($username, $email, $password)
     {
         $db = new Database();
@@ -66,6 +74,27 @@ class RegisterController
             return "User registered successfully.";
         } else {
             return "Error registering user.";
+        }
+    }
+
+    public function RegisterUserWithRole($username, $email, $password, $role)
+    {
+        $db = new Database();
+        $db->connectDatabase();
+        $userModel = new UserModel($db->getConnection());
+
+        $existingUser = $userModel->findByEmail($email);
+        if ($existingUser) {
+            $isAdmin = isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'RegisterAdminPortal') !== false;
+            $route = $isAdmin ? 'Register/RegisterAdminPortal' : 'Register/Register';
+            header("Location: /ProyectoPandora/Public/index.php?route=$route&error=EmailYaRegistrado");
+            exit;
+        }
+
+        if ($userModel->createUser($username, $email, $password, $role)) {
+            return "Usuario registrado correctamente con rol: $role";
+        } else {
+            return "Error al registrar usuario.";
         }
     }
 }

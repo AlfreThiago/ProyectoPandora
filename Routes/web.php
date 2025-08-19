@@ -1,16 +1,14 @@
 <?php
 
 return [
-    //Ruta de Registro
     'Register/Register' => [
         'controller' => 'Register',
         'action' => 'Register'
     ],
-    'Register/RegisterAdminPortal' => [
+    'Register/RegisterAdmin' => [
         'controller' => 'Register',
-        'action' => 'RegisterAdminPortal'
+        'action' => 'RegisterAdmin'
     ],
-    //Ruta de Inicio de sesión
     'Auth/Login' => [
         'controller' => 'Auth',
         'action' => 'Login'
@@ -20,53 +18,111 @@ return [
         'action' => 'Logout'
     ],
     //Rutas de Dashboards
+    'Dash/Login' => [
+        'controller' => 'Dash',
+        'action' => 'Login'
+    ],
+    'Dash/Register' => [
+        'controller' => 'Dash',
+        'action' => 'Register'
+    ],
+    'Dash/RegisterAdmin' => [
+        'controller' => 'Dash',
+        'action' => 'RegisterAdmin'
+    ],
     'Dash/Home' => [
         'controller' => 'Dash',
-        'action' => 'HomeDash'
+        'action' => 'Home'
     ],
-    'Dash/Admin' => [
+    'Dash/ListaUsers' => [
         'controller' => 'Dash',
-        'action' => 'AdminDash'
+        'action' => 'ListaUser'
     ],
-    'Dash/Supervisor' => [
+    'Dash/ListaCliente' => [
         'controller' => 'Dash',
-        'action' => 'SupervisorDash'
+        'action' => 'ListaCliente'
     ],
-    'Dash/Tecnico' => [
+    'Dash/ListaTecnico' => [
         'controller' => 'Dash',
-        'action' => 'TecnicoDash'
+        'action' => 'ListaTecnico'
     ],
-    'Dash/Cliente' => [
+    'Dash/ListaSupervisor' => [
         'controller' => 'Dash',
-        'action' => 'ClienteDash'
+        'action' => 'ListaSupervisor'
     ],
-    'Dash/TablaCliente' => [
+    'Dash/ListaAdmin' => [
         'controller' => 'Dash',
-        'action' => 'TablaCliente'
+        'action' => 'ListaAdmin'
     ],
-    'Dash/TablaTecnico' => [
+    'Dash/Device' => [
         'controller' => 'Dash',
-        'action' => 'TablaTecnico'
+        'action' => 'CrearDevice'
     ],
-    'Dash/TablaSupervisor' => [
+    'Dash/ListaDispositivos' => [
         'controller' => 'Dash',
-        'action' => 'TablaSupervisor'
+        'action' => 'ListaDispositivos'
     ],
-    'Dash/TablaAdmin' => [
+    'Dash/ListaCategoriaDevice' => [
         'controller' => 'Dash',
-        'action' => 'TablaAdmin'
+        'action' => 'ListaCategoriaDevice'
+    ],
+    'Dash/CrearCategoriaDevice' => [
+        'controller' => 'Dash',
+        'action' => 'CrearCategoriaDevice'
+    ],
+    'Dash/Historial' => [
+        'controller' => 'Dash',
+        'action' => 'Historial'
+    ],
+    'Dash/ActualizarDevice' => [
+        'controller' => 'Dash',
+        'action' => 'ActualizarDevice'
     ],
     //Rutas de Administración
     'Admin/change-role' => [
         'controller' => 'Admin',
         'action' => 'changeRole'
     ],
-    'Admin/Edit-user' => [
+    'Admin/ActualizarUser' => [
         'controller' => 'Admin',
-        'action' => 'EditUser'
+        'action' => 'ActualizarUser'
     ],
     'Admin/Delete-user' => [
         'controller' => 'Admin',
         'action' => 'DeleteUser'
+    ],
+    // Rutas de Dispositivos
+    'Device/Agregar' => [
+        'controller' => 'Device',
+        'action' => 'AgregarDispositivo'
+    ],
+    'Device/CrearCategoria' => [
+        'controller' => 'Device',
+        'action' => 'CrearCategoria'
+    ],
+    'Device/Actualizar-Device' => [
+        'controller' => 'Device',
+        'action' => 'ActualizarDevice'
+    ],
+    'Device/Delete-Device' => [
+        'controller' => 'Device',
+        'action' => 'DeleteDevice'
+    ],
+    'Device/Actualizar-Category' => [
+        'controller' => 'Device',
+        'action' => 'ActualizarCategory'
+    ],
+    'Device/Delete-Category' => [
+        'controller' => 'Device',
+        'action' => 'deleteCategory'
+    ],
+    // Rutas de Estados de Ticket
+    'EstadoTicket/Agregar' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'crear'
+    ],
+    'EstadoTicket/Listar' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'listar'
     ],
 ];

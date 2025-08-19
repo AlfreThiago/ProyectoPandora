@@ -1,71 +1,124 @@
 <?php
-//Este archivo es parte del controlador de Dash, que maneja las vistas del panel de administración y otros roles.
-//Se utilzaza para mostrar diferentes dashboards según el rol del usuario autenticado.
-//Ya en la propia redirecion se incluye el header correspondiente al rol del usuario.
+
 class DashController
 {
-    public function AdminDash()
+    public function ListaUser()
     {
         require_once __DIR__ . '/../Core/Auth.php';
         Auth::checkRole('Administrador');
-        include_once __DIR__ . '/../Views/Shared/AdminHeader.php';
-        include_once __DIR__ . '/../Views/Dashboard/AdminDash.php';
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Admin/ListaUser.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
-    public function TablaCliente()
+    public function ListaDispositivos()
     {
         require_once __DIR__ . '/../Core/Auth.php';
         Auth::checkRole('Administrador');
-        include_once __DIR__ . '/../Views/Shared/AdminHeader.php';
-        include_once __DIR__ . '/../Views/Dashboard/AdminDash/TablaCliente.php';
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Device/ListaDispositivos.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
-    public function TablaTecnico()
+    public function ListaCliente()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole(['Administrador', 'Supervisor']);
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Admin/ListaCliente.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
+    public function ListaTecnico()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole(['Administrador', 'Supervisor']);
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Admin/ListaTecnico.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
+    public function ListaSupervisor()
     {
         require_once __DIR__ . '/../Core/Auth.php';
         Auth::checkRole('Administrador');
-        include_once __DIR__ . '/../Views/Shared/AdminHeader.php';
-        include_once __DIR__ . '/../Views/Dashboard/AdminDash/TablaTecnico.php';
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Admin/ListaSupervisor.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
-    public function TablaSupervisor()
+    public function ListaAdmin()
     {
         require_once __DIR__ . '/../Core/Auth.php';
         Auth::checkRole('Administrador');
-        include_once __DIR__ . '/../Views/Shared/AdminHeader.php';
-        include_once __DIR__ . '/../Views/Dashboard/AdminDash/TablaSupervisor.php';
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Admin/ListaAdmin.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
-    public function TablaAdmin()
+    public function ListaCategoriaDevice()
     {
         require_once __DIR__ . '/../Core/Auth.php';
         Auth::checkRole('Administrador');
-        include_once __DIR__ . '/../Views/Shared/AdminHeader.php';
-        include_once __DIR__ . '/../Views/Dashboard/AdminDash/TablaAdmin.php';
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Device/ListaCategoria.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
-    public function SupervisorDash()
-    {
-        require_once __DIR__ . '/../Core/Auth.php';
-        Auth::checkRole('Supervisor');
-        include_once __DIR__ . '/../Views/Shared/SupervisorHeader.php';
-        include_once __DIR__ . '/../Views/Dashboard/SupervisorDash.php';
-    }
-    public function TecnicoDash()
-    {
-        require_once __DIR__ . '/../Core/Auth.php';
-        Auth::checkRole('Tecnico');
-        include_once __DIR__ . '/../Views/Shared/TecnicoHeader.php';
-        include_once __DIR__ . '/../Views/Dashboard/TecnicoDash.php';
-    }
-    public function ClienteDash()
-    {
-        require_once __DIR__ . '/../Core/Auth.php';
-        Auth::checkRole('Cliente');
-        include_once __DIR__ . '/../Views/Shared/ClienteHeader.php';
-        include_once __DIR__ . '/../Views/Dashboard/ClienteDash.php';
-    }
-    public function HomeDash()
+    public function Home()
     {
         require_once __DIR__ . '/../Core/Auth.php';
         session_start();
         $user = $_SESSION['user'] ?? null;
-        include_once __DIR__ . '/../Views/Shared/HomeHeader.php';
-        include_once __DIR__ . '/../Views/Dashboard/HomeDash.php';
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/AllUsers/Home.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
+    public function Login()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Auth/Login.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
+    public function Register()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Auth/Register.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
+    public function RegisterAdmin()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole('Administrador');
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Admin/Register.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
+    public function CrearDevice()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole(['Administrador', 'Cliente', 'Tecnico', 'Supervisor']);
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Device/CrearDevice.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
+    public function ActualizarDevice()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole(['Administrador', 'Cliente', 'Tecnico', 'Supervisor']);
+        require_once __DIR__ . '/../Views/Includes/Header.php';
+        require_once __DIR__ . '/../Views/Device/ActualizarDevice.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
+    public function CrearCategoriaDevice()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole('Administrador');
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Device/CrearCategoria.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
+    public function Historial()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole('Administrador');
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Admin/Historial.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
 }

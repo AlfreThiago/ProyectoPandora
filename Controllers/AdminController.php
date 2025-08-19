@@ -1,42 +1,43 @@
 <?php
-//__DIR__ es una constante mágica que devuelve el directorio donde se encuentra el archivo actual. Es equivalente a dirname(__FILE__), pero se considera más legible y preferible para obtener la ruta del directorio del script que se está ejecutando o del archivo incluido. 
-require_once __DIR__ . '/../Core/Auth.php';
+
 require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/../Models/User.php';
+require_once __DIR__ . '/../Core/Auth.php';
+require_once __DIR__ . '/../Controllers/HistorialController.php';
 
-// es un modelo o plantilla que define las propiedades (variables) y métodos (funciones) de un objeto. Es la base de la programación orientada a objetos (POO) en PHP, permitiendo agrupar datos y comportamientos relacionados para crear instancias de objetos. 
 class AdminController
 {
+    private $historialController;
 
-    // Cambia el rol de un usuario
+    public function __construct()
+    {
+        $this->historialController = new HistorialController();
+    }
+
     public function changeRole()
     {
+        Auth::checkRole('Administrador');
+
         $userId = $_POST['user_id'];
         $newRole = $_POST['newRole'];
 
-        // Verifica si el usuario tiene permisos de administrador antes de realizar la acción
-        session_start();
-        if ($_SESSION['user']['role'] !== 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-            exit;
-        }
         $db = new Database();
         $db->connectDatabase();
         $userModel = new UserModel($db->getConnection());
         $userModel->updateRole($userId, $newRole);
-        header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
+
+        $admin = Auth::user();
+        $accion = "Cambio de rol";
+        $detalle = "El administrador {$admin['name']} cambió el rol del usuario con ID {$userId} a {$newRole}.";
+        $this->historialController->agregarAccion($accion, $detalle);
+
+        header('Location: /ProyectoPandora/Public/index.php?route=Dash/ListaUsers');
         exit;
     }
 
-    // Cambia los datos de un usuario
-    public function EditUser()
+    public function ActualizarUser()
     {
-        // Verifica si el usuario tiene permisos de administrador antes de realizar la acción
-        session_start();
-        if ($_SESSION['user']['role'] !== 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-            exit;
-        }
+        Auth::checkRole('Administrador');
 
         $userId = $_GET['id'];
         $db = new Database();
@@ -48,29 +49,36 @@ class AdminController
             $name = $_POST['name'];
             $role = $_POST['role'];
             $userModel->updateUser($userId, $name, $user['email'], $role);
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
+
+            $admin = Auth::user();
+            $accion = "Actualización de Usuario";
+            $detalle = "El administrador {$admin['name']} editó el usuario con ID {$userId} (Nuevo nombre: {$name}, Nuevo rol: {$role}).";
+            $this->historialController->agregarAccion($accion, $detalle);
+
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/ListaUsers');
             exit;
         }
-        include_once __DIR__ . '/../Views/Shared/AdminHeader.php';
-        include_once __DIR__ . '/../Views/Dashboard/AdminDash/ActualizarUser.php';
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/Admin/ActualizarUser.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
 
-    // Elimina un usuario
     public function DeleteUser()
     {
-        // Verifica si el usuario tiene permisos de administrador antes de realizar la acción  
-        session_start();
-        if ($_SESSION['user']['role'] !== 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-            exit;
-        }
+        Auth::checkRole('Administrador');
 
         $userId = $_GET['id'];
         $db = new Database();
         $db->connectDatabase();
         $userModel = new UserModel($db->getConnection());
         $userModel->deleteUser($userId);
-        header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
+
+        $admin = Auth::user();
+        $accion = "Eliminación de usuario";
+        $detalle = "El administrador {$admin['name']} eliminó el usuario con ID {$userId}.";
+        $this->historialController->agregarAccion($accion, $detalle);
+
+        header('Location: /ProyectoPandora/Public/index.php?route=Dash/ListaUsers');
         exit;
     }
 }
