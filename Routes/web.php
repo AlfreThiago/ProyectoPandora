@@ -48,5 +48,4 @@ return [
         'controller' => 'Device',
         'action' => 'ActualizarCategoria'
     ],
-
 ];

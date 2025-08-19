@@ -1,3 +1,4 @@
+<?php include_once __DIR__ . '/../Includes/Header.php' ?>
 <main>
     <div class="contenedor">
         <h2>Actualizar Dispositivo</h2>
@@ -8,8 +9,8 @@
             <label>Nombre</label>
             <input type="text" name="name" value="<?= htmlspecialchars($categorias['name']) ?>" required>
 
-            <
             <button type="submit">Guardar</button>
         </form>
     </div>
 </main>
+<?php include_once __DIR__ . '/../Includes/Footer.php' ?>
