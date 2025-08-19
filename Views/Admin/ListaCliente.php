@@ -29,7 +29,7 @@
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($cliente['created_at']) . "</span></td>";
                         echo "<td>  <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id={$cliente['id']}&from=Admin/ListarClientes' class='btn edit-btn'>Actualizar</a>
                             |
-                                    <a href='/ProyectoPandora/Public/index.php?route=Admin/Delete-user&id={$cliente['id']}' class='btn delete-btn'>Eliminar</a>
+                                    <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id={$cliente['id']}' class='btn delete-btn'>Eliminar</a>
                               </td>";
                         echo "</tr>";
                     }
@@ -40,10 +40,5 @@
             </tbody>
         </table>
     </div>
-    <div class="dark-mode-btn" id="dark-mode-btn">
-        <i class='bx bx-sun'></i>
-        <i class='bx bx-moon'></i>
-    </div>
-    <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>
 <?php include_once __DIR__ . '/../Includes/Footer.php' ?>
