@@ -54,11 +54,11 @@
                                 <i class='bx bx-arrow-down-stroke oculto'></i>
                             </a>
                             <ul class="sub-menu">
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaDispositivos" class="sub-menu-link">Lista de Dispositivos</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaCategoriaDevice" class="sub-menu-link">Lista de Categorías</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Device/ListarDevice" class="sub-menu-link">Lista de Dispositivos</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria" class="sub-menu-link">Lista de Categorías</a></li>
                             </ul>
                         </li>
-                        <!-- Usuarios -->
+                        <!-- Usuarios // CORREJIDO 👍-->
                         <li class="item menu-item-dropdown">
                             <a href="#" class="link flex">
                                 <i class='bx bx-user'></i>
@@ -67,11 +67,11 @@
                             </a>
                             <!-- Zona del submenu de usuarios -->
                             <ul class="sub-menu">
-                                <li><a href="index.php?route=Dash/ListaUsers" class="sub-menu-link">Todos los users</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaCliente" class="sub-menu-link">Clientes</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaTecnico" class="sub-menu-link">Técnicos</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaSupervisor" class="sub-menu-link">Supervisor</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaAdmin" class="sub-menu-link">Admins</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="sub-menu-link">Todos los users</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Admin/ListarClientes" class="sub-menu-link">Clientes</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Admin/ListarTecnicos" class="sub-menu-link">Técnicos</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Admin/ListarSupervisores" class="sub-menu-link">Supervisor</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Admin/ListarAdmins" class="sub-menu-link">Admins</a></li>
                             </ul>
                         </li>
                         <!-- Ticket -->

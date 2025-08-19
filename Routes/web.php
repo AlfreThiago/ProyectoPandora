@@ -34,37 +34,9 @@ return [
         'controller' => 'Dash',
         'action' => 'Home'
     ],
-    'Dash/ListaUsers' => [
-        'controller' => 'Dash',
-        'action' => 'ListaUser'
-    ],
-    'Dash/ListaCliente' => [
-        'controller' => 'Dash',
-        'action' => 'ListaCliente'
-    ],
-    'Dash/ListaTecnico' => [
-        'controller' => 'Dash',
-        'action' => 'ListaTecnico'
-    ],
-    'Dash/ListaSupervisor' => [
-        'controller' => 'Dash',
-        'action' => 'ListaSupervisor'
-    ],
-    'Dash/ListaAdmin' => [
-        'controller' => 'Dash',
-        'action' => 'ListaAdmin'
-    ],
     'Dash/Device' => [
         'controller' => 'Dash',
         'action' => 'CrearDevice'
-    ],
-    'Dash/ListaDispositivos' => [
-        'controller' => 'Dash',
-        'action' => 'ListaDispositivos'
-    ],
-    'Dash/ListaCategoriaDevice' => [
-        'controller' => 'Dash',
-        'action' => 'ListaCategoriaDevice'
     ],
     'Dash/CrearCategoriaDevice' => [
         'controller' => 'Dash',
@@ -91,10 +63,7 @@ return [
         'controller' => 'Admin',
         'action' => 'changeRole'
     ],
-    'Admin/ActualizarUser' => [
-        'controller' => 'Admin',
-        'action' => 'ActualizarUser'
-    ],
+
     'Admin/Delete-user' => [
         'controller' => 'Admin',
         'action' => 'DeleteUser'
@@ -133,9 +102,57 @@ return [
         'controller' => 'EstadoTicket',
         'action' => 'listar'
     ],
+    'EstadoTicket/Edit' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'editar'
+    ],
+
+    'EstadoTicket/Actualizar' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'actualizar'
+    ],
     // Rutas de Guia
     'Dash/Guia' => [
         'controller' => 'Dash',
         'action' => 'Guia'
-    ]
+    ],
+    //Rutas Funcionales y Logicas 
+    //Admin
+    'Admin/ListarUsers' => [
+        'controller' => 'Admin',
+        'action' => 'listarUsers'
+    ],
+    'Admin/ListarClientes' => [
+        'controller' => 'Admin',
+        'action' => 'listarCli'
+    ],
+    'Admin/ListarTecnicos' => [
+        'controller' => 'Admin',
+        'action' => 'listarTecs'
+    ],
+    'Admin/ListarSupervisores' => [
+        'controller' => 'Admin',
+        'action' => 'listarSupers'
+    ],
+    'Admin/ListarAdmins' => [
+        'controller' => 'Admin',
+        'action' => 'listarAdmins'
+    ],
+    'Admin/ActualizarUser' => [
+        'controller' => 'Admin',
+        'action' => 'ActualizarUser'
+    ],
+    //Device
+    'Device/ListarDevice' => [
+        'controller' => 'Device',
+        'action' => 'listarDevice'
+    ],
+    'Device/ListarCategoria' => [
+        'controller' => 'Device',
+        'action' => 'listarCategoria'
+    ],
+    'Device/ActualizarDevice' => [
+        'controller' => 'Device',
+        'action' => 'ActualizarDevice'
+    ],
 ];

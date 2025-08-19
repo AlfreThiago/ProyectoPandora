@@ -30,7 +30,7 @@
                                 <button type="submit">Añadir</button>
                             </p>
                             <p>
-                                <a href="/ProyectoPandora/Public/index.php?route=Dash/ListaCategoriaDevice" class="btn">Volver a la lista de categorías</a>
+                                <a href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria" class="btn">Volver a la lista de categorías</a>
                             </p>
                         </form>
                     </div>

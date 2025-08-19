@@ -1,12 +1,5 @@
+<?php include_once __DIR__ . '/../Includes/Header.php' ?>
 <main>
-    <?php
-    require_once __DIR__ . '/../../Models/Category.php';
-    require_once __DIR__ . '/../../Core/Database.php';
-    $db = new Database();
-    $db->connectDatabase();
-    $categoryModel = new CategoryModel($db->getConnection());
-    $categorias = $categoryModel->getAllCategories();
-    ?>
     <div class="Tabla-Contenedor">
         <h2>Lista de Categorías</h2>
         <div class="search-container">
@@ -47,3 +40,4 @@
     </div>
     <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>
+<?php include_once __DIR__ . '/../Includes/Footer.php' ?>
