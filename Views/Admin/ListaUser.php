@@ -1,3 +1,4 @@
+<?php include_once __DIR__ . '/../Includes/Header.php' ?>
 <main>
     <div class="Tabla-Contenedor">
         <h2>Lista de Usuarios</h2>
@@ -17,13 +18,7 @@
             </thead>
             <tbody>
                 <?php
-                include_once __DIR__ . '/../../Core/Database.php';
-                $db = new Database();
-                $db->connectDatabase();
-                $userModel = new UserModel($db->getConnection());
-                $users = $userModel->getAllUsers();
                 if ($users) {
-
                     foreach ($users as $user) {
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($user['id']) . "</td>";
@@ -34,7 +29,7 @@
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($user['created_at']) . "</span></td>";
                         echo "<td>";
                         echo "<div class='action-buttons'>";
-                        echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=" . htmlspecialchars($user['id']) . "' class='btn edit-btn'>Actualizar</a>";
+                        echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=" . htmlspecialchars($user['id']) . "&from=Admin/ListarUsers' class='btn edit-btn'>Editar</a>";
                         echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/Delete-user&id=" . htmlspecialchars($user['id']) . "' class='btn delete-btn'>Eliminar</a>";
                         echo "</div>";
                         echo "</td>";
@@ -54,3 +49,4 @@
     </div>
     <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>
+<?php include_once __DIR__ . '/../Includes/Footer.php' ?>

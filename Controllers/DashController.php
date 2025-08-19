@@ -2,62 +2,6 @@
 
 class DashController
 {
-    public function ListaUser()
-    {
-        require_once __DIR__ . '/../Core/Auth.php';
-        Auth::checkRole('Administrador');
-        include_once __DIR__ . '/../Views/Includes/Header.php';
-        include_once __DIR__ . '/../Views/Admin/ListaUser.php';
-        include_once __DIR__ . '/../Views/Includes/Footer.php';
-    }
-    public function ListaDispositivos()
-    {
-        require_once __DIR__ . '/../Core/Auth.php';
-        Auth::checkRole('Administrador');
-        include_once __DIR__ . '/../Views/Includes/Header.php';
-        include_once __DIR__ . '/../Views/Device/ListaDispositivos.php';
-        include_once __DIR__ . '/../Views/Includes/Footer.php';
-    }
-    public function ListaCliente()
-    {
-        require_once __DIR__ . '/../Core/Auth.php';
-        Auth::checkRole(['Administrador', 'Supervisor']);
-        include_once __DIR__ . '/../Views/Includes/Header.php';
-        include_once __DIR__ . '/../Views/Admin/ListaCliente.php';
-        include_once __DIR__ . '/../Views/Includes/Footer.php';
-    }
-    public function ListaTecnico()
-    {
-        require_once __DIR__ . '/../Core/Auth.php';
-        Auth::checkRole(['Administrador', 'Supervisor']);
-        include_once __DIR__ . '/../Views/Includes/Header.php';
-        include_once __DIR__ . '/../Views/Admin/ListaTecnico.php';
-        include_once __DIR__ . '/../Views/Includes/Footer.php';
-    }
-    public function ListaSupervisor()
-    {
-        require_once __DIR__ . '/../Core/Auth.php';
-        Auth::checkRole('Administrador');
-        include_once __DIR__ . '/../Views/Includes/Header.php';
-        include_once __DIR__ . '/../Views/Admin/ListaSupervisor.php';
-        include_once __DIR__ . '/../Views/Includes/Footer.php';
-    }
-    public function ListaAdmin()
-    {
-        require_once __DIR__ . '/../Core/Auth.php';
-        Auth::checkRole('Administrador');
-        include_once __DIR__ . '/../Views/Includes/Header.php';
-        include_once __DIR__ . '/../Views/Admin/ListaAdmin.php';
-        include_once __DIR__ . '/../Views/Includes/Footer.php';
-    }
-    public function ListaCategoriaDevice()
-    {
-        require_once __DIR__ . '/../Core/Auth.php';
-        Auth::checkRole('Administrador');
-        include_once __DIR__ . '/../Views/Includes/Header.php';
-        include_once __DIR__ . '/../Views/Device/ListaCategoria.php';
-        include_once __DIR__ . '/../Views/Includes/Footer.php';
-    }
     public function Home()
     {
         require_once __DIR__ . '/../Core/Auth.php';

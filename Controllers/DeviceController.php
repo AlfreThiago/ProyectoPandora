@@ -5,13 +5,41 @@ require_once __DIR__ . '/../Models/Category.php';
 require_once __DIR__ . '/../Controllers/HistorialController.php';
 require_once __DIR__ . '/../Core/Auth.php';
 
+
 class DeviceController
 {
     private $historialController;
+    private $deviceModel;
+    private $categoryModel;
 
     public function __construct()
     {
         $this->historialController = new HistorialController();
+        $db = new Database();
+        $db->connectDatabase();
+        $this->deviceModel = new DeviceModel($db->getConnection());
+        $this->categoryModel = new CategoryModel($db->getConnection());
+    }
+    public function listarDevice()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        $dispositivos = $this->deviceModel->getAllDevices();
+        include_once __DIR__ . '/../Views/Device/ListaDispositivos.php';
+    }
+
+    public function listarCategoria()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        $categorias = $this->categoryModel->getAllCategories();
+        include_once __DIR__ . '/../Views/Device/ListaCategoria.php';
     }
 
     public function AgregarDispositivo()
@@ -139,22 +167,12 @@ class DeviceController
                 $detalle = "Usuario {$user['name']} editó el dispositivo {$marca} {$modelo} (ID: $deviceId)";
                 $this->historialController->agregarAccion($accion, $detalle);
 
-                header('Location: /ProyectoPandora/Public/index.php?route=Dash/ListaDispositivos&success=1');
+                header('Location: index.php?route=Device/ListarDevice');
                 exit;
             }
             echo "Error al actualizar el dispositivo.";
         } else {
-            $db = new Database();
-            $db->connectDatabase();
-            $deviceModel = new DeviceModel($db->getConnection());
-            $device = $deviceModel->getDevicesByUserId($user['id']);
-            if (!$device) {
-                echo "Dispositivo no encontrado.";
-                return;
-            }
-            require_once __DIR__ . '/../Views/Device/ActualizarDevice.php';
-            // header('Location: /ProyectoPandora/Public/index.php?route=Dash/ActualizarDevice?id=' . $deviceId);
-            // exit;}
+            include_once __DIR__ . '/../Views/Device/ActualizarDevice.php';
         }
     }
     public function DeleteDevice()
@@ -166,7 +184,7 @@ class DeviceController
         }
         $deviceId = $_GET['id'] ?? 0;
         if (!$deviceId) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/ListaDispositivos&error=DeviceNotFound');
+            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice&error=DeviceNotFound');
             exit;
         }
         $db = new Database();
@@ -178,27 +196,27 @@ class DeviceController
             $detalle = "Usuario {$user['name']} eliminó el dispositivo con ID: $deviceId";
             $this->historialController->agregarAccion($accion, $detalle);
 
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/ListaDispositivos&success=1');
+            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice&success=1');
             exit;
         }
-        header('Location: /ProyectoPandora/Public/index.php?route=Dash/ListaDispositivos&error=ErrorDeletingDevice');
+        header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice&error=ErrorDeletingDevice');
         exit;
     }
     public function deleteCategory()
     {
         $categoryId = $_GET['id'] ?? 0;
         if (!$categoryId) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/ListaCategoriaDevice&error=CategoryNotFound');
+            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria&error=CategoryNotFound');
             exit;
         }
         $db = new Database();
         $db->connectDatabase();
         $categoryModel = new CategoryModel($db->getConnection());
         if ($categoryModel->deleteCategory($categoryId)) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/ListaCategoriaDevice&success=1');
+            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria&success=1');
             exit;
         }
-        header('Location: /ProyectoPandora/Public/index.php?route=Dash/ListaCategoriaDevice&error=ErrorDeletingCategory');
+        header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria&error=ErrorDeletingCategory');
         exit;
     }
 }
