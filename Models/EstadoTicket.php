@@ -1,5 +1,5 @@
 <?php
-class EstadoTicket
+class EstadoTicketModel
 {
     private $connection;
 

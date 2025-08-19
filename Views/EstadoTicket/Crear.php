@@ -4,7 +4,7 @@
             <h2>Agregar Estado de Ticket</h2>
             <div class="Formulario-general">
                 <div class="Formulario-contenedor">
-                    <form action="/ProyectoPandora/Public/index.php?route=EstadoTicket/Agregar" method="POST">
+                    <form action="/ProyectoPandora/Public/index.php?route=EstadoTicket/crear" method="POST">
                         <p>
                             <label for="name">Nombre del Estado:</label>
                             <input type="text" id="name" name="name" required>

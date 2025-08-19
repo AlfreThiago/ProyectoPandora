@@ -113,6 +113,14 @@ class DashController
         include_once __DIR__ . '/../Views/Device/CrearCategoria.php';
         include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
+    public function CrearEstadoTicket()
+    {
+        require_once __DIR__ . '/../Core/Auth.php';
+        Auth::checkRole(['Cliente', 'Tecnico', 'Supervisor', 'Administrador']);
+        include_once __DIR__ . '/../Views/Includes/Header.php';
+        include_once __DIR__ . '/../Views/EstadoTicket/Crear.php';
+        include_once __DIR__ . '/../Views/Includes/Footer.php';
+    }
     public function Historial()
     {
         require_once __DIR__ . '/../Core/Auth.php';
@@ -121,7 +129,7 @@ class DashController
         include_once __DIR__ . '/../Views/Admin/Historial.php';
         include_once __DIR__ . '/../Views/Includes/Footer.php';
     }
-Public function Guia()
+    public function Guia()
     {
         require_once __DIR__ . '/../Core/Auth.php';
         Auth::checkRole(['Cliente', 'Tecnico', 'Supervisor', 'Administrador']);
