@@ -44,4 +44,9 @@ return [
         'controller' => 'Device',
         'action' => 'ActualizarDevice'
     ],
+    'Device/ActualizarCategoria' => [
+        'controller' => 'Device',
+        'action' => 'ActualizarCategoria'
+    ],
+
 ];
