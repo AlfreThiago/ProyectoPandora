@@ -1,9 +1,7 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
--- Drop triggers if they exist
 DROP TRIGGER IF EXISTS trigger_insertar_usuario_por_rol;
 DROP TRIGGER IF EXISTS trigger_actualizar_usuario_por_rol;
--- Drop tables in reverse dependency order
 DROP TABLE IF EXISTS item_ticket;
 DROP TABLE IF EXISTS inventarios;
 DROP TABLE IF EXISTS dispositivos;
@@ -19,14 +17,11 @@ DROP TABLE IF EXISTS categorias;
 DROP TABLE IF EXISTS areas;
 DROP TABLE IF EXISTS users;
 SET FOREIGN_KEY_CHECKS = 1;
--- ----------------------
--- Create base tables
--- ----------------------
 CREATE TABLE users (
     id INT NOT NULL AUTO_INCREMENT,
-    `NAME` VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    `PASSWORD` VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     telefono VARCHAR(20),
     direccion VARCHAR(100),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -43,9 +38,6 @@ CREATE TABLE areas (
     name VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
--- ----------------------
--- Per-role tables
--- ----------------------
 CREATE TABLE clientes (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -84,34 +76,29 @@ CREATE TABLE administradores (
     UNIQUE KEY uq_admins_user (user_id),
     CONSTRAINT fk_admins_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
--- ----------------------
--- Catalog tables
--- ----------------------
 CREATE TABLE categorias (
     id INT NOT NULL AUTO_INCREMENT,
-    `NAME` VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE categorias_inventario (
     id INT NOT NULL AUTO_INCREMENT,
-    `NAME` VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE estados_tickets (
     id INT NOT NULL AUTO_INCREMENT,
-    `NAME` VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY uq_estados_name (`NAME`)
+    UNIQUE KEY uq_estados_name (name)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
--- ----------------------
--- Core entities
--- ----------------------
 CREATE TABLE tickets (
     id INT NOT NULL AUTO_INCREMENT,
     cliente_id INT NOT NULL,
     tecnico_id INT NULL,
     supervisor_id INT NULL,
     estado_id INT NOT NULL,
+    titulo VARCHAR(100) NOT NULL,
     descripcion TEXT NOT NULL,
     prioridad ENUM('Baja', 'Media', 'Alta') DEFAULT 'Media',
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -126,15 +113,16 @@ CREATE TABLE tickets (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE dispositivos (
     id INT NOT NULL AUTO_INCREMENT,
-    cliente_id INT NOT NULL,
+    user_id INT NOT NULL,
     categoria_id INT NOT NULL,
     marca VARCHAR(50),
     modelo VARCHAR(50),
     numero_serie VARCHAR(50),
     descripcion_falla TEXT,
-    foto_dispositivo VARCHAR(255) DEFAULT NULL,
+    img_dispositivo VARCHAR(255) DEFAULT NULL,
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    CONSTRAINT fk_dispositivos_cliente FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
+    CONSTRAINT fk_dispositivos_cliente FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_dispositivos_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE inventarios (
@@ -172,9 +160,6 @@ CREATE TABLE historial (
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
--- ----------------------
--- Triggers
--- ----------------------
 DELIMITER $$ CREATE TRIGGER trigger_insertar_usuario_por_rol
 AFTER
 INSERT ON users FOR EACH ROW BEGIN IF NEW.role = 'Cliente' THEN

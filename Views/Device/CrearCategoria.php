@@ -21,13 +21,16 @@
                 <h2>Añadir Categoría</h2>
                 <div class="Formulario-general">
                     <div class="Formulario-contenedor">
-                        <form action="/ProyectoPandora/Public/index.php?route=Device/AgregarCategoria" method="POST">
+                        <form action="/ProyectoPandora/Public/index.php?route=Device/CrearCategoria" method="POST">
                             <p>
                                 <label for="nombre">Nombre de la Categoría:</label>
                                 <input type="text" name="nombre" autocomplete="off" required>
                             </p>
                             <p>
-                                <button type="submit">Registrar</button>
+                                <button type="submit">Añadir</button>
+                            </p>
+                            <p>
+                                <a href="/ProyectoPandora/Public/index.php?route=Dash/ListaCategoriaDevice" class="btn">Volver a la lista de categorías</a>
                             </p>
                         </form>
                     </div>

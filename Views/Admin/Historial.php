@@ -1,10 +1,8 @@
 <?php
 require_once __DIR__ . '/../../Controllers/HistorialController.php';
-
 $historialController = new HistorialController();
 $historial = $historialController->obtenerHistorial();
 ?>
-
 <div class="timeline">
     <?php foreach ($historial as $movimiento): ?>
         <div class="timeline-item">

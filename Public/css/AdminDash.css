@@ -339,7 +339,8 @@ body {
 /* ======= PERFIL USUARIO ======= */
 .user {
   display: flex;
-  overflow: hidden;
+  align-items: center;
+  gap: 16px;
   margin-top: 1rem;
 }
 
@@ -357,8 +358,8 @@ body {
 .user-data {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  white-space: nowrap;
+  align-items: flex-start;
+  flex: 1;
 }
 
 .user-data .name {
@@ -380,8 +381,19 @@ body {
   font-size: 1.5rem;
 }
 
-.user-icon i {
+.user-icon.logout-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-left: 16px;
+  margin-right: 16px  ;
+}
+
+.user-icon.logout-icon i {
   color: white;
+  font-size: 2rem;
+  margin: 0;
 }
 
 /* Ocultar texto/datos en sidebar cerrada */
@@ -511,6 +523,20 @@ main {
   color: black;
   transition: margin-left 0.3s ease, max-width 0.3s ease;
 }
+.main-guia {
+  display:inline-block;
+    justify-content: center;
+    align-items: center;
+    min-height: 75vh;
+    padding: 20px;
+}
+.h1-guia {
+  color: white;
+}
+.p-guia {
+  color: white;
+}
+
 .Tabla-Contenedor {
   width: 100%;
   max-width: 100%;
@@ -550,7 +576,7 @@ table th:first-child {
 }
 table td:last-child,
 table th:last-child {
-  width: 180px; 
+  width: 210px; 
 }
  /* ESILO DE ROLES */
 .role {
@@ -584,6 +610,18 @@ table th:last-child {
     font-size: 0.9em;
     transition: background 0.2s ease;
     }
+.newCategory-btn {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+}
+
 .edit-btn {
     background-color: #1976d2;
 }
@@ -600,6 +638,7 @@ table th:last-child {
     color: #777;
     font-size: 0.85em;
 }
+
 table tr {
         border-bottom: 3px solid transparent;
 }

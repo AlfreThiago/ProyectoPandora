@@ -24,13 +24,7 @@ class AuthController
             $user = $userModel->findByEmail($email);
 
             if ($user && password_verify($password, $user['password'])) {
-                Auth::login($user); // Usar método login de Auth
-
-                // Guardar en historial
-                $accion = "Login";
-                $detalle = "Usuario {$user['name']} inició sesión.";
-                $this->historialController->agregarAccion($accion, $detalle);
-
+                Auth::login($user);
                 header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
                 exit;
             } else {
@@ -44,15 +38,7 @@ class AuthController
 
     public function Logout()
     {
-        $user = Auth::user();
-        if ($user) {
-            // Guardar en historial
-            $accion = "Logout";
-            $detalle = "Usuario {$user['name']} cerró sesión.";
-            $this->historialController->agregarAccion($accion, $detalle);
-        }
-
-        Auth::logout(); // Usar método logout de Auth
+        Auth::logout();
         header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
         exit;
     }
