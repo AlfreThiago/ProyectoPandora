@@ -133,6 +133,15 @@ return [
         'controller' => 'EstadoTicket',
         'action' => 'listar'
     ],
+    'EstadoTicket/Edit' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'editar'
+    ],
+
+    'EstadoTicket/Actualizar' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'actualizar'
+    ],
     // Rutas de Guia
     'Dash/Guia' => [
         'controller' => 'Dash',
