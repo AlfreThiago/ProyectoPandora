@@ -1,14 +1,9 @@
 <main>
-    <?php
-    // Traigo la clase para conectar con la base de datos
-    include_once __DIR__ . '/../../Core/Database.php';
-    ?>
     <div class="Tabla-Contenedor">
         <h2>Lista de Usuarios</h2>
         <div class="search-container">
             <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
         </div>
-
         <table id="userTable">
             <thead>
                 <tr>
@@ -22,13 +17,11 @@
             </thead>
             <tbody>
                 <?php
-
+                include_once __DIR__ . '/../../Core/Database.php';
                 $db = new Database();
                 $db->connectDatabase();
-
                 $userModel = new UserModel($db->getConnection());
                 $users = $userModel->getAllUsers();
-
                 if ($users) {
 
                     foreach ($users as $user) {
@@ -36,17 +29,12 @@
                         echo "<td>" . htmlspecialchars($user['id']) . "</td>";
                         echo "<td>" . htmlspecialchars($user['name']) . "</td>";
                         echo "<td>" . htmlspecialchars($user['email']) . "</td>";
-
-
                         $role = htmlspecialchars($user['role']);
                         echo "<td><span class='role $role'>$role</span></td>";
-
-
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($user['created_at']) . "</span></td>";
-
                         echo "<td>";
                         echo "<div class='action-buttons'>";
-                        echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/Edit-user&id=" . htmlspecialchars($user['id']) . "' class='btn edit-btn'>Editar</a>";
+                        echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=" . htmlspecialchars($user['id']) . "' class='btn edit-btn'>Actualizar</a>";
                         echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/Delete-user&id=" . htmlspecialchars($user['id']) . "' class='btn delete-btn'>Eliminar</a>";
                         echo "</div>";
                         echo "</td>";
@@ -60,7 +48,6 @@
             </tbody>
         </table>
     </div>
-
     <div class="dark-mode-btn" id="dark-mode-btn">
         <i class='bx bx-sun'></i>
         <i class='bx bx-moon'></i>

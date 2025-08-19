@@ -1,6 +1,5 @@
     <main>
         <?php
-        // Si la URL tiene error=EmailYaRegistrado, mostramos un mensaje de error en rojo
         if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
             <div style="color: red; margin-bottom: 10px;">
                 El correo electrónico ya está registrado. Por favor, usa otro.
@@ -12,7 +11,7 @@
                 <div class="Formulario-general">
                     <div class="Formulario-contenedor">
 
-                        <form action="/ProyectoPandora/Public/index.php?route=Register/RegisterAdminPortal" method="POST">
+                        <form action="/ProyectoPandora/Public/index.php?route=Register/RegisterAdmin" method="POST">
                             <p>
                                 <label for="name">Nombre:</label>
                                 <input type="text" name="name" autocomplete="off" required>

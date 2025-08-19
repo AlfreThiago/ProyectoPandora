@@ -13,8 +13,10 @@ class Auth
 
     public static function user()
     {
-        session_start();
-        return $_SESSION['user'] ?? null;
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        return isset($_SESSION['user']) ? $_SESSION['user'] : null;
     }
     public static function checkRole($requiredRoles)
     {

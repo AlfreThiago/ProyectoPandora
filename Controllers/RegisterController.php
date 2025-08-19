@@ -34,7 +34,7 @@ class RegisterController
         }
     }
 
-    public function RegisterAdminPortal()
+    public function RegisterAdmin()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = $_POST['name'] ?? '';
@@ -44,15 +44,14 @@ class RegisterController
 
             $result = $this->RegisterUserWithRole($username, $email, $password, $role);
 
-            // Guardar en historial
             $accion = "Registro de usuario por admin";
             $detalle = "El administrador registró el usuario {$username} con email {$email} y rol {$role}. Resultado: {$result}";
             $this->historialController->agregarAccion($accion, $detalle);
 
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/RegisterAdmin');
             exit;
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/RegisterAdminPortal');
+            header('Location: /ProyectoPandora/Public/index.php?route=Dash/RegisterAdmin');
         }
     }
 

@@ -16,13 +16,42 @@ class CategoryModel
         }
         return false;
     }
-    public function getCategories()
+    public function updateCategory($id, $nombreCategoria)
+    {
+        $stmt = $this->connection->prepare("UPDATE categorias SET name = ? WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("si", $nombreCategoria, $id);
+            return $stmt->execute();
+        }
+        return false;
+    }
+    public function deleteCategory($id)
+    {
+        $stmt = $this->connection->prepare("DELETE FROM categorias WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $id);
+            return $stmt->execute();
+        }
+        return false;
+    }
+    public function getAllCategories()
     {
         $stmt = $this->connection->prepare("SELECT * FROM categorias");
         if ($stmt) {
             $stmt->execute();
             $result = $stmt->get_result();
             return $result->fetch_all(MYSQLI_ASSOC);
+        }
+        return [];
+    }
+    public function getCategoryById($id)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM categorias WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_assoc();
         }
         return [];
     }

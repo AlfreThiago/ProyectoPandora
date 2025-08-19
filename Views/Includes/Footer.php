@@ -1,3 +1,7 @@
+<?php
+$user = Auth::user();
+?>
+
 <body>
     <nav class="footer">
         <div class="menu-conteiner">
@@ -74,33 +78,22 @@
                     </li>
                 <?php endif; ?>
             </ul>
-            <!-- Muestra el nombre y correo del usuario conectado -->
             <div class="user">
                 <div class="user-data">
-                    <?php if (isset($_SESSION['user'])): ?>
-                        <div class="user-data">
-                            <span class="name">
-                                <?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : 'Usuario'; ?>
-                            </span>
-                            <span class="email">
-                                <?php echo isset($_SESSION['user']['email']) ? htmlspecialchars($_SESSION['user']['email']) : 'correo@ejemplo.com'; ?>
-                            </span>
-                        </div>
+                    <?php
+                    if ($user):
+                    ?>
+                        <span class="name"><?php echo htmlspecialchars($user['name']); ?></span>
+                        <span class="email"><?php echo htmlspecialchars($user['email']); ?></span>
+                    <?php else: ?>
+                        <span class="name">Invitado</span>
+                        <span class="email">Sin Sesión</span>
                     <?php endif; ?>
-                 <!-- Mostrar esto SOLO si NO hay sesión iniciada -->
-                        <?php if (!isset($_SESSION['user'])): ?>
-                        <div class="profile">
-                            <div class="profile-info">
-                                <span class="name">Invitado</span>
-                                <span class="email">Sin Sesión</span>
-                            </div>
-                        </div>
-                        <?php endif; ?>
-                        <div class=" user-icon logout-icon">
-                            <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" >
-                                <i class='bxr  bx-arrow-out-left-square-half logout-icon'></i>
-                            </a>
-                        </div>
+                </div>
+                <div class="user-icon logout-icon">
+                    <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout">
+                        <i class='bx bx-log-out'></i>
+                    </a>
                 </div>
             </div>
         </div>

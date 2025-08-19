@@ -1,16 +1,14 @@
 <?php
 
 return [
-
     'Register/Register' => [
         'controller' => 'Register',
         'action' => 'Register'
     ],
-    'Register/RegisterAdminPortal' => [
+    'Register/RegisterAdmin' => [
         'controller' => 'Register',
-        'action' => 'RegisterAdminPortal'
+        'action' => 'RegisterAdmin'
     ],
-
     'Auth/Login' => [
         'controller' => 'Auth',
         'action' => 'Login'
@@ -22,76 +20,72 @@ return [
     //Rutas de Dashboards
     'Dash/Login' => [
         'controller' => 'Dash',
-        'action' => 'LoginDash'
+        'action' => 'Login'
     ],
     'Dash/Register' => [
         'controller' => 'Dash',
-        'action' => 'RegisterDash'
+        'action' => 'Register'
     ],
-    'Dash/RegisterAdminPortal' => [
+    'Dash/RegisterAdmin' => [
         'controller' => 'Dash',
-        'action' => 'RegisterAdminPortal'
+        'action' => 'RegisterAdmin'
     ],
     'Dash/Home' => [
         'controller' => 'Dash',
-        'action' => 'HomeDash'
+        'action' => 'Home'
     ],
-    'Dash/Admin' => [
+    'Dash/ListaUsers' => [
         'controller' => 'Dash',
-        'action' => 'AdminDash'
+        'action' => 'ListaUser'
     ],
-    'Dash/Supervisor' => [
+    'Dash/ListaCliente' => [
         'controller' => 'Dash',
-        'action' => 'SupervisorDash'
+        'action' => 'ListaCliente'
     ],
-    'Dash/Tecnico' => [
+    'Dash/ListaTecnico' => [
         'controller' => 'Dash',
-        'action' => 'TecnicoDash'
+        'action' => 'ListaTecnico'
     ],
-    'Dash/Cliente' => [
+    'Dash/ListaSupervisor' => [
         'controller' => 'Dash',
-        'action' => 'ClienteDash'
+        'action' => 'ListaSupervisor'
     ],
-    'Dash/TablaCliente' => [
+    'Dash/ListaAdmin' => [
         'controller' => 'Dash',
-        'action' => 'TablaCliente'
-    ],
-    'Dash/TablaTecnico' => [
-        'controller' => 'Dash',
-        'action' => 'TablaTecnico'
-    ],
-    'Dash/TablaSupervisor' => [
-        'controller' => 'Dash',
-        'action' => 'TablaSupervisor'
-    ],
-    'Dash/TablaAdmin' => [
-        'controller' => 'Dash',
-        'action' => 'TablaAdmin'
+        'action' => 'ListaAdmin'
     ],
     'Dash/Device' => [
         'controller' => 'Dash',
-        'action' => 'DeviceDash'
+        'action' => 'CrearDevice'
     ],
-    'Dash/TablaDispositivos' => [
+    'Dash/ListaDispositivos' => [
         'controller' => 'Dash',
-        'action' => 'TablaDispositivos'
+        'action' => 'ListaDispositivos'
     ],
-    'Dash/Category' => [
+    'Dash/ListaCategoriaDevice' => [
         'controller' => 'Dash',
-        'action' => 'CategoryDash'
+        'action' => 'ListaCategoriaDevice'
+    ],
+    'Dash/CrearCategoriaDevice' => [
+        'controller' => 'Dash',
+        'action' => 'CrearCategoriaDevice'
     ],
     'Dash/Historial' => [
         'controller' => 'Dash',
-        'action' => 'HistorialDash'
+        'action' => 'Historial'
+    ],
+    'Dash/ActualizarDevice' => [
+        'controller' => 'Dash',
+        'action' => 'ActualizarDevice'
     ],
     //Rutas de Administración
     'Admin/change-role' => [
         'controller' => 'Admin',
         'action' => 'changeRole'
     ],
-    'Admin/Edit-user' => [
+    'Admin/ActualizarUser' => [
         'controller' => 'Admin',
-        'action' => 'EditUser'
+        'action' => 'ActualizarUser'
     ],
     'Admin/Delete-user' => [
         'controller' => 'Admin',
@@ -102,16 +96,33 @@ return [
         'controller' => 'Device',
         'action' => 'AgregarDispositivo'
     ],
-    'Device/AgregarCategoria' => [
+    'Device/CrearCategoria' => [
         'controller' => 'Device',
-        'action' => 'AgregarCategoria'
+        'action' => 'CrearCategoria'
     ],
-    'Device/Edit-device' => [
+    'Device/Actualizar-Device' => [
         'controller' => 'Device',
-        'action' => 'EditDevice'
+        'action' => 'ActualizarDevice'
     ],
-    'Device/Delete-device' => [
+    'Device/Delete-Device' => [
         'controller' => 'Device',
         'action' => 'DeleteDevice'
+    ],
+    'Device/Actualizar-Category' => [
+        'controller' => 'Device',
+        'action' => 'ActualizarCategory'
+    ],
+    'Device/Delete-Category' => [
+        'controller' => 'Device',
+        'action' => 'deleteCategory'
+    ],
+    // Rutas de Estados de Ticket
+    'EstadoTicket/Agregar' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'crear'
+    ],
+    'EstadoTicket/Listar' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'listar'
     ],
 ];

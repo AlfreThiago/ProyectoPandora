@@ -34,7 +34,6 @@ CREATE TABLE users (
     ) NOT NULL DEFAULT 'Cliente',
     PRIMARY KEY (id)
 );
--- Tablas dependientes
 CREATE TABLE clientes (
     id INT(11) NOT NULL AUTO_INCREMENT,
     user_id INT(11) NOT NULL,
@@ -43,13 +42,13 @@ CREATE TABLE clientes (
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+-- Requiere Revision
 CREATE TABLE tecnicos (
     id INT(11) NOT NULL AUTO_INCREMENT,
     user_id INT(11) NOT NULL,
     disponibilidad ENUM('Disponible', 'Ocupado') DEFAULT 'Disponible',
     especialidad VARCHAR(100),
     ticket_count INT(11) DEFAULT 0,
-    -- Observación: contador de tickets asignados
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -76,6 +75,7 @@ CREATE TABLE tickets (
     tecnico_id INT(11),
     supervisor_id INT(11),
     estado_id INT(11) NOT NULL,
+    titulo VARCHAR(100) NOT NULL,
     descripcion TEXT NOT NULL,
     prioridad ENUM('Baja', 'Media', 'Alta') DEFAULT 'Media',
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -96,6 +96,8 @@ CREATE TABLE dispositivos (
     modelo VARCHAR(50),
     numero_serie VARCHAR(50),
     descripcion_falla TEXT,
+    img_dispositivo VARCHAR(255) DEFAULT NULL,
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE
@@ -133,7 +135,7 @@ CREATE TABLE historial (
     acciones VARCHAR(255) NOT NULL,
     detalles TEXT,
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id),
+    PRIMARY KEY (id)
 );
 -- Triggers
 DELIMITER $$ CREATE TRIGGER trigger_insertar_usuario_por_rol
@@ -153,8 +155,7 @@ VALUES (NEW.id);
 END IF;
 END $$ CREATE TRIGGER trigger_actualizar_usuario_por_rol
 AFTER
-UPDATE ON users FOR EACH ROW BEGIN -- Eliminar rol anterior
-    IF OLD.role = 'Cliente' THEN
+UPDATE ON users FOR EACH ROW BEGIN IF OLD.role = 'Cliente' THEN
 DELETE FROM clientes
 WHERE user_id = OLD.id;
 ELSEIF OLD.role = 'Tecnico' THEN
