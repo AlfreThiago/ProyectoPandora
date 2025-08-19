@@ -32,9 +32,9 @@
                         <i class='bx bx-home'></i>
                         <span>Home</span>
                     </a>
-                </li> 
+                </li>
                 <li class="item menu-item menu-item-static">
-                    <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">  
+                    <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
                         <i class="bx bx-guia">
                             <span>Guia</span>
                         </i>
