@@ -1,5 +1,5 @@
 <?php
-
+require_once __DIR__ . '/../Core/Database.php';
 class CategoryModel
 {
     private $connection;
@@ -54,5 +54,16 @@ class CategoryModel
             return $result->fetch_assoc();
         }
         return [];
+    }
+    public function findCategoryById($categoriaId)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM categorias WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $categoriaId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_assoc();
+        }
+        return false;
     }
 }

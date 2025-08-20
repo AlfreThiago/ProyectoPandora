@@ -31,7 +31,13 @@ return [
         'controller' => 'Admin',
         'action' => 'DeleteUser'
     ],
+    //
+    //
     //Device
+    'Device/CrearCategoria' => [
+        'controller' => 'Device',
+        'action' => 'CrearCategoria'
+    ],
     'Device/ListarDevice' => [
         'controller' => 'Device',
         'action' => 'listarDevice'
@@ -48,4 +54,12 @@ return [
         'controller' => 'Device',
         'action' => 'ActualizarCategoria'
     ],
+    //
+    //
+    //Historial
+    'Historial/ListarHistorial' => [
+        'controller' => 'Historial',
+        'action' => 'listarHistorial'
+    ],
+
 ];

@@ -19,7 +19,7 @@
                         <td><?php echo htmlspecialchars($categoria['id']); ?></td>
                         <td><?php echo htmlspecialchars($categoria['name']); ?></td>
                         <td>
-                            <a href="/ProyectoPandora/Public/index.php?route=Device/Actualizar-Category&id=<?php echo $categoria['id']; ?>" class="btn edit-btn">Actualizar</a>
+                            <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?php echo $categoria['id']; ?>" class="btn edit-btn">Actualizar</a>
                             |
                             <a href="/ProyectoPandora/Public/index.php?route=Device/Delete-Category&id=<?php echo $categoria['id']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');" class="btn delete-btn">Eliminar</a>
                         </td>

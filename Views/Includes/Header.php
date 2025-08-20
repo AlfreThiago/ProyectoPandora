@@ -41,7 +41,7 @@
                         <!-- Admin: ve todos los usuarios y opción de añadir -->
                         <!-- Historial -->
                         <li class="item">
-                            <a href="/ProyectoPandora/Public/index.php?route=Dash/Historial" class="link flex">
+                            <a href="/ProyectoPandora/Public/index.php?route=Historial/ListarHistorial" class="link flex">
                                 <i class='bxr  bx-history'></i>
                                 <span>Historial</span>
                             </a>

@@ -3,7 +3,6 @@ require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/../Models/Device.php';
 require_once __DIR__ . '/../Models/Category.php';
 require_once __DIR__ . '/../Controllers/HistorialController.php';
-require_once __DIR__ . '/../Core/Auth.php';
 
 
 class DeviceController
@@ -89,55 +88,71 @@ class DeviceController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombreCategoria = $_POST['nombre'] ?? '';
+
             if (empty($nombreCategoria)) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Dash/Device&error=CamposRequeridos');
+                header('Location: /ProyectoPandora/Public/index.php?route=Device/CrearCategoria&error=CamposRequeridos');
                 exit;
             }
-            $db = new Database();
-            $db->connectDatabase();
-            $categoryModel = new categoryModel($db->getConnection());
-            if ($categoryModel->createCategory($nombreCategoria)) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Dash/CrearCategoriaDevice&success=1');
-                exit;
-            }
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Device&error=ErrorAlAgregarCategoria');
-            exit;
-        } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/CrearCategoriaDevice');
-        }
-    }
-    public function EditCategory()
-    {
-        $categoryId = $_GET['id'] ?? 0;
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nombreCategoria = $_POST['nombre'] ?? '';
-            if (empty($nombreCategoria)) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Device/ListaCategoria&error=CamposRequeridos');
-                exit;
-            }
+
             $db = new Database();
             $db->connectDatabase();
             $categoryModel = new CategoryModel($db->getConnection());
-            if ($categoryModel->updateCategory($categoryId, $nombreCategoria)) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Device/ListaCategoria&success=1');
+
+            if ($categoryModel->createCategory($nombreCategoria)) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria&success=1');
+                exit;
+            } else {
+                header('Location: /ProyectoPandora/Public/index.php?route=Device/CrearCategoria&error=ErrorAlAgregarCategoria');
                 exit;
             }
-            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListaCategoria&error=ErrorAlActualizarCategoria');
-            exit;
         }
-        $db = new Database();
-        $db->connectDatabase();
-        $categoryModel = new CategoryModel($db->getConnection());
-        $categoria = $categoryModel->getCategoryById($categoryId);
-        if (!$categoria) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListaCategoria&error=CategoriaNoEncontrada');
-            exit;
-        }
-        require_once __DIR__ . '/../Views/Device/EditCategory.php';
+        include_once __DIR__ . '/../Views/Device/CrearCategoria.php';
     }
+
+    public function ActualizarCategoria()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        $id = (int) $_GET['id'];
+
+        // Buscar categoría
+        $categorias = $this->categoryModel->findCategoryById($id);
+        if (!$categorias) {
+            echo "Categoría no encontrada.";
+            return;
+        }
+
+        // Si envió POST → actualizar
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nombreCategoria = $_POST['nombre'] ?? '';
+            if (empty($nombreCategoria)) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria&error=CamposRequeridos');
+                exit;
+            }
+
+            $db = new Database();
+            $db->connectDatabase();
+            $categoryModel = new CategoryModel($db->getConnection());
+
+            if ($categoryModel->updateCategory($id, $nombreCategoria)) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria&success=1');
+                exit;
+            }
+
+            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria&error=ErrorAlActualizarCategoria');
+            exit;
+        }
+
+        // Mostrar vista
+        require_once __DIR__ . '/../Views/Device/ActualizarCategoria.php';
+    }
+
     public function ActualizarDevice()
     {
-        Auth::checkRole('Administrador'); // si solo admin puede editar
+        Auth::checkRole(['Administrador', 'Supervisor', 'Tecnico', 'Cliente']);
 
         // 1. Validar que exista el ID
         if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {

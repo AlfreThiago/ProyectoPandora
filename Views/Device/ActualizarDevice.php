@@ -3,7 +3,7 @@
     <div class="contenedor">
         <h2>Actualizar Dispositivo</h2>
 
-        <form method="POST" enctype="multipart/form-data" action="">
+        <form method="POST" enctype="multipart/form-data" action="index.php?route=Device/ActualizarDevice">
             <input type="hidden" name="from" value="<?= $_GET['from'] ?? 'Device/ListarDevices' ?> ">
             <input type="hidden" name="id" value="<?= $dispositivo['id'] ?>">
 
