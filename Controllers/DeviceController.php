@@ -192,8 +192,6 @@ class DeviceController
         include __DIR__ . '/../Views/Device/ActualizarDevice.php';
     }
 
-
-
     public function deleteDevice()
     {
         $user = Auth::user();
