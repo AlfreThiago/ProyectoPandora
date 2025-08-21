@@ -25,21 +25,21 @@ class AuthController
 
             if ($user && password_verify($password, $user['password'])) {
                 Auth::login($user);
-                header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
+                header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
                 exit;
             } else {
-                header('Location: /ProyectoPandora/Public/index.php?route=Dash/Login');
+                header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
                 exit;
             }
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Login');
+            include_once __DIR__ . '/../Views/Auth/Login.php';
         }
     }
 
     public function Logout()
     {
         Auth::logout();
-        header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
+        header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
         exit;
     }
 }

@@ -21,7 +21,6 @@ class RegisterController
             $password = $_POST['password'] ?? '';
 
             $result = $this->RegisterUser($username, $email, $password);
-
             // Guardar en historial
             $accion = "Registro de usuario";
             $detalle = "Se registró el usuario {$username} con email {$email}. Resultado: {$result}";
@@ -30,12 +29,13 @@ class RegisterController
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Register');
+            include_once __DIR__ . '/../Views/Auth/Register.php';
         }
     }
 
     public function RegisterAdmin()
     {
+        $user = Auth::user();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = $_POST['name'] ?? '';
             $email = $_POST['email'] ?? '';
@@ -48,10 +48,10 @@ class RegisterController
             $detalle = "El administrador registró el usuario {$username} con email {$email} y rol {$role}. Resultado: {$result}";
             $this->historialController->agregarAccion($accion, $detalle);
 
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/RegisterAdmin');
+            header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers');
             exit;
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/RegisterAdmin');
+            include_once __DIR__ . '/../Views/Admin/Register.php';
         }
     }
 

@@ -28,7 +28,7 @@ class EstadoTicketController
             $name = $_POST['name'] ?? '';
             if ($name) {
                 $this->estadoModel->crear($name);
-                header('Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/Listar');
+                header('Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados');
                 exit;
             }
         }
@@ -58,10 +58,10 @@ class EstadoTicketController
             $name = $_POST['name'];
 
             if ($this->estadoModel->updateEstado($id, $name)) {
-                header("Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/Listar");
+                header("Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados");
                 exit();
             } else {
-                header('Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/Listar');
+                header('Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados');
                 exit();
             }
         }
@@ -72,7 +72,7 @@ class EstadoTicketController
         $id = $_GET['id'] ?? null;
         if ($id) {
             $this->estadoModel->eliminar($id);
-            header('Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/Listar');
+            header('Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados');
             exit;
         }
     }

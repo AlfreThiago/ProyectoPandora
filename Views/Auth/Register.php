@@ -1,3 +1,4 @@
+<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 <main>
     <?phP
     if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
@@ -33,3 +34,4 @@
         </section>
     </div>
 </main>
+<?php include_once __DIR__ . '/../Includes/Footer.php'; ?>

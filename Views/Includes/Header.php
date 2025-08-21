@@ -28,7 +28,7 @@
                     <span class="line"></span>
                 </div>
                 <li class="item menu-item menu-item-static">
-                    <a href="/ProyectoPandora/Public/index.php?route=Dash/Home" class="link flex">
+                    <a href="/ProyectoPandora/Public/index.php?route=Default/Index" class="link flex">
                         <i class='bx bx-home'></i>
                         <span>Home</span>
                     </a>
@@ -85,10 +85,9 @@
                                 <li class="sub-menu">
                                 <li><a href="/ProyectoPandora/Public/index.php?route=Dash/Ticket" class="sub-menu-link">Tickets</a></li>
                                 <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaTicket" class="sub-menu-link">Lista de Tickets</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Listar" class="sub-menu-link">Lista de Estados</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados" class="sub-menu-link">Lista de Estados</a></li>
                             </ul>
                         </li>
-
                         <li class="item menu-item-dropdown">
                             <a href="#" class="link flex">
                                 <i class='bx bx-plus-square'></i>
@@ -98,7 +97,7 @@
                             <!-- Zona submenu para Añadir -->
                             <ul class="sub-menu">
                                 <li><a href="/ProyectoPandora/Public/index.php?route=Register/RegisterAdmin" class="sub-menu-link">Usuarios</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/Device" class="sub-menu-link">Dispositivo</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Device/CrearDevice" class="sub-menu-link">Dispositivo</a></li>
                             </ul>
                         </li>
                     <?php elseif ($role === 'supervisor'): ?>

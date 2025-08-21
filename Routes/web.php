@@ -2,6 +2,33 @@
 
 return [
     //Rutas Funcionales y Logicas 
+    //
+    //Ruta por Defecto Index-Home
+    'Default/Index' => [
+        'controller' => 'Default',
+        'action' => 'index'
+    ],
+    //
+    //Auth del Login 
+    //Register el Registrar
+    'Auth/Login' => [
+        'controller' => 'Auth',
+        'action' => 'Login'
+    ],
+    'Register/Register' => [
+        'controller' => 'Register',
+        'action' => 'Register'
+    ],
+    'Register/RegisterAdmin' => [
+        'controller' => 'Register',
+        'action' => 'RegisterAdmin'
+    ],
+    'Auth/Logout' => [
+        'controller' => 'Auth',
+        'action' => 'Logout'
+    ],
+    //
+    //
     //Admin
     'Admin/ListarUsers' => [
         'controller' => 'Admin',
@@ -34,6 +61,10 @@ return [
     //
     //
     //Device
+    'Device/CrearDevice' => [
+        'controller' => 'Device',
+        'action' => 'CrearDispositivo'
+    ],
     'Device/CrearCategoria' => [
         'controller' => 'Device',
         'action' => 'CrearCategoria'
@@ -54,6 +85,14 @@ return [
         'controller' => 'Device',
         'action' => 'ActualizarCategoria'
     ],
+    'Device/DeleteDevice' => [
+        'controller' => 'Device',
+        'action' => 'deleteDevice'
+    ],
+    'Device/DeleteCategoria' => [
+        'controller' => 'Device',
+        'action' => 'deleteCategory'
+    ],
     //
     //
     //Historial
@@ -61,5 +100,23 @@ return [
         'controller' => 'Historial',
         'action' => 'listarHistorial'
     ],
-
+    //
+    //
+    //EstadoTicket
+    'EstadoTicket/Crear' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'crear'
+    ],
+    'EstadoTicket/ListarEstados' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'listar'
+    ],
+    'EstadoTicket/Editar' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'editar'
+    ],
+    'EstadoTicket/Actualizar' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'actualizar'
+    ],
 ];

@@ -18,7 +18,7 @@
                                 <td><?php echo htmlspecialchars($estado['id']); ?></td>
                                 <td><?php echo htmlspecialchars($estado['name']); ?></td>
                                 <td>
-                                    <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Edit&id=<?php echo $estado['id']; ?>" class="btn edit-btn">Actualizar</a>
+                                    <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Editar&id=<?php echo $estado['id']; ?>" class="btn edit-btn">Actualizar</a>
                                     <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Eliminar&id=<?php echo $estado['id']; ?>" class="btn delete-btn">Eliminar</a>
                                 </td>
                             </tr>
@@ -30,7 +30,7 @@
                         <?php endif; ?>
                     </tbody>
                 </table>
-                <a class="btn newCategory-btn" href="/ProyectoPandora/Public/index.php?route=Dash/CrearEstadoTicket">Agregar Nuevo Estado</a>
+                <a class="btn newCategory-btn" href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Crear">Agregar Nuevo Estado</a>
             </div>
         </div>
 

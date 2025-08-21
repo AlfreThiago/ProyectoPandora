@@ -1,5 +1,5 @@
 <?php
-$user = Auth::user();
+
 ?>
 
 <body>
@@ -81,10 +81,10 @@ $user = Auth::user();
             <div class="user">
                 <div class="user-data">
                     <?php
-                    if ($user):
+                    if (isset($_SESSION['user'])):
                     ?>
-                        <span class="name"><?php echo htmlspecialchars($user['name']); ?></span>
-                        <span class="email"><?php echo htmlspecialchars($user['email']); ?></span>
+                        <span class="name"><?php echo htmlspecialchars($_SESSION['user']['name']); ?></span>
+                        <span class="email"><?php echo htmlspecialchars($_SESSION['user']['email']); ?></span>
                     <?php else: ?>
                         <span class="name">Invitado</span>
                         <span class="email">Sin Sesión</span>
