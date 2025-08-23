@@ -3,7 +3,7 @@
     <div class="contenedor">
         <h2>Actualizar Dispositivo</h2>
 
-        <form method="POST" enctype="multipart/form-data" action="index.php?route=Device/ActualizarDevice">
+        <form method="POST" enctype="multipart/form-data" action="/ProyectoPandora/Public/index.php?route=Device/ActualizarDevice&id=<?= $dispositivo['id'] ?>">
             <input type="hidden" name="from" value="<?= $_GET['from'] ?? 'Device/ListarDevices' ?> ">
             <input type="hidden" name="id" value="<?= $dispositivo['id'] ?>">
 
@@ -30,9 +30,7 @@
             <label>Imagen del dispositivo</label>
             <?php if (!empty($dispositivo['img_dispositivo'])): ?>
                 <br>
-                <img src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($dispositivo['img_dispositivo']) ?>"
-                    alt="Imagen actual" width="150">
-
+                <img src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($dispositivo['img_dispositivo']) ?>">
                 <br><br>
             <?php endif; ?>
             <input type="file" name="img_dispositivo" <?= empty($dispositivo['img_dispositivo']) ? 'required' : '' ?>>

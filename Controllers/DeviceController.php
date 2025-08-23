@@ -118,14 +118,12 @@ class DeviceController
         }
         $id = (int) $_GET['id'];
 
-        // Buscar categoría
         $categorias = $this->categoryModel->findCategoryById($id);
         if (!$categorias) {
             echo "Categoría no encontrada.";
             return;
         }
 
-        // Si envió POST → actualizar
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombreCategoria = $_POST['nombre'] ?? '';
             if (empty($nombreCategoria)) {
@@ -145,8 +143,6 @@ class DeviceController
             header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria&error=ErrorAlActualizarCategoria');
             exit;
         }
-
-        // Mostrar vista
         require_once __DIR__ . '/../Views/Device/ActualizarCategoria.php';
     }
 
@@ -161,21 +157,29 @@ class DeviceController
         if (!$dispositivo) return exit("Dispositivo no encontrado.");
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            extract($_POST); // crea $marca, $modelo, $descripcion_falla, $categoria_id
+            extract($_POST);
 
-            if ($marca && $modelo && $descripcion_falla && $categoria_id) {
-                // Imagen → mantener la actual si no se sube nada
-                $imgDispositivo = $dispositivo['img_dispositivo'];
+            if ($categoria_id && $marca && $modelo && $descripcion_falla) {
+
+                $img_dispositivo = $dispositivo['img_dispositivo'];
                 if (!empty($_FILES['img_dispositivo']['name'])) {
                     $dir = __DIR__ . "/../Public/img/imgDispositivos/";
                     is_dir($dir) || mkdir($dir, 0777, true);
 
                     $fileName = basename($_FILES['img_dispositivo']['name']);
-                    $imgDispositivo = "img/imgDispositivos/" . $fileName;
+                    $img_dispositivo = $fileName;
                     move_uploaded_file($_FILES['img_dispositivo']['tmp_name'], $dir . $fileName);
                 }
 
-                $this->deviceModel->updateDevice($id, $marca, $modelo, $descripcion_falla, $categoria_id, $imgDispositivo);
+                $this->deviceModel->updateDevice(
+                    $id,
+                    $categoria_id,
+                    $marca,
+                    $modelo,
+                    $descripcion_falla,
+                    $img_dispositivo
+                );
+
 
                 $admin = Auth::user();
                 $this->historialController->agregarAccion(
@@ -183,11 +187,10 @@ class DeviceController
                     "{$admin['name']} actualizó el dispositivo con ID {$id}."
                 );
 
-                return header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarDevices');
+                return header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice');
             }
             $error = "Todos los campos son obligatorios.";
         }
-
         $categorias = $this->categoryModel->getAllCategories();
         include __DIR__ . '/../Views/Device/ActualizarDevice.php';
     }

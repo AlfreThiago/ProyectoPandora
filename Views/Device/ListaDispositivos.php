@@ -30,7 +30,7 @@
                         echo "<td>{$dispositivo['descripcion_falla']}</td>";
                         echo "<td><img src='/ProyectoPandora/Public/img/imgDispositivos/{$dispositivo['img_dispositivo']}' width='80'></td>";
                         echo "<td><a href='/ProyectoPandora/Public/index.php?route=Device/ActualizarDevice&id={$dispositivo['id']}' class='btn edit-btn'>Actualizar</a>
-                                    <a href='/ProyectoPandora/Public/index.php?route=Device/Delete-Device&id={$dispositivo['id']}' class='btn delete-btn'>Eliminar</a>
+                                    <a href='/ProyectoPandora/Public/index.php?route=Device/DeleteDevice&id={$dispositivo['id']}' class='btn delete-btn'>Eliminar</a>
                                 </td>";
                         echo "</tr>";
                     }
