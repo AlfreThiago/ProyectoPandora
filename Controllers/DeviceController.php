@@ -151,49 +151,42 @@ class DeviceController
         Auth::checkRole(['Administrador', 'Supervisor', 'Tecnico', 'Cliente']);
 
         $id = $_GET['id'] ?? null;
-        if (!$id || !is_numeric($id)) return exit("ID inválido.");
+        if (!$id || !is_numeric($id)) exit("ID inválido.");
 
         $dispositivo = $this->deviceModel->findDeviceById((int)$id);
-        if (!$dispositivo) return exit("Dispositivo no encontrado.");
+        if (!$dispositivo) exit("Dispositivo no encontrado.");
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            extract($_POST);
+            $categoria_id     = $_POST['categoria_id'] ?? null;
+            $marca            = $_POST['marca'] ?? null;
+            $modelo           = $_POST['modelo'] ?? null;
+            $descripcion_falla = $_POST['descripcion_falla'] ?? null;
 
             if ($categoria_id && $marca && $modelo && $descripcion_falla) {
-
                 $img_dispositivo = $dispositivo['img_dispositivo'];
                 if (!empty($_FILES['img_dispositivo']['name'])) {
                     $dir = __DIR__ . "/../Public/img/imgDispositivos/";
-                    is_dir($dir) || mkdir($dir, 0777, true);
-
+                    if (!is_dir($dir)) mkdir($dir, 0777, true);
                     $fileName = basename($_FILES['img_dispositivo']['name']);
                     $img_dispositivo = $fileName;
                     move_uploaded_file($_FILES['img_dispositivo']['tmp_name'], $dir . $fileName);
                 }
-
-                $this->deviceModel->updateDevice(
-                    $id,
-                    $categoria_id,
-                    $marca,
-                    $modelo,
-                    $descripcion_falla,
-                    $img_dispositivo
-                );
-
+                $this->deviceModel->updateDevice($id, $categoria_id, $marca, $modelo, $descripcion_falla, $img_dispositivo);
 
                 $admin = Auth::user();
                 $this->historialController->agregarAccion(
                     "Actualización de dispositivo",
                     "{$admin['name']} actualizó el dispositivo con ID {$id}."
                 );
-
-                return header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice');
+                header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice');
+                exit;
             }
             $error = "Todos los campos son obligatorios.";
         }
         $categorias = $this->categoryModel->getAllCategories();
         include __DIR__ . '/../Views/Device/ActualizarDevice.php';
     }
+
 
     public function deleteDevice()
     {
