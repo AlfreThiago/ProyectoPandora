@@ -576,7 +576,7 @@ table th:first-child {
 }
 table td:last-child,
 table th:last-child {
-  width: 210px; 
+  width: 180px; 
 }
  /* ESILO DE ROLES */
 .role {
