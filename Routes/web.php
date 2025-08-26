@@ -119,4 +119,35 @@ return [
         'controller' => 'EstadoTicket',
         'action' => 'actualizar'
     ],
+    //
+    //
+    //Ticket
+    'Ticket/Agregar' => [
+        'controller' => 'Ticket',
+        'action' => 'mostrarCrear'
+    ],
+    'Ticket/Crear' => [
+        'controller' => 'Ticket',
+        'action' => 'crear'
+    ],
+    'Ticket/Listar' => [
+        'controller' => 'Ticket',
+        'action' => 'mostrarLista'
+    ],
+    'Ticket/Actualizar' => [
+        'controller' => 'Ticket',
+        'action' => 'update'
+    ],
+    'Ticket/Editar' => [
+        'controller' => 'Ticket',
+        'action' => 'edit'
+    ],
+    'Ticket/Ver' => [
+        'controller' => 'Ticket',
+        'action' => 'verTicket'
+    ],
+    'Ticket/Eliminar' => [
+        'controller' => 'Ticket',
+        'action' => 'eliminar'
+    ],
 ];

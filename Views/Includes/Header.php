@@ -46,7 +46,7 @@
                                 <span>Historial</span>
                             </a>
                         </li>
-                        <!-- Dispositivos -->
+                        <!-- Dispositivos // CORREJIDO 👍-->
                         <li class="item menu-item-dropdown">
                             <a href="#" class="link flex">
                                 <i class='bx bx-devices'></i>
@@ -74,7 +74,7 @@
                                 <li><a href="/ProyectoPandora/Public/index.php?route=Admin/ListarAdmins" class="sub-menu-link">Admins</a></li>
                             </ul>
                         </li>
-                        <!-- Ticket -->
+                        <!-- Ticket //NO CORREJIDO 🥺 -->
                         <li class="item menu-item menu-item-dropdown">
                             <a href="#" class="link flex">
                                 <i class='bx bx-ticket'></i>
@@ -83,8 +83,8 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="sub-menu">
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/Ticket" class="sub-menu-link">Tickets</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaTicket" class="sub-menu-link">Lista de Tickets</a></li>
+
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Ticket/Listar" class="sub-menu-link">Lista de Tickets</a></li>
                                 <li><a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados" class="sub-menu-link">Lista de Estados</a></li>
                             </ul>
                         </li>
@@ -96,6 +96,7 @@
                             </a>
                             <!-- Zona submenu para Añadir -->
                             <ul class="sub-menu">
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Ticket/Agregar" class="sub-menu-link">Tickets</a></li>
                                 <li><a href="/ProyectoPandora/Public/index.php?route=Register/RegisterAdmin" class="sub-menu-link">Usuarios</a></li>
                                 <li><a href="/ProyectoPandora/Public/index.php?route=Device/CrearDevice" class="sub-menu-link">Dispositivo</a></li>
                             </ul>
