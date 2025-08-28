@@ -1,4 +1,6 @@
-
+<head>
+    <link rel="stylesheet" href="Public/css/Includes/Header.css">
+</head>
 <main class="main-guia">
     <h1 class="h1-guia">Guide About Innovasys</h1>
     <h2>In this section we explain how to use our repair service!</h2>

@@ -1,0 +1,15 @@
+.main-guia {
+  display:inline-block;
+    justify-content: center;
+    align-items: center;
+    min-height: 75vh;
+    padding: 20px;
+    background-color: #1E90FF;
+    
+}
+.h1-guia {
+  color: rgb(240, 0, 0);
+}
+.p-guia {
+  color: white;
+}
