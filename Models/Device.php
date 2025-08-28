@@ -17,6 +17,22 @@ class DeviceModel
         }
         return false;
     }
+    public function findDeviceById($id)
+    {
+        $sql = "SELECT d.*, u.name AS user_name, c.name AS categoria_name
+                FROM dispositivos d
+                INNER JOIN users u ON d.user_id = u.id
+                INNER JOIN categorias c ON d.categoria_id = c.id
+                WHERE d.id = ?";
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_assoc(); // Devuelve un array asociativo con los datos
+    }
+
     public function getDevicesByUserId($userId)
     {
         $stmt = $this->connection->prepare("SELECT * FROM dispositivos WHERE user_id = ?");

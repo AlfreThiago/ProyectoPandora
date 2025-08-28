@@ -1,10 +1,11 @@
+<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 <main>
     <div class="Contenedor">
         <section class="Conenedor-formulario-principal">
             <h2>Agregar Dispositivo</h2>
             <div class="Formulario-general">
                 <div class="Formulario-contenedor">
-                    <form action="/ProyectoPandora/Public/index.php?route=Device/Agregar" method="POST" enctype="multipart/form-data">
+                    <form action="/ProyectoPandora/Public/index.php?route=Device/CrearDevice" method="POST" enctype="multipart/form-data">
                         <p>
                             <label for="categoria_id">Categoría del Dispositivo:</label>
                             <select id="categoria_id" name="categoria_id" required>
@@ -40,3 +41,4 @@
         </section>
     </div>
 </main>
+<?php include_once __DIR__ . '/../Includes/Footer.php' ?>

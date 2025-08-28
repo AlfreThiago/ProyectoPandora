@@ -1,6 +1,20 @@
 <?php
 
 return [
+    //Rutas Funcionales y Logicas 
+    //
+    //Ruta por Defecto Index-Home
+    'Default/Index' => [
+        'controller' => 'Default',
+        'action' => 'index'
+    ],
+    //
+    //Auth del Login 
+    //Register el Registrar
+    'Auth/Login' => [
+        'controller' => 'Auth',
+        'action' => 'Login'
+    ],
     'Register/Register' => [
         'controller' => 'Register',
         'action' => 'Register'
@@ -9,125 +23,131 @@ return [
         'controller' => 'Register',
         'action' => 'RegisterAdmin'
     ],
-    'Auth/Login' => [
-        'controller' => 'Auth',
-        'action' => 'Login'
-    ],
     'Auth/Logout' => [
         'controller' => 'Auth',
         'action' => 'Logout'
     ],
-    //Rutas de Dashboards
-    'Dash/Login' => [
-        'controller' => 'Dash',
-        'action' => 'Login'
-    ],
-    'Dash/Register' => [
-        'controller' => 'Dash',
-        'action' => 'Register'
-    ],
-    'Dash/RegisterAdmin' => [
-        'controller' => 'Dash',
-        'action' => 'RegisterAdmin'
-    ],
-    'Dash/Home' => [
-        'controller' => 'Dash',
-        'action' => 'Home'
-    ],
-    'Dash/ListaUsers' => [
-        'controller' => 'Dash',
-        'action' => 'ListaUser'
-    ],
-    'Dash/ListaCliente' => [
-        'controller' => 'Dash',
-        'action' => 'ListaCliente'
-    ],
-    'Dash/ListaTecnico' => [
-        'controller' => 'Dash',
-        'action' => 'ListaTecnico'
-    ],
-    'Dash/ListaSupervisor' => [
-        'controller' => 'Dash',
-        'action' => 'ListaSupervisor'
-    ],
-    'Dash/ListaAdmin' => [
-        'controller' => 'Dash',
-        'action' => 'ListaAdmin'
-    ],
-    'Dash/Device' => [
-        'controller' => 'Dash',
-        'action' => 'CrearDevice'
-    ],
-    'Dash/ListaDispositivos' => [
-        'controller' => 'Dash',
-        'action' => 'ListaDispositivos'
-    ],
-    'Dash/ListaCategoriaDevice' => [
-        'controller' => 'Dash',
-        'action' => 'ListaCategoriaDevice'
-    ],
-    'Dash/CrearCategoriaDevice' => [
-        'controller' => 'Dash',
-        'action' => 'CrearCategoriaDevice'
-    ],
-    'Dash/Historial' => [
-        'controller' => 'Dash',
-        'action' => 'Historial'
-    ],
-    'Dash/ActualizarDevice' => [
-        'controller' => 'Dash',
-        'action' => 'ActualizarDevice'
-    ],
-    //Rutas de Administración
-    'Admin/change-role' => [
+    //
+    //
+    //Admin
+    'Admin/ListarUsers' => [
         'controller' => 'Admin',
-        'action' => 'changeRole'
+        'action' => 'listarUsers'
+    ],
+    'Admin/ListarClientes' => [
+        'controller' => 'Admin',
+        'action' => 'listarCli'
+    ],
+    'Admin/ListarTecnicos' => [
+        'controller' => 'Admin',
+        'action' => 'listarTecs'
+    ],
+    'Admin/ListarSupervisores' => [
+        'controller' => 'Admin',
+        'action' => 'listarSupers'
+    ],
+    'Admin/ListarAdmins' => [
+        'controller' => 'Admin',
+        'action' => 'listarAdmins'
     ],
     'Admin/ActualizarUser' => [
         'controller' => 'Admin',
         'action' => 'ActualizarUser'
     ],
-    'Admin/Delete-user' => [
+    'Admin/DeleteUser' => [
         'controller' => 'Admin',
         'action' => 'DeleteUser'
     ],
-    // Rutas de Dispositivos
-    'Device/Agregar' => [
+    //
+    //
+    //Device
+    'Device/CrearDevice' => [
         'controller' => 'Device',
-        'action' => 'AgregarDispositivo'
+        'action' => 'CrearDispositivo'
     ],
     'Device/CrearCategoria' => [
         'controller' => 'Device',
         'action' => 'CrearCategoria'
     ],
-    'Device/Actualizar-Device' => [
+    'Device/ListarDevice' => [
+        'controller' => 'Device',
+        'action' => 'listarDevice'
+    ],
+    'Device/ListarCategoria' => [
+        'controller' => 'Device',
+        'action' => 'listarCategoria'
+    ],
+    'Device/ActualizarDevice' => [
         'controller' => 'Device',
         'action' => 'ActualizarDevice'
     ],
-    'Device/Delete-Device' => [
+    'Device/ActualizarCategoria' => [
         'controller' => 'Device',
-        'action' => 'DeleteDevice'
+        'action' => 'ActualizarCategoria'
     ],
-    'Device/Actualizar-Category' => [
+    'Device/DeleteDevice' => [
         'controller' => 'Device',
-        'action' => 'ActualizarCategory'
+        'action' => 'deleteDevice'
     ],
-    'Device/Delete-Category' => [
+    'Device/DeleteCategoria' => [
         'controller' => 'Device',
         'action' => 'deleteCategory'
     ],
-    // Rutas de Estados de Ticket
-    'EstadoTicket/Agregar' => [
+    //
+    //
+    //Historial
+    'Historial/ListarHistorial' => [
+        'controller' => 'Historial',
+        'action' => 'listarHistorial'
+    ],
+    //
+    //
+    //EstadoTicket
+    'EstadoTicket/Crear' => [
         'controller' => 'EstadoTicket',
         'action' => 'crear'
     ],
-    'EstadoTicket/Listar' => [
+    'EstadoTicket/ListarEstados' => [
         'controller' => 'EstadoTicket',
         'action' => 'listar'
     ],
-    // Rutas de Guia
-    'Dash/Guia' => [
-        'controller' => 'Dash',
-        'action' => 'Guia'
-    ]
+    'EstadoTicket/Editar' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'editar'
+    ],
+    'EstadoTicket/Actualizar' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'actualizar'
+    ],
+    //
+    //
+    //Ticket
+    'Ticket/Agregar' => [
+        'controller' => 'Ticket',
+        'action' => 'mostrarCrear'
+    ],
+    'Ticket/Crear' => [
+        'controller' => 'Ticket',
+        'action' => 'crear'
+    ],
+    'Ticket/Listar' => [
+        'controller' => 'Ticket',
+        'action' => 'mostrarLista'
+    ],
+    'Ticket/Actualizar' => [
+        'controller' => 'Ticket',
+        'action' => 'update'
+    ],
+    'Ticket/Editar' => [
+        'controller' => 'Ticket',
+        'action' => 'edit'
+    ],
+    'Ticket/Ver' => [
+        'controller' => 'Ticket',
+        'action' => 'verTicket'
+    ],
+    'Ticket/Eliminar' => [
+        'controller' => 'Ticket',
+        'action' => 'eliminar'
+    ],
 ];

@@ -1,3 +1,4 @@
+<?php include_once __DIR__ . '/../Includes/Header.php' ?>
 <main>
     <div class="Tabla-Contenedor">
         <h2>Lista de Admins</h2>
@@ -17,10 +18,6 @@
             </thead>
             <tbody>
                 <?php
-                $db = new Database();
-                $db->connectDatabase();
-                $userModel = new UserModel($db->getConnection());
-                $administradores = $userModel->getAllAdministradores();
                 if ($administradores) {
                     foreach ($administradores as $admin) {
                         $role = htmlspecialchars($admin['role']);
@@ -31,8 +28,8 @@
                         echo "<td><span class='role $role'>$role</span></td>";
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($admin['created_at']) . "</span></td>";
                         echo "<td>
-                                <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id={$admin['id']}' class='btn edit-btn'>Editar</a>
-                                <a href='/ProyectoPandora/Public/index.php?route=Admin/Delete-user&id={$admin['id']}' class='btn delete-btn'>Eliminar</a>
+                               <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id={$admin['id']} from=Admin/ListarAdmins' class='btn edit-btn'>Actualizar</a>
+                                <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id={$admin['id']}' class='btn delete-btn'>Eliminar</a>
                               </td>";
                         echo "</tr>";
                     }
@@ -43,9 +40,5 @@
             </tbody>
         </table>
     </div>
-    <div class="dark-mode-btn" id="dark-mode-btn">
-        <i class='bx bx-sun'></i>
-        <i class='bx bx-moon'></i>
-    </div>
-    <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>
+<?php include_once __DIR__ . '/../Includes/Footer.php' ?>

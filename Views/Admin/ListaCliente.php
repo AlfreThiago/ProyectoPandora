@@ -1,3 +1,4 @@
+<?php include_once __DIR__ . '/../Includes/Header.php' ?>
 <main>
     <div class="Tabla-Contenedor">
         <h2>Lista de Clientes</h2>
@@ -17,10 +18,6 @@
             </thead>
             <tbody>
                 <?php
-                $db = new Database();
-                $db->connectDatabase();
-                $userModel = new UserModel($db->getConnection());
-                $clientes = $userModel->getAllClientes();
                 if ($clientes) {
                     foreach ($clientes as $cliente) {
                         $role = htmlspecialchars($cliente['role']);
@@ -30,8 +27,9 @@
                         echo "<td>{$cliente['email']}</td>";
                         echo "<td><span class='role $role'>$role</span></td>";
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($cliente['created_at']) . "</span></td>";
-                        echo "<td>  <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id={$cliente['id']}' class='btn edit-btn'>Actualizar</a>
-                                    <a href='/ProyectoPandora/Public/index.php?route=Admin/Delete-user&id={$cliente['id']}' class='btn delete-btn'>Eliminar</a>
+                        echo "<td>  <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id={$cliente['id']}&from=Admin/ListarClientes' class='btn edit-btn'>Actualizar</a>
+                            |
+                                    <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id={$cliente['id']}' class='btn delete-btn'>Eliminar</a>
                               </td>";
                         echo "</tr>";
                     }
@@ -42,9 +40,5 @@
             </tbody>
         </table>
     </div>
-    <div class="dark-mode-btn" id="dark-mode-btn">
-        <i class='bx bx-sun'></i>
-        <i class='bx bx-moon'></i>
-    </div>
-    <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>
+<?php include_once __DIR__ . '/../Includes/Footer.php' ?>

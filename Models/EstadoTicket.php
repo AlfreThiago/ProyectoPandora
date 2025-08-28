@@ -1,5 +1,5 @@
 <?php
-class EstadoTicket
+class EstadoTicketModel
 {
     private $connection;
 
@@ -28,6 +28,26 @@ class EstadoTicket
         $stmt = $this->connection->prepare("INSERT INTO estados_tickets (name) VALUES (?)");
         $stmt->bind_param("s", $name);
         return $stmt->execute();
+    }
+
+    public function updateEstado($id, $name)
+    {
+        $sql = "UPDATE estados_tickets SET name = ? WHERE id = ?";
+        $stmt = $this->connection->prepare($sql);
+        if ($stmt === false) {
+            die("Error en prepare: " . $this->connection->error);
+        }
+        $stmt->bind_param("si", $name, $id);
+        return $stmt->execute();
+    }
+
+    public function getById($id)
+    {
+        $sql = "SELECT * FROM estados_tickets WHERE id = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
     }
 
     public function eliminar($id)

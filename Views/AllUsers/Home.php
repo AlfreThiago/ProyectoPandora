@@ -1,3 +1,4 @@
+<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 <main>
     <div class="ContenedorPrincipal">
         <div class="Contenedor-home texto">
@@ -41,3 +42,4 @@
         </section>
     </div>
 </main>
+<?php include_once __DIR__ . '/../Includes/Footer.php' ?>

@@ -1,3 +1,4 @@
+<?php include_once __DIR__ . '/../Includes/Header.php' ?>
 <main>
     <div class="Tabla-Contenedor">
         <h2>Lista de Técnicos</h2>
@@ -19,12 +20,8 @@
             </thead>
             <tbody>
                 <?php
-                $db = new Database();
-                $db->connectDatabase();
-                $userModel = new UserModel($db->getConnection());
-                $Tecnicos = $userModel->getAllTecnicos();
-                if ($Tecnicos) {
-                    foreach ($Tecnicos as $tec) {
+                if ($tecnicos) {
+                    foreach ($tecnicos as $tec) {
                         $role = htmlspecialchars($tec['role']);
                         echo "<tr class='row-role-$role'>";
                         echo "<td>{$tec['id']}</td>";
@@ -35,8 +32,9 @@
                         echo "<td>{$tec['especialidad']}</td>";
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($tec['created_at']) . "</span></td>";
                         echo "<td>
-                                <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id={$tec['id']}' class='btn edit-btn'>Actualizar</a>
-                                <a href='/ProyectoPandora/Public/index.php?route=Admin/Delete-user&id={$tec['id']}' class='btn delete-btn'>Eliminar</a>
+                                <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id={$tec['id']}&from=Admin/ListarTecs' class='btn edit-btn'>Actualizar</a>
+                                |
+                                <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id={$tec['id']}' class='btn delete-btn'>Eliminar</a>
                               </td>";
                         echo "</tr>";
                     }
@@ -47,9 +45,5 @@
             </tbody>
         </table>
     </div>
-    <div class="dark-mode-btn" id="dark-mode-btn">
-        <i class='bx bx-sun'></i>
-        <i class='bx bx-moon'></i>
-    </div>
-    <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>
+<?php include_once __DIR__ . '/../Includes/Footer.php' ?>

@@ -28,16 +28,9 @@
                     <span class="line"></span>
                 </div>
                 <li class="item menu-item menu-item-static">
-                    <a href="/ProyectoPandora/Public/index.php?route=Dash/Home" class="link flex">
+                    <a href="/ProyectoPandora/Public/index.php?route=Default/Index" class="link flex">
                         <i class='bx bx-home'></i>
                         <span>Home</span>
-                    </a>
-                </li>
-                <li class="item menu-item menu-item-static">
-                    <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
-                        <i class="bx bx-guia">
-                            <span>Guia</span>
-                        </i>
                     </a>
                 </li>
                 <!-----------------------------------------------⇑-------------------------------Parte obligatoria para todos los Dash-->
@@ -48,12 +41,12 @@
                         <!-- Admin: ve todos los usuarios y opción de añadir -->
                         <!-- Historial -->
                         <li class="item">
-                            <a href="/ProyectoPandora/Public/index.php?route=Dash/Historial" class="link flex">
+                            <a href="/ProyectoPandora/Public/index.php?route=Historial/ListarHistorial" class="link flex">
                                 <i class='bxr  bx-history'></i>
                                 <span>Historial</span>
                             </a>
                         </li>
-                        <!-- Dispositivos -->
+                        <!-- Dispositivos // CORREJIDO 👍-->
                         <li class="item menu-item-dropdown">
                             <a href="#" class="link flex">
                                 <i class='bx bx-devices'></i>
@@ -61,11 +54,11 @@
                                 <i class='bx bx-arrow-down-stroke oculto'></i>
                             </a>
                             <ul class="sub-menu">
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaDispositivos" class="sub-menu-link">Lista de Dispositivos</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaCategoriaDevice" class="sub-menu-link">Lista de Categorías</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Device/ListarDevice" class="sub-menu-link">Lista de Dispositivos</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria" class="sub-menu-link">Lista de Categorías</a></li>
                             </ul>
                         </li>
-                        <!-- Usuarios -->
+                        <!-- Usuarios // CORREJIDO 👍-->
                         <li class="item menu-item-dropdown">
                             <a href="#" class="link flex">
                                 <i class='bx bx-user'></i>
@@ -74,14 +67,27 @@
                             </a>
                             <!-- Zona del submenu de usuarios -->
                             <ul class="sub-menu">
-                                <li><a href="index.php?route=Dash/ListaUsers" class="sub-menu-link">Todos los users</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaCliente" class="sub-menu-link">Clientes</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaTecnico" class="sub-menu-link">Técnicos</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaSupervisor" class="sub-menu-link">Supervisor</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaAdmin" class="sub-menu-link">Admins</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="sub-menu-link">Todos los users</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Admin/ListarClientes" class="sub-menu-link">Clientes</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Admin/ListarTecnicos" class="sub-menu-link">Técnicos</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Admin/ListarSupervisores" class="sub-menu-link">Supervisor</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Admin/ListarAdmins" class="sub-menu-link">Admins</a></li>
                             </ul>
                         </li>
-                        <!-- Añadir -->
+                        <!-- Ticket //NO CORREJIDO 🥺 -->
+                        <li class="item menu-item menu-item-dropdown">
+                            <a href="#" class="link flex">
+                                <i class='bx bx-ticket'></i>
+                                <span>Tickets</span>
+                                <i class="bx bx-arrow-down-stroke oculto"></i>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="sub-menu">
+
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Ticket/Listar" class="sub-menu-link">Lista de Tickets</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados" class="sub-menu-link">Lista de Estados</a></li>
+                            </ul>
+                        </li>
                         <li class="item menu-item-dropdown">
                             <a href="#" class="link flex">
                                 <i class='bx bx-plus-square'></i>
@@ -90,8 +96,9 @@
                             </a>
                             <!-- Zona submenu para Añadir -->
                             <ul class="sub-menu">
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Ticket/Agregar" class="sub-menu-link">Tickets</a></li>
                                 <li><a href="/ProyectoPandora/Public/index.php?route=Register/RegisterAdmin" class="sub-menu-link">Usuarios</a></li>
-                                <li><a href="/ProyectoPandora/Public/index.php?route=Dash/Device" class="sub-menu-link">Dispositivo</a></li>
+                                <li><a href="/ProyectoPandora/Public/index.php?route=Device/CrearDevice" class="sub-menu-link">Dispositivo</a></li>
                             </ul>
                         </li>
                     <?php elseif ($role === 'supervisor'): ?>
@@ -107,6 +114,13 @@
                                 <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaCliente" class="sub-menu-link">Clientes</a></li>
                                 <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaTecnico" class="sub-menu-link">Técnicos</a></li>
                             </ul>
+                        </li>
+                        <li class="item menu-item menu-item-static">
+                            <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
+                                <i class="bx bx-guia">
+                                    <span>Guia</span>
+                                </i>
+                            </a>
                         </li>
                     <?php elseif ($role === 'tecnico'): ?>
                         <!-- Técnico: solo ve Reparaciones y tickets -->
@@ -124,12 +138,26 @@
                                 <span>Tickets</span>
                             </a>
                         </li>
+                        <li class="item menu-item menu-item-static">
+                            <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
+                                <i class="bx bx-guia">
+                                    <span>Guia</span>
+                                </i>
+                            </a>
+                        </li>
                     <?php elseif ($role === 'cliente'): ?>
                         <!-- Agregar Dispositivo -->
                         <li class="item menu-item-static">
                             <a href="index.php?route=Dash/Device" class="link flex">
                                 <i class='bx bx-user'></i>
                                 <span>Agregar Dispositivo</span>
+                            </a>
+                        </li>
+                        <li class="item menu-item menu-item-static">
+                            <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
+                                <i class="bx bx-guia">
+                                    <span>Guia</span>
+                                </i>
                             </a>
                         </li>
                     <?php endif; ?>

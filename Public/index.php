@@ -1,6 +1,6 @@
 <?php
 $routes = require_once __DIR__ . '../../routes/web.php';
-$route = $_GET['route'] ?? 'Dash/Home'; 
+$route = $_GET['route'] ?? 'Default/Index';
 if (isset($routes[$route])) {
     $controllerName = $routes[$route]['controller'];
     $action = $routes[$route]['action'];

@@ -1,12 +1,5 @@
+<?php include_once __DIR__ . '/../Includes/Header.php' ?>
 <main>
-    <?php
-    require_once __DIR__ . '/../../Models/Category.php';
-    require_once __DIR__ . '/../../Core/Database.php';
-    $db = new Database();
-    $db->connectDatabase();
-    $categoryModel = new CategoryModel($db->getConnection());
-    $categorias = $categoryModel->getAllCategories();
-    ?>
     <div class="Tabla-Contenedor">
         <h2>Lista de Categorías</h2>
         <div class="search-container">
@@ -26,7 +19,7 @@
                         <td><?php echo htmlspecialchars($categoria['id']); ?></td>
                         <td><?php echo htmlspecialchars($categoria['name']); ?></td>
                         <td>
-                            <a href="/ProyectoPandora/Public/index.php?route=Device/Actualizar-Category&id=<?php echo $categoria['id']; ?>" class="btn edit-btn">Actualizar</a>
+                            <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?php echo $categoria['id']; ?>" class="btn edit-btn">Actualizar</a>
                             |
                             <a href="/ProyectoPandora/Public/index.php?route=Device/Delete-Category&id=<?php echo $categoria['id']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');" class="btn delete-btn">Eliminar</a>
                         </td>
@@ -47,3 +40,4 @@
     </div>
     <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>
+<?php include_once __DIR__ . '/../Includes/Footer.php' ?>
