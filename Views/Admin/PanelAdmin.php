@@ -31,10 +31,10 @@
 
             <!-- Tabs -->
             <div class="tabs">
-                <div class="tab active" onclick="showTab('usuarios')">Usuarios</div>
-                <div class="tab" onclick="showTab('tickets')">Tickets</div>
-                <div class="tab" onclick="showTab('dispositivos')">Dispositivos</div>
-                <div class="tab" onclick="showTab('estadotickets')">Estados Tickets</div>
+                <div class="tab active"><a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers">Usuarios</a></div>
+                <div class="tab"><a href="/ProyectoPandora/Public/index.php?route=Ticket/Listar">tickets</a></div>
+                <div class="tab" ><a href="/ProyectoPandora/Public/index.php?route=Device/ListarDevice">Dispositivos</a></div>
+                <div class="tab" ><a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados">Estados tickets</a></div>
             </div>
 
             <!-- Usuarios (tabla) -->
