@@ -5,6 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,38 +14,39 @@ if (session_status() === PHP_SESSION_NONE) {
     <link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Home Portal</title>
 </head>
+
 <body>
     <Aside class="sidebar">
         <nav class="sidebar">
             <div>
                 <div class="nav_image flex">
                     <div class="brand">
-                      <img class="brand-dark" src="/ProyectoPandora/Public/img/Innovasys_V2.png" alt="logo">
+                        <img class="brand-dark" src="/ProyectoPandora/Public/img/Innovasys_V2.png" alt="logo">
                     </div>
                 </div>
             </div>
             <div class="menu-conteiner">
-              <ul class="menu-items">
-                <div class="menu_title flex"> 
-                  <span class="title">Menu</span>
-                  <span class="line"></span>
-                </div>
-                <li class="item menu-item menu-item-static">
-                  <a href="/ProyectoPandora/Public/index.php?route=Default/Index" class="link flex">
-                    <i class='bx bx-home'></i>
-                    <span>Home</span>
-                  </a>
-                </li>
-                <?php if (isset($_SESSION['user'])): ?>
+                <ul class="menu-items">
+                    <div class="menu_title flex">
+                        <span class="title">Menu</span>
+                        <span class="line"></span>
+                    </div>
+                    <li class="item menu-item menu-item-static">
+                        <a href="/ProyectoPandora/Public/index.php?route=Default/Index" class="link flex">
+                            <i class='bx bx-home'></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <?php if (isset($_SESSION['user'])): ?>
                         <?php $role = strtolower($_SESSION['user']['role']); ?>
 
                         <?php if ($role === 'administrador'): ?>
                             <!-- Admin: ve todos los usuarios y opción de añadir -->
                             <li class="item menu-item menu-item-static">
-                              <a href="/ProyectoPandora/Public/index.php?route=Admin/PanelAdmin" class="link flex">
-                                <i class='bx  bx-iframe'  ></i> 
-                                <span>Panel Admin</span>
-                              </a>
+                                <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="link flex">
+                                    <i class='bx  bx-iframe'></i>
+                                    <span>Panel Admin</span>
+                                </a>
                             </li>
                             <!-- Historial -->
                             <li class="item">
@@ -68,7 +70,7 @@ if (session_status() === PHP_SESSION_NONE) {
                                 </ul>
                             </li> -->
                         <?php elseif ($role === 'supervisor'): ?>
-                             <li class="item menu-item-static">
+                            <li class="item menu-item-static">
                                 <a href="index.php?route=Dash/PanelSupervisor" class="link flex">
                                     <i class='bxr  bx-ticket'></i>
                                     <span>Panel Supervisor</span>
@@ -89,8 +91,8 @@ if (session_status() === PHP_SESSION_NONE) {
                             </li> -->
                             <li class="item menu-item menu-item-static">
                                 <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
-                                    <i class='bx  bx-help-circle'  ></i>
-                                        <span>Guia</span>
+                                    <i class='bx  bx-help-circle'></i>
+                                    <span>Guia</span>
                                     </i>
                                 </a>
                             </li>
@@ -104,22 +106,22 @@ if (session_status() === PHP_SESSION_NONE) {
                             </li>
                             <li class="item menu-item menu-item-static">
                                 <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
-                                    <i class='bx  bx-help-circle'  ></i>
-                                        <span>Guia</span>
+                                    <i class='bx  bx-help-circle'></i>
+                                    <span>Guia</span>
                                     </i>
                                 </a>
                             </li>
                         <?php elseif ($role === 'cliente'): ?>
-                             <li class="item menu-item-static">
+                            <li class="item menu-item-static">
                                 <a href="index.php?route=Dash/PanelCliente" class="link flex">
-                                    <i class='bx  bx-devices'  ></i> 
+                                    <i class='bx  bx-devices'></i>
                                     <span>Panel Cliente</span>
                                 </a>
                             </li>
                             <li class="item menu-item menu-item-static">
                                 <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
-                                    <i class='bx  bx-help-circle'  ></i> 
-                                        <span>Guia</span>
+                                    <i class='bx  bx-help-circle'></i>
+                                    <span>Guia</span>
                                     </i>
                                 </a>
                             </li>
@@ -146,4 +148,5 @@ if (session_status() === PHP_SESSION_NONE) {
     </aside>
 
 </body>
+
 </html>

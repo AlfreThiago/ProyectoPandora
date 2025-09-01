@@ -1,4 +1,5 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
+
 <body>
     <main>
         <!-- Main content -->
@@ -6,7 +7,7 @@
             <header class="header">
                 <h1 class="header-title">Panel Administrador</h1>
                 <p class="header-subtitle">
-                    Bienvenido a la zona admin 
+                    Bienvenido a la zona admin
                     <br>
                     <span class="user-highlight">
                         <?php echo htmlspecialchars($_SESSION['user']['name']); ?>
@@ -44,12 +45,11 @@
                         <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
                     </div>
                     <div class="filter-buttons">
-                        <button onclick="filterTable('all')">Todos</button>
-                        <button onclick="filterTable('Cliente')">Clientes</button>
-                        <button onclick="filterTable('Tecnico')">Técnicos</button>
-                        <button onclick="filterTable('Supervisor')">Supervisores</button>
-                        <button onclick="filterTable('Administrador')">Admins</button>
-
+                        <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="btn action-btn">Todos los users</a>
+                        <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarClientes" class="btn action-btn">Clientes</a>
+                        <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarTecnicos" class="btn action-btn">Técnicos</a>
+                        <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarSupervisores" class="btn action-btn">Supervisor</a>
+                        <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarAdmins" class="btn action-btn">Admins</a>
                         <a href="/ProyectoPandora/Public/index.php?route=Register/RegisterAdmin" class="btn action-btn">Agregar User</a>
                     </div>
                     <table id="userTable">
@@ -82,7 +82,9 @@
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
-                                <tr><td colspan="6">No hay usuarios registrados.</td></tr>
+                                <tr>
+                                    <td colspan="6">No hay usuarios registrados.</td>
+                                </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
@@ -102,11 +104,11 @@
                                 <h3>#<?= htmlspecialchars($ticket['id']) ?> - <?= htmlspecialchars($ticket['titulo']) ?></h3>
                                 <p><strong>Cliente:</strong> <?= htmlspecialchars($ticket['cliente']) ?></p>
                                 <p><strong>Prioridad:</strong> <?= htmlspecialchars($ticket['prioridad']) ?></p>
-                                
+
                                 <!-- Estado -->
-                                <?php 
-                                    $estadoClass = strtolower($ticket['estado']); 
-                                    // ejemplo: "Abierto" => "abierto", "Cerrado" => "cerrado"
+                                <?php
+                                $estadoClass = strtolower($ticket['estado']);
+                                // ejemplo: "Abierto" => "abierto", "Cerrado" => "cerrado"
                                 ?>
                                 <span class="status <?= $estadoClass ?>">
                                     <?= htmlspecialchars($ticket['estado']) ?>
@@ -130,7 +132,7 @@
             <div id="dispositivos" class="tab-content" style="display:none;">
                 <div class="Tabla-Contenedor">
                     <h2>Lista de Dispositivos</h2>
-                    
+
                     <!-- Buscador -->
                     <div class="search-container">
                         <input type="text" id="deviceSearchInput" placeholder="Buscar dispositivo..." class="search-input">
@@ -139,8 +141,8 @@
                     <!-- Botones -->
                     <div class="filter-buttons">
                         <!-- Cambian entre tablas -->
-                        <button onclick="showDeviceTable('categorias')">Categorias</button>
-                        <button onclick="showDeviceTable('dispositivos')">Dispositivos</button>
+                        <a href="/ProyectoPandora/Public/index.php?route=Device/ListarDevice" class="btn action-btn">Lista de Dispositivos</a>
+                        <a href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria" class="btn action-btn">Lista de Categorías</a>
 
                         <!-- Van a formularios -->
                         <a href="/ProyectoPandora/Public/index.php?route=Device/CrearCategoria" class="btn action-btn">Crear Categoria</a>
@@ -165,26 +167,28 @@
                         </thead>
                         <tbody>
                             <?php if (!empty($dispositivos)): ?>
-                            <?php foreach ($dispositivos as $dispositivo): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($dispositivo['id']) ?></td>
-                                    <td><?= htmlspecialchars($dispositivo['users']) ?></td>
-                                    <td><?= htmlspecialchars($dispositivo['categoria']) ?></td>
-                                    <td><?= htmlspecialchars($dispositivo['marca']) ?></td>
-                                    <td><?= htmlspecialchars($dispositivo['modelo']) ?></td>
-                                    <td><?= htmlspecialchars($dispositivo['descripcion_falla']) ?></td>
-                                    <td>
-                                    <img src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($dispositivo['img_dispositivo']) ?>" width="80">
-                                    </td>
-                                    <td>
-                                    <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarDevice&id=<?= $dispositivo['id'] ?>" class="btn edit-btn">Actualizar</a>
-                                    <a href="/ProyectoPandora/Public/index.php?route=Device/DeleteDevice&id=<?= $dispositivo['id'] ?>" class="btn delete-btn">Eliminar</a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
+                                <?php foreach ($dispositivos as $dispositivo): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($dispositivo['id']) ?></td>
+                                        <td><?= htmlspecialchars($dispositivo['users']) ?></td>
+                                        <td><?= htmlspecialchars($dispositivo['categoria']) ?></td>
+                                        <td><?= htmlspecialchars($dispositivo['marca']) ?></td>
+                                        <td><?= htmlspecialchars($dispositivo['modelo']) ?></td>
+                                        <td><?= htmlspecialchars($dispositivo['descripcion_falla']) ?></td>
+                                        <td>
+                                            <img src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($dispositivo['img_dispositivo']) ?>" width="80">
+                                        </td>
+                                        <td>
+                                            <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarDevice&id=<?= $dispositivo['id'] ?>" class="btn edit-btn">Actualizar</a>
+                                            <a href="/ProyectoPandora/Public/index.php?route=Device/DeleteDevice&id=<?= $dispositivo['id'] ?>" class="btn delete-btn">Eliminar</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
                             <?php else: ?>
-                            <tr><td colspan="8">No hay dispositivos registrados.</td></tr>
-                            <?php endif; ?> 
+                                <tr>
+                                    <td colspan="8">No hay dispositivos registrados.</td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
 
@@ -200,19 +204,21 @@
                         </thead>
                         <tbody>
                             <?php if (!empty($categorias)): ?>
-                            <?php foreach ($categorias as $categoria): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($categoria['id']) ?></td>
-                                    <td><?= htmlspecialchars($categoria['nombre']) ?></td>
-                                    <td><?= htmlspecialchars($categoria['descripcion']) ?></td>
-                                    <td>
-                                    <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?= $categoria['id'] ?>" class="btn edit-btn">Actualizar</a>
-                                    <a href="/ProyectoPandora/Public/index.php?route=Device/DeleteCategoria&id=<?= $categoria['id'] ?>" class="btn delete-btn">Eliminar</a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
+                                <?php foreach ($categorias as $categoria): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($categoria['id']) ?></td>
+                                        <td><?= htmlspecialchars($categoria['nombre']) ?></td>
+                                        <td><?= htmlspecialchars($categoria['descripcion']) ?></td>
+                                        <td>
+                                            <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?= $categoria['id'] ?>" class="btn edit-btn">Actualizar</a>
+                                            <a href="/ProyectoPandora/Public/index.php?route=Device/DeleteCategoria&id=<?= $categoria['id'] ?>" class="btn delete-btn">Eliminar</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
                             <?php else: ?>
-                                <tr><td colspan="4">No hay categorías registradas.</td></tr>
+                                <tr>
+                                    <td colspan="4">No hay categorías registradas.</td>
+                                </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>

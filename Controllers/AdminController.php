@@ -26,26 +26,26 @@ class AdminController
 
     public function listarCli()
     {
-        $clientes = $this->userModel->getAllClientes();
-        include_once __DIR__ . '/../Views/Admin/ListaCliente.php';
+        $users = $this->userModel->getAllClientes();
+        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
     }
 
     public function listarTecs()
     {
-        $tecnicos = $this->userModel->getAllTecnicos();
-        include_once __DIR__ . '/../Views/Admin/ListaTecnico.php';
+        $users = $this->userModel->getAllTecnicos();
+        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
     }
 
     public function listarSupers()
     {
-        $supervisor = $this->userModel->getAllSupervisores();
-        include_once __DIR__ . '/../Views/Admin/ListaSupervisor.php';
+        $users = $this->userModel->getAllSupervisores();
+        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
     }
 
     public function listarAdmins()
     {
-        $administradores = $this->userModel->getAllAdministradores();
-        include_once __DIR__ . '/../Views/Admin/ListaAdmin.php';
+        $users = $this->userModel->getAllAdministradores();
+        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
     }
     public function changeRole()
     {
