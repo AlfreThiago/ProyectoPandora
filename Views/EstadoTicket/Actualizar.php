@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . '/../Includes/Header.php'
+include_once __DIR__ . '/../Includes/Sidebar.php'
 ?>
 <main>
     <div class="contenedor">

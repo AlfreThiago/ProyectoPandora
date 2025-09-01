@@ -58,6 +58,10 @@ return [
         'controller' => 'Admin',
         'action' => 'DeleteUser'
     ],
+    'Admin/PanelAdmin' => [
+    'controller' => 'Admin',
+    'action' => 'listarUsers'
+],
     //
     //
     //Device
@@ -93,6 +97,11 @@ return [
         'controller' => 'Device',
         'action' => 'deleteCategory'
     ],
+    'Device/CrearDevice' => [
+    'controller' => 'Device',
+    'action' => 'CrearDispositivo'
+],
+
     //
     //
     //Historial
@@ -149,5 +158,19 @@ return [
     'Ticket/Eliminar' => [
         'controller' => 'Ticket',
         'action' => 'eliminar'
+    ],
+    //
+    //Paneles (Lo hice yo, Ale :)
+    'Dash/PanelTecnico' => [
+        'controller' => 'Paneles',
+        'action' => 'PanelTecnico' 
+    ],
+    'Dash/PanelCliente' => [
+        'controller' => 'Paneles',
+        'action' => 'PanelCliente' 
+    ],
+    'Dash/PanelSupervisor' => [
+        'controller' => 'Paneles',
+        'action' => 'PanelSupervisor' 
     ],
 ];

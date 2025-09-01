@@ -21,7 +21,7 @@ class AdminController
     public function listarUsers()
     {
         $users = $this->userModel->getAllUsers();
-        include_once __DIR__ . '/../Views/Admin/ListaUser.php';
+        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
     }
 
     public function listarCli()

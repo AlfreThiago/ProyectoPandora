@@ -14,12 +14,12 @@ class EstadoTicketController
         $this->estadoModel = new EstadoTicketModel($db->getConnection());
     }
 
-    public function listar()
-    {
-        Auth::checkRole('Administrador');
-        $estados = $this->estadoModel->obtenerTodos();
-        include_once __DIR__ . '/../../ProyectoPandora/Views/EstadoTicket/Listar.php';
-    }
+public function listar()
+{
+    $estados = $this->estadoModel->obtenerTodos() ?? [];
+    include __DIR__ . '/../Views/Admin/PanelAdmin.php';
+}
+
 
     public function crear()
     {
