@@ -164,4 +164,8 @@ return [
         'controller' => 'Paneles',
         'action' => 'PanelSupervisor'
     ],
+    'Dash/PanelAdmin' => [
+        'controller' => 'Paneles',
+        'action' => 'PanelAdmin'
+    ],
 ];

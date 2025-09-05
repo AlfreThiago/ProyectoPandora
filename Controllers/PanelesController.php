@@ -12,4 +12,7 @@ class PanelesController {
      public function PanelSupervisor(){
         include_once __DIR__ . '/../Views/Paneles/PanelSupervisor.php';
     }
+    public function PanelAdmin(){
+        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
+    }
 }
