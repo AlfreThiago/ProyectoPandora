@@ -26,25 +26,25 @@ class AdminController
 
     public function listarCli()
     {
-        $users = $this->userModel->getAllClientes();
+        $clientes = $this->userModel->getAllClientes();
         include_once __DIR__ . '/../Views/Admin/ListaCliente.php';
     }
 
     public function listarTecs()
     {
-        $users = $this->userModel->getAllTecnicos();
+        $tecnicos = $this->userModel->getAllTecnicos();
         include_once __DIR__ . '/../Views/Admin/ListaTecnico.php';
     }
 
     public function listarSupers()
     {
-        $users = $this->userModel->getAllSupervisores();
+        $supervisor = $this->userModel->getAllSupervisores();
         include_once __DIR__ . '/../Views/Admin/ListaSupervisor.php';
     }
 
     public function listarAdmins()
     {
-        $users = $this->userModel->getAllAdministradores();
+        $administradores = $this->userModel->getAllAdministradores();
         include_once __DIR__ . '/../Views/Admin/ListaAdmin.php';
     }
     public function changeRole()

@@ -6,6 +6,22 @@
         <div class="search-container">
             <input type="text" id="categorySearchInput" placeholder="Buscar categoría..." class="search-input">
         </div>
+        <div class="botones">
+            <div class="dropdown">
+                <label for="menu-toggle" class="dropdown-label" >
+                    Opciones<i class='bxr  bx-caret-down'  ></i> </label>
+                <input type="checkbox" id="menu-toggle" />
+            
+                <div class="dropdown-menu">
+                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Device/ListarDevice">Dispositivos</a>
+                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria">Categorias</a>
+                </div>
+                
+            </div>
+            <div class="btn-table-acciones">
+                <a class="btn-acciones-device" href="/ProyectoPandora/Public/index.php?route=Device/CrearCategoria">Añadir Categoria</a>
+            </div>
+        </div>
         <table id="categoryTable">
             <thead>
                 <tr>
@@ -20,9 +36,11 @@
                         <td><?php echo htmlspecialchars($categoria['id']); ?></td>
                         <td><?php echo htmlspecialchars($categoria['name']); ?></td>
                         <td>
-                            <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?php echo $categoria['id']; ?>" class="btn edit-btn">Actualizar</a>
-                            |
-                            <a href="/ProyectoPandora/Public/index.php?route=Device/Delete-Category&id=<?php echo $categoria['id']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');" class="btn delete-btn">Eliminar</a>
+                            <div class='action-buttons'>
+                                <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?php echo $categoria['id']; ?>" class="btn edit-btn">Actualizar</a>
+                                |
+                                <a href="/ProyectoPandora/Public/index.php?route=Device/Delete-Category&id=<?php echo $categoria['id']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');" class="btn delete-btn">Eliminar</a>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -33,7 +51,6 @@
                 <?php endif; ?>
             </tbody>
         </table>
-        <a href="/ProyectoPandora/Public/index.php?route=Device/CrearCategoria" class="btn newCategory-btn">Agregar Nueva Categoría</a>
     </div>
     <div class="dark-mode-btn" id="dark-mode-btn">
         <i class='bx bx-sun'></i>

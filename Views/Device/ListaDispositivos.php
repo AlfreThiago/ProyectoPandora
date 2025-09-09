@@ -6,6 +6,22 @@
         <div class="search-container">
             <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
         </div>
+        <div class="botones">
+            <div class="dropdown">
+                <label for="menu-toggle" class="dropdown-label" >
+                    Opciones<i class='bxr  bx-caret-down'  ></i> </label>
+                <input type="checkbox" id="menu-toggle" />
+            
+                <div class="dropdown-menu">
+                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Device/ListarDevice">Dispositivos</a>
+                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria">Categorias</a>
+                </div>
+                
+            </div>
+            <div class="btn-table-acciones">
+                <a class="btn-acciones-device" href="/ProyectoPandora/Public/index.php?route=Device/CrearDevice">Añadir Device</a>
+            </div>
+        </div>
         <table id="userTable">
             <thead>
                 <tr>
@@ -30,8 +46,12 @@
                         echo "<td>{$dispositivo['modelo']}</td>";
                         echo "<td>{$dispositivo['descripcion_falla']}</td>";
                         echo "<td><img src='/ProyectoPandora/Public/img/imgDispositivos/{$dispositivo['img_dispositivo']}' width='80'></td>";
-                        echo "<td><a href='/ProyectoPandora/Public/index.php?route=Device/ActualizarDevice&id={$dispositivo['id']}' class='btn edit-btn'>Actualizar</a>
-                                    <a href='/ProyectoPandora/Public/index.php?route=Device/DeleteDevice&id={$dispositivo['id']}' class='btn delete-btn'>Eliminar</a>
+                        echo "<td>
+                            <div class='action-buttons'>
+                                <a href='/ProyectoPandora/Public/index.php?route=Device/ActualizarDevice&id={$dispositivo['id']}' class='btn edit-btn'>Actualizar</a>
+                                |
+                                <a href='/ProyectoPandora/Public/index.php?route=Device/DeleteDevice&id={$dispositivo['id']}' class='btn delete-btn'>Eliminar</a>
+                            </div>
                                 </td>";
                         echo "</tr>";
                     }
