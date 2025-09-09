@@ -26,6 +26,9 @@
                         <p>
                             <button type="submit">Guardar</button>
                         </p>
+                        <p>
+                            <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="btn-form-categoria">Volver a la lista de Usuarios</a>
+                        </p>
                     </form>
                 </div>
             </div>

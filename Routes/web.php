@@ -168,4 +168,8 @@ return [
         'controller' => 'Paneles',
         'action' => 'PanelAdmin'
     ],
+    'Dash/Ajustes' => [
+        'controller' => 'Auth',
+        'action' => 'Ajustes'
+    ],
 ];

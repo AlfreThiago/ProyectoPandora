@@ -124,7 +124,7 @@ body {
 /* ======= FOOTER ======= */
 .footer {
   position: fixed;
-  top: 75%;
+  top: 90%;
   left: 0;
   width: 250px;
   padding: 15px 10px;
@@ -313,7 +313,7 @@ main {
 
 /* Título del header */
 .header-title {
-  font-size: 3rem;        
+  font-size: 3rem;     
   font-weight: 600;         
   color: white;           
   text-transform: uppercase;
@@ -906,3 +906,198 @@ input[type="password"]:focus {
   transform: scale(1.05);
   box-shadow: 0 0 8px #016682;
 }
+/* ZONA EN PRUEBAS */
+/* ================= MODAL EN PRUEBA ================= */
+/* CERRADO por defecto */
+.modal{
+  display:none;
+  position:fixed;
+  z-index:9999;
+  left:0; top:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,.7);
+  justify-content:center;
+  align-items:center;
+}
+
+/* ABIERTO cuando tenga la clase .open */
+.modal.open{ display:flex; }
+
+.modal-content {
+  background: var(--color-card-bg);
+  backdrop-filter: blur(15px);
+  padding: 30px;
+  border-radius: 20px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  color: var(--color-texto);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content h3 {
+  margin-bottom: 20px;
+  font-size: 1.6rem;
+  color: var(--color-acento);
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  font-size: 1rem;
+}
+
+.modal-content button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: var(--color-acento);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.modal-content button:hover {
+  background: var(--color-primario);
+  color: #fff;
+}
+.close {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--color-texto);
+  cursor: pointer;
+}
+.close:hover {
+  color: var(--color-acento);
+}
+/* ================= ANIMACION ================= */
+@keyframes fadeIn {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* === SUBMENU === */
+/* Perfil */
+.profile-menu {
+  position: relative;
+  cursor: pointer;
+}
+.profile-menu .avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+/* Submenú estilo Google */
+.submenu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background: #202124;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  width: 320px;
+  padding: 20px;
+  z-index: 100;
+}
+.submenu.active {
+  display: block;
+}
+.submenu-header {
+  text-align: center;
+}
+.submenu-header .avatar-lg {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+.submenu .user-name {
+  margin: 5px 0;
+}
+.submenu .user-email {
+  font-size: 12px;
+  color: #9aa0a6;
+}
+ .submenu ul {
+  list-style: none;
+  padding: 10px;
+  margin: 15px 0;
+  display: flex;
+  flex-direction: column; 
+  gap: 8px;
+}
+.submenu ul li {
+  border-radius: 8px;
+  text-align: left;
+}
+
+.submenu ul li a {
+  color: #e8eaed;
+  text-decoration: none;
+  display: flex;
+  padding: 10px 30px;
+  align-items: left;
+  gap: 8px;}
+.submenu ul li:hover {
+  background: #3c4043;
+  transition: 0.6s all ease-in-out;
+}
+.submenu-footer {
+  margin-top: 15px;
+  text-align: center;
+}
+ .submenu-footer a {
+  color: #e8eaed;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.submenu-footer a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* Submenu anidado oculto por defecto_EN PROCESO */
+/* .submenu .has-submenu {
+  position: relative;
+}
+.submenu .has-submenu > .submenu-nested {
+  display: none;
+  flex-direction: column;
+  background: #202124;
+  padding: 8px;
+  border-radius: 8px;
+}
+.submenu .has-submenu.open > .submenu-nested {
+  display: flex;
+}
+.submenu .has-submenu > a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.submenu .submenu-nested li {
+  padding: 10px 30px;
+}
+.submenu .submenu-nested li:hover {
+  background: #3c4043;
+  border-radius: 6px;
+} */

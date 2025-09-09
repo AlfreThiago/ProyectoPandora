@@ -35,6 +35,9 @@
                         <p>
                             <button type="submit">Agregar Dispositivo</button>
                         </p>
+                        <p>
+                            <a href="/ProyectoPandora/Public/index.php?route=Device/ListarDevice" class="btn-form-categoria">Volver a la lista de Dispositivos</a>
+                        </p>
                     </form>
                 </div>
             </div>

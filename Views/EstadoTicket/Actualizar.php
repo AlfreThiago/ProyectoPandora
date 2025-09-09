@@ -18,6 +18,9 @@ include_once __DIR__ . '/../Includes/Sidebar.php'
                         <p>
                             <button type="submit">Actualizar</button>
                         </p>
+                        <p>
+                            <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados" class="btn-form-categoria">Volver a la lista de Estados</a>
+                        </p>
                     </form>
                 </div>
             </div>
