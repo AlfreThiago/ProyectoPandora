@@ -26,7 +26,7 @@ class DeviceController
             exit;
         }
         $dispositivos = $this->deviceModel->getAllDevices();
-        include_once __DIR__ . '/../Views/Device/ListaDispositivos.php';
+        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
     }
 
     public function listarCategoria()
@@ -37,7 +37,7 @@ class DeviceController
             exit;
         }
         $categorias = $this->categoryModel->getAllCategories();
-        include_once __DIR__ . '/../Views/Device/ListaCategoria.php';
+        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
     }
 
     public function CrearDispositivo()

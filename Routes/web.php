@@ -150,4 +150,18 @@ return [
         'controller' => 'Ticket',
         'action' => 'eliminar'
     ],
+    //
+    //Paneles (Lo hice yo, Ale :)
+    'Dash/PanelTecnico' => [
+        'controller' => 'Paneles',
+        'action' => 'PanelTecnico'
+    ],
+    'Dash/PanelCliente' => [
+        'controller' => 'Paneles',
+        'action' => 'PanelCliente'
+    ],
+    'Dash/PanelSupervisor' => [
+        'controller' => 'Paneles',
+        'action' => 'PanelSupervisor'
+    ],
 ];
