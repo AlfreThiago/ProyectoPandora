@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" href="Public/css/Includes/Header.css">
+    <link rel="stylesheet" href="Public/css/Includes/GuiaDash.css">
 </head>
 <main class="main-guia">
     <h1 class="h1-guia">Guide About Innovasys</h1>

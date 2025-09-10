@@ -18,19 +18,19 @@ class Ticket
     }
 
     public function listar()
-    {
-        $sql = "SELECT t.id, d.marca AS dispositivo, u.name AS cliente, 
-                       t.descripcion_falla, e.name AS estado, 
-                       us.name AS tecnico
-                FROM tickets t
-                INNER JOIN dispositivos d ON t.dispositivo_id = d.id
-                INNER JOIN clientes c ON t.cliente_id = c.id
-                INNER JOIN users u ON c.user_id = u.id
-                INNER JOIN estados_tickets e ON t.estado_id = e.id
-                INNER JOIN tecnicos tec ON t.tecnico_id = tec.id
-                LEFT JOIN users us ON tec.user_id = u.id";
-        return $this->conn->query($sql);
-    }
+{
+    $sql = "SELECT t.id, d.marca AS dispositivo, u.name AS cliente, 
+                   t.descripcion_falla, e.name AS estado, 
+                   us.name AS tecnico
+            FROM tickets t
+            INNER JOIN dispositivos d ON t.dispositivo_id = d.id
+            INNER JOIN clientes c ON t.cliente_id = c.id
+            INNER JOIN users u ON c.user_id = u.id
+            INNER JOIN estados_tickets e ON t.estado_id = e.id
+            LEFT JOIN tecnicos tec ON t.tecnico_id = tec.id
+            LEFT JOIN users us ON tec.user_id = us.id";
+    return $this->conn->query($sql);
+}
 
     public function ver($id)
     {
