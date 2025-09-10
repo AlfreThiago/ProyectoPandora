@@ -1,7 +1,6 @@
 <?php
 class Repuesto
 {
-   
     private $conn;
     private $table_name = "repuesto";
 

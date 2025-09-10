@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../Models/Inventory.php';
 require_once __DIR__ . '/../Core/Database.php';
 
+
 class InventarioController
 {
     private $db;
