@@ -31,7 +31,7 @@ return [
     //
     //Admin
     'Admin/PanelAdmin' => [
-        'controller' => 'Paneles',
+        'controller' => 'Admin',
         'action' => 'PanelAdmin'
     ],
     'Admin/ListarUsers' => [

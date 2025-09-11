@@ -81,19 +81,33 @@ class TicketController
 
         $isAdmin = ($user['role'] === 'Administrador');
         $clientes = [];
+        $cliente_id = null;
+
         if ($isAdmin) {
             $db = new Database();
-            $db->connectDatabase(); // Esto inicializa la conexión
-            $userModel = new UserModel($db->getConnection()); // Ahora sí tienes una conexión válida
+            $db->connectDatabase();
+            $userModel = new UserModel($db->getConnection());
             $clientes = $userModel->getAllClientes();
+
+            // Si el admin seleccionó un cliente, usamos ese id
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cliente_id'])) {
+                $cliente_id = $_POST['cliente_id'];
+            }
+        } else {
+            // Si es cliente, usamos su propio id
+            $cliente = $this->ticketModel->obtenerClientePorUser($user['id']);
+            $cliente_id = $cliente['id'];
         }
 
-        $dispositivos = $this->ticketModel->obtenerDispositivosPorCliente($user['id']);
+        // Obtener dispositivos solo si hay cliente seleccionado
         $data = [];
-        while ($row = $dispositivos->fetch_assoc()) {
-            $data[] = $row;
+        if ($cliente_id) {
+            $dispositivos = $this->ticketModel->obtenerDispositivosPorCliente($cliente_id);
+            while ($row = $dispositivos->fetch_assoc()) {
+                $data[] = $row;
+            }
         }
-
+        
         include __DIR__ . '/../Views/Ticket/CrearTicket.php';
     }
 
@@ -107,36 +121,36 @@ class TicketController
             exit;
         }
 
-        // Validar que existan estados
-        $db = new Database();
-        $db->connectDatabase();
-        $conn = $db->getConnection();
-        $result = $conn->query("SELECT id FROM estados_tickets LIMIT 1");
-        if (!$result || $result->num_rows === 0) {
-            // No hay estados, redirigir con mensaje de error
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=No se crearon estados para la creacion de ticket');
-            exit;
+        // Si es recarga de cliente, solo mostrar el formulario con los dispositivos del cliente seleccionado
+        if (isset($_POST['recarga_cliente']) && $_POST['recarga_cliente'] === '1') {
+            $this->mostrarCrear();
+            return;
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $isAdmin = ($user['role'] === 'Administrador');
-            if ($isAdmin && isset($_POST['cliente_id'])) {
-                $cliente_id = $_POST['cliente_id'];
-            } else {
-                $cliente = $this->ticketModel->obtenerClientePorUser($user['id']);
-                if (!$cliente) {
-                    die("Error: el usuario no tiene cliente asociado.");
-                }
-                $cliente_id = $cliente['id'];
+        $isAdmin = ($user['role'] === 'Administrador');
+        if ($isAdmin && isset($_POST['cliente_id'])) {
+            $cliente_id = $_POST['cliente_id'];
+        } else {
+            $cliente = $this->ticketModel->obtenerClientePorUser($user['id']);
+            if (!$cliente) {
+                die("Error: el usuario no tiene cliente asociado.");
             }
-            $dispositivo_id = $_POST['dispositivo_id'];
-            $descripcion = $_POST['descripcion'];
+            $cliente_id = $cliente['id'];
+        }
 
-            $this->ticketModel->crear($cliente_id, $dispositivo_id, $descripcion);
+        $dispositivo_id = $_POST['dispositivo_id'] ?? '';
+        $descripcion = $_POST['descripcion'] ?? '';
 
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar');
+        // Validación: dispositivo_id no puede estar vacío
+        if (empty($dispositivo_id)) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=Debe seleccionar un dispositivo');
             exit;
         }
+
+        $this->ticketModel->crear($cliente_id, $dispositivo_id, $descripcion);
+
+        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar');
+        exit;
     }
 
 

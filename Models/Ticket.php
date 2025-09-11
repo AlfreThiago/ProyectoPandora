@@ -66,10 +66,11 @@ class Ticket
     }
     public function obtenerDispositivosPorCliente($cliente_id)
     {
+        // Busca el user_id correspondiente al cliente_id
         $sql = "SELECT d.id, d.marca, d.modelo, d.descripcion_falla 
-            FROM dispositivos d
-            INNER JOIN users u ON d.user_id = u.id
-            WHERE d.user_id = ?";
+                FROM dispositivos d
+                INNER JOIN clientes c ON d.user_id = c.user_id
+                WHERE c.id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $cliente_id);
         $stmt->execute();

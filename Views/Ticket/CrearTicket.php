@@ -9,12 +9,13 @@
             </div>
         <?php endif; ?>
         <form method="POST" action="/ProyectoPandora/Public/index.php?route=Ticket/Crear">
+            <input type="hidden" name="recarga_cliente" value="1">
             <?php if (isset($isAdmin) && $isAdmin && isset($clientes)): ?>
                 <label for="cliente_id">Seleccione un cliente:</label><br>
-                <select id="cliente_id" name="cliente_id" required>
+                <select id="cliente_id" name="cliente_id" required onchange="this.form.submit()">
                     <option value="">-- Seleccionar --</option>
                     <?php foreach ($clientes as $cliente): ?>
-                        <option value="<?= $cliente['id'] ?>">
+                        <option value="<?= $cliente['id'] ?>" <?= (isset($_POST['cliente_id']) && $_POST['cliente_id'] == $cliente['id']) ? 'selected' : '' ?>>
                             <?= htmlspecialchars($cliente['name']) ?> (<?= htmlspecialchars($cliente['email']) ?>)
                         </option>
                     <?php endforeach; ?>
@@ -22,12 +23,11 @@
             <?php endif; ?>
 
             <label for="dispositivo">Seleccione un dispositivo:</label><br>
-            <select id="dispositivo" name="dispositivo_id" required onchange="mostrarDescripcion(this)">
+            <select id="dispositivo" name="dispositivo_id" required <?= empty($data) ? 'disabled' : '' ?>>
                 <option value="">-- Seleccionar --</option>
                 <?php foreach ($data as $dispositivo): ?>
-                    <option value="<?= $dispositivo['id'] ?>"
-                        data-descripcion="<?= htmlspecialchars($dispositivo['descripcion_falla']) ?>">
-                        <?= $dispositivo['marca'] . " " . $dispositivo['modelo'] ?>
+                    <option value="<?= $dispositivo['id'] ?>">
+                        <?= htmlspecialchars($dispositivo['marca'] . ' ' . $dispositivo['modelo']) ?>
                     </option>
                 <?php endforeach; ?>
             </select><br><br>
@@ -35,7 +35,7 @@
             <label for="descripcion">Descripción de la falla:</label><br>
             <textarea id="descripcion" name="descripcion" rows="5" required></textarea><br><br>
 
-            <button type="submit">Crear</button>
+            <button type="submit" onclick="document.getElementsByName('recarga_cliente')[0].value=''">Crear Ticket</button>
             <a href="/ProyectoPandora/Public/index.php?route=Ticket/Listar">Cancelar</a>
         </form>
     </div>
