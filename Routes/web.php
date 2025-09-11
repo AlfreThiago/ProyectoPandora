@@ -30,6 +30,10 @@ return [
     //
     //
     //Admin
+    'Admin/PanelAdmin' => [
+        'controller' => 'Paneles',
+        'action' => 'PanelAdmin'
+    ],
     'Admin/ListarUsers' => [
         'controller' => 'Admin',
         'action' => 'listarUsers'
@@ -57,6 +61,13 @@ return [
     'Admin/DeleteUser' => [
         'controller' => 'Admin',
         'action' => 'DeleteUser'
+    ],
+    //
+    //
+    //Cliente
+    'Cliente/PanelCliente' => [
+        'controller' => 'Cliente',
+        'action' => 'PanelCliente'
     ],
     //
     //
@@ -168,18 +179,11 @@ return [
         'controller' => 'Paneles',
         'action' => 'PanelTecnico'
     ],
-    'Dash/PanelCliente' => [
-        'controller' => 'Paneles',
-        'action' => 'PanelCliente'
-    ],
     'Dash/PanelSupervisor' => [
         'controller' => 'Paneles',
         'action' => 'PanelSupervisor'
     ],
-    'Dash/PanelAdmin' => [
-        'controller' => 'Paneles',
-        'action' => 'PanelAdmin'
-    ],
+
     'Dash/Ajustes' => [
         'controller' => 'Auth',
         'action' => 'Ajustes'

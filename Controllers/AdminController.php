@@ -17,6 +17,9 @@ class AdminController
         $db->connectDatabase();
         $this->userModel = new UserModel($db->getConnection());
     }
+        public function PanelAdmin(){
+        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
+    }
 
     public function listarUsers()
     {
