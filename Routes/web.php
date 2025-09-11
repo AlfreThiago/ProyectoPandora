@@ -130,6 +130,10 @@ return [
         'controller' => 'Ticket',
         'action' => 'crear'
     ],
+    'Ticket/mostrarCrear' => [
+        'controller' => 'Ticket',
+        'action' => 'mostrarCrear'
+    ],
     'Ticket/Listar' => [
         'controller' => 'Ticket',
         'action' => 'mostrarLista'

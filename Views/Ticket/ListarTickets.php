@@ -37,7 +37,7 @@ switch ($rol) {
                 
             </div>
             <div class="btn-table-acciones">
-                <a class="btn-acciones-user" href="/ProyectoPandora/Public/index.php?route=Ticket/Crear">Crear TIcket</a>
+                <a class="btn-acciones-user" href="/ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear">Crear TIcket</a>
             </div>
         </div>
         <table class="table table-bordered">
