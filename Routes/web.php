@@ -61,14 +61,6 @@ return [
     //
     //
     //Device
-    'Device/CrearDevice' => [
-        'controller' => 'Device',
-        'action' => 'CrearDispositivo'
-    ],
-    'Device/CrearCategoria' => [
-        'controller' => 'Device',
-        'action' => 'CrearCategoria'
-    ],
     'Device/ListarDevice' => [
         'controller' => 'Device',
         'action' => 'listarDevice'
@@ -76,6 +68,18 @@ return [
     'Device/ListarCategoria' => [
         'controller' => 'Device',
         'action' => 'listarCategoria'
+    ],
+    'Device/MostrarCrearDispositivo' => [
+        'controller' => 'Device',
+        'action' => 'mostrarCrearDispositivo'
+    ],
+    'Device/CrearDispositivo' => [
+        'controller' => 'Device',
+        'action' => 'CrearDispositivo'
+    ],
+    'Device/CrearCategoria' => [
+        'controller' => 'Device',
+        'action' => 'CrearCategoria'
     ],
     'Device/ActualizarDevice' => [
         'controller' => 'Device',

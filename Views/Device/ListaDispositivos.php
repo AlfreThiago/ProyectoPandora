@@ -42,7 +42,7 @@ switch ($rol) {
                 
             </div>
             <div class="btn-table-acciones">
-                <a class="btn-acciones-device" href="/ProyectoPandora/Public/index.php?route=Device/CrearDevice">Añadir Device</a>
+                <a class="btn-acciones-device" href="/ProyectoPandora/Public/index.php?route=Device/MostrarCrearDispositivo">Añadir Device</a>
             </div>
         </div>
         <table id="userTable">
@@ -62,6 +62,7 @@ switch ($rol) {
                 <?php
                 if (!empty($dispositivos)) {
                     foreach ($dispositivos as $dispositivo) {
+                        echo "<tr>";
                         echo "<td>{$dispositivo['id']}</td>";
                         echo "<td>{$dispositivo['users']}</td>";
                         echo "<td>{$dispositivo['categoria']}</td>";
@@ -70,16 +71,16 @@ switch ($rol) {
                         echo "<td>{$dispositivo['descripcion_falla']}</td>";
                         echo "<td><img src='/ProyectoPandora/Public/img/imgDispositivos/{$dispositivo['img_dispositivo']}' width='80'></td>";
                         echo "<td>
-                            <div class='action-buttons'>
-                                <a href='/ProyectoPandora/Public/index.php?route=Device/ActualizarDevice&id={$dispositivo['id']}' class='btn edit-btn'>Actualizar</a>
-                                |
-                                <a href='/ProyectoPandora/Public/index.php?route=Device/DeleteDevice&id={$dispositivo['id']}' class='btn delete-btn'>Eliminar</a>
-                            </div>
-                                </td>";
+                                <div class='action-buttons'>
+                                    <a href='/ProyectoPandora/Public/index.php?route=Device/ActualizarDevice&id={$dispositivo['id']}' class='btn edit-btn'>Actualizar</a>
+                                    |
+                                    <a href='/ProyectoPandora/Public/index.php?route=Device/DeleteDevice&id={$dispositivo['id']}' class='btn delete-btn'>Eliminar</a>
+                                </div>
+                              </td>";
                         echo "</tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='7'>No hay dispositivos registrados.</td></tr>";
+                    echo "<tr><td colspan='8'>No hay dispositivos registrados.</td></tr>";
                 }
                 ?>
             </tbody>

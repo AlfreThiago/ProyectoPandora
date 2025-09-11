@@ -5,7 +5,7 @@
             <h2>Agregar Dispositivo</h2>
             <div class="Formulario-general">
                 <div class="Formulario-contenedor">
-                    <form action="/ProyectoPandora/Public/index.php?route=Device/CrearDevice" method="POST" enctype="multipart/form-data">
+                    <form action="/ProyectoPandora/Public/index.php?route=Device/CrearDispositivo" method="POST" enctype="multipart/form-data">
                         <?php if (isset($isAdmin) && $isAdmin && isset($clientes)): ?>
                             <p>
                                 <label for="user_id">Cliente:</label>
@@ -22,11 +22,14 @@
                         <p>
                             <label for="categoria_id">Categoría del Dispositivo:</label>
                             <select id="categoria_id" name="categoria_id" required>
-                                <option value="1">Celulares</option>
-                                <option value="2">Computadora</option>
-                                <option value="3">Tablet</option>
-                                <option value="4">Electrodomésticos</option>
-                                <option value="5">Televisores</option>
+                                <option value="">-- Seleccionar --</option>
+                                <?php if (isset($categorias) && is_array($categorias)): ?>
+                                    <?php foreach ($categorias as $categoria): ?>
+                                        <option value="<?= $categoria['id'] ?>">
+                                            <?= htmlspecialchars($categoria['nombre'] ?? $categoria['name']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </select>
                         </p>
                         <p>

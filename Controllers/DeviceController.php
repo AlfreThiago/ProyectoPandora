@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/../Models/Device.php';
 require_once __DIR__ . '/../Models/Category.php';
+require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/../Controllers/HistorialController.php';
 
 class DeviceController
@@ -9,15 +10,20 @@ class DeviceController
     private $historialController;
     private $deviceModel;
     private $categoryModel;
+    private $userModel;
 
     public function __construct()
     {
-        $this->historialController = new HistorialController();
         $db = new Database();
         $db->connectDatabase();
-        $this->deviceModel = new DeviceModel($db->getConnection());
-        $this->categoryModel = new CategoryModel($db->getConnection());
+        $conn = $db->getConnection();
+
+        $this->historialController = new HistorialController();
+        $this->deviceModel = new DeviceModel($conn);
+        $this->categoryModel = new CategoryModel($conn);
+        $this->userModel = new UserModel($conn);
     }
+
     public function listarDevice()
     {
         $user = Auth::user();
@@ -40,6 +46,24 @@ class DeviceController
         include_once __DIR__ . '/../Views/Device/ListaCategoria.php';
     }
 
+    public function mostrarCrearDispositivo()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+
+        $isAdmin = ($user['role'] === 'Administrador');
+        $clientes = [];
+        if ($isAdmin) {
+            $clientes = $this->userModel->getAllClientes();
+        }
+        $categorias = $this->categoryModel->getAllCategories();
+
+        include_once __DIR__ . '/../Views/Device/CrearDevice.php';
+    }
+
     public function CrearDispositivo()
     {
         $user = Auth::user();
@@ -51,9 +75,9 @@ class DeviceController
         $isAdmin = ($user['role'] === 'Administrador');
         $clientes = [];
         if ($isAdmin) {
-            $userModel = new UserModel((new Database())->getConnection());
-            $clientes = $userModel->getAllClientes();
+            $clientes = $this->userModel->getAllClientes();
         }
+        $categorias = $this->categoryModel->getAllCategories();
 
         $userId = $isAdmin && isset($_POST['user_id']) ? $_POST['user_id'] : $user['id'];
 
@@ -65,21 +89,19 @@ class DeviceController
             $img_dispositivo = $_FILES['img_dispositivo']['name'] ?? '';
 
             if (!$categoriaId || !$marca || !$modelo || !$img_dispositivo) {
-                echo "Todos los campos son obligatorios.";
+                $error = "Todos los campos son obligatorios.";
+                include_once __DIR__ . '/../Views/Device/CrearDevice.php';
                 return;
             }
 
             $rutaDestino = __DIR__ . '/../Public/img/imgDispositivos/' . $img_dispositivo;
             if (!move_uploaded_file($_FILES['img_dispositivo']['tmp_name'], $rutaDestino)) {
-                echo "Error al subir la imagen.";
+                $error = "Error al subir la imagen.";
+                include_once __DIR__ . '/../Views/Device/CrearDevice.php';
                 return;
             }
 
-            $db = new Database();
-            $db->connectDatabase();
-            $deviceModel = new DeviceModel($db->getConnection());
-
-            if ($deviceModel->createDevice($userId, $categoriaId, $marca, $modelo, $descripcion, $img_dispositivo)) {
+            if ($this->deviceModel->createDevice($userId, $categoriaId, $marca, $modelo, $descripcion, $img_dispositivo)) {
                 $accion = "Agregar dispositivo";
                 $detalle = "Usuario {$user['name']} agregó el dispositivo {$marca} {$modelo}";
                 $this->historialController->agregarAccion($accion, $detalle);
@@ -87,13 +109,22 @@ class DeviceController
                 header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice&success=1');
                 exit;
             } else {
-                echo "Error al registrar el dispositivo.";
+                $error = "Error al registrar el dispositivo.";
+                include_once __DIR__ . '/../Views/Device/CrearDevice.php';
+                return;
             }
         }
         include_once __DIR__ . '/../Views/Device/CrearDevice.php';
     }
+
     public function CrearCategoria()
     {
+        $user = Auth::user();
+        if (!$user) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombreCategoria = $_POST['nombre'] ?? '';
 
@@ -102,11 +133,7 @@ class DeviceController
                 exit;
             }
 
-            $db = new Database();
-            $db->connectDatabase();
-            $categoryModel = new CategoryModel($db->getConnection());
-
-            if ($categoryModel->createCategory($nombreCategoria)) {
+            if ($this->categoryModel->createCategory($nombreCategoria)) {
                 header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria&success=1');
                 exit;
             } else {
@@ -124,10 +151,10 @@ class DeviceController
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         }
-        $id = (int) $_GET['id'];
+        $id = (int) ($_GET['id'] ?? 0);
 
-        $categorias = $this->categoryModel->findCategoryById($id);
-        if (!$categorias) {
+        $categoria = $this->categoryModel->findCategoryById($id);
+        if (!$categoria) {
             echo "Categoría no encontrada.";
             return;
         }
@@ -139,11 +166,7 @@ class DeviceController
                 exit;
             }
 
-            $db = new Database();
-            $db->connectDatabase();
-            $categoryModel = new CategoryModel($db->getConnection());
-
-            if ($categoryModel->updateCategory($id, $nombreCategoria)) {
+            if ($this->categoryModel->updateCategory($id, $nombreCategoria)) {
                 header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria&success=1');
                 exit;
             }
@@ -195,7 +218,6 @@ class DeviceController
         include __DIR__ . '/../Views/Device/ActualizarDevice.php';
     }
 
-
     public function deleteDevice()
     {
         $user = Auth::user();
@@ -208,10 +230,7 @@ class DeviceController
             header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice&error=DeviceNotFound');
             exit;
         }
-        $db = new Database();
-        $db->connectDatabase();
-        $deviceModel = new DeviceModel($db->getConnection());
-        if ($deviceModel->deleteDevice($deviceId)) {
+        if ($this->deviceModel->deleteDevice($deviceId)) {
             // Guardar en historial
             $accion = "Eliminar dispositivo";
             $detalle = "Usuario {$user['name']} eliminó el dispositivo con ID: $deviceId";
@@ -223,6 +242,7 @@ class DeviceController
         header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice&error=ErrorDeletingDevice');
         exit;
     }
+
     public function deleteCategory()
     {
         $user = Auth::user();
@@ -231,16 +251,12 @@ class DeviceController
             exit;
         }
 
-
         $categoryId = $_GET['id'] ?? 0;
         if (!$categoryId) {
             header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria&error=CategoryNotFound');
             exit;
         }
-        $db = new Database();
-        $db->connectDatabase();
-        $categoryModel = new CategoryModel($db->getConnection());
-        if ($categoryModel->deleteCategory($categoryId)) {
+        if ($this->categoryModel->deleteCategory($categoryId)) {
             //Guardar en Historial
             $accion = "Se Elimino una Categoria";
             $detalle = "Usuario {$user['name']} elimino la categoria con ID: $categoryId";
