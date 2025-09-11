@@ -119,6 +119,10 @@ return [
         'controller' => 'EstadoTicket',
         'action' => 'actualizar'
     ],
+    'EstadoTicket/Eliminar'=> [
+        'controller' => 'EstadoTicket',
+        'action' => 'eliminar'        
+    ],    
     //
     //
     //Ticket

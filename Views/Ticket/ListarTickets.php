@@ -53,7 +53,28 @@ switch ($rol) {
                 </tr>
             </thead>
             <tbody id="ticketTable">
-                <!-- El Controller va a inyectar las filas aquí -->
+                <?php if (!empty($data)): ?>
+                    <?php foreach ($data as $ticket): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($ticket['id']) ?></td>
+                            <td><?= htmlspecialchars($ticket['dispositivo']) ?></td>
+                            <td><?= htmlspecialchars($ticket['cliente']) ?></td>
+                            <td><?= htmlspecialchars($ticket['descripcion']) ?></td>
+                            <td><?= htmlspecialchars($ticket['estado']) ?></td>
+                            <td><?= htmlspecialchars($ticket['tecnico'] ?? 'Sin asignar') ?></td>
+                            <td>
+                                <!-- Acciones: Ver, Editar, Eliminar, etc. -->
+                                <a href="/ProyectoPandora/Public/index.php?route=Ticket/verTicket&id=<?= $ticket['id'] ?>">Ver</a>
+                                |
+                                <a class="btn edit-btn" href="/ProyectoPandora/Public/index.php?route=Ticket/Editar&id=<?= $ticket['id'] ?>">Editar</a>
+                                |
+                                <a class="btn delete-btn" href="/ProyectoPandora/Public/index.php?route=Ticket/Eliminar&id=<?= $ticket['id'] ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar este ticket?');">Eliminar</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><td colspan="7">No hay tickets registrados.</td></tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>

@@ -19,16 +19,22 @@ class Ticket
 
     public function listar()
     {
-        $sql = "SELECT t.id, d.marca AS dispositivo, u.name AS cliente, 
-                       t.descripcion_falla, e.name AS estado, 
-                       us.name AS tecnico
+        $sql = "SELECT 
+                    t.id,
+                    d.marca AS dispositivo,
+                    u.name AS cliente,
+                    t.descripcion_falla AS descripcion,
+                    e.name AS estado,
+                    tec.name AS tecnico
                 FROM tickets t
                 INNER JOIN dispositivos d ON t.dispositivo_id = d.id
                 INNER JOIN clientes c ON t.cliente_id = c.id
                 INNER JOIN users u ON c.user_id = u.id
                 INNER JOIN estados_tickets e ON t.estado_id = e.id
-                INNER JOIN tecnicos tec ON t.tecnico_id = tec.id
-                LEFT JOIN users us ON tec.user_id = u.id";
+                LEFT JOIN item_ticket it ON it.ticket_id = t.id
+                LEFT JOIN tecnicos tc ON it.tecnico_id = tc.id
+                LEFT JOIN users tec ON tc.user_id = tec.id
+                ";
         return $this->conn->query($sql);
     }
 
@@ -49,12 +55,14 @@ class Ticket
         return $stmt->execute();
     }
 
-    public function eliminar($id)
+    public function deleteTicket($ticketId)
     {
-        $sql = "DELETE FROM tickets WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
+        $stmt = $this->conn->prepare("DELETE FROM tickets WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $ticketId);
+            return $stmt->execute();
+        }
+        return false;
     }
     public function obtenerDispositivosPorCliente($cliente_id)
     {

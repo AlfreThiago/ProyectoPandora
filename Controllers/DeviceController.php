@@ -47,7 +47,15 @@ class DeviceController
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         }
-        $userId = $user['id'];
+
+        $isAdmin = ($user['role'] === 'Administrador');
+        $clientes = [];
+        if ($isAdmin) {
+            $userModel = new UserModel((new Database())->getConnection());
+            $clientes = $userModel->getAllClientes();
+        }
+
+        $userId = $isAdmin && isset($_POST['user_id']) ? $_POST['user_id'] : $user['id'];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $categoriaId = $_POST['categoria_id'] ?? 0;

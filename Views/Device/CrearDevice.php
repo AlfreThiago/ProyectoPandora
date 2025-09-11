@@ -6,6 +6,19 @@
             <div class="Formulario-general">
                 <div class="Formulario-contenedor">
                     <form action="/ProyectoPandora/Public/index.php?route=Device/CrearDevice" method="POST" enctype="multipart/form-data">
+                        <?php if (isset($isAdmin) && $isAdmin && isset($clientes)): ?>
+                            <p>
+                                <label for="user_id">Cliente:</label>
+                                <select id="user_id" name="user_id" required>
+                                    <option value="">-- Seleccionar --</option>
+                                    <?php foreach ($clientes as $cliente): ?>
+                                        <option value="<?= $cliente['id'] ?>">
+                                            <?= htmlspecialchars($cliente['name']) ?> (<?= htmlspecialchars($cliente['email']) ?>)
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </p>
+                        <?php endif; ?>
                         <p>
                             <label for="categoria_id">Categoría del Dispositivo:</label>
                             <select id="categoria_id" name="categoria_id" required>
