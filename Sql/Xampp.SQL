@@ -69,38 +69,38 @@ CREATE TABLE administradores (
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-CREATE TABLE tickets (
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    cliente_id INT(11) NOT NULL,
-    tecnico_id INT(11),
-    supervisor_id INT(11),
-    estado_id INT(11) NOT NULL,
-    titulo VARCHAR(100) NOT NULL,
-    descripcion TEXT NOT NULL,
-    prioridad ENUM('Baja', 'Media', 'Alta') DEFAULT 'Media',
-    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    fecha_cierre DATETIME,
-    PRIMARY KEY (id),
-    FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
-    FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE
-    SET NULL,
-        FOREIGN KEY (supervisor_id) REFERENCES supervisores(id) ON DELETE
-    SET NULL,
-        FOREIGN KEY (estado_id) REFERENCES estados_tickets(id)
-);
+
 CREATE TABLE dispositivos (
     id INT(11) NOT NULL AUTO_INCREMENT,
     user_id INT(11) NOT NULL,
     categoria_id INT(11) NOT NULL,
     marca VARCHAR(50),
     modelo VARCHAR(50),
-    numero_serie VARCHAR(50),
     descripcion_falla TEXT,
     img_dispositivo VARCHAR(255) DEFAULT NULL,
     fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE
+);
+CREATE TABLE tickets (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    dispositivo_id INT (11) NOT NULL,
+    cliente_id INT(11) NOT NULL,
+    tecnico_id INT(11),
+    supervisor_id INT(11),
+    estado_id INT(11) NOT NULL,
+    descripcion_falla TEXT NOT NULL,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fecha_cierre DATETIME,
+    PRIMARY KEY (id),
+    FOREIGN KEY (dispositivo_id) REFERENCES dispositivos(id) ON DELETE CASCADE,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
+    FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE
+    SET NULL,
+        FOREIGN KEY (supervisor_id) REFERENCES supervisores(id) ON DELETE
+    SET NULL,
+        FOREIGN KEY (estado_id) REFERENCES estados_tickets(id)
 );
 CREATE TABLE inventarios (
     id INT(11) NOT NULL AUTO_INCREMENT,
