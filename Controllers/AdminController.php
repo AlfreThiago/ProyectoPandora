@@ -17,35 +17,38 @@ class AdminController
         $db->connectDatabase();
         $this->userModel = new UserModel($db->getConnection());
     }
+        public function PanelAdmin(){
+        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
+    }
 
     public function listarUsers()
     {
         $users = $this->userModel->getAllUsers();
-        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
+        include_once __DIR__ . '/../Views/Admin/ListaUser.php';
     }
 
     public function listarCli()
     {
-        $users = $this->userModel->getAllClientes();
-        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
+        $clientes = $this->userModel->getAllClientes();
+        include_once __DIR__ . '/../Views/Admin/ListaCliente.php';
     }
 
     public function listarTecs()
     {
-        $users = $this->userModel->getAllTecnicos();
-        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
+        $tecnicos = $this->userModel->getAllTecnicos();
+        include_once __DIR__ . '/../Views/Admin/ListaTecnico.php';
     }
 
     public function listarSupers()
     {
-        $users = $this->userModel->getAllSupervisores();
-        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
+        $supervisor = $this->userModel->getAllSupervisores();
+        include_once __DIR__ . '/../Views/Admin/ListaSupervisor.php';
     }
 
     public function listarAdmins()
     {
-        $users = $this->userModel->getAllAdministradores();
-        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
+        $administradores = $this->userModel->getAllAdministradores();
+        include_once __DIR__ . '/../Views/Admin/ListaAdmin.php';
     }
     public function changeRole()
     {

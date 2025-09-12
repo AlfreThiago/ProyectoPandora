@@ -8,7 +8,7 @@
 <main>
     <section class="content">
         <header class="header">
-            <h1 class="header-title">Panel Tecnico</h1>
+            <h1 class="header-title">Panel Cliente</h1>
             <p class="header-subtitle">
                 Bienvenido a la zona Tecnica
                 <br>
@@ -35,16 +35,13 @@
         <!-- Tabs -->
         <div class="tabs">
             <div class="tab <?php echo ($rutaActual === 'Ticket/Listar') ? 'active' : ''; ?>">
-                <a href="/ProyectoPandora/Public/index.php?route=Ticket/Listar">Tickets</a>
+                <a href="/ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear">Tickets</a>
             </div>
             <div class="tab <?php echo ($rutaActual === 'Device/ListarDevice') ? 'active' : ''; ?>">
-                <a href="/ProyectoPandora/Public/index.php?route=Device/ListarDevice">Dispositivos</a>
+                <a href="/ProyectoPandora/Public/index.php?route=Device/MostrarCrearDispositivo">Dispositivos</a>
             </div>
-            <div class="tab <?php echo ($rutaActual === 'EstadoTicket/ListarEstados') ? 'active' : ''; ?>">
-                <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados">Estados tickets</a>
-            </div>
+
         </div>
     </section>
-        
 </main>
 <?php include_once __DIR__ . '/../Includes/Footer.php' ?>

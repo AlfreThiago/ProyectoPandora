@@ -28,6 +28,9 @@
                         <p>
                             <button type="submit">Registrar</button>
                         </p>
+                        <p>
+                            <a href="/ProyectoPandora/Public/index.php?route=Default/Index" class="btn-form-categoria">Volver a home</a>
+                        </p>
                     </form>
                 </div>
             </div>

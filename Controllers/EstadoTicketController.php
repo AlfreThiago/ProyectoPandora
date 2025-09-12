@@ -17,7 +17,7 @@ class EstadoTicketController
 public function listar()
 {
     $estados = $this->estadoModel->obtenerTodos() ?? [];
-    include __DIR__ . '/../Views/Admin/PanelAdmin.php';
+    include __DIR__ . '/../Views/EstadoTicket/ListarEstado.php';
 }
 
 
@@ -32,7 +32,7 @@ public function listar()
                 exit;
             }
         }
-        include_once __DIR__ . '/../Views/EstadoTicket/Crear.php';
+        include_once __DIR__ . '/../Views/EstadoTicket/CrearEstado.php';
     }
     public function editar($id = null)
     {

@@ -30,6 +30,10 @@ return [
     //
     //
     //Admin
+    'Admin/PanelAdmin' => [
+        'controller' => 'Admin',
+        'action' => 'PanelAdmin'
+    ],
     'Admin/ListarUsers' => [
         'controller' => 'Admin',
         'action' => 'listarUsers'
@@ -60,15 +64,14 @@ return [
     ],
     //
     //
+    //Cliente
+    'Cliente/PanelCliente' => [
+        'controller' => 'Cliente',
+        'action' => 'PanelCliente'
+    ],
+    //
+    //
     //Device
-    'Device/CrearDevice' => [
-        'controller' => 'Device',
-        'action' => 'CrearDispositivo'
-    ],
-    'Device/CrearCategoria' => [
-        'controller' => 'Device',
-        'action' => 'CrearCategoria'
-    ],
     'Device/ListarDevice' => [
         'controller' => 'Device',
         'action' => 'listarDevice'
@@ -76,6 +79,18 @@ return [
     'Device/ListarCategoria' => [
         'controller' => 'Device',
         'action' => 'listarCategoria'
+    ],
+    'Device/MostrarCrearDispositivo' => [
+        'controller' => 'Device',
+        'action' => 'mostrarCrearDispositivo'
+    ],
+    'Device/CrearDispositivo' => [
+        'controller' => 'Device',
+        'action' => 'CrearDispositivo'
+    ],
+    'Device/CrearCategoria' => [
+        'controller' => 'Device',
+        'action' => 'CrearCategoria'
     ],
     'Device/ActualizarDevice' => [
         'controller' => 'Device',
@@ -119,6 +134,10 @@ return [
         'controller' => 'EstadoTicket',
         'action' => 'actualizar'
     ],
+    'EstadoTicket/Eliminar'=> [
+        'controller' => 'EstadoTicket',
+        'action' => 'eliminar'        
+    ],    
     //
     //
     //Ticket
@@ -129,6 +148,10 @@ return [
     'Ticket/Crear' => [
         'controller' => 'Ticket',
         'action' => 'crear'
+    ],
+    'Ticket/mostrarCrear' => [
+        'controller' => 'Ticket',
+        'action' => 'mostrarCrear'
     ],
     'Ticket/Listar' => [
         'controller' => 'Ticket',
@@ -156,12 +179,13 @@ return [
         'controller' => 'Paneles',
         'action' => 'PanelTecnico'
     ],
-    'Dash/PanelCliente' => [
-        'controller' => 'Paneles',
-        'action' => 'PanelCliente'
-    ],
     'Dash/PanelSupervisor' => [
         'controller' => 'Paneles',
         'action' => 'PanelSupervisor'
+    ],
+
+    'Dash/Ajustes' => [
+        'controller' => 'Auth',
+        'action' => 'Ajustes'
     ],
 ];

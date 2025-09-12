@@ -54,9 +54,9 @@ class UserModel
     }
     public function getAllClientes()
     {
-        $sql = "SELECT u.id, u.name, u.email, u.role, u.telefono, u.direccion, u.created_at
-            FROM users u
-            INNER JOIN clientes c ON u.id = c.user_id";
+        $sql = "SELECT c.id, u.name, u.email
+            FROM clientes c
+            INNER JOIN users u ON c.user_id = u.id";
         $result = $this->connection->query($sql);
         return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
     }

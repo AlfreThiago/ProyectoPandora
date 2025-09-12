@@ -43,7 +43,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <?php if ($role === 'administrador'): ?>
                             <!-- Admin: ve todos los usuarios y opción de añadir -->
                             <li class="item menu-item menu-item-static">
-                                <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="link flex">
+                                <a href="/ProyectoPandora/Public/index.php?route=Admin/PanelAdmin" class="link flex">
                                     <i class='bx  bx-iframe'></i>
                                     <span>Panel Admin</span>
                                 </a>
@@ -113,7 +113,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             </li>
                         <?php elseif ($role === 'cliente'): ?>
                             <li class="item menu-item-static">
-                                <a href="index.php?route=Dash/PanelCliente" class="link flex">
+                                <a href="index.php?route=Cliente/PanelCliente" class="link flex">
                                     <i class='bx  bx-devices'></i>
                                     <span>Panel Cliente</span>
                                 </a>
