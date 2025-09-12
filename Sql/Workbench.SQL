@@ -94,16 +94,16 @@ CREATE TABLE estados_tickets (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE tickets (
     id INT NOT NULL AUTO_INCREMENT,
+    dispositivo_id INT NOT NULL,
     cliente_id INT NOT NULL,
     tecnico_id INT NULL,
     supervisor_id INT NULL,
     estado_id INT NOT NULL,
-    titulo VARCHAR(100) NOT NULL,
-    descripcion TEXT NOT NULL,
-    prioridad ENUM('Baja', 'Media', 'Alta') DEFAULT 'Media',
+    descripcion_falla TEXT NOT NULL,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_cierre DATETIME NULL,
     PRIMARY KEY (id),
+    CONSTRAINT fk_tickets_dispositivo FOREIGN KEY (dispositivo_id) REFERENCES dispositivos(id) ON DELETE CASCADE,
     CONSTRAINT fk_tickets_cliente FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
     CONSTRAINT fk_tickets_tecnico FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE
     SET NULL,
