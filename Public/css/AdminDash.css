@@ -584,14 +584,20 @@ table th:last-child {
 .edit-btn {
   background-color: #1976d2;
 }
+.ver-btn {
+  background-color: #19d238;
+}
+.ver-btn:hover {
+  background-color: #148a27;
+}
 .edit-btn:hover {
-  background-color: #1565c0;
+  background-color: #154f92;
 }
 .delete-btn {
   background-color: #d32f2f;
     }
 .delete-btn:hover {
-  background-color: #c62828;
+  background-color: #861a1a;
     }
 .created-at {
   color: #777;

@@ -15,7 +15,7 @@ switch ($rol) {
         include_once __DIR__ . '/../Paneles/PanelSupervisor.php';
         break;
     case 'Cliente':
-        include_once __DIR__ . '/../Paneles/PanelCliente.php';
+        include_once __DIR__ . '/../Clientes/PanelCliente.php';
         break;
     default:
         echo "<p>No tienes un rol asignado o el rol no es válido.</p>";

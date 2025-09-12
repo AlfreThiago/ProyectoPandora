@@ -15,7 +15,7 @@ switch ($rol) {
         include_once __DIR__ . '/../Paneles/PanelSupervisor.php';
         break;
     case 'Cliente':
-        include_once __DIR__ . '/../Paneles/PanelCliente.php';
+        include_once __DIR__ . '/../Clientes/PanelCliente.php';
         break;
     default:
         echo "<p>No tienes un rol asignado o el rol no es válido.</p>";
@@ -63,12 +63,14 @@ switch ($rol) {
                             <td><?= htmlspecialchars($ticket['estado']) ?></td>
                             <td><?= htmlspecialchars($ticket['tecnico'] ?? 'Sin asignar') ?></td>
                             <td>
-                                <!-- Acciones: Ver, Editar, Eliminar, etc. -->
-                                <a href="/ProyectoPandora/Public/index.php?route=Ticket/verTicket&id=<?= $ticket['id'] ?>">Ver</a>
-                                |
-                                <a class="btn edit-btn" href="/ProyectoPandora/Public/index.php?route=Ticket/Editar&id=<?= $ticket['id'] ?>">Editar</a>
-                                |
-                                <a class="btn delete-btn" href="/ProyectoPandora/Public/index.php?route=Ticket/Eliminar&id=<?= $ticket['id'] ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar este ticket?');">Eliminar</a>
+                                <div class='action-buttons'>
+                                    <!-- Acciones: Ver, Editar, Eliminar, etc. -->
+                                    <a class="btn ver-btn"  href="/ProyectoPandora/Public/index.php?route=Ticket/verTicket&id=<?= $ticket['id'] ?>">Ver</a>
+                                    |
+                                    <a class="btn edit-btn" href="/ProyectoPandora/Public/index.php?route=Ticket/Editar&id=<?= $ticket['id'] ?>">Editar</a>
+                                    |
+                                    <a class="btn delete-btn" href="/ProyectoPandora/Public/index.php?route=Ticket/Eliminar&id=<?= $ticket['id'] ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar este ticket?');">Eliminar</a>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>
