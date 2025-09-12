@@ -10,7 +10,7 @@
         <header class="header">
             <h1 class="header-title">Panel Cliente</h1>
             <p class="header-subtitle">
-                Bienvenido a la zona Tecnica
+                Bienvenido a la zona del cliente
                 <br>
                 <span class="user-highlight">
                     <?php echo htmlspecialchars($_SESSION['user']['name']); ?>
