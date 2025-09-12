@@ -91,7 +91,7 @@
             </div>
         </div>
         <div class="gif">
-            <p class="texto-gif">Esperando accion</p>
+            <p class="texto-gif">Esperando</p>
         </div>
     </section>
 <script src="/ProyectoPandora/Public/js/Modal.js"></script>
