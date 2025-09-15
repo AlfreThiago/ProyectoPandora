@@ -86,6 +86,9 @@
             <div class="tab <?php echo ($rutaActual === 'Device/ListarDevice') ? 'active' : ''; ?>">
                 <a href="/ProyectoPandora/Public/index.php?route=Device/ListarDevice">Dispositivos</a>
             </div>
+            <div class="tab <?php echo ($rutaActual === 'Inventario/Listar') ? 'active' : ''; ?>">
+                <a href="/ProyectoPandora/Public/index.php?route=Inventario/ListarItem">Inventario</a>
+            </div>
             <div class="tab <?php echo ($rutaActual === 'EstadoTicket/ListarEstados') ? 'active' : ''; ?>">
                 <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados">Estados tickets</a>
             </div>
