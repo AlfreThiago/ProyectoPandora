@@ -155,6 +155,11 @@ class InventarioController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'] ?? '';
             if ($this->categoryModel->crearInventarioCategory($name)) {
+                $user = Auth::user();
+                $accion = "Creación de categoría de inventario";
+                $detalle = "Usuario {$user['name']} creó la categoría '{$name}'";
+                $this->historialController->agregarAccion($accion, $detalle);
+
                 header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&success=1');
                 exit;
             } else {
@@ -170,6 +175,11 @@ class InventarioController
         Auth::checkRole(['Administrador', 'Supervisor']);
         $id = $_GET['id'] ?? null;
         if ($id && $this->categoryModel->eliminarCategory($id)) {
+            $user = Auth::user();
+            $accion = "Eliminación de categoría de inventario";
+            $detalle = "Usuario {$user['name']} eliminó la categoría ID {$id}";
+            $this->historialController->agregarAccion($accion, $detalle);
+
             header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&success=1');
             exit;
         } else {

@@ -4,16 +4,19 @@ require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/../Core/Auth.php';
 require_once __DIR__ . '/../Models/Device.php';
 require_once __DIR__ . '/../Models/User.php';
+require_once __DIR__ . '/HistorialController.php';
 
 class TicketController
 {
     private $ticketModel;
+    private $historialController;
 
     public function __construct()
     {
         $db = new Database();
         $db->connectDatabase();
         $this->ticketModel = new Ticket($db->getConnection());
+        $this->historialController = new HistorialController();
     }
 
     // Mostrar lista
@@ -65,6 +68,11 @@ class TicketController
             exit;
         }
         $this->ticketModel->actualizar($id, $descripcion);
+
+        $accion = "Actualización de ticket";
+        $detalle = "Usuario {$user['name']} actualizó el ticket ID {$id} con nueva descripción: {$descripcion}";
+        $this->historialController->agregarAccion($accion, $detalle);
+
         header("Location: ListarTickets.php");
     }
 
@@ -149,6 +157,12 @@ class TicketController
 
         $this->ticketModel->crear($cliente_id, $dispositivo_id, $descripcion);
 
+        // Guardar en historial
+        $user = Auth::user();
+        $accion = "Creación de ticket";
+        $detalle = "Usuario {$user['name']} creó un ticket para el dispositivo ID {$dispositivo_id} con descripción: {$descripcion}";
+        $this->historialController->agregarAccion($accion, $detalle);
+
         header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar');
         exit;
     }
@@ -170,6 +184,11 @@ class TicketController
             exit;
         }
         if ($this->ticketModel->deleteTicket($id)) {
+            $user = Auth::user();
+            $accion = "Eliminación de ticket";
+            $detalle = "Usuario {$user['name']} eliminó el ticket ID {$id}";
+            $this->historialController->agregarAccion($accion, $detalle);
+
             header("Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar&success=1");
         } else {
             header("Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar&error=No se pudo eliminar el ticket");
