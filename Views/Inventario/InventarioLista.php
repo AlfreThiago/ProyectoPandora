@@ -23,23 +23,9 @@ switch ($rol) {
 <main>
     <div class="Tabla-Contenedor">
         <h2>Lista de Inventario</h2>
-        <div class="search-container">
-            <input type="text" id="inventarioSearchInput" placeholder="Buscar item..." class="search-input">
-        </div>
         <div class="botones">
-            <div class="dropdown">
-                <label for="menu-toggle" class="dropdown-label" >
-                    Opciones<i class='bxr  bx-caret-down'  ></i> </label>
-                <input type="checkbox" id="menu-toggle" />
-            
-                <div class="dropdown-menu">
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Inventario/ListarItem">Inventario</a>
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias">Categorias</a>
-                </div>
-                
-            </div>
             <div class="btn-table-acciones">
-                <a class="btn-acciones-device" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearItem">Añadir Item</a>
+                <a class="btn-acciones-inventario-cate" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearItem">Añadir Item</a>
             </div>
         </div>
         <table id="inventarioTable">
