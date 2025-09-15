@@ -118,17 +118,10 @@ if (session_status() === PHP_SESSION_NONE) {
                                     <span>Panel Cliente</span>
                                 </a>
                             </li>
-                            <li class="item menu-item menu-item-static">
-                                <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
-                                    <i class='bx  bx-help-circle'></i>
-                                    <span>Guia</span>
-                                    </i>
-                                </a>
-                            </li>
                         <?php endif; ?>
                     <?php else: ?>
                         <!-- No logueado -->
-                        <!-- Iniciar sesion y Registro -->
+                        <!-- Iniciar sesion, Registro y Guia -->
                         <li class="item ">
                             <a href="/ProyectoPandora/Public/index.php?route=Auth/Login" class="link flex">
                                 <i class='bx bx-arrow-out-right-square-half'></i>
@@ -141,12 +134,17 @@ if (session_status() === PHP_SESSION_NONE) {
                                 <span>Registrarse</span>
                             </a>
                         </li>
+                        <li class="item ">
+                            <a href="/ProyectoPandora/Public/index.php?route=Default/Guia" class="link flex">
+                                <i class='bx  bx-help-circle'></i>
+                                <span>Guia</span>
+                                </i>
+                            </a>
+                        </li>
                     <?php endif; ?>
                 </ul>
             </div>
         </nav>
     </aside>
-
 </body>
-
 </html>

@@ -9,4 +9,8 @@ class DefaultController
         $user = Auth::user();
         include_once __DIR__ . '/../Views/AllUsers/Home.php';
     }
+    public function index2() {
+        $user = Auth::user();
+        include_once __DIR__ . '/../Views/AllUsers/Guia.php';
+    }  
 }

@@ -8,6 +8,10 @@ return [
         'controller' => 'Default',
         'action' => 'index'
     ],
+    'Default/Guia' => [
+        'controller' => 'Default',
+        'action' => 'index2'
+    ],
     //
     //Auth del Login 
     //Register el Registrar

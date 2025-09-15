@@ -15,17 +15,12 @@
                     </span>
                 </p>
                 <div class="header-actions">
-                    <!-- Notificaciones  -->
-                    <span class="icon-btn">
-                        <i class='bx bx-bell'></i>
-                    </span>
-
                      <!-- Chat  -->
                     <span class="icon-btn">
                         <i class='bx bx-chat'></i>
                     </span>
 
-                    <!-- Avatar -->
+                    <!-- Perfil -->
                     <li class="profile-menu">
                         <a href="javascript:void(0)" id="btn-profile">
                             <img src="#" alt="Perfil" class="user-avatar">
@@ -42,11 +37,10 @@
                             <hr>
 
                             <ul>
-                                <!-- Historial -->
                                 <li>
-                                    <a href="/ProyectoPandora/Public/index.php?route=Historial/ListarHistorial">
+                                    <a href="/ProyectoPandora/Public/index.php?route=Default/Guia">
                                         <i class='bx bx-history'></i> 
-                                        <span>Historial</span>
+                                        <span>Guia</span>
                                     </a>
                                 </li>
                                 <li>
