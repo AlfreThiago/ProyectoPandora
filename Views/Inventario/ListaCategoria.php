@@ -5,7 +5,7 @@
         <section class="Conenedor-formulario-principal">
             <h2>Categorías de Inventario</h2>
             <div class="botones">
-                <a class="btn-acciones-inventario" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearCategoriaInventario">Añadir Categoría</a>
+                <a class="btn-acciones-inventario" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearCategoria">Añadir Categoría</a>
             </div>
             <table>
                 <thead>

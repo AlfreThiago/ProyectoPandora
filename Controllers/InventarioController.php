@@ -142,7 +142,7 @@ class InventarioController
         include_once __DIR__ . '/../Views/Inventario/ListaCategoria.php';
     }
 
-    public function mostrarCrearCategoriaInventario()
+    public function mostrarCrearCategoria()
     {
         Auth::checkRole(['Administrador', 'Supervisor']);
         include_once __DIR__ . '/../Views/Inventario/CrearCategoria.php';
@@ -161,7 +161,7 @@ class InventarioController
                 exit;
             }
         }
-        $this->mostrarCrearCategoriaInventario();
+        $this->mostrarCrearCategoria();
     }
 
     public function eliminarCategoriaInventario()
