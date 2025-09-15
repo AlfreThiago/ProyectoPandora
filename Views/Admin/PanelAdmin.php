@@ -90,6 +90,7 @@
                 <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados">Estados tickets</a>
             </div>
         </div>
+        <!-- Pantalla de Esperando -->
         <div class="gif">
             <p class="texto-gif">Esperando</p>
         </div>

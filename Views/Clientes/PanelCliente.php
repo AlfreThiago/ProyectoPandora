@@ -42,6 +42,10 @@
             </div>
 
         </div>
+        <!-- Pantalla de Esperando -->
+        <div class="gif">
+            <p class="texto-gif">Esperando</p>
+        </div>
     </section>
 </main>
 <?php include_once __DIR__ . '/../Includes/Footer.php' ?>

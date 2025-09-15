@@ -1125,8 +1125,8 @@ input[type="password"]:focus {
   background: url("../img/BIGMOLE-4x.gif") no-repeat center center;
   background-size: cover;
   position: relative;
-  left: 500px;
-  top: 100px;
+  left: 700px;
+  top: 200px;
 }
 .gif.none{
   display: none;
