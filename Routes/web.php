@@ -188,4 +188,41 @@ return [
         'controller' => 'Auth',
         'action' => 'Ajustes'
     ],
+    //
+    //
+    //Inventario
+    'Inventario/ListarItem' => [
+        'controller' => 'Inventario',
+        'action' => 'listarInventario'
+    ],
+    'Inventario/ListarCategorias' => [
+        'controller' => 'Inventario',
+        'action' => 'listarCategorias'
+    ],
+    'Inventario/MostrarCrearItem'=> [
+        'controller' => 'Inventario',
+        'action' => 'mostrarCrear'
+    ], 
+    'Inventario/MostrarCrearCategoria'=> [
+        'controller' => 'Inventario',
+        'action' => 'mostrarCrearCategoria'
+    ],
+    'Inventario/CrearItem'=> [
+        'controller' => 'Inventario',
+        'action' => 'crear'
+    ],
+    'Inventario/CrearCategoria'=> [
+        'controller' => 'Inventario',
+        'action' => 'crearCategoria'
+    ],
+    'Inventario/ActualizarItem'=> [],
+    'Inventario/EditarItem'=> [],
+    'Inventario/EliminarItem'=> [
+        'controller' => 'Inventario',
+        'action' => 'eliminar'
+    ],
+    'Inventario/EliminarCategoria'=> [
+        'controller' => 'Inventario',
+        'action' => 'eliminarCategoria'
+    ],
 ];

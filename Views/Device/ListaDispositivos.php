@@ -26,9 +26,6 @@ switch ($rol) {
 <main>
     <div class="Tabla-Contenedor">
         <h2>Lista de Dispositivos</h2>
-        <div class="search-container">
-            <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
-        </div>
         <div class="botones">
             <div class="dropdown">
                 <label for="menu-toggle" class="dropdown-label" >
