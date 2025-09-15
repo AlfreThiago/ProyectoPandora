@@ -20,8 +20,8 @@ switch ($rol) {
     default:
         echo "<p>No tienes un rol asignado o el rol no es válido.</p>";
         break;
-}
-?>nclude_once __DIR__ . '/../Admin/PanelAdmin.php' ?>
+    }
+    ?>
 <main>
     <div class="Tabla-Contenedor">
         <h2>Lista de Técnicos</h2>

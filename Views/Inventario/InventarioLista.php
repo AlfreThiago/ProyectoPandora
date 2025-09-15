@@ -66,6 +66,8 @@ switch ($rol) {
                         echo "<td>
                                 <div class='action-buttons'>
                                     <!-- Puedes agregar aquí editar si lo implementas -->
+                                     <a href='#' class='btn edit-btn'>Actualizar</a>
+                                    |
                                     <a href='/ProyectoPandora/Public/index.php?route=Inventario/Eliminar&id={$item['id']}' class='btn delete-btn' onclick=\"return confirm('¿Seguro que deseas eliminar este item?');\">Eliminar</a>
                                 </div>
                               </td>";

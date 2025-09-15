@@ -497,7 +497,17 @@ main {
 .p-guia {
   color: white;
 }
+.timeline-item .time {
+  font-size: 0.8rem;
+  color: white;
+  display: block;
+  margin-bottom: 5px;
+}
 
+.timeline-item p {
+  margin: 0;
+  color: white;
+}
 .Tabla-Contenedor {
   width: 100%;
   max-width: 100%;

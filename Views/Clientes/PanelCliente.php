@@ -47,5 +47,6 @@
             <p class="texto-gif">Esperando</p>
         </div>
     </section>
+    <script src="/ProyectoPandora/Public/js/Modal.js"></script>
 </main>
 <?php include_once __DIR__ . '/../Includes/Footer.php' ?>
