@@ -24,6 +24,7 @@ switch ($rol) {
 ?>
 <main>
     <div class="Tabla-Contenedor">
+        <h2>Lista de Estados</h2>
          <div class="botones">
             <div class="dropdown">
                 <label for="menu-toggle" class="dropdown-label" >
@@ -31,21 +32,15 @@ switch ($rol) {
                 <input type="checkbox" id="menu-toggle" />
             
                 <div class="dropdown-menu">
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers">Todos</a>
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Admin/ListarClientes">Clientes</a>
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Admin/ListarAdmins">Admin</a>
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Admin/ListarSupervisores">Supervisor</a>
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Admin/ListarTecnicos">Tecnico</a>
+                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados">Estados TIckets</a>
+                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias">Categoria Item</a>
+                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria">Categoria Device</a>
                 </div>
                 
             </div>
             <div class="btn-table-acciones">
                 <a class="btn-acciones-user" href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Crear">Añadir Estado</a>
             </div>
-        </div>
-        <h2>Lista de Estados</h2>
-        <div class="search-container">
-            <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
         </div>
         <table id="userTable">
             <thead>

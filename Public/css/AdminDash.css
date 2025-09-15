@@ -10,6 +10,8 @@
   --tercero:#f11c1c;
   --cuarto:#9723e4;
   --quinto:#2feb39;
+  --sexto:#fc39a7;
+  --septimo:#2df9b5;
   --fondo: #0d1117; /* fondo general */
   --fondo-header: #161b22; /* header / sidebar */
   --fondo-formulario: #161b22; /* inputs / modales */
@@ -458,7 +460,7 @@ main {
 }
 /* ZONA DE ADMIN */
 /* BUSCADOR DE USER */
-.search-container {
+/* .search-container {
   margin-top: 10px;
   margin-left: 80px;
   margin-bottom: 15px;
@@ -474,7 +476,7 @@ main {
   outline: none;
   box-sizing: border-box;
   transition: 0.3s ease;
-}
+} */
 main {
   margin-left: 250px;
   min-width: 100vh;
@@ -680,8 +682,8 @@ table th:last-child {
 .btn-acciones-user:hover{
  background-color:#4784ca; 
 }
-.btn-acciones-device{
-  background-color: var(--cuarto);
+.btn-acciones-cate{
+  background-color: var(--tercero);
   color: white;
   text-decoration: none;
   padding: 10px 15px;
@@ -691,8 +693,50 @@ table th:last-child {
   top: 20px;
   font-weight: bold;
 }
+.btn-acciones-cate:hover{
+ background-color:#a01b1b; 
+}
+.btn-acciones-device{
+  background-color: var(--cuarto);
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+  position: relative;
+  top: -10px;
+  font-weight: bold;
+}
 .btn-acciones-device:hover{
  background-color:#731aad; 
+}
+.btn-acciones-inventario-cate{
+  background-color: var(--sexto);
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+  position: relative;
+  top: -10px;
+  font-weight: bold;
+}
+.btn-acciones-inventario-cate:hover{
+ background-color:#ab2571;
+}
+.btn-acciones-ticket{
+  background-color: var(--septimo);
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+  position: relative;
+  top: -10px;
+  font-weight: bold;
+}
+.btn-acciones-ticket:hover{
+ background-color:#25a88e; 
 }
 .btn-acciones-inventario{
   background-color: var(--quinto);
@@ -702,7 +746,7 @@ table th:last-child {
   border-radius: 5px;
   box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
   position: relative;
-  top: -10px;
+  top: 20px;
   font-weight: bold;
 }
 .btn-acciones-inventario:hover{

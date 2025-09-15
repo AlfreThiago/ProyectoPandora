@@ -23,12 +23,24 @@ switch ($rol) {
 ?>
 <main>
     <div class="Tabla-Contenedor">
-            <h2>Categorías de Inventario</h2>
-            <div class="botones">
-                <div class="btn-table-acciones">
-                    <a class="btn-acciones-inventario" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearCategoria">Añadir Categoría</a>
+        <h2>Categorías de Inventario</h2>
+        <div class="botones">
+            <div class="dropdown">
+                <label for="menu-toggle" class="dropdown-label" >
+                    Opciones<i class='bxr  bx-caret-down'  ></i> </label>
+                <input type="checkbox" id="menu-toggle" />
+            
+                <div class="dropdown-menu">
+                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados">Estados TIckets</a>
+                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias">Categoria Item</a>
+                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria">Categoria Device</a>
                 </div>
+                
             </div>
+            <div class="btn-table-acciones">
+                <a class="btn-acciones-inventario" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearCategoria">Añadir Categoría</a>
+            </div>
+        </div>
             <table id="userTable">
                 <thead>
                     <tr>
