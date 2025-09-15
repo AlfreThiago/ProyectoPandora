@@ -100,7 +100,7 @@ class CategoryModel
         return false;
     }
 
-    public function deleteInventarioCategory($id)
+    public function eliminarCategory($id)
     {
         $stmt = $this->connection->prepare("DELETE FROM categorias_inventario WHERE id = ?");
         if ($stmt) {

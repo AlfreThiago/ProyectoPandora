@@ -11,7 +11,7 @@
             <?php endif; ?>
             <div class="Formulario-general">
                 <div class="Formulario-contenedor">
-                    <form action="/ProyectoPandora/Public/index.php?route=Inventario/Crear" method="POST" enctype="multipart/form-data">
+                    <form action="/ProyectoPandora/Public/index.php?route=Inventario/CrearItem" method="POST" enctype="multipart/form-data">
                         <p>
                             <label for="categoria_id">Categoría:</label>
                             <select id="categoria_id" name="categoria_id" required>

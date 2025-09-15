@@ -11,7 +11,7 @@
                             Ocurrió un error al agregar la categoría.
                         </div>
                     <?php endif; ?>
-                    <form action="/ProyectoPandora/Public/index.php?route=Inventario/CrearCategoriaInventario" method="POST">
+                    <form action="/ProyectoPandora/Public/index.php?route=Inventario/CrearCategoria" method="POST">
                         <p>
                             <label for="name">Nombre de la Categoría:</label>
                             <input type="text" id="name" name="name" required>

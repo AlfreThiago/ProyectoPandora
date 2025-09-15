@@ -16,6 +16,7 @@ class InventarioController
         $db = new Database();
         $db->connectDatabase();
         $this->inventarioModel = new InventarioModel($db->getConnection());
+        $this->categoryModel = new CategoryModel($db->getConnection());
         $this->historialController = new HistorialController();
     }
 
@@ -148,12 +149,12 @@ class InventarioController
         include_once __DIR__ . '/../Views/Inventario/CrearCategoria.php';
     }
 
-    public function crearCategoriaInventario()
+    public function crearCategoria()
     {
         Auth::checkRole(['Administrador', 'Supervisor']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nombre = $_POST['name'] ?? '';
-            if ($this->categoryModel->crearInventarioCategory($nombre)) {
+            $name = $_POST['name'] ?? '';
+            if ($this->categoryModel->crearInventarioCategory($name)) {
                 header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&success=1');
                 exit;
             } else {
@@ -168,7 +169,7 @@ class InventarioController
     {
         Auth::checkRole(['Administrador', 'Supervisor']);
         $id = $_GET['id'] ?? null;
-        if ($id && $this->categoryModel->eliminarCategoria($id)) {
+        if ($id && $this->categoryModel->eliminarCategory($id)) {
             header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&success=1');
             exit;
         } else {
