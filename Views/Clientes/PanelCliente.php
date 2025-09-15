@@ -35,10 +35,10 @@
         <!-- Tabs -->
         <div class="tabs">
             <div class="tab <?php echo ($rutaActual === 'Ticket/Listar') ? 'active' : ''; ?>">
-                <a href="/ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear">Tickets</a>
+                <a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicket">Mis Tickets</a>
             </div>
             <div class="tab <?php echo ($rutaActual === 'Device/ListarDevice') ? 'active' : ''; ?>">
-                <a href="/ProyectoPandora/Public/index.php?route=Device/MostrarCrearDispositivo">Dispositivos</a>
+                <a href="/ProyectoPandora/Public/index.php?route=Cliente/MisDevice">Mis Dispositivos</a>
             </div>
 
         </div>

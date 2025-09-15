@@ -35,13 +35,19 @@ class DeviceModel
 
     public function getDevicesByUserId($userId)
     {
-        $stmt = $this->connection->prepare("SELECT * FROM dispositivos WHERE user_id = ?");
-        if ($stmt) {
-            $stmt->bind_param("i", $userId);
-            $stmt->execute();
-            return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        $sql = "SELECT d.*, c.name AS categoria
+                FROM dispositivos d
+                LEFT JOIN categorias c ON d.categoria_id = c.id
+                WHERE d.user_id = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
         }
-        return [];
+        return $data;
     }
     public function getAllDevices()
     {

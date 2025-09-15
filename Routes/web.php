@@ -69,7 +69,14 @@ return [
         'controller' => 'Cliente',
         'action' => 'PanelCliente'
     ],
-    //
+    'Cliente/MisDevice' => [
+        'controller' => 'Cliente',
+        'action' => 'MisDevice'
+    ],
+    'Cliente/MisTicket' => [
+        'controller' => 'Cliente',
+        'action' => 'MisTicket'
+    ],    //
     //
     //Device
     'Device/ListarDevice' => [

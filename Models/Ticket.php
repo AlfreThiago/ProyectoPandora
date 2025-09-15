@@ -85,4 +85,29 @@ class Ticket
         $result = $stmt->get_result();
         return $result->fetch_assoc();
     }
+    public function getTicketsByUserId($user_id)
+    {
+        $sql = "SELECT 
+                    t.id,
+                    d.marca AS dispositivo,
+                    d.modelo,
+                    t.descripcion_falla,
+                    e.name AS estado,
+                    t.fecha_creacion
+                FROM tickets t
+                INNER JOIN dispositivos d ON t.dispositivo_id = d.id
+                INNER JOIN clientes c ON t.cliente_id = c.id
+                INNER JOIN estados_tickets e ON t.estado_id = e.id
+                WHERE c.user_id = ?
+                ORDER BY t.fecha_creacion DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }
 }
