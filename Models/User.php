@@ -126,4 +126,11 @@ class UserModel
         }
         return false;
     }
+    public function actualizarPerfil($id, $name, $email, $img_perfil)
+    {
+        $sql = "UPDATE users SET name = ?, email = ?, img_perfil = ? WHERE id = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("sssi", $name, $email, $img_perfil, $id);
+        return $stmt->execute();
+    }
 }

@@ -60,6 +60,37 @@ class DefaultController
             $panelUrl = '/ProyectoPandora/Public/index.php?route=Cliente/PanelCliente';
         }
 
+        // Procesar formulario
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userId = $user['id'] ?? null;
+            $newName = $_POST['name'] ?? '';
+            $newEmail = $_POST['email'] ?? '';
+            $imgPerfil = $user['img_perfil'] ?? '/ProyectoPandora/Public/img/Innovasys.png';
+
+            // Procesar imagen si se subió
+            if (isset($_FILES['img_perfil']) && $_FILES['img_perfil']['error'] === UPLOAD_ERR_OK) {
+                $imgTmp = $_FILES['img_perfil']['tmp_name'];
+                $imgName = uniqid('perfil_') . '_' . $_FILES['img_perfil']['name'];
+                $imgPath = '/ProyectoPandora/Public/img/' . $imgName;
+                move_uploaded_file($imgTmp, $_SERVER['DOCUMENT_ROOT'] . $imgPath);
+                $imgPerfil = $imgPath;
+            }
+
+            // Actualizar en la base de datos
+            $userModel = new \UserModel($db->getConnection());
+            $userModel->actualizarPerfil($userId, $newName, $newEmail, $imgPerfil);
+
+            // Actualizar sesión
+            $_SESSION['user']['name'] = $newName;
+            $_SESSION['user']['email'] = $newEmail;
+            $_SESSION['user']['img_perfil'] = $imgPerfil;
+            
+
+            // Redirigir para evitar reenvío de formulario
+            header('Location: /ProyectoPandora/Public/index.php?route=Default/Perfil');
+            exit;
+        }
+
         // Pasar datos a la vista
         include_once __DIR__ . '/../Views/AllUsers/Perfil.php';
     }
