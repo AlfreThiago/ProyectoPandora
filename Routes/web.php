@@ -12,6 +12,10 @@ return [
         'controller' => 'Default',
         'action' => 'index2'
     ],
+    'Default/Perfil' => [
+        'controller' => 'Default',
+        'action' => 'index3'
+    ],
     //
     //Auth del Login 
     //Register el Registrar
