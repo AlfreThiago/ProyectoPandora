@@ -55,9 +55,9 @@ class DefaultController
         } elseif ($rol === 'Tecnico') {
             $panelUrl = '/ProyectoPandora/Public/index.php?route=Tecnico/PanelTecnico';
         } elseif ($rol === 'Supervisor') {
-            $panelUrl = '/ProyectoPandora/Public/index.php?route=Supervisores/PanelSupervisor';
+            $panelUrl = '/ProyectoPandora/Public/index.php?route=Supervisore/PanelSupervisor';
         } elseif ($rol === 'Cliente') {
-            $panelUrl = '/ProyectoPandora/Public/index.php?route=Clientes/PanelCliente';
+            $panelUrl = '/ProyectoPandora/Public/index.php?route=Cliente/PanelCliente';
         }
 
         // Pasar datos a la vista

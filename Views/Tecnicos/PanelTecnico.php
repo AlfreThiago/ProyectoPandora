@@ -21,12 +21,12 @@
                 <span class="icon-btn">
                     <i class='bx bx-chat'></i>
                 </span>
-
                 <!-- Perfil --> 
-                <div class="profile-menu">
+                <li class="profile-menu">
                     <a href="javascript:void(0)" id="btn-profile">
                         <img src="#" alt="Perfil" class="user-avatar">
                     </a>
+
                     <!-- Submenú -->
                     <div id="submenu-profile" class="submenu">
                         <div class="submenu-header">
@@ -71,8 +71,8 @@
                             <i class='bx bx-log-out'></i> Cerrar sesión
                             </a>
                         </div>
-                    </div>     
-                </div>      
+                    </div>
+                </li>           
             </div>
         </header> 
 
