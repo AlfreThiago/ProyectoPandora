@@ -14,7 +14,7 @@ return [
     ],
     'Default/Perfil' => [
         'controller' => 'Default',
-        'action' => 'index3'
+        'action' => 'perfil'
     ],
     //
     //Auth del Login 

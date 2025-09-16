@@ -23,11 +23,10 @@
                 </span>
 
                 <!-- Perfil --> 
-                <li class="profile-menu">
+                <div class="profile-menu">
                     <a href="javascript:void(0)" id="btn-profile">
                         <img src="#" alt="Perfil" class="user-avatar">
                     </a>
-
                     <!-- Submenú -->
                     <div id="submenu-profile" class="submenu">
                         <div class="submenu-header">
@@ -38,7 +37,13 @@
 
                         <hr>
 
-                        <ul>
+                        <ul>                            
+                            <li>
+                                <a href="/ProyectoPandora/Public/index.php?route=Default/Perfil">
+                                    <i class='bx bx-user'></i>
+                                    <span>Perfil</span>
+                                </a>
+                            </li>
                             <li>
                                 <a href="/ProyectoPandora/Public/index.php?route=Default/Guia">
                                     <i class='bx bx-history'></i> 
@@ -66,8 +71,8 @@
                             <i class='bx bx-log-out'></i> Cerrar sesión
                             </a>
                         </div>
-                    </div>
-                </li>           
+                    </div>     
+                </div>      
             </div>
         </header> 
 

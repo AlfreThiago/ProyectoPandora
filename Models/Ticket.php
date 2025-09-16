@@ -182,4 +182,29 @@ class Ticket
         }
         return $data;
     }
+    public function getAllTickets()
+    {
+        $sql = "SELECT 
+                    t.id,
+                    d.marca AS dispositivo,
+                    d.modelo,
+                    u.name AS cliente,
+                    t.descripcion_falla AS descripcion,
+                    e.name AS estado,
+                    tec.name AS tecnico
+                FROM tickets t
+                INNER JOIN dispositivos d ON t.dispositivo_id = d.id
+                INNER JOIN clientes c ON t.cliente_id = c.id
+                INNER JOIN users u ON c.user_id = u.id
+                INNER JOIN estados_tickets e ON t.estado_id = e.id
+                LEFT JOIN tecnicos tc ON t.tecnico_id = tc.id
+                LEFT JOIN users tec ON tc.user_id = tec.id
+                ORDER BY t.id DESC";
+        $result = $this->conn->query($sql);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }   
 }

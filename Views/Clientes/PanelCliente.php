@@ -37,7 +37,13 @@
 
                         <hr>
 
-                        <ul>
+                        <ul>                            
+                            <li>
+                                <a href="/ProyectoPandora/Public/index.php?route=Default/Perfil">
+                                    <i class='bx bx-user'></i>
+                                    <span>Perfil</span>
+                                </a>
+                            </li>
                             <li>
                                 <a href="/ProyectoPandora/Public/index.php?route=Default/Guia">
                                     <i class='bx bx-history'></i> 
