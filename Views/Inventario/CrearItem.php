@@ -49,6 +49,7 @@
                     </form>
                 </div>
             </div>
+            <a href="<?= $_SESSION['prev_url'] ?? '/ProyectoPandora/Public/index.php?route=Default/Index' ?>" class="btn btn-secondary">Volver</a>
         </section>
     </div>
 </main>

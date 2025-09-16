@@ -61,3 +61,4 @@
     </div>
 </main>
 <?php include_once __DIR__ . '/../Includes/Footer.php' ?>
+<a href="<?= $_SESSION['prev_url'] ?? '/ProyectoPandora/Public/index.php?route=Default/Index' ?>" class="btn btn-secondary">Volver</a>

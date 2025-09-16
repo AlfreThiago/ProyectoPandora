@@ -56,7 +56,7 @@ switch ($rol) {
                             <td>
                                 <div class='action-buttons'>
                                     <!-- Acciones: Ver, Editar, Eliminar, etc. -->
-                                    <a class="btn ver-btn"  href="/ProyectoPandora/Public/index.php?route=Ticket/verTicket&id=<?= $ticket['id'] ?>">Ver</a>
+                                    <a class="btn ver-btn"  href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?= $ticket['id'] ?>">Ver</a>
                                     |
                                     <a class="btn edit-btn" href="/ProyectoPandora/Public/index.php?route=Ticket/Editar&id=<?= $ticket['id'] ?>">Editar</a>
                                     |

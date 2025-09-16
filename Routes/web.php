@@ -170,7 +170,7 @@ return [
     ],
     'Ticket/Actualizar' => [
         'controller' => 'Ticket',
-        'action' => 'update'
+        'action' => 'actualizar'
     ],
     'Ticket/Editar' => [
         'controller' => 'Ticket',
