@@ -5,8 +5,29 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $currentUrl = $_SERVER['REQUEST_URI'];
 
-// No guardar si es acción de "VerTicket" (para evitar bucle al volver)
-if (!isset($_GET['route']) || strpos($_GET['route'], 'Ticket/Ver') === false) {
+// Solo guardar prev_url si NO estás en vistas de detalle, edición o creación
+$noGuardar = [
+    'Ticket/Ver',
+    'Ticket/Actualizar',
+    'Device/ActualizarDevice',
+    'Device/CrearDevice',
+    'Inventario/CrearItem',
+    'Inventario/ActualizarItem',
+    'EstadoTicket/Actualizar',
+    'EstadoTicket/CrearEstado'
+];
+
+$guardarPrevUrl = true;
+if (isset($_GET['route'])) {
+    foreach ($noGuardar as $rutaDetalle) {
+        if (strpos($_GET['route'], $rutaDetalle) !== false) {
+            $guardarPrevUrl = false;
+            break;
+        }
+    }
+}
+
+if ($guardarPrevUrl) {
     $_SESSION['prev_url'] = $currentUrl;
 }
 
