@@ -1,11 +1,17 @@
 <?php
 require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/../Core/Database.php';
-
+require_once __DIR__ . '/../Core/Auth.php';
+require_once __DIR__ . '/../Controllers/HistorialController.php';
 
 class AuthController
 {
+    private $historialController;
 
+    public function __construct()
+    {
+        $this->historialController = new HistorialController();
+    }
 
     public function Login()
     {
@@ -18,37 +24,25 @@ class AuthController
             $user = $userModel->findByEmail($email);
 
             if ($user && password_verify($password, $user['password'])) {
-                session_start();
-                $_SESSION['user'] = $user;
-                if ($user['role'] === 'Administrador') {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-                    exit;
-                } elseif ($user['role'] === 'Supervisor') {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-                    exit;
-                } elseif ($user['role'] === 'Tecnico') {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-                    exit;
-                } else {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
-                    exit;
-                }
+                Auth::login($user);
+                header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+                exit;
             } else {
-                header('Location: /ProyectoPandora/Public/index.php?route=Dash/Login');
+                header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
                 exit;
             }
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Login');
+            include_once __DIR__ . '/../Views/Auth/Login.php';
         }
     }
-
+     public function Ajustes(){
+        include_once __DIR__ . '/../Views/AllUsers/Ajustes.php';
+    }
 
     public function Logout()
     {
-        session_start();
-        session_unset();
-        session_destroy();
-        header('Location: /ProyectoPandora/Public/index.php?route=Dash/Home');
+        Auth::logout();
+        header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
         exit;
     }
 }

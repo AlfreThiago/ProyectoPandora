@@ -1,9 +1,18 @@
 <?php
 require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/../Core/Database.php';
+require_once __DIR__ . '/../Core/Auth.php';
+require_once __DIR__ . '/../Controllers/HistorialController.php';
 
 class RegisterController
 {
+    private $historialController;
+
+    public function __construct()
+    {
+        $this->historialController = new HistorialController();
+    }
+
     public function Register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -11,31 +20,41 @@ class RegisterController
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
 
-            $controllerRegister = new RegisterController();
-            $controllerRegister->RegisterUser($username, $email, $password);
+            $result = $this->RegisterUser($username, $email, $password);
+            // Guardar en historial
+            $accion = "Registro de usuario";
+            $detalle = "Se registró el usuario {$username} con email {$email}. Resultado: {$result}";
+            $this->historialController->agregarAccion($accion, $detalle);
+
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Register');
+            include_once __DIR__ . '/../Views/Auth/Register.php';
         }
     }
 
-    public function RegisterAdminPortal()
+    public function RegisterAdmin()
     {
+        $user = Auth::user();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = $_POST['name'] ?? '';
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
             $role = $_POST['role'] ?? 'Cliente';
 
-            $controllerRegister = new RegisterController();
-            $controllerRegister->RegisterUserWithRole($username, $email, $password, $role); // Usamos la nueva función
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/Admin');
+            $result = $this->RegisterUserWithRole($username, $email, $password, $role);
+
+            $accion = "Registro de usuario por admin";
+            $detalle = "El administrador registró el usuario {$username} con email {$email} y rol {$role}. Resultado: {$result}";
+            $this->historialController->agregarAccion($accion, $detalle);
+
+            header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers');
             exit;
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Dash/RegisterAdminPortal');
+            include_once __DIR__ . '/../Views/Admin/Register.php';
         }
     }
+
     function RegisterUser($username, $email, $password)
     {
         $db = new Database();
@@ -57,6 +76,7 @@ class RegisterController
             return "Error registering user.";
         }
     }
+
     public function RegisterUserWithRole($username, $email, $password, $role)
     {
         $db = new Database();

@@ -11,6 +11,32 @@ const sidebarBtn = document.getElementById("sidebar-btn");
 const footer = document.querySelector(".footer");
 
 // ====== FUNCIONES ======
+MenuItemDropdown.forEach((menuItem) => {
+    menuItem.addEventListener("click", () => {
+        const subMenu = menuItem.querySelector(".sub-menu");
+        const isActive = menuItem.classList.toggle("sub-menu-toggle");
+        if (subMenu) {
+            if (isActive) {
+                subMenu.style.height = `${subMenu.scrollHeight + 6}px`;
+                subMenu.style.padding = "0.2rem 0";
+            } else {
+                subMenu.style.height = "0";
+                subMenu.style.padding = "0";
+            }
+        }
+        // Cierra los demás submenús
+        MenuItemDropdown.forEach((item)=>{
+            if(item !== menuItem){
+                const otherSubmenu = item.querySelector(".sub-menu");
+                if(otherSubmenu){
+                    item.classList.remove("sub-menu-toggle");
+                    otherSubmenu.style.height = "0";
+                    otherSubmenu.style.padding = "0";
+                }
+            }
+        });
+    });
+});
 
 // Sincroniza footer con estado del sidebar
 // const syncFooterClass = () => {
@@ -44,24 +70,41 @@ const footer = document.querySelector(".footer");
 // };
 
 // Mostrar/ocultar submenús
-MenuItemDropdown.forEach((menuItem) => {
-  menuItem.addEventListener("click", () => {
-    const subMenu = menuItem.querySelector(".sub-menu");
-    const isActive = menuItem.classList.toggle("sub-menu-toggle");
+// MenuItemDropdown.forEach((menuItem) => {
+//   menuItem.addEventListener("click", () => {
+//     const subMenu = menuItem.querySelector(".sub-menu");
+//     const isActive = menuItem.classList.toggle("sub-menu-toggle");
 
-    if (subMenu) {
-      if (isActive) {
-        subMenu.style.height = `${subMenu.scrollHeight + 6}px`;
-        subMenu.style.padding = "0.2rem 0";
-      } else {
-        subMenu.style.height = "0";
-        subMenu.style.padding = "0";
-      }
-    }
-  });
-});
+//     if (subMenu) {
+//       if (isActive) {
+//         subMenu.style.height = `${subMenu.scrollHeight + 6}px`;
+//         subMenu.style.padding = "0.2rem 0";
+//       } else {
+//         subMenu.style.height = "0";
+//         subMenu.style.padding = "0";
+//       }
+//     }
+//   });
+// });
+// MenuItemStatic.forEach((menuItem)=>{
+//     menuItem.addEventListener("mouseenter", ()=>{
 
-// Ocultar sidebar en modo hover
+//         if(!sidebar.classList.contains("minimize")) return;
+
+
+
+//         MenuItemDropdown.forEach((item)=>{
+//             const otherSubmenu = item.querySelector(".sub-menu");
+//                 if(otherSubmenu){
+//                     item.classList.remove("sub-menu-toggle");
+//                     otherSubmenu.style.height = "0";
+//                     otherSubmenu.style.padding = "0";
+//                 }
+//         });
+//     });
+// })
+
+// // Ocultar sidebar en modo hover
 // const hideSidebar = () => {
 //   if (sidebar.classList.contains("hoverable")) {
 //     sidebar.classList.add("close");

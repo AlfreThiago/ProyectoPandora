@@ -1,3 +1,4 @@
+<?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <main>
     <?phP
     if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
@@ -27,9 +28,13 @@
                         <p>
                             <button type="submit">Registrar</button>
                         </p>
+                        <p>
+                            <a href="/ProyectoPandora/Public/index.php?route=Default/Index" class="btn-form-categoria">Volver a home</a>
+                        </p>
                     </form>
                 </div>
             </div>
         </section>
     </div>
 </main>
+<?php include_once __DIR__ . '/../Includes/Footer.php'; ?>

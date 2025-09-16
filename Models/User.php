@@ -54,18 +54,18 @@ class UserModel
     }
     public function getAllClientes()
     {
-        $sql = "SELECT u.id, u.name, u.email, u.role, u.telefono, u.direccion, u.created_at
-            FROM users u
-            INNER JOIN clientes c ON u.id = c.user_id";
+        $sql = "SELECT c.id, u.name,  u.role, u.created_at, u.email
+            FROM clientes c
+            INNER JOIN users u ON c.user_id = u.id";
         $result = $this->connection->query($sql);
         return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
     }
 
     public function getAllTecnicos()
     {
-        $sql = "SELECT u.id, u.name, u.email, u.role,t.disponibilidad, t.especialidad, u.created_at
-            FROM users u
-            INNER JOIN tecnicos t ON u.id = t.user_id";
+        $sql = "SELECT t.id, t.user_id, u.name, u.email, u.role, u.created_at, t.disponibilidad, t.especialidad
+            FROM tecnicos t 
+            INNER JOIN users u ON t.user_id = u.id";
         $result = $this->connection->query($sql);
         return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
     }
@@ -113,6 +113,15 @@ class UserModel
         $stmt = $this->connection->prepare("DELETE FROM users WHERE id = ?");
         if ($stmt) {
             $stmt->bind_param("i", $userId);
+            return $stmt->execute();
+        }
+        return false;
+    }
+    public function setTecnicoEstado($tecnico_id, $estado)
+    {
+        $stmt = $this->connection->prepare("UPDATE tecnicos SET disponibilidad = ? WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("si", $estado, $tecnico_id);
             return $stmt->execute();
         }
         return false;

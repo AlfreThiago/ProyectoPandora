@@ -1,113 +1,255 @@
 <?php
 
 return [
-
+    //Rutas Funcionales y Logicas 
+    //
+    //Ruta por Defecto Index-Home
+    'Default/Index' => [
+        'controller' => 'Default',
+        'action' => 'index'
+    ],
+    'Default/Guia' => [
+        'controller' => 'Default',
+        'action' => 'index2'
+    ],
+    //
+    //Auth del Login 
+    //Register el Registrar
+    'Auth/Login' => [
+        'controller' => 'Auth',
+        'action' => 'Login'
+    ],
     'Register/Register' => [
         'controller' => 'Register',
         'action' => 'Register'
     ],
-    'Register/RegisterAdminPortal' => [
+    'Register/RegisterAdmin' => [
         'controller' => 'Register',
-        'action' => 'RegisterAdminPortal'
-    ],
-
-    'Auth/Login' => [
-        'controller' => 'Auth',
-        'action' => 'Login'
+        'action' => 'RegisterAdmin'
     ],
     'Auth/Logout' => [
         'controller' => 'Auth',
         'action' => 'Logout'
     ],
-    //Rutas de Dashboards
-    'Dash/Login' => [
-        'controller' => 'Dash',
-        'action' => 'LoginDash'
-    ],
-    'Dash/Register' => [
-        'controller' => 'Dash',
-        'action' => 'RegisterDash'
-    ],
-    'Dash/RegisterAdminPortal' => [
-        'controller' => 'Dash',
-        'action' => 'RegisterAdminPortal'
-    ],
-    'Dash/Home' => [
-        'controller' => 'Dash',
-        'action' => 'HomeDash'
-    ],
-    'Dash/Admin' => [
-        'controller' => 'Dash',
-        'action' => 'AdminDash'
-    ],
-    'Dash/Supervisor' => [
-        'controller' => 'Dash',
-        'action' => 'SupervisorDash'
-    ],
-    'Dash/Tecnico' => [
-        'controller' => 'Dash',
-        'action' => 'TecnicoDash'
-    ],
-    'Dash/Cliente' => [
-        'controller' => 'Dash',
-        'action' => 'ClienteDash'
-    ],
-    'Dash/TablaCliente' => [
-        'controller' => 'Dash',
-        'action' => 'TablaCliente'
-    ],
-    'Dash/TablaTecnico' => [
-        'controller' => 'Dash',
-        'action' => 'TablaTecnico'
-    ],
-    'Dash/TablaSupervisor' => [
-        'controller' => 'Dash',
-        'action' => 'TablaSupervisor'
-    ],
-    'Dash/TablaAdmin' => [
-        'controller' => 'Dash',
-        'action' => 'TablaAdmin'
-    ],
-    'Dash/Device' => [
-        'controller' => 'Dash',
-        'action' => 'DeviceDash'
-    ],
-    'Dash/TablaDispositivos' => [
-        'controller' => 'Dash',
-        'action' => 'TablaDispositivos'
-    ],
-    'Dash/Category' => [
-        'controller' => 'Dash',
-        'action' => 'CategoryDash'
-    ],
-    //Rutas de Administración
-    'Admin/change-role' => [
+    //
+    //
+    //Admin
+    'Admin/PanelAdmin' => [
         'controller' => 'Admin',
-        'action' => 'changeRole'
+        'action' => 'PanelAdmin'
     ],
-    'Admin/Edit-user' => [
+    'Admin/ListarUsers' => [
         'controller' => 'Admin',
-        'action' => 'EditUser'
+        'action' => 'listarUsers'
     ],
-    'Admin/Delete-user' => [
+    'Admin/ListarClientes' => [
+        'controller' => 'Admin',
+        'action' => 'listarCli'
+    ],
+    'Admin/ListarTecnicos' => [
+        'controller' => 'Admin',
+        'action' => 'listarTecs'
+    ],
+    'Admin/ListarSupervisores' => [
+        'controller' => 'Admin',
+        'action' => 'listarSupers'
+    ],
+    'Admin/ListarAdmins' => [
+        'controller' => 'Admin',
+        'action' => 'listarAdmins'
+    ],
+    'Admin/ActualizarUser' => [
+        'controller' => 'Admin',
+        'action' => 'ActualizarUser'
+    ],
+    'Admin/DeleteUser' => [
         'controller' => 'Admin',
         'action' => 'DeleteUser'
     ],
-    // Rutas de Dispositivos
-    'Device/Agregar' => [
-        'controller' => 'Device',
-        'action' => 'AgregarDispositivo'
+    //
+    //
+    //Tecnico
+        'Tecnico/PanelTecnico' => [
+        'controller' => 'Tecnico',
+        'action' => 'PanelTecnico'
     ],
-    'Device/AgregarCategoria' => [
-        'controller' => 'Device',
-        'action' => 'AgregarCategoria'
+    'Tecnico/MisReparaciones'=> [
+        'controller' => 'Tecnico',
+        'action' => 'MisReparaciones'
     ],
-    'Device/Edit-device' => [
-        'controller' => 'Device',
-        'action' => 'EditDevice'
+    'Tecnico/MisRepuestos'=> [
+        'controller' => 'Tecnico',
+        'action' => 'MisRepuestos'
     ],
-    'Device/Delete-device' => [
+    'Tecnico/MisStats'=> [
+        'controller' => 'Tecnico',
+        'action' => 'MisStats'
+    ],
+    //
+    //
+    //Cliente
+    'Cliente/PanelCliente' => [
+        'controller' => 'Cliente',
+        'action' => 'PanelCliente'
+    ],
+    'Cliente/MisDevice' => [
+        'controller' => 'Cliente',
+        'action' => 'MisDevice'
+    ],
+    'Cliente/MisTicket' => [
+        'controller' => 'Cliente',
+        'action' => 'MisTicket'
+    ],    
+    //
+    //
+    //Device
+    'Device/ListarDevice' => [
         'controller' => 'Device',
-        'action' => 'DeleteDevice'
+        'action' => 'listarDevice'
+    ],
+    'Device/ListarCategoria' => [
+        'controller' => 'Device',
+        'action' => 'listarCategoria'
+    ],
+    'Device/MostrarCrearDispositivo' => [
+        'controller' => 'Device',
+        'action' => 'mostrarCrearDispositivo'
+    ],
+    'Device/CrearDispositivo' => [
+        'controller' => 'Device',
+        'action' => 'CrearDispositivo'
+    ],
+    'Device/CrearCategoria' => [
+        'controller' => 'Device',
+        'action' => 'CrearCategoria'
+    ],
+    'Device/ActualizarDevice' => [
+        'controller' => 'Device',
+        'action' => 'ActualizarDevice'
+    ],
+    'Device/ActualizarCategoria' => [
+        'controller' => 'Device',
+        'action' => 'ActualizarCategoria'
+    ],
+    'Device/DeleteDevice' => [
+        'controller' => 'Device',
+        'action' => 'deleteDevice'
+    ],
+    'Device/DeleteCategoria' => [
+        'controller' => 'Device',
+        'action' => 'deleteCategory'
+    ],
+    //
+    //
+    //Historial
+    'Historial/ListarHistorial' => [
+        'controller' => 'Historial',
+        'action' => 'listarHistorial'
+    ],
+    //
+    //
+    //EstadoTicket
+    'EstadoTicket/Crear' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'crear'
+    ],
+    'EstadoTicket/ListarEstados' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'listar'
+    ],
+    'EstadoTicket/Editar' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'editar'
+    ],
+    'EstadoTicket/Actualizar' => [
+        'controller' => 'EstadoTicket',
+        'action' => 'actualizar'
+    ],
+    'EstadoTicket/Eliminar'=> [
+        'controller' => 'EstadoTicket',
+        'action' => 'eliminar'        
+    ],    
+    //
+    //
+    //Ticket
+    'Ticket/Agregar' => [
+        'controller' => 'Ticket',
+        'action' => 'mostrarCrear'
+    ],
+    'Ticket/Crear' => [
+        'controller' => 'Ticket',
+        'action' => 'crear'
+    ],
+    'Ticket/mostrarCrear' => [
+        'controller' => 'Ticket',
+        'action' => 'mostrarCrear'
+    ],
+    'Ticket/Listar' => [
+        'controller' => 'Ticket',
+        'action' => 'mostrarLista'
+    ],
+    'Ticket/Actualizar' => [
+        'controller' => 'Ticket',
+        'action' => 'actualizar'
+    ],
+    'Ticket/Editar' => [
+        'controller' => 'Ticket',
+        'action' => 'edit'
+    ],
+    'Ticket/Ver' => [
+        'controller' => 'Ticket',
+        'action' => 'verTicket'
+    ],
+    'Ticket/Eliminar' => [
+        'controller' => 'Ticket',
+        'action' => 'eliminar'
+    ],
+    //
+    //Paneles (Lo hice yo, Ale :)
+    'Dash/PanelSupervisor' => [
+        'controller' => 'Paneles',
+        'action' => 'PanelSupervisor'
+    ],
+
+    'Dash/Ajustes' => [
+        'controller' => 'Auth',
+        'action' => 'Ajustes'
+    ],
+    //
+    //
+    //Inventario
+    'Inventario/ListarItem' => [
+        'controller' => 'Inventario',
+        'action' => 'listarInventario'
+    ],
+    'Inventario/ListarCategorias' => [
+        'controller' => 'Inventario',
+        'action' => 'listarCategorias'
+    ],
+    'Inventario/MostrarCrearItem'=> [
+        'controller' => 'Inventario',
+        'action' => 'mostrarCrear'
+    ], 
+    'Inventario/MostrarCrearCategoria'=> [
+        'controller' => 'Inventario',
+        'action' => 'mostrarCrearCategoria'
+    ],
+    'Inventario/CrearItem'=> [
+        'controller' => 'Inventario',
+        'action' => 'crear'
+    ],
+    'Inventario/CrearCategoria'=> [
+        'controller' => 'Inventario',
+        'action' => 'crearCategoria'
+    ],
+    'Inventario/ActualizarItem'=> [],
+    'Inventario/EditarItem'=> [],
+    'Inventario/EliminarItem'=> [
+        'controller' => 'Inventario',
+        'action' => 'eliminar'
+    ],
+    'Inventario/EliminarCategoria'=> [
+        'controller' => 'Inventario',
+        'action' => 'eliminarCategoria'
     ],
 ];
