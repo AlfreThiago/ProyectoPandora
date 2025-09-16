@@ -43,7 +43,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <?php if ($role === 'administrador'): ?>
                             <!-- Admin: ve todos los usuarios y opción de añadir -->
                             <li class="item menu-item menu-item-static">
-                                <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="link flex">
+                                <a href="/ProyectoPandora/Public/index.php?route=Admin/PanelAdmin" class="link flex">
                                     <i class='bx  bx-iframe'></i>
                                     <span>Panel Admin</span>
                                 </a>
@@ -55,20 +55,6 @@ if (session_status() === PHP_SESSION_NONE) {
                                     <span>Historial</span>
                                 </a>
                             </li>
-                            <!-- Ticket //NO CORREJIDO 🥺 -->
-                            <!-- <li class="item menu-item menu-item-dropdown">
-                                <a href="#" class="link flex">
-                                    <i class='bx bx-ticket'></i>
-                                    <span>Tickets</span>
-                                    <i class="bx bx-arrow-down-stroke oculto"></i>
-                                </a>
-                                <ul class="sub-menu">
-                                    <li class="sub-menu">
-
-                                    <li><a href="/ProyectoPandora/Public/index.php?route=Ticket/Listar" class="sub-menu-link">Lista de Tickets</a></li>
-                                    <li><a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados" class="sub-menu-link">Lista de Estados</a></li>
-                                </ul>
-                            </li> -->
                         <?php elseif ($role === 'supervisor'): ?>
                             <li class="item menu-item-static">
                                 <a href="index.php?route=Dash/PanelSupervisor" class="link flex">
@@ -76,59 +62,25 @@ if (session_status() === PHP_SESSION_NONE) {
                                     <span>Panel Supervisor</span>
                                 </a>
                             </li>
-                            <!-- Supervisor: ve técnicos y clientes -->
-                            <!-- <li class="item menu-item-dropdown">
-                                <a href="#" class="link flex">
-                                    <i class='bx bx-user'></i>
-                                    <span>Usuarios</span>
-                                    <i class='bx bx-arrow-down-stroke'></i>
-                                </a>
-                                Submenu de usuarios 
-                                <ul class="sub-menu">
-                                    <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaCliente" class="sub-menu-link">Clientes</a></li>
-                                    <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaTecnico" class="sub-menu-link">Técnicos</a></li>
-                                </ul>
-                            </li> -->
-                            <li class="item menu-item menu-item-static">
-                                <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
-                                    <i class='bx  bx-help-circle'></i>
-                                    <span>Guia</span>
-                                    </i>
-                                </a>
-                            </li>
                         <?php elseif ($role === 'tecnico'): ?>
                             <!-- Técnico: solo ve Reparaciones y tickets -->
                             <li class="item menu-item-static">
-                                <a href="index.php?route=Dash/PanelTecnico" class="link flex">
+                                <a href="index.php?route=Tecnico/PanelTecnico" class="link flex">
                                     <i class='bxr  bx-ticket'></i>
                                     <span>Panel Tecnico</span>
                                 </a>
                             </li>
-                            <li class="item menu-item menu-item-static">
-                                <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
-                                    <i class='bx  bx-help-circle'></i>
-                                    <span>Guia</span>
-                                    </i>
-                                </a>
-                            </li>
                         <?php elseif ($role === 'cliente'): ?>
                             <li class="item menu-item-static">
-                                <a href="index.php?route=Dash/PanelCliente" class="link flex">
+                                <a href="index.php?route=Cliente/PanelCliente" class="link flex">
                                     <i class='bx  bx-devices'></i>
                                     <span>Panel Cliente</span>
-                                </a>
-                            </li>
-                            <li class="item menu-item menu-item-static">
-                                <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
-                                    <i class='bx  bx-help-circle'></i>
-                                    <span>Guia</span>
-                                    </i>
                                 </a>
                             </li>
                         <?php endif; ?>
                     <?php else: ?>
                         <!-- No logueado -->
-                        <!-- Iniciar sesion y Registro -->
+                        <!-- Iniciar sesion, Registro y Guia -->
                         <li class="item ">
                             <a href="/ProyectoPandora/Public/index.php?route=Auth/Login" class="link flex">
                                 <i class='bx bx-arrow-out-right-square-half'></i>
@@ -141,12 +93,17 @@ if (session_status() === PHP_SESSION_NONE) {
                                 <span>Registrarse</span>
                             </a>
                         </li>
+                        <li class="item ">
+                            <a href="/ProyectoPandora/Public/index.php?route=Default/Guia" class="link flex">
+                                <i class='bx  bx-help-circle'></i>
+                                <span>Guia</span>
+                                </i>
+                            </a>
+                        </li>
                     <?php endif; ?>
                 </ul>
             </div>
         </nav>
     </aside>
-
 </body>
-
 </html>

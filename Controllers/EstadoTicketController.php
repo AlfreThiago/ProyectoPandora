@@ -2,22 +2,24 @@
 require_once __DIR__ . '/../Models/EstadoTicket.php';
 require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/../Core/Auth.php';
-
+require_once __DIR__ . '/HistorialController.php';
 class EstadoTicketController
 {
     private $estadoModel;
+    private $historialController;
 
     public function __construct()
     {
         $db = new Database();
         $db->connectDatabase();
         $this->estadoModel = new EstadoTicketModel($db->getConnection());
+        $this->historialController = new HistorialController();
     }
 
 public function listar()
 {
     $estados = $this->estadoModel->obtenerTodos() ?? [];
-    include __DIR__ . '/../Views/Admin/PanelAdmin.php';
+    include __DIR__ . '/../Views/EstadoTicket/ListarEstado.php';
 }
 
 
@@ -28,11 +30,17 @@ public function listar()
             $name = $_POST['name'] ?? '';
             if ($name) {
                 $this->estadoModel->crear($name);
+
+                $user = Auth::user();
+                $accion = "Creación de estado de ticket";
+                $detalle = "Usuario {$user['name']} creó el estado '{$name}'";
+                $this->historialController->agregarAccion($accion, $detalle);
+
                 header('Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados');
                 exit;
             }
         }
-        include_once __DIR__ . '/../Views/EstadoTicket/Crear.php';
+        include_once __DIR__ . '/../Views/EstadoTicket/CrearEstado.php';
     }
     public function editar($id = null)
     {
@@ -72,6 +80,12 @@ public function listar()
         $id = $_GET['id'] ?? null;
         if ($id) {
             $this->estadoModel->eliminar($id);
+
+            $user = Auth::user();
+            $accion = "Eliminación de estado de ticket";
+            $detalle = "Usuario {$user['name']} eliminó el estado ID {$id}";
+            $this->historialController->agregarAccion($accion, $detalle);
+
             header('Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados');
             exit;
         }

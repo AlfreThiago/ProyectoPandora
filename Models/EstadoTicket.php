@@ -56,4 +56,10 @@ class EstadoTicketModel
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
+
+    public function getAllEstados()
+    {
+        $result = $this->connection->query("SELECT * FROM estados_tickets");
+        return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+    }
 }

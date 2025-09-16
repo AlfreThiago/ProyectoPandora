@@ -35,6 +35,9 @@ class AuthController
             include_once __DIR__ . '/../Views/Auth/Login.php';
         }
     }
+     public function Ajustes(){
+        include_once __DIR__ . '/../Views/AllUsers/Ajustes.php';
+    }
 
     public function Logout()
     {

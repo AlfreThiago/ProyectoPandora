@@ -1,0 +1,4 @@
+Hacer/Solucionar/Mejorar
+
+- ✅Arreglar q no redirecione a los listares del admin al cancelar o guardar como cliente en su panel.
+- ✅Arreglar q aparezca la descripcion de falla del dispositivo selecionado al crear un ticket.
