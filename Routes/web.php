@@ -68,6 +68,25 @@ return [
     ],
     //
     //
+    //Tecnico
+        'Tecnico/PanelTecnico' => [
+        'controller' => 'Tecnico',
+        'action' => 'PanelTecnico'
+    ],
+    'Tecnico/MisReparaciones'=> [
+        'controller' => 'Tecnico',
+        'action' => 'MisReparaciones'
+    ],
+    'Tecnico/MisRepuestos'=> [
+        'controller' => 'Tecnico',
+        'action' => 'MisRepuestos'
+    ],
+    'Tecnico/MisStats'=> [
+        'controller' => 'Tecnico',
+        'action' => 'MisStats'
+    ],
+    //
+    //
     //Cliente
     'Cliente/PanelCliente' => [
         'controller' => 'Cliente',
@@ -80,7 +99,8 @@ return [
     'Cliente/MisTicket' => [
         'controller' => 'Cliente',
         'action' => 'MisTicket'
-    ],    //
+    ],    
+    //
     //
     //Device
     'Device/ListarDevice' => [
@@ -186,10 +206,6 @@ return [
     ],
     //
     //Paneles (Lo hice yo, Ale :)
-    'Dash/PanelTecnico' => [
-        'controller' => 'Paneles',
-        'action' => 'PanelTecnico'
-    ],
     'Dash/PanelSupervisor' => [
         'controller' => 'Paneles',
         'action' => 'PanelSupervisor'

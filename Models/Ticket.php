@@ -149,4 +149,33 @@ class Ticket
         }
         return $stmt->execute();
     }
+    public function getTicketsByTecnicoId($tecnico_user_id)
+    {
+        $sql = "SELECT 
+                    t.id,
+                    d.marca,
+                    d.modelo,
+                    d.img_dispositivo,
+                    u.name AS cliente,
+                    t.descripcion_falla,
+                    e.name AS estado,
+                    t.fecha_creacion
+                FROM tickets t
+                INNER JOIN dispositivos d ON t.dispositivo_id = d.id
+                INNER JOIN clientes c ON t.cliente_id = c.id
+                INNER JOIN users u ON c.user_id = u.id
+                INNER JOIN estados_tickets e ON t.estado_id = e.id
+                INNER JOIN tecnicos tc ON t.tecnico_id = tc.id
+                WHERE tc.user_id = ?
+                ORDER BY t.fecha_creacion DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $tecnico_user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }
 }

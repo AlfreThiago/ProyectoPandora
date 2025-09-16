@@ -63,9 +63,9 @@ class UserModel
 
     public function getAllTecnicos()
     {
-        $sql = "SELECT u.id, u.name, u.email, u.role,t.disponibilidad, t.especialidad, u.created_at
-            FROM users u
-            INNER JOIN tecnicos t ON u.id = t.user_id";
+        $sql = "SELECT t.id, u.name 
+            FROM tecnicos t 
+            INNER JOIN users u ON t.user_id = u.id";
         $result = $this->connection->query($sql);
         return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
     }
