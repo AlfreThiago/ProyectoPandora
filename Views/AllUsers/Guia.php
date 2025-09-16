@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" href="../../Public/css/GuiaDash.css">
+        <link rel="stylesheet" href="../../Public/css/GuiaDash.css">
 </head>
 <main class="main-guia">
     <title>Guide In Inglish</title>
@@ -9,7 +9,10 @@
     <br>
     <p class="p-guia">To register, we must fill out a form with our personal information such as name, email, and password.</p>
     <br>
+   
     <p class="p-guia">Once we have registered, we can log in to our account and access the dashboard where we can see all the services we offer.</p>
+   
+    <br>
     <p class="p-guia">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rem a perferendis eaque exercitationem corporis dolorem officia odit accusantium, provident commodi neque aliquid consequatur excepturi eos omnis. Voluptas iure dolore ducimus.</p>
 </main>
 

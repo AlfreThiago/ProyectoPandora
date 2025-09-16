@@ -90,32 +90,9 @@
                 <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados">Estados tickets</a>
             </div>
         </div>
-        <tbody>
-            <div class="grid">
-                <div class="small-box">
-                    <div class="inner">
-                        <h3>150</h3>
-                        <p>New Orders</p>
-                    </div>
-                <div class="icon">👜</div>
-                    <a href="#" class="small-box-footer">
-                        More info →
-                    </a>
-                </div>
-
-                <div class="small-box" style="background:var(--color-texto-primario);">
-                    <div class="inner">
-                        <h3>53</h3>
-                        <p>Users Registered</p>
-                    </div>
-                    <div class="icon">👤</div>
-                    <a href="#" class="small-box-footer">
-                        More info →
-                    </a>
-                </div>
-            </div>
-
-        </tbody>
+        <div class="gif">
+            <p class="texto-gif">Esperando</p>
+        </div>
     </section>
 <script src="/ProyectoPandora/Public/js/Modal.js"></script>
 </main>

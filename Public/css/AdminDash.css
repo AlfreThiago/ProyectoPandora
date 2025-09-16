@@ -1108,3 +1108,38 @@ input[type="password"]:focus {
   background: #3c4043;
   border-radius: 6px;
 } */
+/* .gif{
+  display: none;
+  width: 300px;
+  height: 200px;
+  background: url("../img/BIGMOLE-4x.gif") no-repeat center center;
+  background-size: cover; /* Ajusta el tamaño 
+  position: relative;
+  left: 500px;
+  top: 100px;
+} */
+ .gif {
+  display: block; /* arranca visible */
+  width: 64px;
+  height: 64px;
+  background: url("../img/BIGMOLE-4x.gif") no-repeat center center;
+  background-size: cover;
+  position: relative;
+  left: 500px;
+  top: 100px;
+}
+.gif.none{
+  display: none;
+}
+.texto-gif{
+  width: 64px;
+  height: 64px;
+  font-size: 15px;
+  color: white;
+  position: absolute;
+  left:50px;
+  font-family: "Rozha One", serif;
+  font-weight: 500;
+  top: 66px;
+  left: 3px;
+}
