@@ -25,9 +25,6 @@ switch ($rol) {
 <main>
     <div class="Tabla-Contenedor">
         <h2>Lista de Categorías</h2>
-        <div class="search-container">
-            <input type="text" id="categorySearchInput" placeholder="Buscar categoría..." class="search-input">
-        </div>
         <div class="botones">
             <div class="dropdown">
                 <label for="menu-toggle" class="dropdown-label" >
@@ -35,13 +32,14 @@ switch ($rol) {
                 <input type="checkbox" id="menu-toggle" />
             
                 <div class="dropdown-menu">
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Device/ListarDevice">Dispositivos</a>
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria">Categorias</a>
+                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados">Estados TIckets</a>
+                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias">Categoria Item</a>
+                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria">Categoria Device</a>
                 </div>
                 
             </div>
             <div class="btn-table-acciones">
-                <a class="btn-acciones-device" href="/ProyectoPandora/Public/index.php?route=Device/CrearCategoria">Añadir Categoria</a>
+                <a class="btn-acciones-cate" href="/ProyectoPandora/Public/index.php?route=Device/CrearCategoria">Añadir Categoria</a>
             </div>
         </div>
         <table id="categoryTable">

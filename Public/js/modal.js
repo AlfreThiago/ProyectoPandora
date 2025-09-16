@@ -109,15 +109,22 @@ document.addEventListener("DOMContentLoaded", function() {
   const gif = document.querySelector(".gif");
 
   // Mostrar el gif solo si estamos en el panel principal
-  const urlParams = new URLSearchParams(window.location.search);
-  const route = urlParams.get('route');
-  if (gif) {
-    if (!route || route === 'Admin/PanelAdmin') {
-      gif.style.display = "block";
-    } else {
-      gif.style.display = "none";
-    }
+const urlParams = new URLSearchParams(window.location.search);
+const route = urlParams.get('route');
+
+if (gif) {
+  if (
+    !route ||
+    route === "Admin/PanelAdmin" ||
+    route === "Clientes/PanelCliente" ||
+    route === "Paneles/PanelTecnico" ||
+    route === "Paneles/PanelSupervisor"
+  ) {
+    gif.style.display = "block";
+  } else {
+    gif.style.display = "none";
   }
+}
 
   // Ocultar el gif al hacer clic en cualquier tab
   tabs.forEach(tab => {

@@ -23,6 +23,7 @@ CREATE TABLE users (
     name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    img_perfil VARCHAR(255) DEFAULT NULL,
     telefono VARCHAR(20),
     direccion VARCHAR(100),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

@@ -21,7 +21,7 @@ switch ($rol) {
         echo "<p>No tienes un rol asignado o el rol no es válido.</p>";
         break;
 }
-?>nclude_once __DIR__ . '/../Admin/PanelAdmin.php' ?>
+?>
 <main>
     <div class="Tabla-Contenedor">
         <h2>Lista de Técnicos</h2>
@@ -59,20 +59,20 @@ switch ($rol) {
                     foreach ($tecnicos as $tec) {
                         $role = htmlspecialchars($tec['role']);
                         echo "<tr class='row-role-$role'>";
-                        echo "<td>{$tec['id']}</td>";
-                        echo "<td>{$tec['name']}</td>";
-                        echo "<td>{$tec['email']}</td>";
+                        echo "<td>" . htmlspecialchars($tec['id']) . "</td>";
+                        echo "<td>" . htmlspecialchars($tec['name']) . "</td>";
+                        echo "<td>" . htmlspecialchars($tec['email']) . "</td>";
                         echo "<td><span class='role $role'>$role</span></td>";
-                        echo "<td>{$tec['disponibilidad']}</td>";
-                        echo "<td>{$tec['especialidad']}</td>";
+                        echo "<td>" . htmlspecialchars($tec['disponibilidad']) . "</td>";
+                        echo "<td>" . htmlspecialchars($tec['especialidad']) . "</td>";
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($tec['created_at']) . "</span></td>";
                         echo "<td>
                             <div class='action-buttons'>
-                                    <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id={$tec['id']}&from=Admin/ListarTecs' class='btn edit-btn'>Actualizar</a>
-                                    |
-                                    <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id={$tec['id']}' class='btn delete-btn'>Eliminar</a>
+                                <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=" . htmlspecialchars($tec['user_id']) . "&from=Admin/ListarTecs' class='btn edit-btn'>Actualizar</a>
+                                |
+                                <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=" . htmlspecialchars($tec['id']) . "' class='btn delete-btn'>Eliminar</a>
                             </div>
-                              </td>";
+                        </td>";
                         echo "</tr>";
                     }
                 } else {

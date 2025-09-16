@@ -29,10 +29,10 @@
 
                         <p>
                             <label for="dispositivo">Seleccione un dispositivo:</label><br>
-                            <select id="dispositivo" name="dispositivo_id" required <?= empty($data) ? 'disabled' : '' ?>>
-                                <option value="">-- Seleccionar --</option>
+                            <select id="dispositivoSelect" name="dispositivo_id" required onchange="mostrarDescripcion(this)">
+                                <option value="">Selecciona un dispositivo</option>
                                 <?php foreach ($data as $dispositivo): ?>
-                                    <option value="<?= $dispositivo['id'] ?>">
+                                    <option value="<?= $dispositivo['id'] ?>" data-descripcion="<?= htmlspecialchars($dispositivo['descripcion_falla'] ?? '') ?>">
                                         <?= htmlspecialchars($dispositivo['marca'] . ' ' . $dispositivo['modelo']) ?>
                                     </option>
                                 <?php endforeach; ?>
@@ -40,13 +40,17 @@
                         </p>
                         <p>
                             <label for="descripcion">Descripción de la falla:</label><br>
-                            <textarea id="descripcion" name="descripcion" rows="5" required></textarea><br><br>
+                            <textarea id="descripcion" name="descripcion" rows="5" required></textarea>
                         </p>
                         <p>
                             <button type="submit" onclick="document.getElementsByName('recarga_cliente')[0].value=''">Crear Ticket</button>
                         </p>
                         <p>
-                            <a href="/ProyectoPandora/Public/index.php?route=Ticket/Listar" class="btn-form-categoria">Cancelar</a>
+                            <?php if (isset($isAdmin) && $isAdmin): ?>
+                                <a href="/ProyectoPandora/Public/index.php?route=Ticket/Listar" class="btn-form-categoria">Cancelar</a>
+                            <?php else: ?>
+                                <a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicket" class="btn-form-categoria">Cancelar</a>
+                            <?php endif; ?>
                         </p>
                     </form>
                 </div>

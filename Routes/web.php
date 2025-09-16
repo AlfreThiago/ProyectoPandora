@@ -8,6 +8,14 @@ return [
         'controller' => 'Default',
         'action' => 'index'
     ],
+    'Default/Guia' => [
+        'controller' => 'Default',
+        'action' => 'index2'
+    ],
+    'Default/Perfil' => [
+        'controller' => 'Default',
+        'action' => 'perfil'
+    ],
     //
     //Auth del Login 
     //Register el Registrar
@@ -64,11 +72,38 @@ return [
     ],
     //
     //
+    //Tecnico
+        'Tecnico/PanelTecnico' => [
+        'controller' => 'Tecnico',
+        'action' => 'PanelTecnico'
+    ],
+    'Tecnico/MisReparaciones'=> [
+        'controller' => 'Tecnico',
+        'action' => 'MisReparaciones'
+    ],
+    'Tecnico/MisRepuestos'=> [
+        'controller' => 'Tecnico',
+        'action' => 'MisRepuestos'
+    ],
+    'Tecnico/MisStats'=> [
+        'controller' => 'Tecnico',
+        'action' => 'MisStats'
+    ],
+    //
+    //
     //Cliente
     'Cliente/PanelCliente' => [
         'controller' => 'Cliente',
         'action' => 'PanelCliente'
     ],
+    'Cliente/MisDevice' => [
+        'controller' => 'Cliente',
+        'action' => 'MisDevice'
+    ],
+    'Cliente/MisTicket' => [
+        'controller' => 'Cliente',
+        'action' => 'MisTicket'
+    ],    
     //
     //
     //Device
@@ -159,7 +194,7 @@ return [
     ],
     'Ticket/Actualizar' => [
         'controller' => 'Ticket',
-        'action' => 'update'
+        'action' => 'actualizar'
     ],
     'Ticket/Editar' => [
         'controller' => 'Ticket',
@@ -175,10 +210,6 @@ return [
     ],
     //
     //Paneles (Lo hice yo, Ale :)
-    'Dash/PanelTecnico' => [
-        'controller' => 'Paneles',
-        'action' => 'PanelTecnico'
-    ],
     'Dash/PanelSupervisor' => [
         'controller' => 'Paneles',
         'action' => 'PanelSupervisor'
@@ -187,5 +218,42 @@ return [
     'Dash/Ajustes' => [
         'controller' => 'Auth',
         'action' => 'Ajustes'
+    ],
+    //
+    //
+    //Inventario
+    'Inventario/ListarItem' => [
+        'controller' => 'Inventario',
+        'action' => 'listarInventario'
+    ],
+    'Inventario/ListarCategorias' => [
+        'controller' => 'Inventario',
+        'action' => 'listarCategorias'
+    ],
+    'Inventario/MostrarCrearItem'=> [
+        'controller' => 'Inventario',
+        'action' => 'mostrarCrear'
+    ], 
+    'Inventario/MostrarCrearCategoria'=> [
+        'controller' => 'Inventario',
+        'action' => 'mostrarCrearCategoria'
+    ],
+    'Inventario/CrearItem'=> [
+        'controller' => 'Inventario',
+        'action' => 'crear'
+    ],
+    'Inventario/CrearCategoria'=> [
+        'controller' => 'Inventario',
+        'action' => 'crearCategoria'
+    ],
+    'Inventario/ActualizarItem'=> [],
+    'Inventario/EditarItem'=> [],
+    'Inventario/EliminarItem'=> [
+        'controller' => 'Inventario',
+        'action' => 'eliminar'
+    ],
+    'Inventario/EliminarCategoria'=> [
+        'controller' => 'Inventario',
+        'action' => 'eliminarCategoria'
     ],
 ];

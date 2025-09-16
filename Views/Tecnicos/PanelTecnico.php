@@ -8,9 +8,9 @@
 <main>
     <section class="content">
         <header class="header">
-            <h1 class="header-title">Panel Cliente</h1>
+            <h1 class="header-title">Panel Tecnico</h1>
             <p class="header-subtitle">
-                Bienvenido a la zona del cliente
+                Bienvenido a la zona Tecnica
                 <br>
                 <span class="user-highlight">
                     <?php echo htmlspecialchars($_SESSION['user']['name']); ?>
@@ -79,18 +79,15 @@
         <!-- Tabs -->
         <div class="tabs">
             <div class="tab <?php echo ($rutaActual === 'Ticket/Listar') ? 'active' : ''; ?>">
-                <a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicket">Mis Tickets</a>
+                <a href="/ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones">Mis Reparaciones</a>
             </div>
             <div class="tab <?php echo ($rutaActual === 'Device/ListarDevice') ? 'active' : ''; ?>">
-                <a href="/ProyectoPandora/Public/index.php?route=Cliente/MisDevice">Mis Dispositivos</a>
+                <a href="/ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos">Mis Repuestos</a>
             </div>
-
-        </div>
-        <!-- Pantalla de Esperando -->
-        <div class="gif">
-            <p class="texto-gif">Esperando</p>
+            <div class="tab <?php echo ($rutaActual === 'EstadoTicket/ListarEstados') ? 'active' : ''; ?>">
+                <a href="/ProyectoPandora/Public/index.php?route=Tecnico/MisStats">Mis Stats</a>
+            </div>
         </div>
     </section>
-    <script src="/ProyectoPandora/Public/js/Modal.js"></script>
 </main>
 <?php include_once __DIR__ . '/../Includes/Footer.php' ?>

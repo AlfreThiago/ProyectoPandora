@@ -55,7 +55,7 @@ switch ($rol) {
                 <?php
                 if ($clientes) {
                     foreach ($clientes as $cliente) {
-                        $role = htmlspecialchars($cliente['role']);
+                       $role = htmlspecialchars($cliente['role']);
                         echo "<tr class='row-role-$role'>";
                         echo "<td>{$cliente['id']}</td>";
                         echo "<td>{$cliente['name']}</td>";

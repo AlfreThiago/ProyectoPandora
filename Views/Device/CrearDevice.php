@@ -51,10 +51,19 @@
                         <p>
                             <button type="submit">Agregar Dispositivo</button>
                         </p>
-                        <p>
-                            <a href="/ProyectoPandora/Public/index.php?route=Device/ListarDevice" class="btn-form-categoria">Volver a la lista de Dispositivos</a>
-                        </p>
                     </form>
+                    <?php
+                    $user = $_SESSION['user'] ?? null;
+                    $rol = $user['role'] ?? '';
+                    if ($rol === 'Administrador') {
+                        $volverUrl = "/ProyectoPandora/Public/index.php?route=Device/ListarDevice";
+                    } elseif ($rol === 'Cliente') {
+                        $volverUrl = "/ProyectoPandora/Public/index.php?route=Cliente/MisDevice";
+                    } else {
+                        $volverUrl = "/ProyectoPandora/Public/index.php?route=Default/Index";
+                    }
+                    ?>
+                    <a href="<?= $volverUrl ?>" class="btn btn-secondary">Volver</a>
                 </div>
             </div>
         </section>

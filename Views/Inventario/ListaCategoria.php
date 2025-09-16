@@ -1,5 +1,4 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
-
 <?php
 // Verificamos el rol logueado desde la sesión
 $rol = $_SESSION['user']['role'] ?? null;
@@ -15,7 +14,7 @@ switch ($rol) {
         include_once __DIR__ . '/../Paneles/PanelSupervisor.php';
         break;
     case 'Cliente':
-        include_once __DIR__ . '/../Paneles/PanelCliente.php';
+        include_once __DIR__ . '/../Clientes/PanelCliente.php';
         break;
     default:
         echo "<p>No tienes un rol asignado o el rol no es válido.</p>";
@@ -24,8 +23,8 @@ switch ($rol) {
 ?>
 <main>
     <div class="Tabla-Contenedor">
-        <h2>Lista de Estados</h2>
-         <div class="botones">
+        <h2>Categorías de Inventario</h2>
+        <div class="botones">
             <div class="dropdown">
                 <label for="menu-toggle" class="dropdown-label" >
                     Opciones<i class='bxr  bx-caret-down'  ></i> </label>
@@ -39,38 +38,34 @@ switch ($rol) {
                 
             </div>
             <div class="btn-table-acciones">
-                <a class="btn-acciones-user" href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Crear">Añadir Estado</a>
+                <a class="btn-acciones-inventario" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearCategoria">Añadir Categoría</a>
             </div>
         </div>
-        <table id="userTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre del Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($estados as $estado): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($estado['id']); ?></td>
-                    <td><?php echo htmlspecialchars($estado['name']); ?></td>
-                    <td>
-                        <div class='action-buttons'>
-                            <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Editar&id=<?php echo $estado['id']; ?>" class="btn edit-btn">Actualizar</a>
-                            |
-                            <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Eliminar&id=<?php echo $estado['id']; ?>" class="btn delete-btn">Eliminar</a>
-                        </div>
-                    </td>
-                </tr>
-                <?php endforeach;
-                    if (empty($estados)): ?>
+            <table id="userTable">
+                <thead>
                     <tr>
-                        <td colspan="3">No hay estados disponibles.</td>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
                     </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($categorias)): ?>
+                        <?php foreach ($categorias as $cat): ?>
+                            <tr>
+                                <td><?= $cat['id'] ?></td>
+                                <td><?= htmlspecialchars($cat['name']) ?></td>
+                                <td>
+                                    <!-- Puedes agregar editar si lo implementas -->
+                                    <a href="/ProyectoPandora/Public/index.php?route=Inventario/EliminarCategoriaInventario&id=<?= $cat['id'] ?>" class="btn delete-btn" onclick="return confirm('¿Seguro que deseas eliminar esta categoría?');">Eliminar</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr><td colspan="3">No hay categorías registradas.</td></tr>
                     <?php endif; ?>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
     </div>
 </main>
 <?php include_once __DIR__ . '/../Includes/Footer.php' ?>

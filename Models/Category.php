@@ -66,4 +66,53 @@ class CategoryModel
         }
         return false;
     }
+
+    // Categoria de Dispositivos ↑
+    // Categoria de Inventarioes ↓
+    public function crearInventarioCategory($name)
+    {
+        $stmt = $this->connection->prepare("INSERT INTO categorias_inventario (name) VALUES (?)");
+        if ($stmt) {
+            $stmt->bind_param("s", $name);
+            return $stmt->execute();
+        }
+        return false;
+    }
+
+    public function findInventarioCategoryById($id)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM categorias_inventario WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_assoc();
+        }
+        return false;
+    }
+    public function updateInventarioCategory($id, $name)
+    {
+        $stmt = $this->connection->prepare("UPDATE categorias_inventario SET name = ? WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("si", $name, $id);
+            return $stmt->execute();
+        }
+        return false;
+    }
+
+    public function eliminarCategory($id)
+    {
+        $stmt = $this->connection->prepare("DELETE FROM categorias_inventario WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $id);
+            return $stmt->execute();
+        }
+        return false;
+    }
+
+    public function getAllInventarioCategories()
+    {
+        $result = $this->connection->query("SELECT * FROM categorias_inventario");
+        return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+    }
 }

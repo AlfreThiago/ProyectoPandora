@@ -15,17 +15,12 @@
                     </span>
                 </p>
                 <div class="header-actions">
-                    <!-- Notificaciones  -->
-                    <span class="icon-btn">
-                        <i class='bx bx-bell'></i>
-                    </span>
-
                      <!-- Chat  -->
                     <span class="icon-btn">
                         <i class='bx bx-chat'></i>
                     </span>
 
-                    <!-- Avatar -->
+                    <!-- Perfil -->
                     <li class="profile-menu">
                         <a href="javascript:void(0)" id="btn-profile">
                             <img src="#" alt="Perfil" class="user-avatar">
@@ -41,12 +36,17 @@
 
                             <hr>
 
-                            <ul>
-                                <!-- Historial -->
+                            <ul>                            
                                 <li>
-                                    <a href="/ProyectoPandora/Public/index.php?route=Historial/ListarHistorial">
+                                    <a href="/ProyectoPandora/Public/index.php?route=Default/Perfil">
+                                        <i class='bx bx-user'></i>
+                                        <span>Perfil</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/ProyectoPandora/Public/index.php?route=Default/Guia">
                                         <i class='bx bx-history'></i> 
-                                        <span>Historial</span>
+                                        <span>Guia</span>
                                     </a>
                                 </li>
                                 <li>
@@ -86,10 +86,14 @@
             <div class="tab <?php echo ($rutaActual === 'Device/ListarDevice') ? 'active' : ''; ?>">
                 <a href="/ProyectoPandora/Public/index.php?route=Device/ListarDevice">Dispositivos</a>
             </div>
+            <div class="tab <?php echo ($rutaActual === 'Inventario/ListarItem') ? 'active' : ''; ?>">
+                <a href="/ProyectoPandora/Public/index.php?route=Inventario/ListarItem">Inventario</a>
+            </div>
             <div class="tab <?php echo ($rutaActual === 'EstadoTicket/ListarEstados') ? 'active' : ''; ?>">
-                <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados">Estados tickets</a>
+                <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados">Otros</a>
             </div>
         </div>
+        <!-- Pantalla de Esperando -->
         <div class="gif">
             <p class="texto-gif">Esperando</p>
         </div>
