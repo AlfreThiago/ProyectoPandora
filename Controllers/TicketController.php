@@ -87,31 +87,25 @@ class TicketController
         $id = $_POST['id'];
         $descripcion = $_POST['descripcion_falla'];
 
-        if ($rol === 'Cliente') {
-            $marca = $_POST['marca'];
-            $modelo = $_POST['modelo'];
-            $this->ticketModel->actualizarDescripcion($id, $descripcion);
-            $this->deviceModel->actualizarDatosPorTicket($id, $marca, $modelo);
+        $estado_id = $_POST['estado_id'] ?? null;
+        $tecnico_id = $_POST['tecnico_id'] ?? null;
+        if ($tecnico_id === '' || $tecnico_id === null) {
+            $tecnico_id = null;
+        }
 
-            // Historial: cliente actualiza descripción/dispositivo
-            $accion = "Actualización de ticket por cliente";
-            $detalle = "Cliente {$user['name']} actualizó la descripción y/o datos del dispositivo en el ticket ID {$id}.";
-            $this->historialController->agregarAccion($accion, $detalle);
+        // Obtener el técnico anterior (si existía)
+        $ticketActual = $this->ticketModel->ver($id);
+        $old_tecnico_id = $ticketActual['tecnico_id'] ?? null;
 
-        } else {
-            $estado_id = $_POST['estado_id'];
-            $tecnico_id = $_POST['tecnico_id'] ?? null;
-            if ($tecnico_id === '' || $tecnico_id === null) {
-                $tecnico_id = null;
-            }
-            $this->ticketModel->actualizarCompleto($id, $descripcion, $estado_id, $tecnico_id);
+        $this->ticketModel->actualizarCompleto($id, $descripcion, $estado_id, $tecnico_id);
 
-            // Historial: técnico/supervisor/admin actualiza estado/técnico
-            $accion = "Actualización de ticket";
-            $detalle = "Usuario {$user['name']} actualizó el ticket ID {$id}: estado a {$estado_id}" .
-                ($tecnico_id ? ", técnico asignado ID {$tecnico_id}" : ", sin técnico asignado") .
-                ". Descripción actualizada.";
-            $this->historialController->agregarAccion($accion, $detalle);
+        // Si se asigna un técnico, ponerlo como "Ocupado"
+        if ($tecnico_id) {
+            $this->userModel->setTecnicoEstado($tecnico_id, 'Ocupado');
+        }
+        // Si se desasigna el técnico anterior, ponerlo como "Disponible"
+        if ($old_tecnico_id && $tecnico_id !== $old_tecnico_id) {
+            $this->userModel->setTecnicoEstado($old_tecnico_id, 'Disponible');
         }
 
         // Redirección según rol

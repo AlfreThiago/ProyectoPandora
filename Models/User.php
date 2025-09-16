@@ -63,7 +63,7 @@ class UserModel
 
     public function getAllTecnicos()
     {
-        $sql = "SELECT t.id, u.name 
+        $sql = "SELECT t.id, t.user_id, u.name, u.email, u.role, u.created_at, t.disponibilidad, t.especialidad
             FROM tecnicos t 
             INNER JOIN users u ON t.user_id = u.id";
         $result = $this->connection->query($sql);
@@ -113,6 +113,15 @@ class UserModel
         $stmt = $this->connection->prepare("DELETE FROM users WHERE id = ?");
         if ($stmt) {
             $stmt->bind_param("i", $userId);
+            return $stmt->execute();
+        }
+        return false;
+    }
+    public function setTecnicoEstado($tecnico_id, $estado)
+    {
+        $stmt = $this->connection->prepare("UPDATE tecnicos SET disponibilidad = ? WHERE id = ?");
+        if ($stmt) {
+            $stmt->bind_param("si", $estado, $tecnico_id);
             return $stmt->execute();
         }
         return false;

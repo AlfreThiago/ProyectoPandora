@@ -16,7 +16,7 @@
                                 <p><strong>Descripción:</strong> <?= htmlspecialchars($ticket['descripcion_falla']) ?></p>
                                 <p><strong>Estado:</strong> <?= htmlspecialchars($ticket['estado']) ?></p>
                                 <p><strong>Fecha:</strong> <?= htmlspecialchars($ticket['fecha_creacion']) ?></p>
-                                <a href="/ProyectoPandora/Public/index.php?route=Ticket/verTicket&id=<?= $ticket['id'] ?>" class="btn btn-primary" style="margin-top:8px;">Ver detalle</a>
+                                <a href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?= $ticket['id'] ?>" class="btn btn-primary" style="margin-top:8px;">Ver detalle</a>
                             </div>
                         </div>
                     <?php endforeach; ?>

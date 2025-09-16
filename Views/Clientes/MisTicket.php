@@ -34,6 +34,7 @@ switch ($rol) {
                                 <p><strong>Descripción:</strong> <?= htmlspecialchars($ticket['descripcion_falla']) ?></p>
                                 <p><strong>Estado:</strong> <?= htmlspecialchars($ticket['estado']) ?></p>
                                 <p><strong>Fecha:</strong> <?= htmlspecialchars($ticket['fecha_creacion']) ?></p>
+                                <p><strong>Técnico:</strong> <?= htmlspecialchars($ticket['tecnico'] ?? 'Sin asignar') ?></p>
                                 <a href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?= $ticket['id'] ?>" class="btn btn-primary" style="margin-top:8px;">Ver detalle</a>
                                 <a href="/ProyectoPandora/Public/index.php?route=Ticket/Editar&id=<?= $ticket['id'] ?>" class="btn btn-edit" style="margin-top:8px;">Editar</a>
                             </div>
