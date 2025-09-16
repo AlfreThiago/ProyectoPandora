@@ -5,9 +5,10 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $currentUrl = $_SERVER['REQUEST_URI'];
 
-// Solo guardar prev_url si NO estás en vistas de detalle, edición o creación
+// Lista de rutas donde NO se debe guardar prev_url
 $noGuardar = [
     'Ticket/Ver',
+    'Ticket/Editar',
     'Ticket/Actualizar',
     'Device/ActualizarDevice',
     'Device/CrearDevice',

@@ -114,7 +114,12 @@ class TicketController
             $this->historialController->agregarAccion($accion, $detalle);
         }
 
-        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar');
+        // Redirección según rol
+        if ($rol === 'Cliente') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket');
+        } else {
+            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar');
+        }
         exit;
     }
 
@@ -194,7 +199,12 @@ class TicketController
         $detalle = "Usuario {$user['name']} creó un ticket para el dispositivo ID {$dispositivo_id} con descripción: {$descripcion}";
         $this->historialController->agregarAccion($accion, $detalle);
 
-        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar');
+        // Redirección según rol
+        if ($user['role'] === 'Cliente') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket');
+        } else {
+            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar');
+        }
         exit;
     }
 

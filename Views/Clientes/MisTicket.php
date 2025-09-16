@@ -35,6 +35,7 @@ switch ($rol) {
                                 <p><strong>Estado:</strong> <?= htmlspecialchars($ticket['estado']) ?></p>
                                 <p><strong>Fecha:</strong> <?= htmlspecialchars($ticket['fecha_creacion']) ?></p>
                                 <a href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?= $ticket['id'] ?>" class="btn btn-primary" style="margin-top:8px;">Ver detalle</a>
+                                <a href="/ProyectoPandora/Public/index.php?route=Ticket/Editar&id=<?= $ticket['id'] ?>" class="btn btn-edit" style="margin-top:8px;">Editar</a>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -94,6 +95,22 @@ switch ($rol) {
 }
 .btn.btn-primary:hover {
     background: #0056b3;
+}
+.btn-edit {
+    background: #ffc107;
+    color: #222;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.95em;
+    margin-left: 8px;
+    transition: background 0.2s;
+    border: none;
+}
+.btn-edit:hover {
+    background: #e0a800;
+    color: #fff;
 }
 .btn-float-add {
     position: fixed;
