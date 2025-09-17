@@ -56,7 +56,7 @@ switch ($rol) {
                                 <td><?= $cat['id'] ?></td>
                                 <td><?= htmlspecialchars($cat['name']) ?></td>
                                 <td>
-                                    <!-- Puedes agregar editar si lo implementas -->
+                                    <a href="/ProyectoPandora/Public/index.php?route=Inventario/ActualizarCategoria&id=<?= $cat['id'] ?>" class="btn edit-btn">Actualizar</a>
                                     <a href="/ProyectoPandora/Public/index.php?route=Inventario/EliminarCategoriaInventario&id=<?= $cat['id'] ?>" class="btn delete-btn" onclick="return confirm('¿Seguro que deseas eliminar esta categoría?');">Eliminar</a>
                                 </td>
                             </tr>

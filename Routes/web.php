@@ -246,14 +246,24 @@ return [
         'controller' => 'Inventario',
         'action' => 'crearCategoria'
     ],
-    'Inventario/ActualizarItem'=> [],
-    'Inventario/EditarItem'=> [],
+    'Inventario/ActualizarItem'=> [
+        'controller' => 'Inventario',
+        'action' => 'actualizar'
+    ],
+    'Inventario/EditarItem'=> [
+        'controller' => 'Inventario',
+        'action' => 'editar'
+    ],
     'Inventario/EliminarItem'=> [
         'controller' => 'Inventario',
         'action' => 'eliminar'
     ],
-    'Inventario/EliminarCategoria'=> [
+    'Inventario/ActualizarCategoria'=> [
         'controller' => 'Inventario',
-        'action' => 'eliminarCategoria'
+        'action' => 'mostrarActualizarCategoria'
+    ],
+    'Inventario/EditarCategoria'=> [
+        'controller' => 'Inventario',
+        'action' => 'editarCategoria'
     ],
 ];

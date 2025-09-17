@@ -187,6 +187,60 @@ class InventarioController
             exit;
         }
     }
+
+    // Mostrar formulario de edición de categoría
+    public function mostrarActualizarCategoria()
+    {
+        Auth::checkRole(['Administrador', 'Supervisor']);
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&error=1');
+            exit;
+        }
+        $categoria = $this->categoryModel->obtenerCategoryPorId($id);
+        include_once __DIR__ . '/../Views/Inventario/ActualizarCategoria.php';
+    }
+
+    // Editar categoría de inventario
+    public function editarCategoria()
+    {
+        Auth::checkRole(['Administrador', 'Supervisor']);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'] ?? null;
+            $name = $_POST['name'] ?? '';
+            if ($this->categoryModel->actualizarCategory($id, $name)) {
+                $user = Auth::user();
+                $accion = "Edición de categoría de inventario";
+                $detalle = "Usuario {$user['name']} editó la categoría '{$name}' (ID {$id})";
+                $this->historialController->agregarAccion($accion, $detalle);
+
+                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&success=1');
+                exit;
+            } else {
+                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ActualizarCategoria&id=' . $id . '&error=1');
+                exit;
+            }
+        }
+        $this->mostrarActualizarCategoria();
+    }
+
+    // Mostrar formulario de edición de item
+    public function actualizarCategoria()
+    {
+        Auth::checkRole(['Administrador', 'Supervisor']);
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarItem&error=1');
+            exit;
+        }
+        $item = $this->inventarioModel->obtenerPorId($id);
+        $categorias = $this->inventarioModel->listarCategorias();
+        include_once __DIR__ . '/../Views/Inventario/ActualizarItem.php';
+    }
+
+    // Eliminar item del inventario (ya existe como eliminar())
+
+    // Eliminar categoría del inventario (ya existe como eliminarCategoriaInventario())
 }
 
 ?>
