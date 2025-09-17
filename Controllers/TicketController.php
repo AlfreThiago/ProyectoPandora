@@ -150,7 +150,22 @@ class TicketController
                 $data[] = $row;
             }
         }
-        
+
+        // Verifica que existan estados
+        $estados = $this->estadoModel->getAllEstados();
+        if (empty($estados)) {
+            $errorMsg = "Primero debes crear al menos un estado antes de poder crear un ticket.";
+            include __DIR__ . '/../Views/Ticket/CrearTicket.php';
+            return;
+        }
+
+        // Verifica que existan dispositivos
+        if (empty($data)) {
+            $errorMsg = "Primero debes crear al menos un dispositivo antes de poder crear un ticket.";
+            include __DIR__ . '/../Views/Ticket/CrearTicket.php';
+            return;
+        }
+
         include __DIR__ . '/../Views/Ticket/CrearTicket.php';
     }
 
@@ -224,5 +239,28 @@ class TicketController
             header("Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar&error=No se pudo eliminar el ticket");
         }
         exit;
+    }
+
+    public function mostrarCrearItem()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+
+        $db = new Database();
+        $db->connectDatabase();
+        $categoryModel = new CategoryModel($db->getConnection());
+        $categorias = $categoryModel->getAllInventarioCategories();
+
+        if (empty($categorias)) {
+            $errorMsg = "Primero debes crear al menos una categoría de inventario antes de poder agregar un item.";
+            include_once __DIR__ . '/../Views/Inventario/CrearItem.php';
+            return;
+        }
+
+        // ... lógica normal para mostrar el formulario ...
+        include_once __DIR__ . '/../Views/Inventario/CrearItem.php';
     }
 }

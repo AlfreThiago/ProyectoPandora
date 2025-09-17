@@ -4,6 +4,8 @@ Hacer/Solucionar/Mejorar
 - ✅Arreglar q aparezca la descripcion de falla del dispositivo selecionado al crear un ticket.
 - Agregar restriciones al momento de registrarse en el correo, para q no ingresen con cosas q no sean @gmail.com, @hotmail.com, @outlook.com.
 - En el panelSupervisor, agregar las funcionalidades como AsignarTecnico, GestionInventario y Presupuesto(Valor de la mano de obra mas los repuestos usados). 
-- Programar para q no salte errores, al crear ticket, dispositivos o agregar items, sin haber creado antes las categorias o estados.
+- ✅Programar para q no salte errores, al crear ticket, dispositivos o agregar items, sin haber creado antes las categorias o estados y sustituir el mensaje de error por un error mas amigable y 
+q no muestre error de php o apache o codigo, sino q diga q primero hay q crear un estado o una categoria dependiendo del error.
 - Terminar el inventario para q se relacione con ticket.
-- Agregar la Accion Actualizar en la lista de Ctegorias de items.
+- ✅Agregar la Accion Actualizar en la lista de Ctegorias de items.
+- ✅Arreglar cambio de la foto de perfil.

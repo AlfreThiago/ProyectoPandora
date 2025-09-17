@@ -61,6 +61,13 @@ class DeviceController
         }
         $categorias = $this->categoryModel->getAllCategories();
 
+        // Verifica que existan categorías
+        if (empty($categorias)) {
+            $errorMsg = "Primero debes crear al menos una categoría antes de poder agregar un dispositivo.";
+            include_once __DIR__ . '/../Views/Device/CrearDevice.php';
+            return;
+        }
+
         include_once __DIR__ . '/../Views/Device/CrearDevice.php';
     }
 
