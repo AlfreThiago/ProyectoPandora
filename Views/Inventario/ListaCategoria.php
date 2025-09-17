@@ -56,8 +56,11 @@ switch ($rol) {
                                 <td><?= $cat['id'] ?></td>
                                 <td><?= htmlspecialchars($cat['name']) ?></td>
                                 <td>
-                                    <a href="/ProyectoPandora/Public/index.php?route=Inventario/ActualizarCategoria&id=<?= $cat['id'] ?>" class="btn edit-btn">Actualizar</a>
-                                    <a href="/ProyectoPandora/Public/index.php?route=Inventario/EliminarCategoriaInventario&id=<?= $cat['id'] ?>" class="btn delete-btn" onclick="return confirm('¿Seguro que deseas eliminar esta categoría?');">Eliminar</a>
+                                    <div class='action-buttons'>
+                                        <a href="/ProyectoPandora/Public/index.php?route=Inventario/ActualizarCategoria&id=<?= $cat['id'] ?>" class="btn edit-btn">Actualizar</a>
+                                        |
+                                        <a href="/ProyectoPandora/Public/index.php?route=Inventario/EliminarCategoriaInventario&id=<?= $cat['id'] ?>" class="btn delete-btn" onclick="return confirm('¿Seguro que deseas eliminar esta categoría?');">Eliminar</a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
