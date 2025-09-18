@@ -35,13 +35,15 @@
         <!-- Tabs -->
         <div class="tabs">
             <div class="tab <?php echo ($rutaActual === 'Ticket/Listar') ? 'active' : ''; ?>">
-                <a href="/ProyectoPandora/Public/index.php?route=Ticket/Listar">Tickets</a>
+                <a href="/ProyectoPandora/Public/index.php?route=Supervisor/Asignar">Asignar Tecnico</a>
             </div>
             <div class="tab <?php echo ($rutaActual === 'Device/ListarDevice') ? 'active' : ''; ?>">
-                <a href="/ProyectoPandora/Public/index.php?route=Device/ListarDevice">Dispositivos</a>
+                <a href="/ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario">Gestion Inventario</a>
+            </div>
+            <div class="tab <?php echo ($rutaActual === 'User/ListarSupers') ? 'active' : ''; ?>">
+                <a href="/ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos">Presupuestos</a>
             </div>
         </div>
     </section>
-        
 </main>
 <?php include_once __DIR__ . '/../Includes/Footer.php' ?>

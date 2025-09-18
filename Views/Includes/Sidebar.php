@@ -57,7 +57,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             </li>
                         <?php elseif ($role === 'supervisor'): ?>
                             <li class="item menu-item-static">
-                                <a href="index.php?route=Dash/PanelSupervisor" class="link flex">
+                                <a href="index.php?route=Supervisor/PanelSupervisor" class="link flex">
                                     <i class='bxr  bx-ticket'></i>
                                     <span>Panel Supervisor</span>
                                 </a>

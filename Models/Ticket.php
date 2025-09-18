@@ -207,4 +207,36 @@ class Ticket
         }
         return $data;
     }   
+
+    public function getTicketsSinTecnico()
+    {
+        $sql = "SELECT 
+                    t.id,
+                    d.marca AS dispositivo,
+                    d.modelo,
+                    u.name AS cliente,
+                    t.descripcion_falla AS descripcion,
+                    e.name AS estado
+                FROM tickets t
+                INNER JOIN dispositivos d ON t.dispositivo_id = d.id
+                INNER JOIN clientes c ON t.cliente_id = c.id
+                INNER JOIN users u ON c.user_id = u.id
+                INNER JOIN estados_tickets e ON t.estado_id = e.id
+                WHERE t.tecnico_id IS NULL
+                ORDER BY t.id DESC";
+        $result = $this->conn->query($sql);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    public function asignarTecnico($ticket_id, $tecnico_id)
+    {
+        $sql = "UPDATE tickets SET tecnico_id = ? WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $tecnico_id, $ticket_id);
+        return $stmt->execute();
+    }
 }

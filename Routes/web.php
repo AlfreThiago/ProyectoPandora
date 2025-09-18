@@ -72,6 +72,21 @@ return [
     ],
     //
     //
+    //Supervisor
+    'Supervisor/PanelSupervisor'=> [
+        'controller' => 'Supervisor',
+        'action' => 'PanelSupervisor'
+    ],
+    'Supervisor/Asignar'=> [
+        'controller' => 'Supervisor',
+        'action' => 'Asignar'
+    ],
+    'Supervisor/AsignarTecnico'=> [
+        'controller' => 'Supervisor',
+        'action' => 'AsignarTecnico'
+    ],
+    //
+    //
     //Tecnico
         'Tecnico/PanelTecnico' => [
         'controller' => 'Tecnico',
