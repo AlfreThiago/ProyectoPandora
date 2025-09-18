@@ -1278,9 +1278,12 @@ input[type="password"]:focus {
     margin-right: 8px;
 }
 .perfil-campo input {
-    padding: 6px 12px;
     border-radius: 6px;
     border: 1px solid var(--color-border);
+/* Custom styles for profile menu marker */
+ .profile-menu::marker {
+   content: none !important;
+}
     font-size: 1em;
     width: 220px;
     background: var(--fondo-formulario);
@@ -1351,3 +1354,44 @@ input[type="password"]:focus {
 .profile-menu::marker {
     content: none !important;
 }
+
+/* ================= Supervisor: Asignar ================= */ 
+/*ALEEE puedo organizarte con mi prettier (PRETTIER es un organizador de codigo) todo el codigo css como este de aca? para q quede organizado si queres claro, escribime cuando leas esto*/
+.asignar-content { padding: 24px; }
+.asignar-header { margin-bottom: 16px; }
+
+.alert { margin: 8px 0 16px; padding: 10px 12px; border-radius: 8px; }
+.alert-success { background: rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.35); color:#86efac; }
+.alert-error { background: rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.35); color:#fecaca; }
+
+.asignar-panel { display: grid; gap: 16px; }
+.asignar-filters { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+.asignar-field { min-width:220px; }
+.asignar-field--grow { min-width:260px; flex:1; }
+.asignar-label { display:block; font-size:12px; opacity:.8; margin-bottom:6px; color: var(--color-texto-primario); }
+.asignar-input { width:100%; padding:10px 12px; border-radius:8px; background: rgba(255,255,255,0.04); color: var(--color-texto-primario); border:1px solid rgba(255,255,255,0.08); }
+.asignar-input--small { padding:8px 10px; }
+.asignar-actions { display:flex; gap:8px; align-self:flex-end; }
+
+.btn-primary { background: #0ea5e9; color:#fff; padding:10px 14px; border:none; border-radius:8px; cursor:pointer; text-decoration:none; display:inline-block; }
+.btn-outline { background: transparent; color: var(--color-texto-primario); padding:10px 14px; border:1px solid rgba(255,255,255,0.12); border-radius:8px; text-decoration:none; display:inline-block; }
+
+.asignar-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px; }
+.asignar-empty { opacity:.8; color: var(--color-texto-primario); }
+
+.asignar-card { background: rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:12px; }
+.asignar-card__head { display:flex; gap:12px; align-items:center; }
+.asignar-avatar { width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,0.12); }
+.asignar-card__title { flex:1; }
+.asignar-card__row { display:flex; align-items:center; gap:8px; }
+.asignar-card__name { margin:0; color: var(--color-texto-primario); font-size:16px; font-weight:600; }
+.asignar-card__subtitle { font-size:12px; opacity:.8; color: var(--color-texto-primario); }
+.asignar-card__chips { display:flex; gap:12px; flex-wrap:wrap; font-size:12px; opacity:.9; }
+.chip { background: rgba(255,255,255,0.06); padding:6px 10px; border-radius:8px; color: var(--color-texto-primario); }
+
+.badge { display:inline-block; font-size:11px; color:white; padding:2px 8px; border-radius:999px; }
+.badge--success { background:#16a34a; }
+.badge--danger { background:#ef4444; }
+.badge--muted { background:#64748b; }
+
+.asignar-assign-form { display:flex; gap:8px; align-items:center; margin-top:4px; }
