@@ -22,23 +22,20 @@
                                 </select>
                             </p>
                             <p>
-                                <label for="name_item">Nombre del Item:</label>
+                                <label for="name_item">Tipo:</label>
                                 <input type="text" id="name_item" name="name_item" required>
                             </p>
                             <p>
                                 <label for="valor_unitario">Valor Unitario:</label>
                                 <input type="number" step="0.01" id="valor_unitario" name="valor_unitario" required>
                             </p>
-                            <p>
-                                <label for="descripcion">Descripción:</label>
-                                <textarea id="descripcion" name="descripcion" rows="3"></textarea>
-                            </p>
+                            
                             <p>
                                 <label for="foto_item">Imagen:</label>
                                 <input type="file" id="foto_item" name="foto_item" accept="image/*">
                             </p>
                             <p>
-                                <label for="stock_actual">Stock Actual:</label>
+                                <label for="stock_actual">Cantidad:</label>
                                 <input type="number" id="stock_actual" name="stock_actual" required>
                             </p>
                             <p>

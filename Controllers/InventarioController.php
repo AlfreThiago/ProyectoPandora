@@ -53,12 +53,21 @@ class InventarioController
                 move_uploaded_file($_FILES['foto_item']['tmp_name'], $destino);
             }
 
-            if ($this->inventarioModel->crear($categoria_id, $name_item, $valor_unitario, $descripcion, $foto_item, $stock_actual, $stock_minimo)) {
+            // Si ya existe (misma categoría y nombre), sólo sumar stock_actual y NO cambiar precio ni mínimo
+            $existente = $this->inventarioModel->findByCategoryAndName((int)$categoria_id, $name_item);
+            if ($existente) {
+                $ok = $this->inventarioModel->sumarStock((int)$existente['id'], (int)$stock_actual);
+            } else {
+                $ok = $this->inventarioModel->crear($categoria_id, $name_item, $valor_unitario, $descripcion, $foto_item, $stock_actual, $stock_minimo);
+            }
+
+            if ($ok) {
                 $user = Auth::user();
-                $this->historialController->agregarAccion(
-                    "Alta inventario",
-                    "El usuario {$user['name']} agregó el item '$name_item' al inventario."
-                );
+                $accion = $existente ? "Ingreso de stock" : "Alta inventario";
+                $detalle = $existente
+                    ? "El usuario {$user['name']} sumó {$stock_actual} al item '{$name_item}' (ID {$existente['id']})."
+                    : "El usuario {$user['name']} creó el item '{$name_item}' con stock {$stock_actual} (mínimo {$stock_minimo}).";
+                $this->historialController->agregarAccion($accion, $detalle);
                 header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarItem&success=1');
                 exit;
             } else {
@@ -134,6 +143,28 @@ class InventarioController
             }
         }
         $this->mostrarActualizar();
+    }
+
+    public function sumarStock()
+    {
+        Auth::checkRole(['Administrador', 'Supervisor']);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = (int)($_POST['id'] ?? 0);
+            $cantidad = (int)($_POST['cantidad'] ?? 0);
+            if ($id > 0 && $cantidad > 0) {
+                if ($this->inventarioModel->sumarStock($id, $cantidad)) {
+                    $user = Auth::user();
+                    $this->historialController->agregarAccion(
+                        'Ingreso de stock',
+                        "Usuario {$user['name']} sumó {$cantidad} unidades al item ID {$id}."
+                    );
+                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
+                    exit;
+                }
+            }
+        }
+        header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
+        exit;
     }
     
     public function listarCategorias()

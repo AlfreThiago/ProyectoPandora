@@ -512,7 +512,6 @@ main {
   width: 100%;
   max-width: 100%;
   overflow-x: auto;
-  margin-top: -30px;
   border-radius: 12px;
   background-color: var(--fondo-formulario);
   box-shadow: 0 0 15px var(--shadow-border);
@@ -1394,3 +1393,9 @@ input[type="password"]:focus {
 .badge--muted { background:#64748b; }
 
 .asignar-assign-form { display:flex; gap:8px; align-items:center; margin-top:4px; }
+
+/* ===== Gestión Inventario (Supervisor) ===== */
+.row-low-stock { background: rgba(239, 68, 68, 0.08); }
+.row-low-stock td { color: var(--color-texto-primario); }
+.inv-page .Tabla-Contenedor table input[type="number"] { max-width: 120px; }
+.inv-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: var(--fondo-formulario); }

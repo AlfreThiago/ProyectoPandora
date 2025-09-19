@@ -77,6 +77,10 @@ return [
         'controller' => 'Supervisor',
         'action' => 'PanelSupervisor'
     ],
+    'Supervisor/GestionInventario'=> [
+        'controller' => 'Supervisor',
+        'action' => 'GestionInventario'
+    ],
     'Supervisor/Asignar'=> [
         'controller' => 'Supervisor',
         'action' => 'Asignar'
@@ -268,6 +272,10 @@ return [
     'Inventario/EditarItem'=> [
         'controller' => 'Inventario',
         'action' => 'editar'
+    ],
+    'Inventario/SumarStock'=> [
+        'controller' => 'Inventario',
+        'action' => 'sumarStock'
     ],
     'Inventario/EliminarItem'=> [
         'controller' => 'Inventario',

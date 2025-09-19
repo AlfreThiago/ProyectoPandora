@@ -75,6 +75,32 @@ class InventarioModel
         return false;
     }
 
+    // Buscar un item por categoría y nombre (para controlar duplicados lógicos)
+    public function findByCategoryAndName($categoria_id, $name_item)
+    {
+        $sql = "SELECT * FROM inventarios WHERE categoria_id = ? AND name_item = ? LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        if ($stmt) {
+            $stmt->bind_param("is", $categoria_id, $name_item);
+            $stmt->execute();
+            $res = $stmt->get_result();
+            return $res->fetch_assoc();
+        }
+        return null;
+    }
+
+    // Sumar cantidad al stock actual de un item existente
+    public function sumarStock($id, $cantidad)
+    {
+        $sql = "UPDATE inventarios SET stock_actual = stock_actual + ? WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        if ($stmt) {
+            $stmt->bind_param("ii", $cantidad, $id);
+            return $stmt->execute();
+        }
+        return false;
+    }
+
     // Listar todas las categorías de inventario
     public function listarCategorias()
     {

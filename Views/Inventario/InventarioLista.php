@@ -33,11 +33,10 @@ switch ($rol) {
                 <tr>
                     <th>ID</th>
                     <th>Categoría</th>
-                    <th>Nombre</th>
+                    <th>Tipo</th>
                     <th>Valor Unitario</th>
-                    <th>Descripción</th>
                     <th>Imagen</th>
-                    <th>Stock Actual</th>
+                    <th>Cantidad</th>
                     <th>Stock Mínimo</th>
                     <th>Fecha Creación</th>
                     <th>Acciones</th>
@@ -52,7 +51,6 @@ switch ($rol) {
                         echo "<td>{$item['categoria']}</td>";
                         echo "<td>{$item['name_item']}</td>";
                         echo "<td>{$item['valor_unitario']}</td>";
-                        echo "<td>{$item['descripcion']}</td>";
                         echo "<td>";
                         if (!empty($item['foto_item'])) {
                             echo "<img src='/ProyectoPandora/Public/img/imgInventario/{$item['foto_item']}' width='80'>";
@@ -65,7 +63,7 @@ switch ($rol) {
                         echo "<td>{$item['fecha_creacion']}</td>";
                         echo "<td>
                                 <div class='action-buttons'>
-                                    <!-- Puedes agregar aquí editar si lo implementas -->
+                                    <!-- agregar aquí editar si lo implemento -->
                                      <a href='#' class='btn edit-btn'>Actualizar</a>
                                     |
                                     <a href='/ProyectoPandora/Public/index.php?route=Inventario/Eliminar&id={$item['id']}' class='btn delete-btn' onclick=\"return confirm('¿Seguro que deseas eliminar este item?');\">Eliminar</a>
@@ -74,7 +72,7 @@ switch ($rol) {
                         echo "</tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='10'>No hay items en el inventario.</td></tr>";
+                    echo "<tr><td colspan='9'>No hay items en el inventario.</td></tr>";
                 }
                 ?>
             </tbody>
