@@ -1,32 +1,29 @@
-<?php
-include_once __DIR__ . '/../Includes/Sidebar.php'
-?>
+<?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <main>
-    <div class="Contenedor">
-        <section class="Conenedor-formulario-principal">
-            <h2>Actualizar Estado</h2>
-            <div class="Formulario-general">
-                <div class="Formulario-contenedor">
-                    <form method="POST" action="/ProyectoPandora/Public/index.php?route=EstadoTicket/Actualizar">
-                        <p>
-                            <input type="hidden" name="id" value="<?= $estado['id'] ?>">
-                        </p>
-                        <p>
-                            <label>Nombre del estado:</label>
-                            <input type="text" name="name" value="<?= $estado['name'] ?>" required>
-                        </p>
-                        <p>
-                            <button type="submit">Actualizar</button>
-                        </p>
-                        <p>
-                            <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados" class="btn-form-categoria">Volver a la lista de Estados</a>
-                        </p>
-                    </form>
-                </div>
+    <div class="content">
+
+        <div class="estado-wrapper animated bounceInUp">
+            <div class="contact-form">
+                <h3>Actualizar Estado</h3>
+
+                <form method="POST" action="/ProyectoPandora/Public/index.php?route=EstadoTicket/Actualizar">
+                    <input type="hidden" name="id" value="<?= htmlspecialchars($estado['id']) ?>">
+
+                    <p>
+                        <label for="name">Nombre del estado:</label>
+                        <input type="text" id="name" name="name" value="<?= htmlspecialchars($estado['name']) ?>" required>
+                    </p>
+
+                    <p class="block">
+                        <button type="submit">Actualizar</button>
+                    </p>
+                </form>
+
+                <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados" class="btn-volver">Volver a la lista de Estados</a>
             </div>
-        </section>
+        </div>
+
     </div>
 </main>
-<?php
-include_once __DIR__ . '/../Includes/Footer.php'
-?>
+
+<?php include_once __DIR__ . '/../Includes/Footer.php'; ?>
