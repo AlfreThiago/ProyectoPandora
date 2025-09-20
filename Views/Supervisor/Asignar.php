@@ -156,13 +156,14 @@
 								<div class="asignar-card__title">
 									<div class="asignar-card__row">
 										<h3 class="asignar-card__name"><?php echo htmlspecialchars($tec['name'] ?? ''); ?></h3>
-										<span class="badge <?php echo $estado==='Disponible' ? 'badge--success' : ($estado==='Ocupado' ? 'badge--danger' : 'badge--muted'); ?>"><?php echo htmlspecialchars($estado); ?></span>
+										<span class="badge <?php echo $estado==='Disponible' ? 'badge--success' : ($estado==='Ocupado' ? 'badge--danger' : 'badge--muted'); ?>" title="Estado informativo, gestionado por el técnico en su perfil"><?php echo htmlspecialchars($estado); ?></span>
 									</div>
 									<div class="asignar-card__subtitle">Especialidad: <?php echo htmlspecialchars($tec['especialidad'] ?? '—'); ?></div>
 								</div>
 							</div>
 							<div class="asignar-card__chips">
 								<div class="chip">Tickets asignados: <?php echo (int)($tec['tickets_asignados'] ?? 0); ?></div>
+								<div class="chip">Activos: <?php echo (int)($tec['tickets_activos'] ?? 0); ?></div>
 								<div class="chip">Email: <?php echo htmlspecialchars($tec['email'] ?? ''); ?></div>
 							</div>
 							<form action="/ProyectoPandora/Public/index.php?route=Supervisor/AsignarTecnico" method="post" class="asignar-assign-form">
@@ -178,7 +179,7 @@
 										<?php endforeach; ?>
 									<?php endif; ?>
 								</select>
-								<button type="submit" class="btn btn-primary" <?php echo ($estado==='Ocupado')?'disabled':''; ?>>Asignar</button>
+								<button type="submit" class="btn btn-primary">Asignar</button>
 							</form>
 						</div>
 					<?php endforeach; ?>

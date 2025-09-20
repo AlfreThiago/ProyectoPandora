@@ -30,8 +30,9 @@ class DefaultController
         $ticketModel = new \Ticket($db->getConnection());
         $deviceModel = new \DeviceModel($db->getConnection());
 
-        $cantTickets = 0;
-        $cantDevices = 0;
+    $cantTickets = 0;
+    $cantDevices = 0;
+    $tecnicoDisponibilidad = null;
 
         if ($rol === 'Cliente' && $userId) {
             $tickets = $ticketModel->getTicketsByUserId($userId);
@@ -41,6 +42,14 @@ class DefaultController
         } elseif ($rol === 'Tecnico' && $userId) {
             $tickets = $ticketModel->getTicketsByTecnicoId($userId);
             $cantTickets = is_array($tickets) ? count($tickets) : 0;
+            // Obtener disponibilidad actual del técnico
+            $stmtDisp = $db->getConnection()->prepare("SELECT disponibilidad FROM tecnicos WHERE user_id = ? LIMIT 1");
+            if ($stmtDisp) {
+                $stmtDisp->bind_param("i", $userId);
+                $stmtDisp->execute();
+                $resDisp = $stmtDisp->get_result()->fetch_assoc();
+                $tecnicoDisponibilidad = $resDisp['disponibilidad'] ?? null;
+            }
         } else {
             $tickets = $ticketModel->getAllTickets();
             $cantTickets = is_array($tickets) ? count($tickets) : 0;
@@ -80,6 +89,20 @@ class DefaultController
             $userModel = new \UserModel($db->getConnection());
             $userModel->actualizarPerfil($userId, $newName, $newEmail, $imgPerfil);
 
+            // Si es técnico, permitir actualizar su disponibilidad
+            if ($rol === 'Tecnico') {
+                $nuevaDisp = $_POST['disponibilidad'] ?? null;
+                if ($nuevaDisp === 'Disponible' || $nuevaDisp === 'Ocupado') {
+                    // Actualizar por user_id
+                    $stmtUpd = $db->getConnection()->prepare("UPDATE tecnicos SET disponibilidad = ? WHERE user_id = ?");
+                    if ($stmtUpd) {
+                        $stmtUpd->bind_param("si", $nuevaDisp, $userId);
+                        $stmtUpd->execute();
+                        $tecnicoDisponibilidad = $nuevaDisp;
+                    }
+                }
+            }
+
             // Actualizar sesión
             $_SESSION['user']['name'] = $newName;
             $_SESSION['user']['email'] = $newEmail;
@@ -92,6 +115,6 @@ class DefaultController
         }
 
         // Pasar datos a la vista
-        include_once __DIR__ . '/../Views/AllUsers/Perfil.php';
+    include_once __DIR__ . '/../Views/AllUsers/Perfil.php';
     }
 }

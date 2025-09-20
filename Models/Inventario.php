@@ -26,6 +26,101 @@ class InventarioModel
         return $data;
     }
 
+    // Listado con filtros opcionales por categoría y búsqueda por nombre
+    public function listarFiltrado($categoria_id = null, $buscar = '', $limit = null, $offset = null, $sort = 'i.id', $dir = 'DESC')
+    {
+        $sql = "SELECT i.id, c.name AS categoria, i.name_item, i.valor_unitario, i.foto_item, i.stock_actual, i.stock_minimo
+                FROM inventarios i
+                INNER JOIN categorias_inventario c ON i.categoria_id = c.id";
+        $conds = [];
+        $params = [];
+        $types = '';
+        if ($categoria_id) {
+            $conds[] = 'i.categoria_id = ?';
+            $types .= 'i';
+            $params[] = (int)$categoria_id;
+        }
+        if ($buscar !== '') {
+            $conds[] = 'i.name_item LIKE ?';
+            $types .= 's';
+            $params[] = '%' . $buscar . '%';
+        }
+        if ($conds) {
+            $sql .= ' WHERE ' . implode(' AND ', $conds);
+        }
+        $sql .= " ORDER BY $sort $dir";
+        if ($limit !== null && $offset !== null) {
+            $sql .= ' LIMIT ? OFFSET ?';
+            $types .= 'ii';
+            $params[] = (int)$limit;
+            $params[] = (int)$offset;
+        }
+
+        if ($types) {
+            $stmt = $this->conn->prepare($sql);
+            if (!$stmt) return [];
+            // Convertir params a referencias para bind_param
+            $bindParams = [];
+            $bindParams[] = & $types;
+            foreach ($params as $k => $v) {
+                $bindParams[] = & $params[$k];
+            }
+            call_user_func_array([$stmt, 'bind_param'], $bindParams);
+            $stmt->execute();
+            $res = $stmt->get_result();
+        } else {
+            $res = $this->conn->query($sql);
+        }
+        $data = [];
+        if ($res) {
+            while ($row = $res->fetch_assoc()) {
+                $data[] = $row;
+            }
+        }
+        return $data;
+    }
+
+    public function contarFiltrado($categoria_id = null, $buscar = '')
+    {
+        $sql = "SELECT COUNT(*) AS total
+                FROM inventarios i
+                INNER JOIN categorias_inventario c ON i.categoria_id = c.id";
+        $conds = [];
+        $params = [];
+        $types = '';
+        if ($categoria_id) {
+            $conds[] = 'i.categoria_id = ?';
+            $types .= 'i';
+            $params[] = (int)$categoria_id;
+        }
+        if ($buscar !== '') {
+            $conds[] = 'i.name_item LIKE ?';
+            $types .= 's';
+            $params[] = '%' . $buscar . '%';
+        }
+        if ($conds) {
+            $sql .= ' WHERE ' . implode(' AND ', $conds);
+        }
+        if ($types) {
+            $stmt = $this->conn->prepare($sql);
+            if (!$stmt) return 0;
+            $bindParams = [];
+            $bindParams[] = & $types;
+            foreach ($params as $k => $v) {
+                $bindParams[] = & $params[$k];
+            }
+            call_user_func_array([$stmt, 'bind_param'], $bindParams);
+            $stmt->execute();
+            $res = $stmt->get_result();
+        } else {
+            $res = $this->conn->query($sql);
+        }
+        if ($res && ($row = $res->fetch_assoc())) {
+            return (int)$row['total'];
+        }
+        return 0;
+    }
+
     // Crear un nuevo item de inventario
     public function crear($categoria_id, $name_item, $valor_unitario, $descripcion, $foto_item, $stock_actual, $stock_minimo)
     {
@@ -97,6 +192,27 @@ class InventarioModel
         if ($stmt) {
             $stmt->bind_param("ii", $cantidad, $id);
             return $stmt->execute();
+        }
+        return false;
+    }
+
+    // Reducir stock si hay suficiente cantidad
+    public function reducirStock($id, $cantidad)
+    {
+        // Verificar stock suficiente
+        $stmtSel = $this->conn->prepare("SELECT stock_actual FROM inventarios WHERE id = ?");
+        if (!$stmtSel) return false;
+        $stmtSel->bind_param("i", $id);
+        $stmtSel->execute();
+        $res = $stmtSel->get_result();
+        $row = $res->fetch_assoc();
+        if (!$row || (int)$row['stock_actual'] < (int)$cantidad) {
+            return false;
+        }
+        $stmtUpd = $this->conn->prepare("UPDATE inventarios SET stock_actual = stock_actual - ? WHERE id = ?");
+        if ($stmtUpd) {
+            $stmtUpd->bind_param("ii", $cantidad, $id);
+            return $stmtUpd->execute();
         }
         return false;
     }

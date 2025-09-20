@@ -13,24 +13,6 @@ q no muestre error de php o apache o codigo, sino q diga q primero hay q crear u
 - Programar las conversaciones entre el tecnico y el cliente sobre un ticket en forma de linea de tiempo
 - Q el cliente pueda aceptar un presupuesto inicial y q al cambiar variar o modificarce el presupuesto en la linea de tiempo, 
 se le avise al cliente y q no se avance mas hasta q el cliente confirme o rechaze el cambio.
-
-
-// Trabajo de ing.softwar
-
-Farmacia> la farmacia vende 3 tipo de producto, 
-medicamentos con recetas: 
--Se venden poco, pero deja mucha ganancias.
-medicamentos sin recetas:
--Se venden mucho, pero deja poca ganancias.
-vitaminas:
--Se venden Aveces, con ganacias medias.
-
-En la ultima semana, se vendieron 50 productos sin recetas, 10 productos con recetas y 20 vitaminas.
-
-Ejersicio:
-1- hacer una tabla con los 3 productos, cantidad vendida y una ganancia aproximada.
-Ej: de las ganancias - Sin recetas deja 2 pesos de ganancias cada uno, con recetas 10 pesos y las vitaminas 5 pesos
-
-2- Calcular la ganacias total de la semana.
-3- Analizar q producto se vendio mas cual dio mas ganacias 
-y si fueramos los duenos de la ganancia a q producto promocionariamos.
+- Solucionar el problema de las asignacion de tecnicos por parte del supervisor en caso de q un supervisor asigne todos los tickets a un unico tecnico 
+impidiendo, q otros tecnicos tomen tickets.
+- Implementar, un sistema de honor como posible solucion para la asignacion, asi como para el cliente, para dar un orden o sistema de prioridad en el orden de la asignacion de ticket.

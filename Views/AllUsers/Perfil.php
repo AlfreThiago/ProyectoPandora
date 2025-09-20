@@ -26,6 +26,16 @@
                         <label for="role">Rol:</label>
                         <input type="text" id="role" value="<?= htmlspecialchars($rol) ?>" readonly>
                     </div>
+                    <?php if ($rol === 'Tecnico'): ?>
+                    <div class="perfil-campo">
+                        <label for="disponibilidad">Disponibilidad:</label>
+                        <select id="disponibilidad" name="disponibilidad">
+                            <?php $dispActual = $tecnicoDisponibilidad ?? 'Disponible'; ?>
+                            <option value="Disponible" <?= ($dispActual === 'Disponible') ? 'selected' : '' ?>>Disponible</option>
+                            <option value="Ocupado" <?= ($dispActual === 'Ocupado') ? 'selected' : '' ?>>Ocupado</option>
+                        </select>
+                    </div>
+                    <?php endif; ?>
                     <button type="submit" class="btn-perfil-guardar">Guardar cambios</button>
                 </form>
                 <div class="perfil-stats">

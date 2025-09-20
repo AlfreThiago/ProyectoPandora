@@ -1,0 +1,16 @@
+sequenceDiagram
+  autonumber
+  participant C as Cliente
+  participant V as Vista: Views/Ticket/Crear
+  participant TC as Controllers/TicketController.php
+  participant M as Models/Ticket.php
+  participant DB as MySQL
+
+  C->>V: Completa formulario (dispositivo, falla)
+  V->>TC: POST /Ticket/Crear
+  TC->>M: crear(cliente_id, dispositivo_id, descripcion)
+  M->>DB: INSERT ticket {estado=Abierto}
+  DB-->>M: id
+  M-->>TC: ok(id)
+  TC-->>V: redirect Ver Ticket
+  V-->>C: Ticket #id creado

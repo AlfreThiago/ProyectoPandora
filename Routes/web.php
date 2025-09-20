@@ -104,6 +104,10 @@ return [
         'controller' => 'Tecnico',
         'action' => 'MisRepuestos'
     ],
+    'Tecnico/SolicitarRepuesto'=> [
+        'controller' => 'Tecnico',
+        'action' => 'SolicitarRepuesto'
+    ],
     'Tecnico/MisStats'=> [
         'controller' => 'Tecnico',
         'action' => 'MisStats'
@@ -290,3 +294,4 @@ return [
         'action' => 'editarCategoria'
     ],
 ];
+?>

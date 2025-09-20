@@ -45,9 +45,49 @@ class SupervisorController {
         $ticketModel = new Ticket($db->getConnection());
         $userModel = new UserModel($db->getConnection());
 
+        // Verificar que el ticket no tenga técnico asignado actualmente
+        $conn = $db->getConnection();
+        $stmtChk = $conn->prepare("SELECT tecnico_id FROM tickets WHERE id = ? LIMIT 1");
+        if ($stmtChk) {
+            $stmtChk->bind_param("i", $ticket_id);
+            $stmtChk->execute();
+            $rowChk = $stmtChk->get_result()->fetch_assoc();
+            if (!empty($rowChk['tecnico_id'])) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=El ticket ya tiene un técnico asignado');
+                exit;
+            }
+        }
+
+        // Evitar asignar un ticket que ya tenga técnico
+        $conn = $db->getConnection();
+        $stmtChk = $conn->prepare("SELECT tecnico_id FROM tickets WHERE id = ? LIMIT 1");
+        if ($stmtChk) {
+            $stmtChk->bind_param("i", $ticket_id);
+            $stmtChk->execute();
+            $row = $stmtChk->get_result()->fetch_assoc();
+            if (!empty($row['tecnico_id'])) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=El ticket ya tiene un técnico asignado');
+                exit;
+            }
+        }
+
         $ok = $ticketModel->asignarTecnico((int)$ticket_id, (int)$tecnico_id);
         if ($ok) {
-            $userModel->setTecnicoEstado((int)$tecnico_id, 'Ocupado');
+            // Asociar supervisor actual al ticket si no está seteado
+            $supervisorUserId = $_SESSION['user']['id'] ?? null;
+            if ($supervisorUserId) {
+                // Obtener supervisor_id real desde user_id
+                $conn = $db->getConnection();
+                $stmt = $conn->prepare("SELECT id FROM supervisores WHERE user_id = ? LIMIT 1");
+                if ($stmt) {
+                    $stmt->bind_param("i", $supervisorUserId);
+                    $stmt->execute();
+                    $sup = $stmt->get_result()->fetch_assoc();
+                    if ($sup && isset($sup['id'])) {
+                        $ticketModel->asignarSupervisor((int)$ticket_id, (int)$sup['id']);
+                    }
+                }
+            }
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&success=1');
         } else {
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=No se pudo asignar');

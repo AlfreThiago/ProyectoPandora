@@ -239,4 +239,22 @@ class Ticket
         $stmt->bind_param("ii", $tecnico_id, $ticket_id);
         return $stmt->execute();
     }
+
+    public function getSupervisorId($ticket_id)
+    {
+        $stmt = $this->conn->prepare("SELECT supervisor_id FROM tickets WHERE id = ? LIMIT 1");
+        if (!$stmt) return null;
+        $stmt->bind_param("i", $ticket_id);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+        return $res['supervisor_id'] ?? null;
+    }
+
+    public function asignarSupervisor($ticket_id, $supervisor_id)
+    {
+        $stmt = $this->conn->prepare("UPDATE tickets SET supervisor_id = ? WHERE id = ?");
+        if (!$stmt) return false;
+        $stmt->bind_param("ii", $supervisor_id, $ticket_id);
+        return $stmt->execute();
+    }
 }

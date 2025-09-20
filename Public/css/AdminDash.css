@@ -86,6 +86,64 @@ body {
 }
 
 
+
+/* ===== Mis Repuestos: input cantidad ===== */
+input[type=number].asignar-input--small::-webkit-outer-spin-button,
+input[type=number].asignar-input--small::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number].asignar-input--small {
+  appearance: textfield; /* estándar */
+  -moz-appearance: textfield; /* Firefox */
+}
+
+.asignar-input--small {
+  width: 88px;
+  height: 36px;
+  line-height: 36px;
+  text-align: right;
+  padding: 0 10px;
+  color: #f5f7fa;
+  background: #1f2128; /* fallback oscuro */
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 8px;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+.asignar-input--small::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+
+/* Total resaltado junto al input */
+.js-total {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Layout formulario solicitud repuesto */
+.req-form {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.req-form .eq,
+.req-form .currency {
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+}
+
+.req-form .btn {
+  margin-left: 6px;
+}
+
+/* Ajustes finos visuales */
+.req-form .currency { margin-left: 2px; }
+.js-total { min-width: 72px; text-align: right; }
 /* ======= NAV IMAGE ======= */
 .nav_image {
   display: flex;
@@ -1399,3 +1457,24 @@ input[type="password"]:focus {
 .row-low-stock td { color: var(--color-texto-primario); }
 .inv-page .Tabla-Contenedor table input[type="number"] { max-width: 120px; }
 .inv-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: var(--fondo-formulario); }
+
+/* ===== Mis Repuestos: Overrides de visibilidad input ===== */
+input.asignar-input.asignar-input--small {
+  background: var(--fondo-formulario) !important;
+  color: var(--color-texto-primario) !important;
+  -webkit-text-fill-color: var(--color-texto-primario) !important; /* Safari/Chrome */
+  caret-color: var(--color-texto-primario);
+  text-shadow: none;
+  font-weight: 600;
+  font-size: 14px;
+  border: 1px solid var(--color-border);
+}
+
+input.asignar-input.asignar-input--small::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+
+input.asignar-input.asignar-input--small:focus {
+  border-color: var(--secundario);
+  box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.25);
+}

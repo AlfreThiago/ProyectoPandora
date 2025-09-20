@@ -99,14 +99,7 @@ class TicketController
 
         $this->ticketModel->actualizarCompleto($id, $descripcion, $estado_id, $tecnico_id);
 
-        // Si se asigna un técnico, ponerlo como "Ocupado"
-        if ($tecnico_id) {
-            $this->userModel->setTecnicoEstado($tecnico_id, 'Ocupado');
-        }
-        // Si se desasigna el técnico anterior, ponerlo como "Disponible"
-        if ($old_tecnico_id && $tecnico_id !== $old_tecnico_id) {
-            $this->userModel->setTecnicoEstado($old_tecnico_id, 'Disponible');
-        }
+        // Nota: la disponibilidad del técnico se gestiona desde su perfil por el propio técnico.
 
         // Redirección según rol
         if ($rol === 'Cliente') {
