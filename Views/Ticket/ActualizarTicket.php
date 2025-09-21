@@ -42,8 +42,8 @@
                         </p>
                     <?php endif; ?>
 
-                    <!-- Asignar técnico solo para Supervisor y Administrador -->
-                    <?php if (in_array($rol, ['Supervisor', 'Administrador'])): ?>
+                        <!-- Asignar técnico solo para Supervisor -->
+                        <?php if (in_array($rol, ['Supervisor'])): ?>
                         <p>
                             <label for="tecnico_id">Asignar Técnico</label>
                             <select id="tecnico_id" name="tecnico_id">

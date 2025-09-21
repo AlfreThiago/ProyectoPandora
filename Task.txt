@@ -15,4 +15,4 @@ q no muestre error de php o apache o codigo, sino q diga q primero hay q crear u
 se le avise al cliente y q no se avance mas hasta q el cliente confirme o rechaze el cambio.
 - Solucionar el problema de las asignacion de tecnicos por parte del supervisor en caso de q un supervisor asigne todos los tickets a un unico tecnico 
 impidiendo, q otros tecnicos tomen tickets.
-- Implementar, un sistema de honor como posible solucion para la asignacion, asi como para el cliente, para dar un orden o sistema de prioridad en el orden de la asignacion de ticket.
+- Implementar, un sistema de honor como posible solucion para la asignacion, asi como para el cliente, para dar un orden o sistema de prioridad en el orden de la asignacion de ticket. 

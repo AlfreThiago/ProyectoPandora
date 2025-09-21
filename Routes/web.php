@@ -232,12 +232,6 @@ return [
         'action' => 'eliminar'
     ],
     //
-    //Paneles (Lo hice yo, Ale :)
-    'Dash/PanelSupervisor' => [
-        'controller' => 'Paneles',
-        'action' => 'PanelSupervisor'
-    ],
-
     'Dash/Ajustes' => [
         'controller' => 'Auth',
         'action' => 'Ajustes'

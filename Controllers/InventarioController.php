@@ -22,21 +22,24 @@ class InventarioController
 
     public function listarInventario()
     {
-        Auth::checkRole(['Administrador', 'Supervisor', 'Tecnico']);
+        // Admin no accede al listado de inventario
+        Auth::checkRole(['Supervisor', 'Tecnico']);
         $items = $this->inventarioModel->listar();
         include_once __DIR__ . '/../Views/Inventario/InventarioLista.php';
     }
 
     public function mostrarCrear()
     {
-        Auth::checkRole(['Administrador', 'Supervisor']);
+        // Solo Supervisor
+        Auth::checkRole(['Supervisor']);
         $categorias = $this->inventarioModel->listarCategorias();
         include_once __DIR__ . '/../Views/Inventario/CrearItem.php';
     }
 
     public function crear()
     {
-        Auth::checkRole(['Administrador', 'Supervisor']);
+        // Solo Supervisor
+        Auth::checkRole(['Supervisor']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $categoria_id = $_POST['categoria_id'] ?? null;
             $name_item = $_POST['name_item'] ?? '';
@@ -80,7 +83,8 @@ class InventarioController
 
     public function eliminar()
     {
-        Auth::checkRole(['Administrador', 'Supervisor']);
+        // Solo Supervisor
+        Auth::checkRole(['Supervisor']);
         $id = $_GET['id'] ?? null;
         if ($id && $this->inventarioModel->eliminar($id)) {
             $user = Auth::user();
@@ -98,7 +102,8 @@ class InventarioController
 
     public function mostrarActualizar()
     {
-        Auth::checkRole(['Administrador', 'Supervisor']);
+        // Solo Supervisor
+        Auth::checkRole(['Supervisor']);
         $id = $_GET['id'] ?? null;
         if (!$id) {
             header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarItem&error=1');
@@ -111,7 +116,8 @@ class InventarioController
 
     public function editar()
     {
-        Auth::checkRole(['Administrador', 'Supervisor']);
+        // Solo Supervisor
+        Auth::checkRole(['Supervisor']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'] ?? null;
             $categoria_id = $_POST['categoria_id'] ?? null;
@@ -147,7 +153,8 @@ class InventarioController
 
     public function sumarStock()
     {
-        Auth::checkRole(['Administrador', 'Supervisor']);
+        // Solo Supervisor
+        Auth::checkRole(['Supervisor']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = (int)($_POST['id'] ?? 0);
             $cantidad = (int)($_POST['cantidad'] ?? 0);
@@ -169,6 +176,7 @@ class InventarioController
     
     public function listarCategorias()
     {
+        // Admin y Supervisor
         Auth::checkRole(['Administrador', 'Supervisor']);
         $categorias = $this->inventarioModel->listarCategorias();
         include_once __DIR__ . '/../Views/Inventario/ListaCategoria.php';
@@ -176,12 +184,14 @@ class InventarioController
 
     public function mostrarCrearCategoria()
     {
+        // Admin y Supervisor
         Auth::checkRole(['Administrador', 'Supervisor']);
         include_once __DIR__ . '/../Views/Inventario/CrearCategoria.php';
     }
 
     public function crearCategoria()
     {
+        // Admin y Supervisor
         Auth::checkRole(['Administrador', 'Supervisor']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'] ?? '';
@@ -203,6 +213,7 @@ class InventarioController
 
     public function eliminarCategoriaInventario()
     {
+        // Admin y Supervisor
         Auth::checkRole(['Administrador', 'Supervisor']);
         $id = $_GET['id'] ?? null;
         if ($id && $this->categoryModel->eliminarCategory($id)) {
@@ -222,6 +233,7 @@ class InventarioController
     // Mostrar formulario de edición de categoría
     public function mostrarActualizarCategoria()
     {
+        // Admin y Supervisor
         Auth::checkRole(['Administrador', 'Supervisor']);
         $id = $_GET['id'] ?? null;
         if (!$id) {
@@ -235,6 +247,7 @@ class InventarioController
     // Editar categoría de inventario
     public function editarCategoria()
     {
+        // Admin y Supervisor
         Auth::checkRole(['Administrador', 'Supervisor']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'] ?? null;

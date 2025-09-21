@@ -704,7 +704,6 @@ table th:last-child {
  .dropdown {
   position: relative;
   display: inline-block;
-  margin: 10px 0 10px 0;
 }
 .dropdown-label:hover{
   background-color: #94999e;
@@ -721,6 +720,17 @@ table th:last-child {
   font-weight: bold;
   cursor: pointer;
   border-radius: 5px;
+}
+.dropdown-label-admin {
+  display: block;
+  padding: 10px 15px;
+  background: var(--color-texto-primario);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  position: relative;
+  top: -11px;
 }
 .dropdown-menu {
   display: none;
@@ -769,7 +779,7 @@ table th:last-child {
   border-radius: 5px;
   box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
   position: relative;
-  top: 20px;
+  top: 0px;
   font-weight: bold;
 }
 .btn-acciones-user:hover{
@@ -783,7 +793,7 @@ table th:last-child {
   border-radius: 5px;
   box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
   position: relative;
-  top: 20px;
+  top: 0px;
   font-weight: bold;
 }
 .btn-acciones-cate:hover{
@@ -811,7 +821,7 @@ table th:last-child {
   border-radius: 5px;
   box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
   position: relative;
-  top: -10px;
+  top: 0px;
   font-weight: bold;
 }
 .btn-acciones-inventario-cate:hover{

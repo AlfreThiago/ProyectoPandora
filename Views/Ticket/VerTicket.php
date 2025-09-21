@@ -1,5 +1,6 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <main>
+<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="contenedor" style="max-width:600px;margin:auto;">
         <h2 id="tituloDetalle">Detalle del Ticket</h2>
         <?php if (!empty($ticket)): ?>
@@ -33,16 +34,16 @@
         if ($rol === 'Cliente') {
             $volverUrl = "/ProyectoPandora/Public/index.php?route=Cliente/MisTicket";
         } elseif ($rol === 'Tecnico') {
-            $volverUrl = "/ProyectoPandora/Public/index.php?route=Dash/PanelTecnico";
+            $volverUrl = "/ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones";
         } elseif ($rol === 'Supervisor') {
-            $volverUrl = "/ProyectoPandora/Public/index.php?route=Dash/PanelSupervisor";
+            $volverUrl = "/ProyectoPandora/Public/index.php?route=Supervisor/Asignar";
         } elseif ($rol === 'Administrador') {
-            $volverUrl = "/ProyectoPandora/Public/index.php?route=Admin/PanelAdmin";
+            $volverUrl = "/ProyectoPandora/Public/index.php?route=Admin/ListarUsers";
         } else {
             $volverUrl = "/ProyectoPandora/Public/index.php?route=Default/Index";
         }
         ?>
-        <a href="<?= $_SESSION['prev_url'] ?? '/ProyectoPandora/Public/index.php?route=Default/Index' ?>" class="btn btn-secondary mt-3">Volver</a>
+    <a href="<?= $_SESSION['prev_url'] ?? htmlspecialchars($volverUrl) ?>" class="btn btn-secondary mt-3">Volver</a>
     </div>
 </main>
 <?php include_once __DIR__ . '/../Includes/Footer.php' ?>

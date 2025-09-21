@@ -17,7 +17,8 @@ class TecnicoController {
     }
 
     public function PanelTecnico() {
-        include_once __DIR__ . '/../Views/Tecnicos/PanelTecnico.php';
+        header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones');
+        exit;
     }
 
     public function MisReparaciones() {

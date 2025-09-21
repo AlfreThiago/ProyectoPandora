@@ -33,6 +33,10 @@ class TicketController
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         }
+        if ($user['role'] === 'Administrador') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            exit;
+        }
         $tickets = $this->ticketModel->listar();
         $data = [];
         while ($row = $tickets->fetch_assoc()) {
@@ -50,7 +54,7 @@ class TicketController
         }
 
         // Solo permite acceso a roles válidos
-        $rolesPermitidos = ['Administrador', 'Supervisor', 'Tecnico', 'Cliente'];
+    $rolesPermitidos = ['Supervisor', 'Tecnico', 'Cliente'];
         if (!in_array($user['role'], $rolesPermitidos)) {
             header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
             exit;
@@ -61,7 +65,7 @@ class TicketController
         // Si es cliente, verifica que el ticket le pertenezca
         if ($user['role'] === 'Cliente') {
             if ($ticket['cliente'] !== $user['name']) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Cliente/PanelCliente');
+                header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket');
                 exit;
             }
         }
@@ -73,6 +77,10 @@ class TicketController
     {
         $user = Auth::user();
         $rol = $user['role'];
+        if ($rol === 'Administrador') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            exit;
+        }
         $ticket = $this->ticketModel->ver($id);
         $estados = $this->estadoModel->getAllEstados();
         $tecnicos = $this->userModel->getAllTecnicos();
@@ -118,7 +126,7 @@ class TicketController
             exit;
         }
 
-        $isAdmin = ($user['role'] === 'Administrador');
+    $isAdmin = false; // Administrador no gestiona tickets
         $clientes = [];
         $cliente_id = null;
 
@@ -175,7 +183,7 @@ class TicketController
             return;
         }
 
-        $isAdmin = ($user['role'] === 'Administrador');
+    $isAdmin = false; // Administrador no gestiona tickets
         if ($isAdmin && isset($_POST['cliente_id'])) {
             $cliente_id = $_POST['cliente_id'];
         } else {
@@ -220,6 +228,10 @@ class TicketController
         $user = Auth::user();
         if (!$user) {
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        if ($user['role'] === 'Administrador') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
             exit;
         }
         if ($this->ticketModel->deleteTicket($id)) {

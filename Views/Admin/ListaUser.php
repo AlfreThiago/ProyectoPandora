@@ -1,33 +1,11 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
-
-<?php
-// Verificamos el rol logueado desde la sesión
-$rol = $_SESSION['user']['role'] ?? null;
-
-switch ($rol) {
-    case 'Administrador':
-        include_once __DIR__ . '/../Admin/PanelAdmin.php';
-        break;
-    case 'Tecnico':
-        include_once __DIR__ . '/../Paneles/PanelTecnico.php';
-        break;
-    case 'Supervisor':
-        include_once __DIR__ . '/../Paneles/PanelSupervisor.php';
-        break;
-    case 'Cliente':
-        include_once __DIR__ . '/../Paneles/PanelCliente.php';
-        break;
-    default:
-        echo "<p>No tienes un rol asignado o el rol no es válido.</p>";
-        break;
-}
-?>
 <main>
+<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
         <h2>Lista de Usuarios</h2>
         <div class="botones">
             <div class="dropdown">
-                <label for="menu-toggle" class="dropdown-label" >
+                <label for="menu-toggle" class="dropdown-label-admin" >
                     Opciones<i class='bxr  bx-caret-down'  ></i> </label>
                 <input type="checkbox" id="menu-toggle" />
             
@@ -68,7 +46,7 @@ switch ($rol) {
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($user['created_at']) . "</span></td>";
                         echo "<td>";
                         echo "<div class='action-buttons'>";
-                        echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=" . htmlspecialchars($user['id']) . "&from=Admin/ListarUsers' class='btn edit-btn'>Editar</a> |";
+                        echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=" . htmlspecialchars($user['id']) . "&from=Admin/ListarUsers' class='btn edit-btn'>Actualizar</a> |";
                         echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=" . htmlspecialchars($user['id']) . "' class='btn delete-btn'>Eliminar</a>";
                         echo "</div>";
                         echo "</td>";

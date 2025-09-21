@@ -41,40 +41,51 @@ if (session_status() === PHP_SESSION_NONE) {
                         <?php $role = strtolower($_SESSION['user']['role']); ?>
 
                         <?php if ($role === 'administrador'): ?>
-                            <!-- Admin: ve todos los usuarios y opción de añadir -->
+                            <!-- Admin: Usuarios y 'Otros' (Estados y Categorías) -->
                             <li class="item menu-item menu-item-static">
-                                <a href="/ProyectoPandora/Public/index.php?route=Admin/PanelAdmin" class="link flex">
-                                    <i class='bx  bx-iframe'></i>
-                                    <span>Panel Admin</span>
+                                <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="link flex">
+                                    <i class='bx bx-user-circle'></i>
+                                    <span>Usuarios</span>
                                 </a>
                             </li>
-                            <!-- Historial -->
-                            <li class="item">
-                                <a href="/ProyectoPandora/Public/index.php?route=Historial/ListarHistorial" class="link flex">
-                                    <i class='bxr  bx-history'></i>
-                                    <span>Historial</span>
+                            <li class="item menu-item menu-item-static">
+                                <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados" class="link flex">
+                                    <i class='bx bx-list-check'></i>
+                                    <span>Estados</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item menu-item-static">
+                                <a href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria" class="link flex">
+                                    <i class='bx bx-category'></i>
+                                    <span>Cat. Dispositivos</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item menu-item-static">
+                                <a href="/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias" class="link flex">
+                                    <i class='bx bx-purchase-tag'></i>
+                                    <span>Cat. Inventario</span>
                                 </a>
                             </li>
                         <?php elseif ($role === 'supervisor'): ?>
                             <li class="item menu-item-static">
-                                <a href="index.php?route=Supervisor/PanelSupervisor" class="link flex">
+                                <a href="index.php?route=Supervisor/Asignar" class="link flex">
                                     <i class='bxr  bx-ticket'></i>
-                                    <span>Panel Supervisor</span>
+                                    <span>Supervisor</span>
                                 </a>
                             </li>
                         <?php elseif ($role === 'tecnico'): ?>
                             <!-- Técnico: solo ve Reparaciones y tickets -->
                             <li class="item menu-item-static">
-                                <a href="index.php?route=Tecnico/PanelTecnico" class="link flex">
+                                <a href="index.php?route=Tecnico/MisReparaciones" class="link flex">
                                     <i class='bxr  bx-ticket'></i>
-                                    <span>Panel Tecnico</span>
+                                    <span>Técnico</span>
                                 </a>
                             </li>
                         <?php elseif ($role === 'cliente'): ?>
                             <li class="item menu-item-static">
-                                <a href="index.php?route=Cliente/PanelCliente" class="link flex">
+                                <a href="index.php?route=Cliente/MisDevice" class="link flex">
                                     <i class='bx  bx-devices'></i>
-                                    <span>Panel Cliente</span>
+                                    <span>Cliente</span>
                                 </a>
                             </li>
                         <?php endif; ?>

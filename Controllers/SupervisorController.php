@@ -8,11 +8,13 @@ require_once __DIR__ . '/../Models/Category.php';
 
 class SupervisorController {
     public function PanelSupervisor() {
-        require_once __DIR__ . '/../Views/Supervisor/PanelSupervisor.php';
+        Auth::checkRole(['Supervisor']);
+        header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+        exit;
     }
 
     public function Asignar() {
-        Auth::checkRole(['Supervisor', 'Administrador']);
+        Auth::checkRole(['Supervisor']);
 
         $db = new Database();
         $db->connectDatabase();
@@ -26,7 +28,7 @@ class SupervisorController {
     }
 
     public function AsignarTecnico() {
-        Auth::checkRole(['Supervisor', 'Administrador']);
+        Auth::checkRole(['Supervisor']);
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
@@ -96,7 +98,7 @@ class SupervisorController {
     }
 
     public function GestionInventario() {
-        Auth::checkRole(['Supervisor', 'Administrador']);
+        Auth::checkRole(['Supervisor']);
 
         $db = new Database();
         $db->connectDatabase();

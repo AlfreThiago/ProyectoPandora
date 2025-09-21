@@ -1,74 +1,10 @@
 
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
-<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 
 <main class="asignar-page">
+<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 	<section class="content asignar-content">
 		<section class="content">
-				<header class="header">
-					<h1 class="header-title">Asignar Tecnicos a Tickets</h1>
-					<p class="header-subtitle">
-						Gestiona la asignación de técnicos a los tickets pendientes 👌
-					</p>
-					<div class="header-actions">
-						<!-- Chat  -->
-						<span class="icon-btn">
-							<i class='bx bx-chat'></i>
-						</span>
-						<!-- Perfil --> 
-						<li class="profile-menu">
-							<a href="javascript:void(0)" id="btn-profile">
-								<img src="#" alt="Perfil" class="user-avatar">
-							</a>
-
-							<!-- Submenú -->
-							<div id="submenu-profile" class="submenu">
-								<div class="submenu-header">
-									<span class="user-avatar"></span>
-									<p class="user-name">¡Hola, <?php echo $_SESSION['user']['name']; ?>!</p>
-									<small class="user-email"><?php echo $_SESSION['user']['email']; ?></small>
-								</div>
-
-								<hr>
-
-								<ul>                            
-									<li>
-										<a href="/ProyectoPandora/Public/index.php?route=Default/Perfil">
-											<i class='bx bx-user'></i>
-											<span>Perfil</span>
-										</a>
-									</li>
-									<li>
-										<a href="/ProyectoPandora/Public/index.php?route=Default/Guia">
-											<i class='bx bx-history'></i> 
-											<span>Guia</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<i class='bx bx-bell-minus'></i>
-											<span>Notificaciones</span>
-										</a>
-									</li>
-									<li>
-										<a href="/ProyectoPandora/Public/index.php?route=Dash/Ajustes">
-											<i class='bxr  bx-cog'></i>
-											<span>Ajustes</span>
-										</a>
-									</li>
-								</ul>
-
-								<hr>
-
-								<div class="submenu-footer">
-									<a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" class="logout">
-									<i class='bx bx-log-out'></i> Cerrar sesión
-									</a>
-								</div>
-							</div>
-						</li>           
-					</div>
-				</header> 
 
 				<!-- Tabs -->
 				<div class="tabs">
@@ -190,4 +126,3 @@
 </main>
 <script src="/ProyectoPandora/Public/js/modal.js"></script>
 <?php include_once __DIR__ . '/../Includes/Footer.php'; ?>
-

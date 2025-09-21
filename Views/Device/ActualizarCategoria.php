@@ -6,12 +6,12 @@
             <div class="contact-form">
                 <h3>Actualizar Categoría</h3>
 
-                <form method="POST" action="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?= htmlspecialchars($categorias['id']) ?>">
-                    <input type="hidden" name="id" value="<?= htmlspecialchars($categorias['id']) ?>">
+                <form method="POST" action="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?= htmlspecialchars($categoria['id'] ?? '') ?>">
+                    <input type="hidden" name="id" value="<?= htmlspecialchars($categoria['id'] ?? '') ?>">
 
                     <p>
                         <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" value="<?= htmlspecialchars($categorias['name']) ?>" required>
+                        <input type="text" id="nombre" name="nombre" value="<?= htmlspecialchars($categoria['name'] ?? '') ?>" required>
                     </p>    
 
                     <p class="block">

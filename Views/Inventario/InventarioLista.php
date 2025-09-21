@@ -1,33 +1,16 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 
-<?php
-// Verificamos el rol logueado desde la sesión
-$rol = $_SESSION['user']['role'] ?? null;
-
-switch ($rol) {
-    case 'Administrador':
-        include_once __DIR__ . '/../Admin/PanelAdmin.php';
-        break;
-    case 'Tecnico':
-        include_once __DIR__ . '/../Paneles/PanelTecnico.php';
-        break;
-    case 'Supervisor':
-        include_once __DIR__ . '/../Paneles/PanelSupervisor.php';
-        break;
-    default:
-        echo "<p>No tienes un rol asignado o el rol no es válido.</p>";
-        break;
-}
-?>
-
 <main>
+<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
         <h2>Lista de Inventario</h2>
+        <?php if ($rol === 'Supervisor'): ?>
         <div class="botones">
             <div class="btn-table-acciones">
-                <a class="btn-acciones-inventario-cate" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearItem">Añadir Item</a>
+                <a class="btn-acciones-inventario" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearItem">Añadir Item</a>
             </div>
         </div>
+        <?php endif; ?>
         <table id="inventarioTable">
             <thead>
                 <tr>
@@ -62,14 +45,18 @@ switch ($rol) {
                             <td><?php echo (int)$row['stock_actual']; ?></td>
                             <td><?php echo (int)$row['stock_minimo']; ?></td>
                             <td>
-                                <form action="/ProyectoPandora/Public/index.php?route=Inventario/SumarStock" method="post" style="display:flex; gap:6px; align-items:center;">
-                                    <input type="hidden" name="id" value="<?php echo (int)$row['id']; ?>" />
-                                    <input type="number" name="cantidad" min="1" class="asignar-input asignar-input--small" placeholder="+cantidad" required />
-                                    <button class="btn btn-primary" type="submit">Sumar</button>
-                                </form>
-                                <div style="margin-top:6px;">
-                                    <a href="/ProyectoPandora/Public/index.php?route=Inventario/Eliminar&id=<?php echo (int)$row['id']; ?>" class="btn delete-btn" onclick="return confirm('¿Seguro que deseas eliminar este item?');">Eliminar</a>
-                                </div>
+                                <?php if ($rol === 'Supervisor'): ?>
+                                    <form action="/ProyectoPandora/Public/index.php?route=Inventario/SumarStock" method="post" style="display:flex; gap:6px; align-items:center;">
+                                        <input type="hidden" name="id" value="<?php echo (int)$row['id']; ?>" />
+                                        <input type="number" name="cantidad" min="1" class="asignar-input asignar-input--small" placeholder="+cantidad" required />
+                                        <button class="btn btn-primary" type="submit">Sumar</button>
+                                    </form>
+                                    <div style="margin-top:6px;">
+                                        <a href="/ProyectoPandora/Public/index.php?route=Inventario/Eliminar&id=<?php echo (int)$row['id']; ?>" class="btn delete-btn" onclick="return confirm('¿Seguro que deseas eliminar este item?');">Eliminar</a>
+                                    </div>
+                                <?php else: ?>
+                                    <em>Solo lectura</em>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

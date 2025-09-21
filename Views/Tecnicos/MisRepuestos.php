@@ -1,12 +1,9 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
-<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 
 <main class="inv-page">
+<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <section class="content asignar-content">
-        <header class="header">
-            <h1 class="header-title">Mis Repuestos</h1>
-            <p class="header-subtitle">Solicita items del inventario para tus tickets.</p>
-        </header>
+        
 
         <?php if (isset($_GET['success'])): ?>
             <div class="alert alert-success">Solicitud registrada correctamente.</div>

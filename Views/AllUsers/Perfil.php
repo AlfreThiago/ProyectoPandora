@@ -1,5 +1,4 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
-<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 <main>
     <div class="perfil-container">
         <div class="perfil-card">

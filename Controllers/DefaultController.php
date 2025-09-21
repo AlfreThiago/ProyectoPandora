@@ -21,7 +21,8 @@ class DefaultController
         $user = $_SESSION['user'] ?? [];
         $userName = $user['name'] ?? 'Usuario';
         $userEmail = $user['email'] ?? '';
-        $userImg = $user['img_perfil'] ?? '/ProyectoPandora/Public/img/Innovasys.png';
+    // Ruta por defecto del avatar en carpeta imgPerfil
+    $userImg = $user['img_perfil'] ?? '/ProyectoPandora/Public/img/imgPerfil/default.png';
         $rol = $user['role'] ?? '';
         $userId = $user['id'] ?? null;
 
@@ -57,16 +58,16 @@ class DefaultController
             $cantDevices = is_array($devices) ? count($devices) : 0;
         }
 
-        // Panel según rol
+        // Panel según rol (landing)
         $panelUrl = '/ProyectoPandora/Public/index.php?route=Default/Index';
         if ($rol === 'Administrador') {
-            $panelUrl = '/ProyectoPandora/Public/index.php?route=Admin/PanelAdmin';
+            $panelUrl = '/ProyectoPandora/Public/index.php?route=Admin/ListarUsers';
         } elseif ($rol === 'Tecnico') {
-            $panelUrl = '/ProyectoPandora/Public/index.php?route=Tecnico/PanelTecnico';
+            $panelUrl = '/ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones';
         } elseif ($rol === 'Supervisor') {
-            $panelUrl = '/ProyectoPandora/Public/index.php?route=Supervisor/PanelSupervisor';
+            $panelUrl = '/ProyectoPandora/Public/index.php?route=Supervisor/Asignar';
         } elseif ($rol === 'Cliente') {
-            $panelUrl = '/ProyectoPandora/Public/index.php?route=Cliente/PanelCliente';
+            $panelUrl = '/ProyectoPandora/Public/index.php?route=Cliente/MisDevice';
         }
 
         // Procesar formulario
@@ -74,15 +75,26 @@ class DefaultController
             $userId = $user['id'] ?? null;
             $newName = $_POST['name'] ?? '';
             $newEmail = $_POST['email'] ?? '';
-            $imgPerfil = $user['img_perfil'] ?? '/ProyectoPandora/Public/img/Innovasys.png';
+            $imgPerfil = $user['img_perfil'] ?? '/ProyectoPandora/Public/img/imgPerfil/default.png';
 
             // Procesar imagen si se subió
             if (isset($_FILES['img_perfil']) && $_FILES['img_perfil']['error'] === UPLOAD_ERR_OK) {
                 $imgTmp = $_FILES['img_perfil']['tmp_name'];
-                $imgName = uniqid('perfil_') . '_' . $_FILES['img_perfil']['name'];
-                $imgPath = '/ProyectoPandora/Public/img/' . $imgName;
-                move_uploaded_file($imgTmp, $_SERVER['DOCUMENT_ROOT'] . $imgPath);
-                $imgPerfil = $imgPath;
+                $origName = $_FILES['img_perfil']['name'] ?? 'avatar.png';
+                // Sanitizar nombre
+                $safeName = preg_replace('/[^A-Za-z0-9_\.-]/', '_', $origName);
+                $imgName = uniqid('perfil_') . '_' . $safeName;
+                $webDir = '/ProyectoPandora/Public/img/imgPerfil';
+                $fsDir = rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') . $webDir;
+                // Crear directorio si no existe
+                if (!is_dir($fsDir)) {
+                    @mkdir($fsDir, 0775, true);
+                }
+                $imgPath = $webDir . '/' . $imgName;
+                $destFs = rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') . $imgPath;
+                if (@move_uploaded_file($imgTmp, $destFs)) {
+                    $imgPerfil = $imgPath;
+                }
             }
 
             // Actualizar en la base de datos
