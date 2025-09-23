@@ -6,18 +6,7 @@
     <section class="content asignar-content">
 			<section class="content">
 
-				<!-- Tabs -->
-				<div class="tabs">
-					<div class="tab <?php echo ($rutaActual === 'Ticket/Listar') ? 'active' : ''; ?>">
-						<a href="/ProyectoPandora/Public/index.php?route=Supervisor/Asignar">Asignar Tecnico</a>
-					</div>
-					<div class="tab <?php echo ($rutaActual === 'Device/ListarDevice') ? 'active' : ''; ?>">
-						<a href="/ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario">Gestion Inventario</a>
-					</div>
-					<div class="tab <?php echo ($rutaActual === 'User/ListarSupers') ? 'active' : ''; ?>">
-						<a href="/ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos">Presupuestos</a>
-					</div>
-				</div>
+        <!-- Navegación vía Sidebar: tabs eliminadas -->
 			</section>
 
 
@@ -81,4 +70,4 @@
   </section>
 </main>
 <script src="/ProyectoPandora/Public/js/modal.js"></script>
-<?php include_once __DIR__ . '/../Includes/Footer.php'; ?>
+

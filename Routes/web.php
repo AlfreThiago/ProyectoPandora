@@ -89,6 +89,10 @@ return [
         'controller' => 'Supervisor',
         'action' => 'AsignarTecnico'
     ],
+    'Supervisor/Presupuestos'=> [
+        'controller' => 'Supervisor',
+        'action' => 'Presupuestos'
+    ],
     //
     //
     //Tecnico
@@ -111,6 +115,10 @@ return [
     'Tecnico/MisStats'=> [
         'controller' => 'Tecnico',
         'action' => 'MisStats'
+    ],
+    'Tecnico/ActualizarStats'=> [
+        'controller' => 'Tecnico',
+        'action' => 'ActualizarStats'
     ],
     //
     //
@@ -226,6 +234,10 @@ return [
     'Ticket/Ver' => [
         'controller' => 'Ticket',
         'action' => 'verTicket'
+    ],
+    'Ticket/Calificar' => [
+        'controller' => 'Ticket',
+        'action' => 'Calificar'
     ],
     'Ticket/Eliminar' => [
         'controller' => 'Ticket',

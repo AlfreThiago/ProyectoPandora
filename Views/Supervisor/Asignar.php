@@ -6,18 +6,7 @@
 	<section class="content asignar-content">
 		<section class="content">
 
-				<!-- Tabs -->
-				<div class="tabs">
-					<div class="tab <?php echo ($rutaActual === 'Ticket/Listar') ? 'active' : ''; ?>">
-						<a href="/ProyectoPandora/Public/index.php?route=Supervisor/Asignar">Asignar Tecnico</a>
-					</div>
-					<div class="tab <?php echo ($rutaActual === 'Device/ListarDevice') ? 'active' : ''; ?>">
-						<a href="/ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario">Gestion Inventario</a>
-					</div>
-					<div class="tab <?php echo ($rutaActual === 'User/ListarSupers') ? 'active' : ''; ?>">
-						<a href="/ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos">Presupuestos</a>
-					</div>
-				</div>
+				<!-- Navegación vía Sidebar: tabs eliminadas -->
 			</section>
 
 			<?php if (isset($_GET['success'])): ?>
@@ -94,6 +83,15 @@
 										<h3 class="asignar-card__name"><?php echo htmlspecialchars($tec['name'] ?? ''); ?></h3>
 										<span class="badge <?php echo $estado==='Disponible' ? 'badge--success' : ($estado==='Ocupado' ? 'badge--danger' : 'badge--muted'); ?>" title="Estado informativo, gestionado por el técnico en su perfil"><?php echo htmlspecialchars($estado); ?></span>
 									</div>
+									<div class="asignar-card__row" style="gap:6px; align-items:center;">
+										<?php $r = isset($tec['rating_avg']) ? (float)$tec['rating_avg'] : 0; $rc=(int)($tec['rating_count'] ?? 0); $full = (int)floor($r); $half = ($r - $full) >= 0.5; ?>
+										<span title="Promedio: <?php echo round($r,1); ?> (<?php echo $rc; ?> califs)" style="font-size:14px; color:#f5c518;">
+											<?php for($i=1;$i<=5;$i++): ?>
+												<?php if ($i <= $full): ?>★<?php elseif ($half && $i==$full+1): ?>☆<?php else: ?>☆<?php endif; ?>
+											<?php endfor; ?>
+										</span>
+										<small style="opacity:.8;">(<?php echo round($r,1); ?>)</small>
+									</div>
 									<div class="asignar-card__subtitle">Especialidad: <?php echo htmlspecialchars($tec['especialidad'] ?? '—'); ?></div>
 								</div>
 							</div>
@@ -125,4 +123,3 @@
 	</section>
 </main>
 <script src="/ProyectoPandora/Public/js/modal.js"></script>
-<?php include_once __DIR__ . '/../Includes/Footer.php'; ?>

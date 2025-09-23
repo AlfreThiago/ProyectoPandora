@@ -1,6 +1,5 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <main>
-<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="contenedor" style="max-width:600px;margin:auto;">
         <h2 id="tituloDetalle">Detalle del Ticket</h2>
         <?php if (!empty($ticket)): ?>
@@ -43,7 +42,33 @@
             $volverUrl = "/ProyectoPandora/Public/index.php?route=Default/Index";
         }
         ?>
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'estado'): ?>
+            <div class="alert alert-warning" style="margin-top:10px;">Solo puedes calificar cuando el ticket esté finalizado.</div>
+        <?php endif; ?>
+    <?php 
+        $estadoTxt = strtolower(trim($ticket['estado'] ?? $ticket['estado_actual'] ?? ''));
+        $finalizado = in_array($estadoTxt, ['finalizado','cerrado']);
+    ?>
+    <?php if (!empty($ticket) && ($rol === 'Cliente') && !empty($ticket['tecnico']) && !$finalizado): ?>
+        <div class="alert alert-info" style="margin:12px 0;">Podrás calificar al técnico cuando el ticket esté finalizado.</div>
+    <?php endif; ?>
+    <?php if (!empty($ticket) && ($rol === 'Cliente') && !empty($ticket['tecnico']) && $finalizado): ?>
+        <hr>
+        <h3>Calificar atención del técnico</h3>
+        <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/Calificar">
+            <input type="hidden" name="ticket_id" value="<?= (int)$ticket['id'] ?>"/>
+            <label>Estrellas:</label>
+            <select name="stars" class="asignar-input asignar-input--small">
+                <?php for ($i=1;$i<=5;$i++): ?>
+                    <option value="<?= $i ?>"><?= $i ?> ★</option>
+                <?php endfor; ?>
+            </select>
+            <label>Comentario (opcional):</label>
+            <input type="text" name="comment" class="asignar-input asignar-input--small" placeholder="Tu experiencia"/>
+            <button class="btn btn-primary" type="submit">Enviar</button>
+        </form>
+    <?php endif; ?>
+
     <a href="<?= $_SESSION['prev_url'] ?? htmlspecialchars($volverUrl) ?>" class="btn btn-secondary mt-3">Volver</a>
     </div>
 </main>
-<?php include_once __DIR__ . '/../Includes/Footer.php' ?>

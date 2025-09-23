@@ -27,6 +27,26 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
             <div class="menu-conteiner">
                 <ul class="menu-items">
+                    <?php 
+                        $user = $_SESSION['user'] ?? null;
+                        $name = $user['name'] ?? '';
+                        $email = $user['email'] ?? '';
+                        $avatar = $user['img_perfil'] ?? '';
+                        $defaultAvatar = '/ProyectoPandora/Public/img/imgPerfil/default.png';
+                        if ($avatar && strpos($avatar, '/ProyectoPandora/') !== 0) {
+                            $avatar = '/ProyectoPandora/Public/img/imgPerfil/' . ltrim($avatar, '/');
+                        }
+                        if (!$avatar) { $avatar = $defaultAvatar; }
+                    ?>
+                    <?php if ($user): ?>
+                    <li class="item menu-item user-block" style="padding:12px 16px; display:flex; align-items:center; gap:10px;">
+                        <img src="<?= htmlspecialchars($avatar) ?>" alt="Perfil" style="width:36px;height:36px;border-radius:50%;object-fit:cover;"/>
+                        <div style="display:flex;flex-direction:column;">
+                            <span style="font-weight:600;"><?= htmlspecialchars($name) ?></span>
+                            <small style="opacity:.8;"><?= htmlspecialchars($email) ?></small>
+                        </div>
+                    </li>
+                    <?php endif; ?>
                     <div class="menu_title flex">
                         <span class="title">Menu</span>
                         <span class="line"></span>
@@ -68,9 +88,21 @@ if (session_status() === PHP_SESSION_NONE) {
                             </li>
                         <?php elseif ($role === 'supervisor'): ?>
                             <li class="item menu-item-static">
-                                <a href="index.php?route=Supervisor/Asignar" class="link flex">
-                                    <i class='bxr  bx-ticket'></i>
-                                    <span>Supervisor</span>
+                                <a href="/ProyectoPandora/Public/index.php?route=Supervisor/Asignar" class="link flex">
+                                    <i class='bx bx-task'></i>
+                                    <span>Asignar Técnico</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item-static">
+                                <a href="/ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario" class="link flex">
+                                    <i class='bx bx-package'></i>
+                                    <span>Gestión Inventario</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item-static">
+                                <a href="/ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos" class="link flex">
+                                    <i class='bx bx-dollar'></i>
+                                    <span>Presupuestos</span>
                                 </a>
                             </li>
                         <?php elseif ($role === 'tecnico'): ?>
@@ -78,14 +110,33 @@ if (session_status() === PHP_SESSION_NONE) {
                             <li class="item menu-item-static">
                                 <a href="index.php?route=Tecnico/MisReparaciones" class="link flex">
                                     <i class='bxr  bx-ticket'></i>
-                                    <span>Técnico</span>
+                                    <span>Tickets</span>
                                 </a>
+                            </li>
+                            <li class="item menu-item-static">
+                                <a href="index.php?route=Tecnico/MisRepuestos" class="link flex">
+                                    <i class='bxr  bx-ticket'></i>
+                                    <span>Repuestos</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item-static">
+                                <a href="index.php?route=Tecnico/MisStats" class="link flex">
+                                    <i class='bxr  bx-ticket'></i>
+                                    <span>Mis Stats</span>
+                                </a>
+
                             </li>
                         <?php elseif ($role === 'cliente'): ?>
                             <li class="item menu-item-static">
                                 <a href="index.php?route=Cliente/MisDevice" class="link flex">
                                     <i class='bx  bx-devices'></i>
-                                    <span>Cliente</span>
+                                    <span>Mis Dispositivos</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item-static">
+                                <a href="index.php?route=Cliente/MisTicket" class="link flex">
+                                    <i class='bxr  bx-ticket'></i>
+                                    <span>Mis Tickets</span>
                                 </a>
                             </li>
                         <?php endif; ?>

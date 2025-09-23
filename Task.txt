@@ -6,13 +6,19 @@ Hacer/Solucionar/Mejorar
 - En el panelSupervisor, agregar las funcionalidades como AsignarTecnico, GestionInventario y Presupuesto(Valor de la mano de obra mas los repuestos usados). 
 - ✅Programar para q no salte errores, al crear ticket, dispositivos o agregar items, sin haber creado antes las categorias o estados y sustituir el mensaje de error por un error mas amigable y 
 q no muestre error de php o apache o codigo, sino q diga q primero hay q crear un estado o una categoria dependiendo del error.
-- Terminar el inventario para q se relacione con ticket.
+- ✅Terminar el inventario para q se relacione con ticket.
 - ✅Agregar la Accion Actualizar en la lista de Ctegorias de items.
 - ✅Arreglar cambio de la foto de perfil.
 - Programar, un historial de los cambios de estados en los tickets.
-- Programar las conversaciones entre el tecnico y el cliente sobre un ticket en forma de linea de tiempo
-- Q el cliente pueda aceptar un presupuesto inicial y q al cambiar variar o modificarce el presupuesto en la linea de tiempo, 
-se le avise al cliente y q no se avance mas hasta q el cliente confirme o rechaze el cambio.
-- Solucionar el problema de las asignacion de tecnicos por parte del supervisor en caso de q un supervisor asigne todos los tickets a un unico tecnico 
+- Programar las conversaciones entre el tecnico y el cliente sobre un ticket en forma de
+linea de tiempo
+- Q el cliente pueda aceptar un presupuesto inicial y q al cambiar variar o modificarce
+el presupuesto en la linea de tiempo, 
+se le avise al cliente y q no se avance mas hasta q el cliente confirme o rechaze el 
+cambio.
+- Solucionar el problema de las asignacion de tecnicos por parte del supervisor en caso 
+de q un supervisor asigne todos los tickets a un unico tecnico 
 impidiendo, q otros tecnicos tomen tickets.
-- Implementar, un sistema de honor como posible solucion para la asignacion, asi como para el cliente, para dar un orden o sistema de prioridad en el orden de la asignacion de ticket. 
+- Implementar, un sistema de honor como posible solucion para la asignacion, asi como 
+para el cliente, para dar un orden o sistema de prioridad en el orden de la asignacion 
+de ticket. 

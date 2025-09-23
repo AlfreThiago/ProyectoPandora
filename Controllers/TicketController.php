@@ -6,6 +6,7 @@ require_once __DIR__ . '/../Models/Device.php';
 require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/HistorialController.php';
 require_once __DIR__ . '/../Models/EstadoTicket.php';
+require_once __DIR__ . '/../Models/Rating.php';
 
 class TicketController
 {
@@ -71,6 +72,60 @@ class TicketController
         }
 
         include __DIR__ . '/../Views/Ticket/VerTicket.php';
+    }
+
+    public function Calificar() {
+        $user = Auth::user();
+        if (!$user || $user['role'] !== 'Cliente') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket');
+            exit;
+        }
+        $ticket_id = (int)($_POST['ticket_id'] ?? 0);
+        $stars = max(1, min(5, (int)($_POST['stars'] ?? 0)));
+        $comment = trim($_POST['comment'] ?? '');
+
+        $db = new Database();
+        $db->connectDatabase();
+        $ticketModel = new Ticket($db->getConnection());
+        $ratingModel = new RatingModel($db->getConnection());
+
+        $tk = $ticketModel->ver($ticket_id);
+        if (!$tk) { header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=ticket'); exit; }
+
+        // Validar que el estado sea Finalizado/Cerrado antes de permitir calificar
+        $estadoTxt = strtolower(trim($tk['estado'] ?? ''));
+        if (!in_array($estadoTxt, ['finalizado', 'cerrado'], true)) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&error=estado');
+            exit;
+        }
+
+        // Resolver ids relacionales
+        $conn = $db->getConnection();
+        $stmtC = $conn->prepare("SELECT id FROM clientes WHERE user_id = ? LIMIT 1");
+        $stmtC->bind_param("i", $user['id']);
+        $stmtC->execute();
+        $cliente = $stmtC->get_result()->fetch_assoc();
+        // Obtener tecnico y cliente propietario del ticket
+        $stmtT = $conn->prepare("SELECT t.tecnico_id, t.cliente_id FROM tickets t WHERE t.id = ? LIMIT 1");
+        $stmtT->bind_param("i", $ticket_id);
+        $stmtT->execute();
+        $rowT = $stmtT->get_result()->fetch_assoc();
+        $tecnico_id = $rowT['tecnico_id'] ?? null;
+        $owner_cliente_id = $rowT['cliente_id'] ?? null;
+
+        // Validar pertenencia del ticket y existencia de técnico asignado
+        if (!$cliente || !$tecnico_id || (int)$owner_cliente_id !== (int)$cliente['id']) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=forbidden');
+            exit;
+        }
+
+        $ratingModel->save($ticket_id, (int)$tecnico_id, (int)$cliente['id'], $stars, $comment);
+        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&rated=1');
+        exit;
     }
 
     public function edit($id)

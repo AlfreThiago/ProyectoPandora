@@ -3,6 +3,9 @@ require_once __DIR__ . '/../Core/Auth.php';
 require_once __DIR__ . '/../Models/Ticket.php';
 require_once __DIR__ . '/../Models/Inventario.php';
 require_once __DIR__ . '/../Models/ItemTicket.php';
+require_once __DIR__ . '/../Models/TicketLabor.php';
+require_once __DIR__ . '/../Models/Rating.php';
+require_once __DIR__ . '/../Models/TecnicoStats.php';
 require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/HistorialController.php';
 
@@ -148,6 +151,62 @@ class TecnicoController {
         }
         header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=1');
         exit;
+    }
+
+    public function MisStats() {
+        $user = Auth::user();
+        if (!$user || $user['role'] !== 'Tecnico') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        $conn = $this->db->getConnection();
+        // Obtener tecnico_id
+        $tecnico_id = $this->obtenerTecnicoIdPorUserId($user['id']);
+        $statsModel = new TecnicoStatsModel($conn);
+        $ratingModel = new RatingModel($conn);
+        $ticketModel = new Ticket($conn);
+        $stats = $statsModel->getByTecnico($tecnico_id) ?: ['labor_min'=>0,'labor_max'=>0];
+        list($avg, $count) = $ratingModel->getAvgForTecnico($tecnico_id);
+
+        // Contadores
+        $res = $conn->query("SELECT 
+            SUM(CASE WHEN fecha_cierre IS NOT NULL THEN 1 ELSE 0 END) AS finalizados,
+            SUM(CASE WHEN fecha_cierre IS NULL THEN 1 ELSE 0 END) AS activos
+            FROM tickets t INNER JOIN tecnicos tc ON t.tecnico_id = tc.id WHERE tc.user_id = " . (int)$user['id']);
+        $counters = $res ? $res->fetch_assoc() : ['finalizados'=>0,'activos'=>0];
+
+        include_once __DIR__ . '/../Views/Tecnicos/MisStats.php';
+    }
+
+    public function ActualizarStats() {
+        $user = Auth::user();
+        if (!$user) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        $conn = $this->db->getConnection();
+        $tecnico_id = $this->obtenerTecnicoIdPorUserId($user['id']);
+
+        if (isset($_POST['ticket_id']) && isset($_POST['labor_amount'])) {
+            // Guardar mano de obra por ticket
+            $ticket_id = (int)$_POST['ticket_id'];
+            $labor_amount = max(0, (float)$_POST['labor_amount']);
+            $laborModel = new TicketLaborModel($conn);
+            $laborModel->upsert($ticket_id, $tecnico_id ?: 0, $labor_amount);
+            header('Location: ' . ($_SESSION['prev_url'] ?? '/ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos'));
+            exit;
+        }
+
+        if (isset($_POST['labor_min']) || isset($_POST['labor_max'])) {
+            $min = max(0, (float)($_POST['labor_min'] ?? 0));
+            $max = max($min, (float)($_POST['labor_max'] ?? 0));
+            $statsModel = new TecnicoStatsModel($conn);
+            $statsModel->upsert($tecnico_id, $min, $max);
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisStats&ok=1');
+            exit;
+        }
+
+        header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
     }
 
     private function obtenerTecnicoIdPorUserId($user_id) {

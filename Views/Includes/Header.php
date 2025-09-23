@@ -45,6 +45,10 @@ function headerMeta(string $route, string $rol): array {
 			$title = 'Gestión de Inventario';
 			$subtitle = 'Administra items, stock y categorías';
 			break;
+		case stripos($route, 'Supervisor/Presupuestos') === 0:
+			$title = 'Presupuestos';
+			$subtitle = 'Costos de repuestos y mano de obra';
+			break;
 		case stripos($route, 'Tecnico/MisReparaciones') === 0:
 			$title = 'Mis Reparaciones';
 			$subtitle = 'Trabajos en curso y pendientes';

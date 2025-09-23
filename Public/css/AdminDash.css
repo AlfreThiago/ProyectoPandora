@@ -2121,7 +2121,7 @@ ul {
 input.asignar-input.asignar-input--small {
   background: var(--fondo-formulario) !important;
   color: var(--color-texto-primario) !important;
-  -webkit-text-fill-color: var(--color-texto-primario) !important; /* Safari/Chrome */
+  -webkit-text-fill-color: var(--color-texto-primario) !important;
   caret-color: var(--color-texto-primario);
   text-shadow: none;
   font-weight: 600;
@@ -2137,3 +2137,37 @@ input.asignar-input.asignar-input--small:focus {
   border-color: var(--secundario);
   box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.25);
 }
+
+/* === Utilidades globales: cards y truncado === */
+.line-clamp-2, .line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-2 { -webkit-line-clamp: 2; line-clamp: 2; }
+.line-clamp-3 { -webkit-line-clamp: 3; line-clamp: 3; }
+
+.u-flex-col { display: flex; flex-direction: column; }
+.u-flex-1 { flex: 1; }
+
+.card-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* === Cards genéricas (Mis* listas) === */
+.cards-container { display:flex; flex-wrap:wrap; gap:20px; justify-content:flex-start; align-items: stretch; }
+.device-card { background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08); width:260px; min-height: 360px; overflow:hidden; display:flex; flex-direction:column; transition: box-shadow .2s; }
+.device-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.device-img img { width:100%; height:140px; object-fit:cover; border-bottom:1px solid #eee; }
+.device-info { padding:16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.device-info h3 { margin:0 0 8px 0; font-size:1.1em; color:#333; }
+.device-info p { margin:4px 0; font-size:0.95em; color:#555; }
+.btn.btn-primary { background:#007bff; color:#fff; padding:6px 12px; border-radius:4px; text-decoration:none; display:inline-block; font-size:0.95em; transition: background .2s; }
+.btn.btn-primary:hover { background:#0056b3; }
+.btn-edit { background:#ffc107; color:#222; padding:6px 12px; border-radius:4px; text-decoration:none; display:inline-block; font-size:0.95em; margin-left:8px; transition: background .2s; border:none; }
+.btn-edit:hover { background:#e0a800; color:#fff; }
+.btn-float-add { position:fixed; bottom:32px; right:32px; background:#28a745; color:#fff; font-size:2em; width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; box-shadow:0 2px 8px rgba(0,0,0,0.18); transition: background .2s; z-index:1000; }
+.btn-float-add:hover { background:#218838; }
