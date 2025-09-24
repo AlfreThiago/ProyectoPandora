@@ -7,7 +7,6 @@
                 <li><strong>ID Ticket:</strong> <?= htmlspecialchars($ticket['id']) ?></li>
                 <li><strong>Dispositivo:</strong> <?= htmlspecialchars($ticket['marca']) ?> <?= htmlspecialchars($ticket['modelo']) ?></li>
                 <li><strong>Cliente:</strong> <?= htmlspecialchars($ticket['cliente'] ?? $ticket['cliente_nombre'] ?? $ticket['user_name'] ?? 'No disponible') ?></li>
-                <li><strong>Descripción de la falla:</strong> <?= htmlspecialchars($ticket['descripcion'] ?? $ticket['descripcion_falla']) ?></li>
                 <?php 
                     $estadoStr = $ticket['estado'] ?? $ticket['estado_actual'] ?? 'No disponible';
                     $estadoLower = strtolower($estadoStr);
@@ -18,15 +17,16 @@
                     if (in_array($estadoLower, ['finalizado','cerrado','cancelado'])) $estadoClass = 'badge badge--danger';
                 ?>
                 <li><strong>Estado:</strong> <span id="estado-badge" class="<?= $estadoClass ?>"><?= htmlspecialchars($estadoStr) ?></span></li>
+                <li><strong>Descripción de la falla:</strong> <?= htmlspecialchars($ticket['descripcion'] ?? $ticket['descripcion_falla']) ?></li>
                 <li><strong>Técnico asignado:</strong> <?= !empty($ticket['tecnico']) ? htmlspecialchars($ticket['tecnico']) : '<span style="color:#d32f2f;">Sin asignar</span>' ?></li>
                 <?php if (isset($ticket['fecha_creacion'])): ?>
-                    <li><strong>Fecha de creación:</strong> <?= htmlspecialchars($ticket['fecha_creacion']) ?></li>
+                    <li class="date-ver"><strong>Fecha de creación:</strong> <?= htmlspecialchars($ticket['fecha_creacion']) ?></li>
                 <?php endif; ?>
                 <?php if (isset($ticket['fecha_cierre']) && $ticket['fecha_cierre']): ?>
                     <li><strong>Fecha de cierre:</strong> <?= htmlspecialchars($ticket['fecha_cierre']) ?></li>
                 <?php endif; ?>
                 <?php if (isset($ticket['img_dispositivo'])): ?>
-                    <li>
+                    <li class="date-ver">
                       <strong>Imagen del dispositivo:</strong><br>
                       <img src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($ticket['img_dispositivo']) ?>" style="max-width:180px;border-radius:8px;">
                     </li>
@@ -136,16 +136,24 @@
         <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/Calificar">
             <input type="hidden" name="ticket_id" value="<?= (int)$ticket['id'] ?>"/>
             <label>Estrellas:</label>
-            <select name="stars" class="asignar-input asignar-input--small">
-                <?php for ($i=1;$i<=5;$i++): ?>
-                    <option value="<?= $i ?>"><?= $i ?> ★</option>
-                <?php endfor; ?>
-            </select>
+            <div class="rating">
+                <input type="radio" id="star5" name="stars" value="5"/>
+                <label for="star5" class="star">&#9733;</label>
+                <input type="radio" id="star4" name="stars" value="4"/>
+                <label for="star4" class="star">&#9733;</label>
+                <input type="radio" id="star3" name="stars" value="3"/>
+                <label for="star3" class="star">&#9733;</label>
+                <input type="radio" id="star2" name="stars" value="2"/>
+                <label for="star2" class="star">&#9733;</label>
+                <input type="radio" id="star1" name="stars" value="1"/>
+                <label for="star1" class="star">&#9733;</label>
+            </div>
             <label>Comentario (opcional):</label>
             <input type="text" name="comment" class="asignar-input asignar-input--small" placeholder="Tu experiencia"/>
-            <button class="btn btn-primary" type="submit">Enviar</button>
+            <button class="btn btn-primary-submit" type="submit">Enviar</button>
         </form>
     <?php endif; ?>
+
 
     <?php if (!empty($ticket) && ($rol === 'Tecnico')): ?>
         <hr>
