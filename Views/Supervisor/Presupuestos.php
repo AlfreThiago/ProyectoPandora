@@ -7,7 +7,7 @@
                 <input type="hidden" name="route" value="Supervisor/Presupuestos">
                 <label for="ticket_id">Ticket ID</label>
                 <input type="number" name="ticket_id" id="ticket_id" min="1" value="<?= htmlspecialchars($_GET['ticket_id'] ?? '') ?>" class="asignar-input asignar-input--small"/>
-                <button class="btn btn-primary" type="submit">Filtrar</button>
+                <button class="btn btn-outline" type="submit">Filtrar</button>
                 <a href="/ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos" class="btn btn-outline">Limpiar</a>
             </form>
 

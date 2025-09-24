@@ -5,7 +5,7 @@
         <h2>Lista de Categorías</h2>
         <div class="botones">
             <div class="btn-table-acciones">
-                <a class="btn-acciones-cate" href="/ProyectoPandora/Public/index.php?route=Device/CrearCategoria">Añadir Categoria</a>
+                <a class="btn-all btn-acciones-cate" href="/ProyectoPandora/Public/index.php?route=Device/CrearCategoria">Añadir Categoria</a>
             </div>
         </div>
         <table id="categoryTable">

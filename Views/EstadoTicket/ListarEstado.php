@@ -5,7 +5,7 @@
         <h2>Lista de Estados</h2>
          <div class="botones">
             <div class="btn-table-acciones">
-                <a class="btn-acciones-user" href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Crear">Añadir Estado</a>
+                <a class="btn-all btn-acciones-user" href="/ProyectoPandora/Public/index.php?route=EstadoTicket/Crear">Añadir Estado</a>
             </div>
         </div>
         <table id="userTable">
