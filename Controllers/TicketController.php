@@ -34,14 +34,17 @@ class TicketController
     private function transicionesValidas(): array {
         // Nombres deben existir en estados_tickets
         return [
-            'Nuevo' => ['Diagnóstico'],
-            'Diagnóstico' => ['Presupuesto', 'En espera', 'En reparación'],
-            // Presupuesto: requiere aprobación del cliente para pasar a En reparación
-            'Presupuesto' => ['En espera', 'En reparación', 'Cancelado'],
-            'En espera' => ['Presupuesto', 'Diagnóstico', 'En reparación', 'Cancelado'],
-            'En reparación' => ['En pruebas', 'En espera'],
-            'En pruebas' => ['Listo para retirar', 'En reparación'],
-            'Listo para retirar' => ['Finalizado', 'Cancelado'],
+            'Nuevo' => ['Diagnóstico', 'En espera', 'Cancelado'],
+            'Diagnóstico' => ['Presupuesto', 'En espera'],
+            // En 'Presupuesto' no hay cambios manuales por técnico; cliente decide o supervisor publica
+            'Presupuesto' => [],
+            // 'En espera' usado para que supervisor publique presupuesto; técnico no cambia desde aquí
+            'En espera' => [],
+            // Tras reparación, solo 'En pruebas' o 'Finalizado'
+            'En reparación' => ['En pruebas', 'Finalizado'],
+            // En pruebas solo puede finalizar
+            'En pruebas' => ['Finalizado'],
+            'Listo para retirar' => ['Finalizado'],
             'Finalizado' => [],
             'Cancelado' => []
         ];
@@ -54,9 +57,21 @@ class TicketController
 
     // Resolver id de estado por nombre (case-insensitive)
     private function estadoIdPorNombre(string $name): ?int {
+        // Comparación case-insensitive y acento-insensitive
+        $normalize = function(string $s): string {
+            $s = trim($s);
+            $map = [
+                'Á'=>'A','É'=>'E','Í'=>'I','Ó'=>'O','Ú'=>'U','Ñ'=>'N',
+                'á'=>'a','é'=>'e','í'=>'i','ó'=>'o','ú'=>'u','ñ'=>'n'
+            ];
+            $s = strtr($s, $map);
+            return strtolower($s);
+        };
+        $target = $normalize($name);
         $estados = $this->estadoModel->getAllEstados();
         foreach ($estados as $e) {
-            if (strcasecmp($e['name'] ?? '', $name) === 0) return (int)$e['id'];
+            $n = $normalize($e['name'] ?? '');
+            if ($n === $target) return (int)$e['id'];
         }
         return null;
     }
@@ -174,8 +189,8 @@ class TicketController
             exit;
         }
 
-        // Cambiar a "En espera" si existe, y registrar historial con comentario de aprobación
-        $estadoId = $this->estadoIdPorNombre('En espera');
+    // Cambiar a "En reparación" directamente tras aprobación del cliente
+    $estadoId = $this->estadoIdPorNombre('En reparación');
         if ($estadoId) {
             $stmtU = $conn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
             $stmtU->bind_param("ii", $estadoId, $ticket_id);
@@ -339,6 +354,54 @@ class TicketController
 
         $ratingModel->save($ticket_id, (int)$tecnico_id, (int)$cliente['id'], $stars, $comment);
         header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&rated=1');
+        exit;
+    }
+
+    // Supervisor publica presupuesto: cambia estado a 'Presupuesto' y registra historial con total
+    public function PublicarPresupuesto() {
+        $user = Auth::user();
+        if (!$user || ($user['role'] ?? '') !== 'Supervisor') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos');
+            exit;
+        }
+        $ticket_id = (int)($_POST['ticket_id'] ?? 0);
+        if ($ticket_id <= 0) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&error=ticket');
+            exit;
+        }
+
+        // Calcular total: items + mano de obra
+        require_once __DIR__ . '/../Models/ItemTicket.php';
+        require_once __DIR__ . '/../Models/TicketLabor.php';
+        $db = new Database(); $db->connectDatabase(); $conn = $db->getConnection();
+        $itemModel = new ItemTicketModel($conn);
+        $laborModel = new TicketLaborModel($conn);
+        $items = $itemModel->listarPorTicket($ticket_id);
+        $subtotal = 0.0;
+        foreach ($items as $it) { $subtotal += (float)($it['valor_total'] ?? 0); }
+        $labor = $laborModel->getByTicket($ticket_id);
+        $mano = (float)($labor['labor_amount'] ?? 0);
+        $total = $subtotal + $mano;
+
+        // Cambiar a estado Presupuesto si existe
+        $estadoId = $this->estadoIdPorNombre('Presupuesto');
+        if ($estadoId) {
+            $stmtU = $conn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
+            $stmtU->bind_param("ii", $estadoId, $ticket_id);
+            $stmtU->execute();
+        } else {
+            $estadoId = $this->estadoIdPorNombre('En espera') ?? 0; // fallback visual
+        }
+
+        // Historial: publicar presupuesto con total
+        $comentario = 'Presupuesto publicado. Total $' . number_format($total, 2, '.', '');
+        $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Supervisor', $comentario);
+
+        header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&ok=publicado');
         exit;
     }
 

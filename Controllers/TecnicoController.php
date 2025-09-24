@@ -146,6 +146,21 @@ class TecnicoController {
                 'Solicitud de repuesto',
                 "Técnico {$user['name']} solicitó {$cantidad} und(s) del inventario ID {$inventario_id} para ticket {$ticket_id} (total $valor_total)."
             );
+            // Si ya existe mano de obra, pasar a 'En espera'
+            $laborModel2 = new TicketLaborModel($this->db->getConnection());
+            $labor = $laborModel2->getByTicket($ticket_id);
+            if ($labor && (float)($labor['labor_amount'] ?? 0) > 0) {
+                require_once __DIR__ . '/../Models/EstadoTicket.php';
+                $em2 = new EstadoTicketModel($this->db->getConnection());
+                $estados = $em2->getAllEstados();
+                $esperaId = 0; foreach ($estados as $e) { if (strcasecmp($e['name'],'En espera')===0) { $esperaId = (int)$e['id']; break; } }
+                if ($esperaId) {
+                    $this->db->getConnection()->query("UPDATE tickets SET estado_id = ".$esperaId." WHERE id = ".$ticket_id);
+                    require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
+                    $hist2 = new TicketEstadoHistorialModel($this->db->getConnection());
+                    $hist2->add($ticket_id, $esperaId, (int)$user['id'], 'Tecnico', 'Repuestos listos + mano de obra definida: presupuesto listo para publicar');
+                }
+            }
             header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&success=1&ticket_id=' . $ticket_id);
             exit;
         }
@@ -191,9 +206,105 @@ class TecnicoController {
             // Guardar mano de obra por ticket
             $ticket_id = (int)$_POST['ticket_id'];
             $labor_amount = max(0, (float)$_POST['labor_amount']);
+            $role = $user['role'] ?? '';
+            $isTecnico = ($role === 'Tecnico');
+            $isSupervisor = ($role === 'Supervisor');
+            $ticketTecnicoId = null;
+            // Obtener tecnico asignado al ticket
+            $stmtT = $conn->prepare("SELECT t.tecnico_id, e.name AS estado FROM tickets t INNER JOIN estados_tickets e ON e.id = t.estado_id WHERE t.id = ? LIMIT 1");
+            if ($stmtT) { $stmtT->bind_param("i", $ticket_id); $stmtT->execute(); $rT = $stmtT->get_result()->fetch_assoc(); $ticketTecnicoId = $rT['tecnico_id'] ?? null; }
+            $estadoActualNombre = strtolower(trim($rT["estado"] ?? ''));
+
+            if ($isTecnico) {
+                // Validar que el usuario esté registrado como técnico y que el ticket le pertenezca
+                if (!$tecnico_id) {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisStats&error=tecnico');
+                    exit;
+                }
+                if ((int)($ticketTecnicoId ?? 0) <= 0) {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisStats&error=ticket');
+                    exit;
+                }
+                $stmtChk = $conn->prepare("SELECT COUNT(*) c FROM tecnicos tc WHERE tc.id = ? AND tc.user_id = ?");
+                if ($stmtChk) {
+                    $stmtChk->bind_param("ii", $ticketTecnicoId, $user['id']);
+                    $stmtChk->execute();
+                    $row = $stmtChk->get_result()->fetch_assoc();
+                    if (((int)($row['c'] ?? 0)) === 0) {
+                        header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisStats&error=ticket');
+                        exit;
+                    }
+                }
+                // Solo puede definir mano de obra durante Diagnóstico
+                if (!in_array($estadoActualNombre, ['diagnóstico','diagnostico'], true)) {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id.'&error=labor_estado');
+                    exit;
+                }
+                // Validar rango min/max del técnico
+                $statsModel = new TecnicoStatsModel($conn);
+                $statsRow = $statsModel->getByTecnico((int)$ticketTecnicoId);
+                if ($statsRow) {
+                    $min = (float)($statsRow['labor_min'] ?? 0);
+                    $max = (float)($statsRow['labor_max'] ?? 0);
+                    if ($max > 0 && ($labor_amount < $min || $labor_amount > $max)) {
+                        header('Location: ' . ($_SESSION['prev_url'] ?? '/ProyectoPandora/Public/index.php?route=Tecnico/MisStats') . '&error=labor_range');
+                        exit;
+                    }
+                }
+                $saveTecnicoId = (int)$ticketTecnicoId;
+            } elseif ($isSupervisor) {
+                // Supervisor puede guardar usando el tecnico asignado al ticket
+                if ((int)($ticketTecnicoId ?? 0) <= 0) {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&error=sin_tecnico');
+                    exit;
+                }
+                // Mantener coherencia: mano de obra solo se define en Diagnóstico
+                if (!in_array($estadoActualNombre, ['diagnóstico','diagnostico'], true)) {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&error=labor_estado');
+                    exit;
+                }
+                $saveTecnicoId = (int)$ticketTecnicoId;
+            } else {
+                header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+                exit;
+            }
             $laborModel = new TicketLaborModel($conn);
-            $laborModel->upsert($ticket_id, $tecnico_id ?: 0, $labor_amount);
-            header('Location: ' . ($_SESSION['prev_url'] ?? '/ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos'));
+            $existing = $laborModel->getByTicket($ticket_id);
+            if ($existing && (float)($existing['labor_amount'] ?? 0) > 0) {
+                // Inmutable: no modificar si ya existe > 0
+                if ($isSupervisor) {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&error=labor_locked');
+                } else {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id.'&error=labor_locked');
+                }
+                exit;
+            }
+            $laborModel->upsert($ticket_id, (int)$saveTecnicoId, $labor_amount);
+            // Si ya hay items y ahora hay mano de obra, mover a 'En espera'
+            require_once __DIR__ . '/../Models/ItemTicket.php';
+            $itemModelX = new ItemTicketModel($conn);
+            $itemsX = $itemModelX->listarPorTicket($ticket_id);
+            if (!empty($itemsX) && $labor_amount > 0) {
+                // Cambiar estado a En espera
+                require_once __DIR__ . '/../Models/EstadoTicket.php';
+                $em = new EstadoTicketModel($conn);
+                $stmtEstados = $conn->query("SELECT id, name FROM estados_tickets");
+                $enEsperaId = 0;
+                if ($stmtEstados) { while($r=$stmtEstados->fetch_assoc()){ if (strcasecmp($r['name'],'En espera')===0) { $enEsperaId=(int)$r['id']; break; } } }
+                if ($enEsperaId) {
+                    $conn->query("UPDATE tickets SET estado_id = ".$enEsperaId." WHERE id = ".$ticket_id);
+                    // Historial
+                    require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
+                    $histM = new TicketEstadoHistorialModel($conn);
+                    $histM->add($ticket_id, $enEsperaId, (int)($user['id']), $user['role'], 'Presupuesto preparado: items y mano de obra listos');
+                }
+            }
+            // Redirigir acorde al rol
+            if ($isSupervisor) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&ok=labor');
+            } else {
+                header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id.'&ok=labor');
+            }
             exit;
         }
 
