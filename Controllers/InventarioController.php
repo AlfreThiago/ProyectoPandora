@@ -201,10 +201,10 @@ class InventarioController
                 $detalle = "Usuario {$user['name']} creó la categoría '{$name}'";
                 $this->historialController->agregarAccion($accion, $detalle);
 
-                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&success=1');
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
                 exit;
             } else {
-                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/CrearCategoria&error=1');
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
                 exit;
             }
         }
@@ -222,10 +222,10 @@ class InventarioController
             $detalle = "Usuario {$user['name']} eliminó la categoría ID {$id}";
             $this->historialController->agregarAccion($accion, $detalle);
 
-            header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&success=1');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
             exit;
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&error=1');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
             exit;
         }
     }
@@ -237,7 +237,7 @@ class InventarioController
         Auth::checkRole(['Administrador', 'Supervisor']);
         $id = $_GET['id'] ?? null;
         if (!$id) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&error=1');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
             exit;
         }
         $categoria = $this->categoryModel->obtenerCategoryPorId($id);
@@ -258,10 +258,10 @@ class InventarioController
                 $detalle = "Usuario {$user['name']} editó la categoría '{$name}' (ID {$id})";
                 $this->historialController->agregarAccion($accion, $detalle);
 
-                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&success=1');
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
                 exit;
             } else {
-                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ActualizarCategoria&id=' . $id . '&error=1');
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
                 exit;
             }
         }
@@ -281,10 +281,6 @@ class InventarioController
         $categorias = $this->inventarioModel->listarCategorias();
         include_once __DIR__ . '/../Views/Inventario/ActualizarItem.php';
     }
-
-    // Eliminar item del inventario (ya existe como eliminar())
-
-    // Eliminar categoría del inventario (ya existe como eliminarCategoriaInventario())
 }
 
 ?>

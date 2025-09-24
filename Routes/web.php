@@ -247,6 +247,10 @@ return [
         'controller' => 'Ticket',
         'action' => 'RechazarPresupuesto'
     ],
+    'Ticket/PublicarPresupuesto' => [
+        'controller' => 'Ticket',
+        'action' => 'PublicarPresupuesto'
+    ],
     'Ticket/EstadoJson' => [
         'controller' => 'Ticket',
         'action' => 'EstadoJson'
