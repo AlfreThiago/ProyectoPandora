@@ -71,7 +71,7 @@ class InventarioController
                     ? "El usuario {$user['name']} sumó {$stock_actual} al item '{$name_item}' (ID {$existente['id']})."
                     : "El usuario {$user['name']} creó el item '{$name_item}' con stock {$stock_actual} (mínimo {$stock_minimo}).";
                 $this->historialController->agregarAccion($accion, $detalle);
-                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarItem&success=1');
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
                 exit;
             } else {
                 header('Location: /ProyectoPandora/Public/index.php?route=Inventario/CrearItem&error=1');
@@ -92,10 +92,10 @@ class InventarioController
                 "Baja inventario",
                 "El usuario {$user['name']} eliminó el item con ID $id del inventario."
             );
-            header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarItem&success=1');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
             exit;
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarItem&error=1');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
             exit;
         }
     }
@@ -106,7 +106,7 @@ class InventarioController
         Auth::checkRole(['Supervisor']);
         $id = $_GET['id'] ?? null;
         if (!$id) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarItem&error=1');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
             exit;
         }
         $item = $this->inventarioModel->obtenerPorId($id);
@@ -141,7 +141,7 @@ class InventarioController
                     "Edición inventario",
                     "El usuario {$user['name']} editó el item '$name_item' (ID $id) del inventario."
                 );
-                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarItem&success=1');
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
                 exit;
             } else {
                 header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ActualizarItem&id=' . $id . '&error=1');
@@ -274,7 +274,7 @@ class InventarioController
         Auth::checkRole(['Administrador', 'Supervisor']);
         $id = $_GET['id'] ?? null;
         if (!$id) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarItem&error=1');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
             exit;
         }
         $item = $this->inventarioModel->obtenerPorId($id);

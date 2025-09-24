@@ -119,7 +119,8 @@ class DeviceController
                 $detalle = "Usuario {$user['name']} agregó el dispositivo {$marca} {$modelo}";
                 $this->historialController->agregarAccion($accion, $detalle);
 
-                header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice&success=1');
+                // Redirigir a la vista del cliente con sus dispositivos
+                header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice&success=1');
                 exit;
             } else {
                 $error = "Error al registrar el dispositivo.";

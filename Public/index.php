@@ -10,6 +10,7 @@ $noGuardar = [
     'Ticket/Ver',
     'Ticket/Editar',
     'Ticket/Actualizar',
+    'Ticket/EstadoJson',
     'Device/ActualizarDevice',
     'Device/CrearDevice',
     'Inventario/CrearItem',
@@ -28,7 +29,10 @@ if (isset($_GET['route'])) {
     }
 }
 
-if ($guardarPrevUrl) {
+// No guardar prev_url si la petición es JSON/AJAX
+$accept = $_SERVER['HTTP_ACCEPT'] ?? '';
+$isJsonAccept = stripos($accept, 'application/json') !== false;
+if ($guardarPrevUrl && !$isJsonAccept) {
     $_SESSION['prev_url'] = $currentUrl;
 }
 

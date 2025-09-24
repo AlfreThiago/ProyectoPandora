@@ -541,6 +541,16 @@ class TicketController
     // Devuelve el estado actual del ticket en JSON para refresco cliente
     public function EstadoJson()
     {
+        $id = (int)($_GET['id'] ?? 0);
+        $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
+        $xhr = $_SERVER['HTTP_X_REQUESTED_WITH'] ?? '';
+        $wantsJson = (stripos($accept, 'application/json') !== false) || (strcasecmp($xhr, 'XMLHttpRequest') === 0) || (($_GET['ajax'] ?? '') === '1');
+        if (!$wantsJson) {
+            $dest = '/ProyectoPandora/Public/index.php?route=Ticket/Ver' . ($id ? ('&id='.(int)$id) : '');
+            header('Location: '.$dest);
+            exit;
+        }
+
         $user = Auth::user();
         if (!$user) {
             http_response_code(401);
@@ -548,8 +558,6 @@ class TicketController
             echo json_encode(['error' => 'unauthorized']);
             return;
         }
-
-        $id = (int)($_GET['id'] ?? 0);
         if (!$id) {
             http_response_code(400);
             header('Content-Type: application/json');

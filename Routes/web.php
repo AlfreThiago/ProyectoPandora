@@ -293,7 +293,7 @@ return [
     ],
     'Inventario/ActualizarItem'=> [
         'controller' => 'Inventario',
-        'action' => 'actualizar'
+        'action' => 'mostrarActualizar'
     ],
     'Inventario/EditarItem'=> [
         'controller' => 'Inventario',

@@ -138,7 +138,12 @@
         <?php endif; ?>
     <?php endif; ?>
 
-    <a href="<?= $_SESSION['prev_url'] ?? htmlspecialchars($volverUrl) ?>" class="btn btn-secondary mt-3">Volver</a>
+        <?php 
+            $prev = $_SESSION['prev_url'] ?? '';
+            $isPrevJson = strpos($prev, 'Ticket/EstadoJson') !== false;
+            $backHref = $isPrevJson ? $volverUrl : ($prev ?: $volverUrl);
+        ?>
+        <a href="<?= htmlspecialchars($backHref) ?>" class="btn btn-secondary mt-3">Volver</a>
     </div>
         <?php 
             // Timeline de cambios de estado e interacciones
@@ -194,7 +199,7 @@
         return 'badge badge--muted';
     };
     const tick = ()=>{
-        fetch(`/ProyectoPandora/Public/index.php?route=Ticket/EstadoJson&id=${id}`, {cache:'no-store'})
+        fetch(`/ProyectoPandora/Public/index.php?route=Ticket/EstadoJson&id=${id}&ajax=1`, {cache:'no-store', headers:{'Accept':'application/json'}})
             .then(r=>r.ok?r.json():null)
             .then(d=>{ if(!d||!d.estado) return; badge.textContent = d.estado; badge.className = classFor(d.estado); });
     };
