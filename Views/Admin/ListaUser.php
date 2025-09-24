@@ -62,4 +62,3 @@
     </div>
 </main>
     <script src="/ProyectoPandora/Public/js/Tablas.js"></script>
-<?php include_once __DIR__ . '/../Includes/Footer.php' ?>

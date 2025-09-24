@@ -43,4 +43,3 @@
         </div>
     </section>
 </main>
-<?php include_once __DIR__ . '/../Includes/Footer.php'; ?>

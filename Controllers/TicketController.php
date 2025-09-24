@@ -7,6 +7,7 @@ require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/HistorialController.php';
 require_once __DIR__ . '/../Models/EstadoTicket.php';
 require_once __DIR__ . '/../Models/Rating.php';
+require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
 
 class TicketController
 {
@@ -15,6 +16,7 @@ class TicketController
     private $userModel;
     private $estadoModel;
     private $historialController;
+    private $histEstadoModel;
 
     public function __construct()
     {
@@ -25,6 +27,218 @@ class TicketController
         $this->userModel = new UserModel($db->getConnection());
         $this->estadoModel = new EstadoTicketModel($db->getConnection());
         $this->historialController = new HistorialController();
+    $this->histEstadoModel = new TicketEstadoHistorialModel($db->getConnection());
+    }
+
+    // Mapa de transiciones válidas (ajustable hasta 8 estados)
+    private function transicionesValidas(): array {
+        // Nombres deben existir en estados_tickets
+        return [
+            'Nuevo' => ['Diagnóstico'],
+            'Diagnóstico' => ['Presupuesto', 'En espera', 'En reparación'],
+            // Presupuesto: requiere aprobación del cliente para pasar a En reparación
+            'Presupuesto' => ['En espera', 'En reparación', 'Cancelado'],
+            'En espera' => ['Presupuesto', 'Diagnóstico', 'En reparación', 'Cancelado'],
+            'En reparación' => ['En pruebas', 'En espera'],
+            'En pruebas' => ['Listo para retirar', 'En reparación'],
+            'Listo para retirar' => ['Finalizado', 'Cancelado'],
+            'Finalizado' => [],
+            'Cancelado' => []
+        ];
+    }
+
+    private function puedeTransicionar(string $from, string $to): bool {
+        $map = $this->transicionesValidas();
+        return in_array($to, $map[$from] ?? [], true);
+    }
+
+    // Resolver id de estado por nombre (case-insensitive)
+    private function estadoIdPorNombre(string $name): ?int {
+        $estados = $this->estadoModel->getAllEstados();
+        foreach ($estados as $e) {
+            if (strcasecmp($e['name'] ?? '', $name) === 0) return (int)$e['id'];
+        }
+        return null;
+    }
+
+    public function ActualizarEstado() {
+        $user = Auth::user();
+        if (!$user || $user['role'] !== 'Tecnico') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones');
+            exit;
+        }
+        $ticket_id = (int)($_POST['ticket_id'] ?? 0);
+        $estado_id = (int)($_POST['estado_id'] ?? 0);
+        $comentario = trim($_POST['comentario'] ?? '');
+
+        $tk = $this->ticketModel->ver($ticket_id);
+        if (!$tk) { header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones&error=tk'); exit; }
+
+        // Obtener nombres de estado actual y nuevo
+        $estadoActual = $tk['estado'] ?? '';
+        $nuevo = $this->estadoModel->getById($estado_id);
+        if (!$nuevo) { header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones&error=estado'); exit; }
+        $estadoNuevo = $nuevo['name'];
+
+        // Validar transición
+        if (!$this->puedeTransicionar($estadoActual, $estadoNuevo)) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=transicion');
+            exit;
+        }
+
+        // Regla de presupuesto: antes de "En reparación" debe existir presupuesto guardado y aprobado por el cliente
+        if (strcasecmp($estadoNuevo, 'En reparación') === 0) {
+            // Verificar que el total esté calculado (usa TicketLabor + items)
+            // Simplificación: si no hay items y mano_obra == 0, bloquear
+            require_once __DIR__ . '/../Models/TicketLabor.php';
+            require_once __DIR__ . '/../Models/ItemTicket.php';
+            $db = new Database(); $db->connectDatabase();
+            $laborModel = new TicketLaborModel($db->getConnection());
+            $itemModel = new ItemTicketModel($db->getConnection());
+            $items = $itemModel->listarPorTicket($ticket_id);
+            $hasItems = !empty($items);
+            $labor = $laborModel->getByTicket($ticket_id);
+            $mano = (float)($labor['labor_amount'] ?? 0);
+            if (!$hasItems || $mano <= 0) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=presupuesto');
+                exit;
+            }
+            // Verificar aprobación del cliente (usaremos ticket_estado_historial con user_role=Cliente y comentario 'Aprobado')
+            $aprobado = false;
+            $hist = $this->histEstadoModel->listByTicket($ticket_id);
+            foreach ($hist as $ev) {
+                if ($ev['user_role']==='Cliente' && stripos($ev['comentario'] ?? '', 'aprob') !== false) { $aprobado = true; break; }
+            }
+            if (!$aprobado) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=aprobacion');
+                exit;
+            }
+        }
+
+        // Actualizar estado del ticket
+        // Obtener id de estado por nombre si fuera necesario, aquí ya lo tenemos
+        $conn = (new Database());
+        $conn->connectDatabase();
+        $dbConn = $conn->getConnection();
+        $stmt = $dbConn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
+        $stmt->bind_param("ii", $estado_id, $ticket_id);
+        $stmt->execute();
+
+        // Registrar historial
+        $this->histEstadoModel->add($ticket_id, $estado_id, (int)$user['id'], $user['role'], $comentario);
+
+        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&ok=estado');
+        exit;
+    }
+
+    // Cliente aprueba presupuesto
+    public function AprobarPresupuesto() {
+        $user = Auth::user();
+        if (!$user || $user['role'] !== 'Cliente') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket');
+            exit;
+        }
+        $ticket_id = (int)($_POST['ticket_id'] ?? 0);
+        $comentario = trim($_POST['comentario'] ?? 'Aprobado presupuesto');
+
+        $tk = $this->ticketModel->ver($ticket_id);
+        if (!$tk) { header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=ticket'); exit; }
+
+        // Validar pertenencia
+        $db = new Database(); $db->connectDatabase(); $conn = $db->getConnection();
+        $stmtC = $conn->prepare("SELECT id FROM clientes WHERE user_id = ? LIMIT 1");
+        $stmtC->bind_param("i", $user['id']);
+        $stmtC->execute();
+        $cliente = $stmtC->get_result()->fetch_assoc();
+        $stmtT = $conn->prepare("SELECT cliente_id FROM tickets WHERE id = ? LIMIT 1");
+        $stmtT->bind_param("i", $ticket_id);
+        $stmtT->execute();
+        $rowT = $stmtT->get_result()->fetch_assoc();
+        if (!$cliente || (int)($rowT['cliente_id'] ?? 0) !== (int)$cliente['id']) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=forbidden');
+            exit;
+        }
+
+        // Solo si está en Presupuesto
+        $estadoActual = strtolower(trim($tk['estado'] ?? ''));
+        if ($estadoActual !== 'presupuesto') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=estado_actual');
+            exit;
+        }
+
+        // Cambiar a "En espera" si existe, y registrar historial con comentario de aprobación
+        $estadoId = $this->estadoIdPorNombre('En espera');
+        if ($estadoId) {
+            $stmtU = $conn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
+            $stmtU->bind_param("ii", $estadoId, $ticket_id);
+            $stmtU->execute();
+        } else {
+            // Si no existe, mantener estado actual para no romper
+            $estadoId = $this->estadoIdPorNombre('Presupuesto');
+        }
+
+        $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Cliente', $comentario);
+        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&ok=aprobado');
+        exit;
+    }
+
+    // Cliente rechaza presupuesto
+    public function RechazarPresupuesto() {
+        $user = Auth::user();
+        if (!$user || $user['role'] !== 'Cliente') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket');
+            exit;
+        }
+        $ticket_id = (int)($_POST['ticket_id'] ?? 0);
+        $comentario = trim($_POST['comentario'] ?? 'Rechazado presupuesto');
+
+        $tk = $this->ticketModel->ver($ticket_id);
+        if (!$tk) { header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=ticket'); exit; }
+
+        // Validar pertenencia
+        $db = new Database(); $db->connectDatabase(); $conn = $db->getConnection();
+        $stmtC = $conn->prepare("SELECT id FROM clientes WHERE user_id = ? LIMIT 1");
+        $stmtC->bind_param("i", $user['id']);
+        $stmtC->execute();
+        $cliente = $stmtC->get_result()->fetch_assoc();
+        $stmtT = $conn->prepare("SELECT cliente_id FROM tickets WHERE id = ? LIMIT 1");
+        $stmtT->bind_param("i", $ticket_id);
+        $stmtT->execute();
+        $rowT = $stmtT->get_result()->fetch_assoc();
+        if (!$cliente || (int)($rowT['cliente_id'] ?? 0) !== (int)$cliente['id']) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=forbidden');
+            exit;
+        }
+
+        // Solo si está en Presupuesto
+        $estadoActual = strtolower(trim($tk['estado'] ?? ''));
+        if ($estadoActual !== 'presupuesto') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=estado_actual');
+            exit;
+        }
+
+        // Cambiar a "Cancelado" si existe, y registrar historial con comentario de rechazo
+        $estadoId = $this->estadoIdPorNombre('Cancelado') ?? $this->estadoIdPorNombre('Finalizado');
+        if ($estadoId) {
+            $stmtU = $conn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
+            $stmtU->bind_param("ii", $estadoId, $ticket_id);
+            $stmtU->execute();
+        }
+        $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Cliente', $comentario);
+        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&ok=rechazado');
+        exit;
     }
 
     public function mostrarLista()
@@ -322,5 +536,51 @@ class TicketController
 
         // ... lógica normal para mostrar el formulario ...
         include_once __DIR__ . '/../Views/Inventario/CrearItem.php';
+    }
+
+    // Devuelve el estado actual del ticket en JSON para refresco cliente
+    public function EstadoJson()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            http_response_code(401);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'unauthorized']);
+            return;
+        }
+
+        $id = (int)($_GET['id'] ?? 0);
+        if (!$id) {
+            http_response_code(400);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'missing id']);
+            return;
+        }
+
+        $tk = $this->ticketModel->ver($id);
+        if (!$tk) {
+            http_response_code(404);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'not found']);
+            return;
+        }
+
+        // Autorización básica: supervisor/tecnico ven todo; cliente solo si es suyo
+        if ($user['role'] === 'Cliente') {
+            if (($tk['cliente'] ?? '') !== ($user['name'] ?? '')) {
+                http_response_code(403);
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'forbidden']);
+                return;
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'id' => (int)$tk['id'],
+            'estado' => $tk['estado'] ?? null,
+            'fecha_cierre' => $tk['fecha_cierre'] ?? null,
+            'ts' => time(),
+        ]);
     }
 }

@@ -3,7 +3,6 @@
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Contenedor">
         <section class="section-presupuestos">
-            <h2>Presupuestos de Tickets</h2>
             <form method="get" action="/ProyectoPandora/Public/index.php" class="presu-filtros">
                 <input type="hidden" name="route" value="Supervisor/Presupuestos">
                 <label for="ticket_id">Ticket ID</label>

@@ -239,6 +239,22 @@ return [
         'controller' => 'Ticket',
         'action' => 'Calificar'
     ],
+    'Ticket/AprobarPresupuesto' => [
+        'controller' => 'Ticket',
+        'action' => 'AprobarPresupuesto'
+    ],
+    'Ticket/RechazarPresupuesto' => [
+        'controller' => 'Ticket',
+        'action' => 'RechazarPresupuesto'
+    ],
+    'Ticket/EstadoJson' => [
+        'controller' => 'Ticket',
+        'action' => 'EstadoJson'
+    ],
+    'Ticket/ActualizarEstado' => [
+        'controller' => 'Ticket',
+        'action' => 'ActualizarEstado'
+    ],
     'Ticket/Eliminar' => [
         'controller' => 'Ticket',
         'action' => 'eliminar'

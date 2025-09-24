@@ -604,6 +604,64 @@ h2{
   padding: 1rem;
   color: white;
 }
+
+/* ======= PRESUPUESTOS (SUPERVISOR) ======= */
+.section-presupuestos {
+  display: grid;
+  gap: 16px;
+}
+.presu-filtros {
+  display: flex;
+  gap: 10px;
+  align-items: end;
+  flex-wrap: wrap;
+  background: var(--fondo-formulario);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 0 10px var(--shadow-border);
+}
+.presu-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+.presu-card {
+  background: var(--fondo-formulario);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 0 12px var(--shadow-border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.presu-head {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--color-border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0));
+}
+.presu-head h3 { margin: 0 0 6px 0; color: #fff; font-family: "Rozha One", serif; }
+.presu-meta { display: flex; gap: 14px; color: #fff; font-size: 0.9rem; opacity: 0.85; }
+.presu-body { padding: 12px 14px; display: grid; gap: 12px; color: #fff; }
+.presu-table { width: 100%; border-collapse: collapse; color: #fff; }
+.presu-table thead th { padding: 10px; text-align: left; background: rgba(255,255,255,0.06); border-bottom: 1px solid var(--color-border); color: #fff; }
+.presu-table tbody td { padding: 10px; border-bottom: 1px solid var(--color-border); color: #fff; }
+.presu-table tr:hover { background: rgba(255,255,255,0.05); }
+/* Totales en grid para evitar cortes y apilado limpio */
+.presu-totales { 
+  display: grid; 
+  grid-template-columns: 1fr auto auto; 
+  gap: 12px; 
+  align-items: center; 
+  padding-top: 10px; 
+  border-top: 1px solid var(--color-border); 
+  color: #fff;
+}
+@media (max-width: 680px) {
+  .presu-totales { grid-template-columns: 1fr; }
+}
+.presu-labor { display: inline-flex; gap: 8px; align-items: center; color: #fff; }
+
 table {
   width: 100%;
   border-collapse: collapse;

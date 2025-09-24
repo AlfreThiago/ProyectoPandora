@@ -72,5 +72,3 @@
         document.getElementById('descripcion').value = descripcion || "";
     }
 </script>
-
-<?php include_once __DIR__ . '/../Includes/Footer.php' ?>

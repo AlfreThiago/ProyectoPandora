@@ -44,4 +44,3 @@
     </div>
     <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>
-<?php include_once __DIR__ . '/../Includes/Footer.php' ?>
