@@ -1,0 +1,14 @@
+@startuml UC01_Crear_Ticket
+left to right direction
+skinparam actorStyle awesome
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+actor Cliente
+rectangle Sistema {
+  usecase "Crear Ticket" as UC01
+}
+
+Cliente --> UC01 : Crear ticket
+UC01 --> Sistema : Valida y crea estado "Nuevo"
+@enduml
