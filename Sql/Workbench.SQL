@@ -80,6 +80,9 @@ CREATE TABLE administradores (
     UNIQUE KEY uq_admins_user (user_id),
     CONSTRAINT fk_admins_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+-- Vincular el usuario Admin a la tabla de administradores (los triggers aún no existían cuando se insertó el usuario)
+INSERT INTO administradores (user_id)
+SELECT id FROM users WHERE email = 'admin@admin.com' AND role = 'Administrador';
 CREATE TABLE categorias (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,

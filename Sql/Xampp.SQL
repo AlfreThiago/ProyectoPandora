@@ -105,6 +105,10 @@ CREATE TABLE administradores (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+-- Vincular el usuario Admin a la tabla de administradores (los triggers aún no existían cuando se insertó el usuario)
+INSERT INTO administradores (user_id)
+SELECT id FROM users WHERE email = 'admin@admin.com' AND role = 'Administrador';
+
 CREATE TABLE dispositivos (
     id INT(11) NOT NULL AUTO_INCREMENT,
     user_id INT(11) NOT NULL,
