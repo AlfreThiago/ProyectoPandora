@@ -29,7 +29,7 @@ class Historial
         return [];
     }
 
-    // Búsqueda con filtros y paginación: retorna ['data'=>array, 'total'=>int, 'page'=>int, 'perPage'=>int]
+    
     public function buscarHistorial($q = '', $tipo = '', $desde = '', $hasta = '', $page = 1, $perPage = 20)
     {
         $conds = [];
@@ -57,7 +57,7 @@ class Historial
 
         $where = empty($conds) ? '' : ('WHERE ' . implode(' AND ', $conds));
 
-        // Total
+        
         $sqlCount = "SELECT COUNT(*) AS c FROM historial $where";
         $stmtC = $this->connection->prepare($sqlCount);
         if ($stmtC) {
@@ -75,7 +75,7 @@ class Historial
         $perPage = max(1, min(200, (int)$perPage));
         $offset = ($page - 1) * $perPage;
 
-        // Datos
+        
         $sql = "SELECT * FROM historial $where ORDER BY fecha DESC LIMIT ? OFFSET ?";
         $stmt = $this->connection->prepare($sql);
         if (!$stmt) {
@@ -85,7 +85,7 @@ class Historial
         if ($types !== '') {
             $typesAll = $types . 'ii';
             $paramsAll = array_merge($params, [ $perPage, $offset ]);
-            // bind_param con varargs
+            
             $stmt->bind_param($typesAll, ...$paramsAll);
         } else {
             $stmt->bind_param('ii', $perPage, $offset);

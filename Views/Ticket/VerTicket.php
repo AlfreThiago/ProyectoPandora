@@ -192,7 +192,7 @@
                 <?php elseif (empty($targets)): ?>
                         <div class="alert alert-warning" style="margin-top:8px;">No hay transiciones disponibles desde el estado actual.</div>
                                 <?php 
-                                    // Hints según estado cuando no hay transiciones
+                                    
                                     $msg = '';
                                     if ($s==='presupuesto') $msg = 'Pendiente de decisión del cliente tras la publicación del supervisor.';
                                     elseif ($s==='en espera') $msg = 'Presupuesto listo; el supervisor debe publicarlo para que el cliente lo vea.';
@@ -215,7 +215,7 @@
                             <button class="btn btn-primary" type="submit">Actualizar</button>
                     </form>
                                 <?php 
-                                    // Hints cuando sí hay transiciones
+                                    
                                     $hint = '';
                                     if ($s==='nuevo') $hint = 'Puedes iniciar el diagnóstico, dejar en espera o cancelar.';
                                     elseif ($s==='diagnóstico' || $s==='diagnostico') $hint = 'Define presupuesto o deja en espera si necesitas insumos/info.';
@@ -225,11 +225,11 @@
                                 ?>
                 <?php endif; ?>
         <?php 
-          // Sección Mano de Obra para técnico
+          
           require_once __DIR__ . '/../../Core/Database.php';
           require_once __DIR__ . '/../../Models/TecnicoStats.php';
           $db2 = new Database(); $db2->connectDatabase();
-          // Obtener tecnico_id del ticket
+          
           $stmtT2 = $db2->getConnection()->prepare("SELECT tc.id AS tecnico_id, ts.labor_min, ts.labor_max FROM tickets t LEFT JOIN tecnicos tc ON t.tecnico_id = tc.id LEFT JOIN tecnico_stats ts ON ts.tecnico_id = tc.id WHERE t.id = ? LIMIT 1");
           $tid = (int)$ticket['id'];
           $tecnicoStats = ['labor_min'=>0,'labor_max'=>0];
@@ -239,13 +239,13 @@
             <h4>Mano de obra</h4>
             <div style="font-size:12px;opacity:.8;margin-bottom:6px;">Rango sugerido: $<?= number_format($tecnicoStats['labor_min'], 2, '.', ',') ?> a $<?= number_format($tecnicoStats['labor_max'], 2, '.', ',') ?></div>
                         <?php 
-                            // Indicador de preparación de presupuesto (items + MO)
+                            
                             require_once __DIR__ . '/../../Models/ItemTicket.php';
                             $itmDb = new Database(); $itmDb->connectDatabase();
                             $itmM = new ItemTicketModel($itmDb->getConnection());
                             $itemsTech = $itmM->listarPorTicket((int)$ticket['id']);
                             $hasItemsTech = !empty($itemsTech);
-                            // mano de obra actual
+                            
                             require_once __DIR__ . '/../../Models/TicketLabor.php';
                             $lbM = new TicketLaborModel($itmDb->getConnection());
                             $lbR = $lbM->getByTicket((int)$ticket['id']);
@@ -318,7 +318,7 @@
         <a href="<?= htmlspecialchars($backHref) ?>" class="btn btn-secondary mt-3">Volver</a>
 
         <?php 
-            // Mostrar overlay "PAGADO" solo si hay calificación del cliente
+            
             $mostrarPagadoOverlay = false;
             if ((isset($_GET['ok']) && $_GET['ok']==='pagado') || $finalizado) {
                 require_once __DIR__ . '/../../Core/Database.php';
@@ -341,7 +341,7 @@
         <?php endif; ?>
     </div>
         <?php 
-            // Timeline de cambios de estado e interacciones
+            
             require_once __DIR__ . '/../../Models/TicketEstadoHistorial.php';
             require_once __DIR__ . '/../../Core/Database.php';
             $db = new Database(); $db->connectDatabase();

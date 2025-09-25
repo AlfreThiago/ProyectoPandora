@@ -65,7 +65,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <?php $role = strtolower($_SESSION['user']['role']); ?>
 
                         <?php if ($role === 'administrador'): ?>
-                            <!-- Admin: Usuarios y 'Otros' (Estados y Categorías) -->
+                            
                             <li class="item menu-item menu-item-static">
                                 <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="link flex">
                                     <i class='bx bx-user-circle'></i>
@@ -116,7 +116,7 @@ if (session_status() === PHP_SESSION_NONE) {
                                 </a>
                             </li>
                         <?php elseif ($role === 'tecnico'): ?>
-                            <!-- Técnico: solo ve Reparaciones y tickets -->
+                            
                             <li class="item menu-item-static">
                                 <a href="index.php?route=Tecnico/MisReparaciones" class="link flex">
                                     <i class='bxr  bx-ticket'></i>
@@ -151,8 +151,8 @@ if (session_status() === PHP_SESSION_NONE) {
                             </li>
                         <?php endif; ?>
                     <?php else: ?>
-                        <!-- No logueado -->
-                        <!-- Iniciar sesion, Registro y Guia -->
+                        
+                        
                         <li class="item ">
                             <a href="/ProyectoPandora/Public/index.php?route=Auth/Login" class="link flex">
                                 <i class='bx bx-arrow-out-right-square-half'></i>

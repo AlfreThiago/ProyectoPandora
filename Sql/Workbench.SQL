@@ -39,7 +39,7 @@ CREATE TABLE users (
     ) NOT NULL DEFAULT 'Cliente',
     PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
--- Usuario administrador por defecto (email: admin@admin.com, password: 1234)
+
 INSERT INTO users (name, email, password, role)
 VALUES ('Admin', 'admin@admin.com', '$2y$10$0J4vZrY0oQvEJq8xv7m0SeH2V7jV7cQO3Yl2oT1rSObJ9z0X7VqJG', 'Administrador');
 CREATE TABLE areas (
@@ -85,7 +85,7 @@ CREATE TABLE administradores (
     UNIQUE KEY uq_admins_user (user_id),
     CONSTRAINT fk_admins_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
--- Vincular el usuario Admin a la tabla de administradores (los triggers aún no existían cuando se insertó el usuario)
+
 INSERT INTO administradores (user_id)
 SELECT id FROM users WHERE email = 'admin@admin.com' AND role = 'Administrador';
 CREATE TABLE categorias (
@@ -110,7 +110,7 @@ CREATE TABLE estados_tickets (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 INSERT INTO estados_tickets (name) VALUES
 ('Nuevo'),('Diagnóstico'),('Presupuesto'),('En espera'),('En reparación'),('En pruebas'),('Listo para retirar'),('Finalizado'),('Cancelado');
--- Historial de cambios de estado por ticket
+
 CREATE TABLE ticket_estado_historial (
     id INT NOT NULL AUTO_INCREMENT,
     ticket_id INT NOT NULL,
@@ -183,7 +183,7 @@ CREATE TABLE item_ticket (
     CONSTRAINT fk_item_ticket_tecnico FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE,
     CONSTRAINT fk_item_ticket_supervisor FOREIGN KEY (supervisor_id) REFERENCES supervisores(id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
--- Historial simple (acciones generales)
+
 CREATE TABLE historial (
     id INT NOT NULL AUTO_INCREMENT,
     acciones VARCHAR(255) NOT NULL,
@@ -191,7 +191,7 @@ CREATE TABLE historial (
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
--- Pagos, Cola de correo, Ratings y Stats
+
 CREATE TABLE pagos (
     id INT NOT NULL AUTO_INCREMENT,
     ticket_id INT NOT NULL,
@@ -260,7 +260,7 @@ AFTER UPDATE ON users
 FOR EACH ROW
 BEGIN
     IF OLD.role <> NEW.role THEN
-        -- Eliminar registro del rol anterior
+        
         IF OLD.role = 'Cliente' THEN
             DELETE FROM clientes WHERE user_id = OLD.id;
         ELSEIF OLD.role = 'Tecnico' THEN
@@ -270,7 +270,7 @@ BEGIN
         ELSEIF OLD.role = 'Administrador' THEN
             DELETE FROM administradores WHERE user_id = OLD.id;
         END IF;
-        -- Insertar registro del nuevo rol
+        
         IF NEW.role = 'Cliente' THEN
             INSERT INTO clientes(user_id) VALUES (NEW.id);
         ELSEIF NEW.role = 'Tecnico' THEN

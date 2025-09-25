@@ -6,7 +6,7 @@
 	<section class="content asignar-content">
 		<section class="content">
 
-				<!-- Navegación vía Sidebar: tabs eliminadas -->
+				
 			</section>
 
 			<?php if (isset($_GET['success'])): ?>

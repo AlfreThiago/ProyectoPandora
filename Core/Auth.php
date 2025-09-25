@@ -21,7 +21,7 @@ class Auth
             exit;
         }
         $user = $_SESSION['user'];
-        // Permitir array de roles
+        
         if (is_array($requiredRoles)) {
             if (!in_array($user['role'], $requiredRoles)) {
                 echo "Acceso denegado: se requiere uno de los roles " . implode(', ', $requiredRoles) . ".";

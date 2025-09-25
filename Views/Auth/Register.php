@@ -11,7 +11,7 @@
                 </div>
             <?php endif; ?>
 
-            <!-- Formulario de registro con mismo estilo que login -->
+            
             <form class="form" action="/ProyectoPandora/Public/index.php?route=Register/Register" method="POST">
                 <div class="textbox">
                     <input type="text" name="name" autocomplete="off" required>

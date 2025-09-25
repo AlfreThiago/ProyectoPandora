@@ -30,19 +30,19 @@ class TicketController
     $this->histEstadoModel = new TicketEstadoHistorialModel($db->getConnection());
     }
 
-    // Mapa de transiciones válidas (ajustable hasta 8 estados)
+    
     private function transicionesValidas(): array {
-        // Nombres deben existir en estados_tickets
+        
         return [
             'Nuevo' => ['Diagnóstico', 'En espera', 'Cancelado'],
             'Diagnóstico' => ['Presupuesto', 'En espera'],
-            // En 'Presupuesto' no hay cambios manuales por técnico; cliente decide o supervisor publica
+            
             'Presupuesto' => [],
-            // 'En espera' usado para que supervisor publique presupuesto; técnico no cambia desde aquí
+            
             'En espera' => [],
-            // Tras reparación, ahora pasa a 'En pruebas' o 'Listo para retirar'
+            
             'En reparación' => ['En pruebas', 'Listo para retirar'],
-            // En pruebas: técnico NO finaliza directamente; supervisor define "Listo" y luego pago
+            
             'En pruebas' => ['Listo para retirar'],
             'Listo para retirar' => ['Finalizado'],
             'Finalizado' => [],
@@ -55,9 +55,9 @@ class TicketController
         return in_array($to, $map[$from] ?? [], true);
     }
 
-    // Resolver id de estado por nombre (case-insensitive)
+    
     private function estadoIdPorNombre(string $name): ?int {
-        // Comparación case-insensitive y acento-insensitive
+        
         $normalize = function(string $s): string {
             $s = trim($s);
             $map = [
@@ -93,22 +93,22 @@ class TicketController
         $tk = $this->ticketModel->ver($ticket_id);
         if (!$tk) { header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones&error=tk'); exit; }
 
-        // Obtener nombres de estado actual y nuevo
+        
         $estadoActual = $tk['estado'] ?? '';
         $nuevo = $this->estadoModel->getById($estado_id);
         if (!$nuevo) { header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones&error=estado'); exit; }
         $estadoNuevo = $nuevo['name'];
 
-        // Validar transición (y bloquear finalización por técnico)
+        
         if (!$this->puedeTransicionar($estadoActual, $estadoNuevo) || strcasecmp($estadoNuevo, 'Finalizado')===0) {
             header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=transicion');
             exit;
         }
 
-        // Regla de presupuesto: antes de "En reparación" debe existir presupuesto guardado y aprobado por el cliente
+        
         if (strcasecmp($estadoNuevo, 'En reparación') === 0) {
-            // Verificar que el total esté calculado (usa TicketLabor + items)
-            // Simplificación: si no hay items y mano_obra == 0, bloquear
+            
+            
             require_once __DIR__ . '/../Models/TicketLabor.php';
             require_once __DIR__ . '/../Models/ItemTicket.php';
             $db = new Database(); $db->connectDatabase();
@@ -122,7 +122,7 @@ class TicketController
                 header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=presupuesto');
                 exit;
             }
-            // Verificar aprobación del cliente (usaremos ticket_estado_historial con user_role=Cliente y comentario 'Aprobado')
+            
             $aprobado = false;
             $hist = $this->histEstadoModel->listByTicket($ticket_id);
             foreach ($hist as $ev) {
@@ -134,8 +134,8 @@ class TicketController
             }
         }
 
-        // Actualizar estado del ticket
-        // Obtener id de estado por nombre si fuera necesario, aquí ya lo tenemos
+        
+        
         $conn = (new Database());
         $conn->connectDatabase();
         $dbConn = $conn->getConnection();
@@ -143,14 +143,14 @@ class TicketController
         $stmt->bind_param("ii", $estado_id, $ticket_id);
         $stmt->execute();
 
-        // Registrar historial
+        
         $this->histEstadoModel->add($ticket_id, $estado_id, (int)$user['id'], $user['role'], $comentario);
 
         header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&ok=estado');
         exit;
     }
 
-    // Cliente aprueba presupuesto
+    
     public function AprobarPresupuesto() {
         $user = Auth::user();
         if (!$user || $user['role'] !== 'Cliente') {
@@ -167,7 +167,7 @@ class TicketController
         $tk = $this->ticketModel->ver($ticket_id);
         if (!$tk) { header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=ticket'); exit; }
 
-        // Validar pertenencia
+        
         $db = new Database(); $db->connectDatabase(); $conn = $db->getConnection();
         $stmtC = $conn->prepare("SELECT id FROM clientes WHERE user_id = ? LIMIT 1");
         $stmtC->bind_param("i", $user['id']);
@@ -182,21 +182,21 @@ class TicketController
             exit;
         }
 
-        // Solo si está en Presupuesto
+        
         $estadoActual = strtolower(trim($tk['estado'] ?? ''));
         if ($estadoActual !== 'presupuesto') {
             header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=estado_actual');
             exit;
         }
 
-    // Cambiar a "En reparación" directamente tras aprobación del cliente
+    
     $estadoId = $this->estadoIdPorNombre('En reparación');
         if ($estadoId) {
             $stmtU = $conn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
             $stmtU->bind_param("ii", $estadoId, $ticket_id);
             $stmtU->execute();
         } else {
-            // Si no existe, mantener estado actual para no romper
+            
             $estadoId = $this->estadoIdPorNombre('Presupuesto');
         }
 
@@ -205,7 +205,7 @@ class TicketController
         exit;
     }
 
-    // Supervisor marca ticket como "Listo para retirar"
+    
     public function MarcarListoParaRetirar() {
         $user = Auth::user();
         if (!$user || ($user['role'] ?? '') !== 'Supervisor') {
@@ -228,10 +228,10 @@ class TicketController
             $stmtU->bind_param("ii", $estadoId, $ticket_id);
             $stmtU->execute();
 
-            // Registrar historial de estado para auditoría
+            
             $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Supervisor', 'Marcado como listo para retirar');
 
-            // Notificar al cliente por correo (en cola)
+            
             require_once __DIR__ . '/../Models/MailQueue.php';
             $stmtMail = $conn->prepare("SELECT u.email FROM tickets t INNER JOIN clientes c ON c.id=t.cliente_id INNER JOIN users u ON u.id=c.user_id WHERE t.id=? LIMIT 1");
             if ($stmtMail) {
@@ -248,7 +248,7 @@ class TicketController
         exit;
     }
 
-    // Supervisor marca ticket como pagado y finaliza
+    
     public function MarcarPagadoYFinalizar() {
         $user = Auth::user();
         if (!$user || ($user['role'] ?? '') !== 'Supervisor') {
@@ -264,11 +264,11 @@ class TicketController
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=ticket');
             exit;
         }
-        // Datos de pago (opcionales; si no viene monto, se calcula del presupuesto)
+        
         $amount = isset($_POST['amount']) ? (float)$_POST['amount'] : null;
         $method = strtoupper(trim($_POST['method'] ?? 'EFECTIVO'));
         $reference = trim($_POST['reference'] ?? '');
-        // Validar que el cliente haya aprobado el presupuesto
+        
         require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
         $dbA = new Database(); $dbA->connectDatabase(); $histM = new TicketEstadoHistorialModel($dbA->getConnection());
         $aprobado = false; foreach ($histM->listByTicket($ticket_id) as $ev) { if ($ev['user_role']==='Cliente' && stripos($ev['comentario'] ?? '', 'aprob') !== false) { $aprobado = true; break; } }
@@ -276,12 +276,12 @@ class TicketController
             header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&error=aprobacion');
             exit;
         }
-        // Primero aseguramos que esté en Listo para retirar
+        
         $estadoListo = $this->estadoIdPorNombre('Listo para retirar');
         $estadoFinal = $this->estadoIdPorNombre('Finalizado');
         $db = new Database(); $db->connectDatabase(); $conn = $db->getConnection();
         if ($estadoListo && $estadoFinal) {
-            // Si aún no está en "Listo para retirar", moverlo
+            
             $stmtC = $conn->prepare("SELECT e.name as estado FROM tickets t INNER JOIN estados_tickets e ON e.id=t.estado_id WHERE t.id=? LIMIT 1");
             $stmtC->bind_param('i', $ticket_id);
             $stmtC->execute();
@@ -292,18 +292,18 @@ class TicketController
                 $stmtU1->bind_param('ii', $estadoListo, $ticket_id);
                 $stmtU1->execute();
 
-                // Registrar historial por cambio a "Listo para retirar" previo a finalizar
+                
                 $this->histEstadoModel->add($ticket_id, (int)$estadoListo, (int)$user['id'], 'Supervisor', 'Marcado como listo para retirar previo a pago');
             }
-            // Finalizar
+            
             $stmtU2 = $conn->prepare("UPDATE tickets SET estado_id = ?, fecha_cierre = NOW() WHERE id = ?");
             $stmtU2->bind_param('ii', $estadoFinal, $ticket_id);
             $stmtU2->execute();
 
-            // Registrar historial de finalización con pago
+            
             $this->histEstadoModel->add($ticket_id, (int)$estadoFinal, (int)$user['id'], 'Supervisor', 'Pago registrado y ticket finalizado');
 
-            // Registrar pago (calcular total si no se informó amount)
+            
             require_once __DIR__ . '/../Models/ItemTicket.php';
             require_once __DIR__ . '/../Models/TicketLabor.php';
             require_once __DIR__ . '/../Models/Pago.php';
@@ -322,7 +322,7 @@ class TicketController
         exit;
     }
 
-    // Cliente rechaza presupuesto
+    
     public function RechazarPresupuesto() {
         $user = Auth::user();
         if (!$user || $user['role'] !== 'Cliente') {
@@ -339,7 +339,7 @@ class TicketController
         $tk = $this->ticketModel->ver($ticket_id);
         if (!$tk) { header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=ticket'); exit; }
 
-        // Validar pertenencia
+        
         $db = new Database(); $db->connectDatabase(); $conn = $db->getConnection();
         $stmtC = $conn->prepare("SELECT id FROM clientes WHERE user_id = ? LIMIT 1");
         $stmtC->bind_param("i", $user['id']);
@@ -354,14 +354,14 @@ class TicketController
             exit;
         }
 
-        // Solo si está en Presupuesto
+        
         $estadoActual = strtolower(trim($tk['estado'] ?? ''));
         if ($estadoActual !== 'presupuesto') {
             header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=estado_actual');
             exit;
         }
 
-        // Cambiar a "Cancelado" si existe, y registrar historial con comentario de rechazo
+        
         $estadoId = $this->estadoIdPorNombre('Cancelado') ?? $this->estadoIdPorNombre('Finalizado');
         if ($estadoId) {
             $stmtU = $conn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
@@ -400,7 +400,7 @@ class TicketController
             exit;
         }
 
-        // Solo permite acceso a roles válidos
+        
     $rolesPermitidos = ['Supervisor', 'Tecnico', 'Cliente'];
         if (!in_array($user['role'], $rolesPermitidos)) {
             header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
@@ -409,7 +409,7 @@ class TicketController
 
         $ticket = $this->ticketModel->ver($id);
 
-        // Si es cliente, verifica que el ticket le pertenezca
+        
         if ($user['role'] === 'Cliente') {
             if ($ticket['cliente'] !== $user['name']) {
                 header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket');
@@ -442,20 +442,20 @@ class TicketController
         $tk = $ticketModel->ver($ticket_id);
         if (!$tk) { header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=ticket'); exit; }
 
-        // Validar que el estado sea Finalizado/Cerrado antes de permitir calificar
+        
         $estadoTxt = strtolower(trim($tk['estado'] ?? ''));
         if (!in_array($estadoTxt, ['finalizado', 'cerrado'], true)) {
             header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&error=estado');
             exit;
         }
 
-        // Resolver ids relacionales
+        
         $conn = $db->getConnection();
         $stmtC = $conn->prepare("SELECT id FROM clientes WHERE user_id = ? LIMIT 1");
         $stmtC->bind_param("i", $user['id']);
         $stmtC->execute();
         $cliente = $stmtC->get_result()->fetch_assoc();
-        // Obtener tecnico y cliente propietario del ticket
+        
         $stmtT = $conn->prepare("SELECT t.tecnico_id, t.cliente_id FROM tickets t WHERE t.id = ? LIMIT 1");
         $stmtT->bind_param("i", $ticket_id);
         $stmtT->execute();
@@ -463,7 +463,7 @@ class TicketController
         $tecnico_id = $rowT['tecnico_id'] ?? null;
         $owner_cliente_id = $rowT['cliente_id'] ?? null;
 
-        // Validar pertenencia del ticket y existencia de técnico asignado
+        
         if (!$cliente || !$tecnico_id || (int)$owner_cliente_id !== (int)$cliente['id']) {
             header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=forbidden');
             exit;
@@ -474,7 +474,7 @@ class TicketController
         exit;
     }
 
-    // Supervisor publica presupuesto: cambia estado a 'Presupuesto' y registra historial con total
+    
     public function PublicarPresupuesto() {
         $user = Auth::user();
         if (!$user || ($user['role'] ?? '') !== 'Supervisor') {
@@ -491,7 +491,7 @@ class TicketController
             exit;
         }
 
-        // Calcular total: items + mano de obra
+        
         require_once __DIR__ . '/../Models/ItemTicket.php';
         require_once __DIR__ . '/../Models/TicketLabor.php';
         $db = new Database(); $db->connectDatabase(); $conn = $db->getConnection();
@@ -502,28 +502,28 @@ class TicketController
         foreach ($items as $it) { $subtotal += (float)($it['valor_total'] ?? 0); }
         $labor = $laborModel->getByTicket($ticket_id);
         $mano = (float)($labor['labor_amount'] ?? 0);
-        // Validar que el presupuesto esté listo: requiere items y mano de obra definida
+        
         if (empty($items) || $mano <= 0) {
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&error=presupuesto_incompleto');
             exit;
         }
         $total = $subtotal + $mano;
 
-        // Cambiar a estado Presupuesto si existe
+        
         $estadoId = $this->estadoIdPorNombre('Presupuesto');
         if ($estadoId) {
             $stmtU = $conn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
             $stmtU->bind_param("ii", $estadoId, $ticket_id);
             $stmtU->execute();
         } else {
-            $estadoId = $this->estadoIdPorNombre('En espera') ?? 0; // fallback visual
+            $estadoId = $this->estadoIdPorNombre('En espera') ?? 0; 
         }
 
-        // Historial: publicar presupuesto con total
+        
         $comentario = 'Presupuesto publicado. Total $' . number_format($total, 2, '.', '');
         $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Supervisor', $comentario);
 
-        // Notificar al cliente por correo en cola
+        
         require_once __DIR__ . '/../Models/MailQueue.php';
         $stmtMail = $conn->prepare("SELECT u.email FROM tickets t INNER JOIN clientes c ON c.id=t.cliente_id INNER JOIN users u ON u.id=c.user_id WHERE t.id=? LIMIT 1");
         if ($stmtMail) {
@@ -564,7 +564,7 @@ class TicketController
 
         $estado_id = $_POST['estado_id'] ?? null;
         $tecnico_id = $_POST['tecnico_id'] ?? null;
-        // Normalizar valores vacíos a NULL para no romper FKs
+        
         if ($estado_id === '' || $estado_id === null) {
             $estado_id = null;
         } else {
@@ -576,15 +576,15 @@ class TicketController
             $tecnico_id = (int)$tecnico_id;
         }
 
-        // Obtener el técnico anterior (si existía)
+        
         $ticketActual = $this->ticketModel->ver($id);
         $old_tecnico_id = $ticketActual['tecnico_id'] ?? null;
 
         $this->ticketModel->actualizarCompleto($id, $descripcion, $estado_id, $tecnico_id);
 
-        // Nota: la disponibilidad del técnico se gestiona desde su perfil por el propio técnico.
+        
 
-        // Redirección según rol
+        
         if ($rol === 'Cliente') {
             header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket');
         } else {
@@ -601,7 +601,7 @@ class TicketController
             exit;
         }
 
-    $isAdmin = false; // Administrador no gestiona tickets
+    $isAdmin = false; 
         $clientes = [];
         $cliente_id = null;
 
@@ -627,7 +627,7 @@ class TicketController
             }
         }
 
-        // Verifica que existan estados
+        
         $estados = $this->estadoModel->getAllEstados();
         if (empty($estados)) {
             $errorMsg = "Primero debes crear al menos un estado antes de poder crear un ticket.";
@@ -635,7 +635,7 @@ class TicketController
             return;
         }
 
-        // Verifica que existan dispositivos
+        
         if (empty($data)) {
             $errorMsg = "Primero debes crear al menos un dispositivo antes de poder crear un ticket.";
             include __DIR__ . '/../Views/Ticket/CrearTicket.php';
@@ -658,7 +658,7 @@ class TicketController
             return;
         }
 
-    $isAdmin = false; // Administrador no gestiona tickets
+    $isAdmin = false; 
         if ($isAdmin && isset($_POST['cliente_id'])) {
             $cliente_id = $_POST['cliente_id'];
         } else {
@@ -679,12 +679,12 @@ class TicketController
 
         $this->ticketModel->crear($cliente_id, $dispositivo_id, $descripcion);
 
-        // Historial: creación de ticket
+        
         $accion = "Creación de ticket";
         $detalle = "Usuario {$user['name']} creó un ticket para el dispositivo ID {$dispositivo_id} con descripción: {$descripcion}";
         $this->historialController->agregarAccion($accion, $detalle);
 
-        // Redirección según rol
+        
         if ($user['role'] === 'Cliente') {
             header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket');
         } else {
@@ -740,11 +740,11 @@ class TicketController
             return;
         }
 
-        // ... lógica normal para mostrar el formulario ...
+        
         include_once __DIR__ . '/../Views/Inventario/CrearItem.php';
     }
 
-    // Devuelve el estado actual del ticket en JSON para refresco cliente
+    
     public function EstadoJson()
     {
         $id = (int)($_GET['id'] ?? 0);
@@ -779,7 +779,7 @@ class TicketController
             return;
         }
 
-        // Autorización básica: supervisor/tecnico ven todo; cliente solo si es suyo
+        
         if ($user['role'] === 'Cliente') {
             if (($tk['cliente'] ?? '') !== ($user['name'] ?? '')) {
                 http_response_code(403);

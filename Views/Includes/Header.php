@@ -7,14 +7,14 @@ $rol = $user['role'] ?? '';
 $name = $user['name'] ?? '';
 $email = $user['email'] ?? '';
 $avatar = $user['img_perfil'] ?? '';
-// Normalizar: si no viene ruta válida, usar default de imgPerfil
+
 $defaultAvatar = '/ProyectoPandora/Public/img/imgPerfil/default.png';
 $fallbackAvatar = '/ProyectoPandora/Public/img/Innovasys.png';
-// Si avatar es relativo a imgPerfil (solo nombre)
+
 if ($avatar && strpos($avatar, '/ProyectoPandora/') !== 0) {
 	$avatar = '/ProyectoPandora/Public/img/imgPerfil/' . ltrim($avatar, '/');
 }
-// Validar existencia en disco; si no existe, usar default y si tampoco existe, usar fallback
+
 $avatarFs = rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') . $avatar;
 if (!$avatar || !is_file($avatarFs)) {
 	$avatar = $defaultAvatar;
@@ -24,15 +24,15 @@ if (!$avatar || !is_file($avatarFs)) {
 	}
 }
 
-// Detectar ruta actual
+
 $route = $_GET['route'] ?? '';
 
 function headerMeta(string $route, string $rol): array {
-	// Default
+	
 	$title = 'Panel';
 	$subtitle = '';
 	switch (true) {
-		// Rutas finales preferidas
+		
 		case stripos($route, 'Admin/ListarUsers') === 0:
 			$title = 'Usuarios';
 			$subtitle = 'Administración de cuentas';
@@ -81,7 +81,7 @@ function headerMeta(string $route, string $rol): array {
 			$title = 'Dispositivos';
 			$subtitle = 'Gestión de dispositivos y categorías';
 			break;
-		// Compatibilidad con rutas antiguas de paneles
+		
 		case stripos($route, 'Admin/PanelAdmin') === 0:
 			$title = 'Usuarios';
 			$subtitle = 'Administración de cuentas';

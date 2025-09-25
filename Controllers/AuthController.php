@@ -23,22 +23,22 @@ class AuthController
             $userModel = new UserModel($db->getConnection());
             $user = $userModel->findByEmail($email);
 
-            // Autoreparar seed del admin si el hash no corresponde pero las credenciales son las esperadas
+            
             if ($user && $email === 'admin@admin.com' && $password === '1234' && !password_verify($password, $user['password'])) {
                 $newHash = password_hash('1234', PASSWORD_DEFAULT);
                 $conn = $db->getConnection();
                 $stmt = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
                 $stmt->bind_param("si", $newHash, $user['id']);
                 $stmt->execute();
-                // Refrescar el usuario con el nuevo hash
+                
                 $user = $userModel->findByEmail($email);
             }
 
             if ($user && password_verify($password, $user['password'])) {
-                // Asegurar fila en tabla de rol si es Administrador
+                
                 if (($user['role'] ?? '') === 'Administrador') {
                     $conn = $db->getConnection();
-                    // Crear si no existe
+                    
                     $stmtAdm = $conn->prepare("INSERT INTO administradores (user_id) SELECT ? WHERE NOT EXISTS (SELECT 1 FROM administradores WHERE user_id = ?) ");
                     $stmtAdm->bind_param("ii", $user['id'], $user['id']);
                     $stmtAdm->execute();

@@ -28,7 +28,7 @@ class SupervisorController {
         $tecnicos = $userModel->getAllTecnicos();
         $ticketsSinTecnico = $ticketModel->getTicketsSinTecnico();
 
-        // Calcular rating promedio y ordenar por prioridad (mayor rating primero)
+        
         foreach ($tecnicos as &$tec) {
             $tecId = (int)($tec['id'] ?? 0);
             list($avg, $count) = $ratingModel->getAvgForTecnico($tecId);
@@ -38,8 +38,8 @@ class SupervisorController {
         unset($tec);
         usort($tecnicos, function($a,$b){
             $ra = $a['rating_avg'] ?? 0; $rb = $b['rating_avg'] ?? 0;
-            if ($rb <=> $ra) return ($rb <=> $ra); // desc por rating
-            // tie-break: menos activos primero
+            if ($rb <=> $ra) return ($rb <=> $ra); 
+            
             return (int)($a['tickets_activos'] ?? 0) <=> (int)($b['tickets_activos'] ?? 0);
         });
 
@@ -66,7 +66,7 @@ class SupervisorController {
         $ticketModel = new Ticket($db->getConnection());
         $userModel = new UserModel($db->getConnection());
 
-        // Verificar que el ticket no tenga técnico asignado actualmente
+        
         $conn = $db->getConnection();
         $stmtChk = $conn->prepare("SELECT tecnico_id FROM tickets WHERE id = ? LIMIT 1");
         if ($stmtChk) {
@@ -79,7 +79,7 @@ class SupervisorController {
             }
         }
 
-        // Evitar asignar un ticket que ya tenga técnico
+        
         $conn = $db->getConnection();
         $stmtChk = $conn->prepare("SELECT tecnico_id FROM tickets WHERE id = ? LIMIT 1");
         if ($stmtChk) {
@@ -92,17 +92,17 @@ class SupervisorController {
             }
         }
 
-        // Reglas de honor y límites
+        
         $conn = $db->getConnection();
-        // Obtener rating promedio del técnico
+        
         $ratingAvg = 0; $ratingCount = 0; $starsRounded = 0;
         $ratingRes = $conn->query("SELECT AVG(stars) avg_stars, COUNT(*) cnt FROM ticket_ratings WHERE tecnico_id = ".(int)$tecnico_id);
         if ($ratingRes) { $r = $ratingRes->fetch_assoc(); $ratingAvg = (float)($r['avg_stars'] ?? 0); $ratingCount = (int)($r['cnt'] ?? 0); }
         $starsRounded = (int)round($ratingAvg ?: 0);
-        // Mapear límites
+        
         $limits = [1=>3, 2=>5, 3=>10, 4=>15, 5=>PHP_INT_MAX];
-        $limit = $limits[$starsRounded ?: 0] ?? 5; // por defecto conservador
-        // Tickets activos del técnico
+        $limit = $limits[$starsRounded ?: 0] ?? 5; 
+        
         $resAct = $conn->query("SELECT COUNT(*) c FROM tickets WHERE tecnico_id = ".(int)$tecnico_id." AND fecha_cierre IS NULL");
         $activos = $resAct ? (int)$resAct->fetch_assoc()['c'] : 0;
         if ($activos >= $limit) {
@@ -112,27 +112,27 @@ class SupervisorController {
 
         $ok = $ticketModel->asignarTecnico((int)$ticket_id, (int)$tecnico_id);
         if ($ok) {
-            // Asociar supervisor actual al ticket si no está seteado
+            
             $supervisorUserId = $_SESSION['user']['id'] ?? null;
             if ($supervisorUserId) {
-                // Obtener supervisor_id real desde user_id
+                
                 $conn = $db->getConnection();
                 $stmt = $conn->prepare("SELECT id FROM supervisores WHERE user_id = ? LIMIT 1");
-            // Validar límite por honores
+            
             $ratingModel = new RatingModel($db->getConnection());
             list($avg, $rcount) = $ratingModel->getAvgForTecnico((int)$tecnico_id);
-            $stars = $avg ? (int)round((float)$avg) : 3; // por defecto 3 si no tiene calificaciones
-            $limit = null; // null = sin límite
-            if ($stars <= 1) $limit = 3; elseif ($stars === 2) $limit = 5; elseif ($stars === 3) $limit = 10; elseif ($stars === 4) $limit = 15; else $limit = null; // 5 => sin límite
+            $stars = $avg ? (int)round((float)$avg) : 3; 
+            $limit = null; 
+            if ($stars <= 1) $limit = 3; elseif ($stars === 2) $limit = 5; elseif ($stars === 3) $limit = 10; elseif ($stars === 4) $limit = 15; else $limit = null; 
 
-            // Contar activos actuales del técnico
+            
             $stmtCnt = $conn->prepare("SELECT COUNT(*) AS c FROM tickets WHERE tecnico_id = ? AND fecha_cierre IS NULL");
             $stmtCnt->bind_param("i", $tecnico_id);
             $stmtCnt->execute();
             $activos = (int)($stmtCnt->get_result()->fetch_assoc()['c'] ?? 0);
 
             if ($limit !== null && $activos >= $limit) {
-                // Forzar estado Ocupado y bloquear asignación
+                
                 $userModel->setTecnicoEstado((int)$tecnico_id, 'Ocupado');
                 header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=Limite de tickets activos alcanzado para este técnico');
                 exit;
@@ -146,7 +146,7 @@ class SupervisorController {
                     }
                 }
             }
-            // Forzar estado Ocupado si alcanzó límite tras la asignación (excepto 5★)
+            
             if ($starsRounded < 5) {
                 $resAct = $conn->query("SELECT COUNT(*) c FROM tickets WHERE tecnico_id = ".(int)$tecnico_id." AND fecha_cierre IS NULL");
                 $activos = $resAct ? (int)$resAct->fetch_assoc()['c'] : 0;
@@ -155,7 +155,7 @@ class SupervisorController {
                 }
             }
 
-                // Si llega al nuevo límite tras esta asignación, forzar Ocupado (excepto 5★)
+                
                 if ($limit !== null) {
                     $activos += 1;
                     if ($activos >= $limit) {
@@ -192,15 +192,15 @@ class SupervisorController {
         $itemTicketModel = new ItemTicketModel($db->getConnection());
         $laborModel = new TicketLaborModel($db->getConnection());
 
-        // Soporta filtro por ticket_id opcional
+        
         $ticket_id = isset($_GET['ticket_id']) ? (int)$_GET['ticket_id'] : 0;
         $tickets = $ticket_id ? [$ticketModel->ver($ticket_id)] : $ticketModel->getAllTickets();
         if (!$ticket_id) {
-            // getAllTickets devuelve array ya, pero ver() devuelve array asociativo
+            
             $tickets = is_array($tickets) && isset($tickets[0]) ? $tickets : $tickets;
         }
 
-        // Normalizar tickets a array indexado
+        
         if ($ticket_id && $tickets && isset($tickets['id'])) {
             $tickets = [$tickets];
         }
@@ -212,7 +212,7 @@ class SupervisorController {
             $items = $itemTicketModel->listarPorTicket($tid);
             $subtotal_items = 0.0;
             foreach ($items as $it) {
-                // valor_total ya es cantidad * valor_unitario al registrar
+                
                 $subtotal_items += (float)$it['valor_total'];
             }
             $labor = $laborModel->getByTicket($tid);

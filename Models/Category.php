@@ -8,7 +8,7 @@ class CategoryModel
         $this->conn = $dbConnection;
     }
 
-    // CRUD Categorías de Dispositivos
+    
     public function createCategory($nombreCategoria)
     {
         $stmt = $this->conn->prepare("INSERT INTO categorias (name) VALUES (?)");
@@ -69,7 +69,7 @@ class CategoryModel
         return false;
     }
 
-    // CRUD Categorías de Inventario
+    
     public function crearInventarioCategory($name)
     {
         $stmt = $this->conn->prepare("INSERT INTO categorias_inventario (name) VALUES (?)");

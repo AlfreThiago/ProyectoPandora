@@ -9,8 +9,8 @@ class InventarioModel
         $this->conn = $db;
     }
 
-    // Listar todos los items de inventario
-    public function listar()
+    
+    public function listar(): array
     {
         $sql = "SELECT i.id, c.name AS categoria, i.name_item, i.valor_unitario, i.descripcion, i.foto_item, i.stock_actual, i.stock_minimo, i.fecha_creacion
                 FROM inventarios i
@@ -26,8 +26,8 @@ class InventarioModel
         return $data;
     }
 
-    // Listado con filtros opcionales por categoría y búsqueda por nombre
-    public function listarFiltrado($categoria_id = null, $buscar = '', $limit = null, $offset = null, $sort = 'i.id', $dir = 'DESC')
+    
+    public function listarFiltrado($categoria_id = null, $buscar = '', $limit = null, $offset = null, $sort = 'i.id', $dir = 'DESC'): array
     {
         $sql = "SELECT i.id, c.name AS categoria, i.name_item, i.valor_unitario, i.foto_item, i.stock_actual, i.stock_minimo
                 FROM inventarios i
@@ -59,7 +59,7 @@ class InventarioModel
         if ($types) {
             $stmt = $this->conn->prepare($sql);
             if (!$stmt) return [];
-            // Convertir params a referencias para bind_param
+            
             $bindParams = [];
             $bindParams[] = & $types;
             foreach ($params as $k => $v) {
@@ -80,7 +80,7 @@ class InventarioModel
         return $data;
     }
 
-    public function contarFiltrado($categoria_id = null, $buscar = '')
+    public function contarFiltrado($categoria_id = null, $buscar = ''): int
     {
         $sql = "SELECT COUNT(*) AS total
                 FROM inventarios i
@@ -121,8 +121,8 @@ class InventarioModel
         return 0;
     }
 
-    // Crear un nuevo item de inventario
-    public function crear($categoria_id, $name_item, $valor_unitario, $descripcion, $foto_item, $stock_actual, $stock_minimo)
+    
+    public function crear($categoria_id, $name_item, $valor_unitario, $descripcion, $foto_item, $stock_actual, $stock_minimo): bool
     {
         $sql = "INSERT INTO inventarios (categoria_id, name_item, valor_unitario, descripcion, foto_item, stock_actual, stock_minimo)
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -134,8 +134,8 @@ class InventarioModel
         return false;
     }
 
-    // Eliminar un item de inventario
-    public function eliminar($id)
+    
+    public function eliminar($id): bool
     {
         $stmt = $this->conn->prepare("DELETE FROM inventarios WHERE id = ?");
         if ($stmt) {
@@ -145,8 +145,8 @@ class InventarioModel
         return false;
     }
 
-    // Obtener un item por ID
-    public function obtenerPorId($id)
+    
+    public function obtenerPorId($id): ?array
     {
         $stmt = $this->conn->prepare("SELECT * FROM inventarios WHERE id = ?");
         if ($stmt) {
@@ -157,8 +157,8 @@ class InventarioModel
         return null;
     }
 
-    // Actualizar un item de inventario
-    public function actualizar($id, $categoria_id, $name_item, $valor_unitario, $descripcion, $foto_item, $stock_actual, $stock_minimo)
+    
+    public function actualizar($id, $categoria_id, $name_item, $valor_unitario, $descripcion, $foto_item, $stock_actual, $stock_minimo): bool
     {
         $sql = "UPDATE inventarios SET categoria_id=?, name_item=?, valor_unitario=?, descripcion=?, foto_item=?, stock_actual=?, stock_minimo=?
                 WHERE id=?";
@@ -170,8 +170,8 @@ class InventarioModel
         return false;
     }
 
-    // Buscar un item por categoría y nombre (para controlar duplicados lógicos)
-    public function findByCategoryAndName($categoria_id, $name_item)
+    
+    public function findByCategoryAndName($categoria_id, $name_item): ?array
     {
         $sql = "SELECT * FROM inventarios WHERE categoria_id = ? AND name_item = ? LIMIT 1";
         $stmt = $this->conn->prepare($sql);
@@ -184,8 +184,8 @@ class InventarioModel
         return null;
     }
 
-    // Sumar cantidad al stock actual de un item existente
-    public function sumarStock($id, $cantidad)
+    
+    public function sumarStock($id, $cantidad): bool
     {
         $sql = "UPDATE inventarios SET stock_actual = stock_actual + ? WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
@@ -196,10 +196,10 @@ class InventarioModel
         return false;
     }
 
-    // Reducir stock si hay suficiente cantidad
-    public function reducirStock($id, $cantidad)
+    
+    public function reducirStock($id, $cantidad): bool
     {
-        // Verificar stock suficiente
+        
         $stmtSel = $this->conn->prepare("SELECT stock_actual FROM inventarios WHERE id = ?");
         if (!$stmtSel) return false;
         $stmtSel->bind_param("i", $id);
@@ -217,8 +217,8 @@ class InventarioModel
         return false;
     }
 
-    // Listar todas las categorías de inventario
-    public function listarCategorias()
+    
+    public function listarCategorias(): array
     {
         $sql = "SELECT id, name FROM categorias_inventario ORDER BY name";
         $result = $this->conn->query($sql);

@@ -50,7 +50,7 @@
                                 <div class="presu-totales">
                                     <div>Subtotal repuestos: <strong>$<?= number_format($p['subtotal_items'], 2, '.', ',') ?></strong></div>
                                     <?php 
-                                        // Control edición mano de obra: solo en Diagnóstico y si aún no está definida
+                                        
                                         $sEstado = strtolower(trim($t['estado'] ?? ''));
                                         $laborDef = (float)($p['mano_obra'] ?? 0) > 0;
                                         $editable = (in_array($sEstado, ['diagnóstico','diagnostico']) && !$laborDef);

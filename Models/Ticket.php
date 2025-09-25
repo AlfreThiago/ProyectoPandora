@@ -86,7 +86,7 @@ class Ticket
     }
     public function obtenerDispositivosPorCliente($cliente_id)
     {
-        // Busca el user_id correspondiente al cliente_id
+        
         $sql = "SELECT d.id, d.marca, d.modelo, d.descripcion_falla 
                 FROM dispositivos d
                 INNER JOIN clientes c ON d.user_id = c.user_id
@@ -142,7 +142,7 @@ class Ticket
 
     public function actualizarCompleto($id, $descripcion, $estado_id, $tecnico_id)
     {
-        // Construir SQL dinámico: si $estado_id es NULL, no lo tocamos para evitar violar FK o poner NULL en NOT NULL
+        
         $campos = [ 'descripcion_falla = ?' ];
         $types = 's';
         $params = [ $descripcion ];
@@ -153,11 +153,11 @@ class Ticket
             $params[] = (int)$estado_id;
         }
 
-        // tecnico_id puede ser NULL (columna admite NULL); lo seteamos explícitamente aunque sea NULL
+        
         $campos[] = 'tecnico_id = ?';
         $types .= 'i';
-        // Para bind_param, usar NULL literal con tipo 'i' está permitido; MySQL lo interpreta como NULL
-        $params[] = $tecnico_id; // puede ser int o NULL
+        
+        $params[] = $tecnico_id; 
 
         $sql = 'UPDATE tickets SET ' . implode(', ', $campos) . ' WHERE id = ?';
         $types .= 'i';
@@ -165,7 +165,7 @@ class Ticket
 
         $stmt = $this->conn->prepare($sql);
         if (!$stmt) return false;
-        // Desempaquetar parámetros
+        
         $stmt->bind_param($types, ...$params);
         return $stmt->execute();
     }

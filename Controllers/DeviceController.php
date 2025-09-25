@@ -32,7 +32,7 @@ class DeviceController
             exit;
         }
         if ($user['role'] === 'Administrador') {
-            // Admin no puede ver dispositivos
+            
             header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
             exit;
         }
@@ -59,7 +59,7 @@ class DeviceController
             exit;
         }
         if ($user['role'] === 'Administrador') {
-            // Admin no puede crear dispositivos
+            
             header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
             exit;
         }
@@ -67,7 +67,7 @@ class DeviceController
         $clientes = [];
         $categorias = $this->categoryModel->getAllCategories();
 
-        // Verifica que existan categorías
+        
         if (empty($categorias)) {
             $errorMsg = "Primero debes crear al menos una categoría antes de poder agregar un dispositivo.";
             include_once __DIR__ . '/../Views/Device/CrearDevice.php';
@@ -119,7 +119,7 @@ class DeviceController
                 $detalle = "Usuario {$user['name']} agregó el dispositivo {$marca} {$modelo}";
                 $this->historialController->agregarAccion($accion, $detalle);
 
-                // Redirigir a la vista del cliente con sus dispositivos
+                
                 header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice&success=1');
                 exit;
             } else {
@@ -193,7 +193,7 @@ class DeviceController
 
     public function ActualizarDevice()
     {
-        // Admin no puede editar dispositivos
+        
         Auth::checkRole(['Supervisor', 'Tecnico', 'Cliente']);
         $u = Auth::user();
         if ($u && $u['role'] === 'Administrador') {
@@ -255,7 +255,7 @@ class DeviceController
             exit;
         }
         if ($this->deviceModel->deleteDevice($deviceId)) {
-            // Guardar en historial
+            
             $accion = "Eliminar dispositivo";
             $detalle = "Usuario {$user['name']} eliminó el dispositivo con ID: $deviceId";
             $this->historialController->agregarAccion($accion, $detalle);
@@ -281,7 +281,7 @@ class DeviceController
             exit;
         }
         if ($this->categoryModel->deleteCategory($categoryId)) {
-            //Guardar en Historial
+            
             $accion = "Se Elimino una Categoria";
             $detalle = "Usuario {$user['name']} elimino la categoria con ID: $categoryId";
             $this->historialController->agregarAccion($accion, $detalle);

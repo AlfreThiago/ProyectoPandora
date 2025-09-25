@@ -1,9 +1,9 @@
 <?php
 
 return [
-    //Rutas Funcionales y Logicas 
-    //
-    //Ruta por Defecto Index-Home
+    
+    
+    
     'Default/Index' => [
         'controller' => 'Default',
         'action' => 'index'
@@ -16,9 +16,9 @@ return [
         'controller' => 'Default',
         'action' => 'perfil'
     ],
-    //
-    //Auth del Login 
-    //Register el Registrar
+    
+    
+    
     'Auth/Login' => [
         'controller' => 'Auth',
         'action' => 'Login'
@@ -35,9 +35,9 @@ return [
         'controller' => 'Auth',
         'action' => 'Logout'
     ],
-    //
-    //
-    //Admin
+    
+    
+    
     'Admin/PanelAdmin' => [
         'controller' => 'Admin',
         'action' => 'PanelAdmin'
@@ -70,9 +70,9 @@ return [
         'controller' => 'Admin',
         'action' => 'DeleteUser'
     ],
-    //
-    //
-    //Supervisor
+    
+    
+    
     'Supervisor/PanelSupervisor'=> [
         'controller' => 'Supervisor',
         'action' => 'PanelSupervisor'
@@ -93,9 +93,9 @@ return [
         'controller' => 'Supervisor',
         'action' => 'Presupuestos'
     ],
-    //
-    //
-    //Tecnico
+    
+    
+    
         'Tecnico/PanelTecnico' => [
         'controller' => 'Tecnico',
         'action' => 'PanelTecnico'
@@ -120,9 +120,9 @@ return [
         'controller' => 'Tecnico',
         'action' => 'ActualizarStats'
     ],
-    //
-    //
-    //Cliente
+    
+    
+    
     'Cliente/PanelCliente' => [
         'controller' => 'Cliente',
         'action' => 'PanelCliente'
@@ -135,9 +135,9 @@ return [
         'controller' => 'Cliente',
         'action' => 'MisTicket'
     ],    
-    //
-    //
-    //Device
+    
+    
+    
     'Device/ListarDevice' => [
         'controller' => 'Device',
         'action' => 'listarDevice'
@@ -174,16 +174,16 @@ return [
         'controller' => 'Device',
         'action' => 'deleteCategory'
     ],
-    //
-    //
-    //Historial
+    
+    
+    
     'Historial/ListarHistorial' => [
         'controller' => 'Historial',
         'action' => 'listarHistorial'
     ],
-    //
-    //
-    //EstadoTicket
+    
+    
+    
     'EstadoTicket/Crear' => [
         'controller' => 'EstadoTicket',
         'action' => 'crear'
@@ -204,9 +204,9 @@ return [
         'controller' => 'EstadoTicket',
         'action' => 'eliminar'        
     ],    
-    //
-    //
-    //Ticket
+    
+    
+    
     'Ticket/Agregar' => [
         'controller' => 'Ticket',
         'action' => 'mostrarCrear'
@@ -271,14 +271,14 @@ return [
         'controller' => 'Ticket',
         'action' => 'eliminar'
     ],
-    //
+    
     'Dash/Ajustes' => [
         'controller' => 'Auth',
         'action' => 'Ajustes'
     ],
-    //
-    //
-    //Inventario
+    
+    
+    
     'Inventario/ListarItem' => [
         'controller' => 'Inventario',
         'action' => 'listarInventario'

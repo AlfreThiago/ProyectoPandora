@@ -9,13 +9,13 @@
                 <form id="formActualizar" method="POST" action="/ProyectoPandora/Public/index.php?route=Ticket/Actualizar">
                     <input type="hidden" name="id" value="<?= htmlspecialchars($ticket['id'] ?? '') ?>">
 
-                    <!-- Descripción editable por todos -->
+                    
                     <p class="block">
                         <label for="descripcionFalla">Descripción de la falla</label>
                         <textarea name="descripcion_falla" id="descripcionFalla" rows="3" required><?= htmlspecialchars($ticket['descripcion_falla'] ?? $ticket['descripcion'] ?? '') ?></textarea>
                     </p>
 
-                    <!-- Si es cliente, puede actualizar datos del dispositivo -->
+                    
                     <?php if ($rol === 'Cliente'): ?>
                         <p>
                             <label for="marca">Marca del dispositivo</label>
@@ -28,7 +28,7 @@
                         </p>
                     <?php endif; ?>
 
-                    <!-- Estado editable por Técnico, Supervisor y Administrador -->
+                    
                     <?php if (in_array($rol, ['Tecnico', 'Supervisor', 'Administrador'])): ?>
                         <p>
                             <label for="estado_id">Estado del ticket</label>
@@ -42,7 +42,7 @@
                         </p>
                     <?php endif; ?>
 
-                        <!-- Asignar técnico solo para Supervisor -->
+                        
                         <?php if (in_array($rol, ['Supervisor'])): ?>
                         <p>
                             <label for="tecnico_id">Asignar Técnico</label>

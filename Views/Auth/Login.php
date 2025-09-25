@@ -5,7 +5,7 @@
             <h2 class="bienvenida">Bienvenidos a <strong>Innovasys</strong></h2>
             <h3>Iniciar Sesión</h3>
 
-            <!-- Formulario con rutas y lógica del login viejo -->
+            
             <form class="form" action="/ProyectoPandora/Public/index.php?route=Auth/Login" method="POST">
                 <div class="textbox">
                     <input type="email" name="email" required>

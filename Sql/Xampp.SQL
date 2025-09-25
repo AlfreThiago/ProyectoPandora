@@ -1,8 +1,8 @@
 SET FOREIGN_KEY_CHECKS = 0;
--- Eliminar triggers si existen para re-ejecución segura
+
 DROP TRIGGER IF EXISTS trigger_insertar_usuario_por_rol;
 DROP TRIGGER IF EXISTS trigger_actualizar_usuario_por_rol;
--- Primero eliminar tablas que dependen de otras (orden seguro)
+
 DROP TABLE IF EXISTS ticket_estado_historial;
 DROP TABLE IF EXISTS pagos;
 DROP TABLE IF EXISTS ticket_ratings;
@@ -35,7 +35,7 @@ CREATE TABLE categorias (
     name VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
 );
--- Categorías por defecto para dispositivos/tickets
+
 INSERT INTO categorias (name) VALUES
 ('Celulares'),
 ('Computadoras'),
@@ -49,7 +49,7 @@ CREATE TABLE categorias_inventario (
     name VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
 );
--- Categorías por defecto para inventario
+
 INSERT INTO categorias_inventario (name) VALUES
 ('Pantallas'),
 ('Baterías'),
@@ -65,7 +65,7 @@ CREATE TABLE estados_tickets (
     name VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
 );
--- Estados por defecto (limite 8 incluyendo Cancelado)
+
 INSERT INTO estados_tickets (name) VALUES
 ('Nuevo'),
 ('Diagnóstico'),
@@ -93,8 +93,8 @@ CREATE TABLE users (
     ) NOT NULL DEFAULT 'Cliente',
     PRIMARY KEY (id)
 );
--- Usuario administrador por defecto (email: admin@admin.com, password: 1234)
--- Hash BCRYPT generado previamente
+
+
 INSERT INTO users (name, email, password, role)
 VALUES ('Admin', 'admin@admin.com', '$2y$10$0J4vZrY0oQvEJq8xv7m0SeH2V7jV7cQO3Yl2oT1rSObJ9z0X7VqJG', 'Administrador');
 CREATE TABLE clientes (
@@ -105,7 +105,7 @@ CREATE TABLE clientes (
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
--- Requiere Revision
+
 CREATE TABLE tecnicos (
     id INT(11) NOT NULL AUTO_INCREMENT,
     user_id INT(11) NOT NULL,
@@ -132,7 +132,7 @@ CREATE TABLE administradores (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Vincular el usuario Admin a la tabla de administradores (los triggers aún no existían cuando se insertó el usuario)
+
 INSERT INTO administradores (user_id)
 SELECT id FROM users WHERE email = 'admin@admin.com' AND role = 'Administrador';
 
@@ -194,7 +194,7 @@ CREATE TABLE item_ticket (
     FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE,
     FOREIGN KEY (supervisor_id) REFERENCES supervisores(id) ON DELETE CASCADE
 );
--- Mano de obra por ticket (definida en Diagnóstico)
+
 CREATE TABLE ticket_labor (
     ticket_id INT(11) PRIMARY KEY,
     tecnico_id INT(11) NOT NULL,
@@ -210,7 +210,7 @@ CREATE TABLE historial (
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
--- Historial de cambios de estado por ticket
+
 CREATE TABLE ticket_estado_historial (
     id INT(11) NOT NULL AUTO_INCREMENT,
     ticket_id INT(11) NOT NULL,
@@ -224,7 +224,7 @@ CREATE TABLE ticket_estado_historial (
     FOREIGN KEY (estado_id) REFERENCES estados_tickets(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
--- Pagos de tickets
+
 CREATE TABLE pagos (
     id INT(11) NOT NULL AUTO_INCREMENT,
     ticket_id INT(11) NOT NULL,
@@ -237,7 +237,7 @@ CREATE TABLE pagos (
     FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
--- Cola de correos
+
 CREATE TABLE mail_queue (
     id INT(11) NOT NULL AUTO_INCREMENT,
     recipient VARCHAR(150) NOT NULL,
@@ -248,7 +248,7 @@ CREATE TABLE mail_queue (
     sent_at DATETIME NULL,
     PRIMARY KEY (id)
 );
--- Calificaciones de tickets (para promedio de técnicos)
+
 CREATE TABLE ticket_ratings (
     id INT(11) NOT NULL AUTO_INCREMENT,
     ticket_id INT(11) NOT NULL,
@@ -262,7 +262,7 @@ CREATE TABLE ticket_ratings (
     FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE,
     FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
 );
--- Estadísticas por técnico (cache de promedio, opcional)
+
 CREATE TABLE tecnico_stats (
     id INT(11) NOT NULL AUTO_INCREMENT,
     tecnico_id INT(11) NOT NULL,
@@ -275,7 +275,7 @@ CREATE TABLE tecnico_stats (
     UNIQUE KEY uq_tecnico_stats_tecnico (tecnico_id),
     FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE
 );
--- Triggers
+
 DELIMITER $$
 CREATE TRIGGER trigger_insertar_usuario_por_rol
 AFTER INSERT ON users
@@ -296,7 +296,7 @@ CREATE TRIGGER trigger_actualizar_usuario_por_rol
 AFTER UPDATE ON users
 FOR EACH ROW
 BEGIN
-    -- Eliminar registro anterior del rol viejo
+    
     IF OLD.role = 'Cliente' THEN
         DELETE FROM clientes WHERE user_id = OLD.id;
     ELSEIF OLD.role = 'Tecnico' THEN
@@ -307,7 +307,7 @@ BEGIN
         DELETE FROM administradores WHERE user_id = OLD.id;
     END IF;
 
-    -- Insertar registro acorde al nuevo rol
+    
     IF NEW.role = 'Cliente' THEN
         INSERT INTO clientes(user_id) VALUES (NEW.id);
     ELSEIF NEW.role = 'Tecnico' THEN

@@ -22,7 +22,7 @@ class HistorialController
     public function listarHistorial()
     {
         Auth::checkRole('Administrador');
-        // Filtros desde GET
+        
         $q = trim($_GET['q'] ?? '');
         $tipo = trim($_GET['tipo'] ?? '');
         $desde = trim($_GET['desde'] ?? '');

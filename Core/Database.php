@@ -4,10 +4,10 @@ class Database
     private $connection;
     function connectDatabase()
     {
-        // $host = '10.150.23.55';
-        // $user = 'root';
-        // $password = 'Bruno200@';
-        // $database = 'pandoraDB';
+        
+        
+        
+        
 
         $host = 'localhost';
         $user = 'root';

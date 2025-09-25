@@ -22,7 +22,7 @@ class InventarioController
 
     public function listarInventario()
     {
-        // Admin no accede al listado de inventario
+        
         Auth::checkRole(['Supervisor', 'Tecnico']);
         $items = $this->inventarioModel->listar();
         include_once __DIR__ . '/../Views/Inventario/InventarioLista.php';
@@ -30,7 +30,7 @@ class InventarioController
 
     public function mostrarCrear()
     {
-        // Solo Supervisor
+        
         Auth::checkRole(['Supervisor']);
         $categorias = $this->inventarioModel->listarCategorias();
         include_once __DIR__ . '/../Views/Inventario/CrearItem.php';
@@ -38,7 +38,7 @@ class InventarioController
 
     public function crear()
     {
-        // Solo Supervisor
+        
         Auth::checkRole(['Supervisor']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $categoria_id = $_POST['categoria_id'] ?? null;
@@ -49,14 +49,14 @@ class InventarioController
             $stock_minimo = $_POST['stock_minimo'] ?? 0;
             $foto_item = null;
 
-            // Manejo de imagen
+            
             if (isset($_FILES['foto_item']) && $_FILES['foto_item']['error'] === UPLOAD_ERR_OK) {
                 $foto_item = $_FILES['foto_item']['name'];
                 $destino = __DIR__ . '/../Public/img/imgInventario/' . $foto_item;
                 move_uploaded_file($_FILES['foto_item']['tmp_name'], $destino);
             }
 
-            // Si ya existe (misma categoría y nombre), sólo sumar stock_actual y NO cambiar precio ni mínimo
+            
             $existente = $this->inventarioModel->findByCategoryAndName((int)$categoria_id, $name_item);
             if ($existente) {
                 $ok = $this->inventarioModel->sumarStock((int)$existente['id'], (int)$stock_actual);
@@ -83,7 +83,7 @@ class InventarioController
 
     public function eliminar()
     {
-        // Solo Supervisor
+        
         Auth::checkRole(['Supervisor']);
         $id = $_GET['id'] ?? null;
         if ($id && $this->inventarioModel->eliminar($id)) {
@@ -102,7 +102,7 @@ class InventarioController
 
     public function mostrarActualizar()
     {
-        // Solo Supervisor
+        
         Auth::checkRole(['Supervisor']);
         $id = $_GET['id'] ?? null;
         if (!$id) {
@@ -116,7 +116,7 @@ class InventarioController
 
     public function editar()
     {
-        // Solo Supervisor
+        
         Auth::checkRole(['Supervisor']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'] ?? null;
@@ -128,7 +128,7 @@ class InventarioController
             $stock_minimo = $_POST['stock_minimo'] ?? 0;
             $foto_item = $_POST['foto_item_actual'] ?? null;
 
-            // Manejo de imagen nueva
+            
             if (isset($_FILES['foto_item']) && $_FILES['foto_item']['error'] === UPLOAD_ERR_OK) {
                 $foto_item = $_FILES['foto_item']['name'];
                 $destino = __DIR__ . '/../Public/img/imgInventario/' . $foto_item;
@@ -153,7 +153,7 @@ class InventarioController
 
     public function sumarStock()
     {
-        // Solo Supervisor
+        
         Auth::checkRole(['Supervisor']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = (int)($_POST['id'] ?? 0);
@@ -176,7 +176,7 @@ class InventarioController
     
     public function listarCategorias()
     {
-        // Admin y Supervisor
+        
         Auth::checkRole(['Administrador', 'Supervisor']);
         $categorias = $this->inventarioModel->listarCategorias();
         include_once __DIR__ . '/../Views/Inventario/ListaCategoria.php';
@@ -184,14 +184,14 @@ class InventarioController
 
     public function mostrarCrearCategoria()
     {
-        // Admin y Supervisor
+        
         Auth::checkRole(['Administrador', 'Supervisor']);
         include_once __DIR__ . '/../Views/Inventario/CrearCategoria.php';
     }
 
     public function crearCategoria()
     {
-        // Admin y Supervisor
+        
         Auth::checkRole(['Administrador', 'Supervisor']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'] ?? '';
@@ -200,7 +200,7 @@ class InventarioController
                 $accion = "Creación de categoría de inventario";
                 $detalle = "Usuario {$user['name']} creó la categoría '{$name}'";
                 $this->historialController->agregarAccion($accion, $detalle);
-                // Redirección según rol
+                
                 if (($user['role'] ?? '') === 'Supervisor') {
                     header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
                 } else {
@@ -222,7 +222,7 @@ class InventarioController
 
     public function eliminarCategoriaInventario()
     {
-        // Admin y Supervisor
+        
         Auth::checkRole(['Administrador', 'Supervisor']);
         $id = $_GET['id'] ?? null;
         if ($id && $this->categoryModel->eliminarCategory($id)) {
@@ -247,10 +247,10 @@ class InventarioController
         }
     }
 
-    // Mostrar formulario de edición de categoría
+    
     public function mostrarActualizarCategoria()
     {
-        // Admin y Supervisor
+        
         Auth::checkRole(['Administrador', 'Supervisor']);
         $id = $_GET['id'] ?? null;
         if (!$id) {
@@ -269,10 +269,10 @@ class InventarioController
         include_once __DIR__ . '/../Views/Inventario/ActualizarCategoria.php';
     }
 
-    // Editar categoría de inventario
+    
     public function editarCategoria()
     {
-        // Admin y Supervisor
+        
         Auth::checkRole(['Administrador', 'Supervisor']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'] ?? null;
@@ -301,10 +301,10 @@ class InventarioController
         $this->mostrarActualizarCategoria();
     }
 
-    // Mostrar formulario de edición de item
+    
     public function actualizarCategoria()
     {
-        // Este método muestra formulario de edición de item; restringir a Supervisor
+        
         Auth::checkRole(['Supervisor']);
         $id = $_GET['id'] ?? null;
         if (!$id) {
