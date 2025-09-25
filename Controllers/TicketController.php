@@ -564,8 +564,16 @@ class TicketController
 
         $estado_id = $_POST['estado_id'] ?? null;
         $tecnico_id = $_POST['tecnico_id'] ?? null;
+        // Normalizar valores vacíos a NULL para no romper FKs
+        if ($estado_id === '' || $estado_id === null) {
+            $estado_id = null;
+        } else {
+            $estado_id = (int)$estado_id;
+        }
         if ($tecnico_id === '' || $tecnico_id === null) {
             $tecnico_id = null;
+        } else {
+            $tecnico_id = (int)$tecnico_id;
         }
 
         // Obtener el técnico anterior (si existía)

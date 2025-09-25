@@ -19,7 +19,7 @@
                     </p>
                 </form>
 
-                <a href="/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias" class="btn-volver">Volver</a>
+                <a href="<?= isset($backUrl) ? $backUrl : '/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias' ?>" class="btn-volver">Volver</a>
             </div>
         </div>
 

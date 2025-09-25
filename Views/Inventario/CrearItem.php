@@ -46,11 +46,11 @@
                         </p>
                         <p class="block">
                             <button type="submit">Agregar Item</button>
-                        </form>
-                    </div> 
-                </div>
-            <?php endif; ?>
-            <a href="<?= $_SESSION['prev_url'] ?? '/ProyectoPandora/Public/index.php?route=Default/Index' ?>" class="btn-volver">Volver</a>
-        </section>
+                        </p>
+                    </form>
+                <?php endif; ?>
+                <a href="<?= $_SESSION['prev_url'] ?? '/ProyectoPandora/Public/index.php?route=Default/Index' ?>" class="btn-volver">Volver</a>
+            </div> 
+        </div>
     </div>
 </main>

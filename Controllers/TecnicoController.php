@@ -309,10 +309,19 @@ class TecnicoController {
         }
 
         if (isset($_POST['labor_min']) || isset($_POST['labor_max'])) {
+            // Solo técnicos pueden actualizar sus propios rangos
+            if (($user['role'] ?? '') !== 'Tecnico') {
+                header('Location: /ProyectoPandora/Public/index.php?route=Default/Index&error=permiso');
+                exit;
+            }
+            if (!$tecnico_id) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisStats&error=tecnico');
+                exit;
+            }
             $min = max(0, (float)($_POST['labor_min'] ?? 0));
             $max = max($min, (float)($_POST['labor_max'] ?? 0));
             $statsModel = new TecnicoStatsModel($conn);
-            $statsModel->upsert($tecnico_id, $min, $max);
+            $statsModel->upsert((int)$tecnico_id, $min, $max);
             header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisStats&ok=1');
             exit;
         }

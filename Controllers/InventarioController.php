@@ -200,11 +200,20 @@ class InventarioController
                 $accion = "Creación de categoría de inventario";
                 $detalle = "Usuario {$user['name']} creó la categoría '{$name}'";
                 $this->historialController->agregarAccion($accion, $detalle);
-
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
+                // Redirección según rol
+                if (($user['role'] ?? '') === 'Supervisor') {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
+                } else {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&success=1');
+                }
                 exit;
             } else {
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
+                $user = Auth::user();
+                if (($user['role'] ?? '') === 'Supervisor') {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
+                } else {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&error=1');
+                }
                 exit;
             }
         }
@@ -221,11 +230,19 @@ class InventarioController
             $accion = "Eliminación de categoría de inventario";
             $detalle = "Usuario {$user['name']} eliminó la categoría ID {$id}";
             $this->historialController->agregarAccion($accion, $detalle);
-
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
+            if (($user['role'] ?? '') === 'Supervisor') {
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
+            } else {
+                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&success=1');
+            }
             exit;
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
+            $user = Auth::user();
+            if (($user['role'] ?? '') === 'Supervisor') {
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
+            } else {
+                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&error=1');
+            }
             exit;
         }
     }
@@ -237,9 +254,17 @@ class InventarioController
         Auth::checkRole(['Administrador', 'Supervisor']);
         $id = $_GET['id'] ?? null;
         if (!$id) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
+            $user = Auth::user();
+            $dest = (($user['role'] ?? '') === 'Supervisor')
+                ? '/ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1'
+                : '/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&error=1';
+            header('Location: ' . $dest);
             exit;
         }
+        $user = Auth::user();
+        $backUrl = (($user['role'] ?? '') === 'Supervisor')
+            ? '/ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario'
+            : '/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias';
         $categoria = $this->categoryModel->obtenerCategoryPorId($id);
         include_once __DIR__ . '/../Views/Inventario/ActualizarCategoria.php';
     }
@@ -257,11 +282,19 @@ class InventarioController
                 $accion = "Edición de categoría de inventario";
                 $detalle = "Usuario {$user['name']} editó la categoría '{$name}' (ID {$id})";
                 $this->historialController->agregarAccion($accion, $detalle);
-
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
+                if (($user['role'] ?? '') === 'Supervisor') {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
+                } else {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&success=1');
+                }
                 exit;
             } else {
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
+                $user = Auth::user();
+                if (($user['role'] ?? '') === 'Supervisor') {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
+                } else {
+                    header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias&error=1');
+                }
                 exit;
             }
         }
@@ -271,7 +304,8 @@ class InventarioController
     // Mostrar formulario de edición de item
     public function actualizarCategoria()
     {
-        Auth::checkRole(['Administrador', 'Supervisor']);
+        // Este método muestra formulario de edición de item; restringir a Supervisor
+        Auth::checkRole(['Supervisor']);
         $id = $_GET['id'] ?? null;
         if (!$id) {
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');

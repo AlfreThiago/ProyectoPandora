@@ -142,15 +142,31 @@ class Ticket
 
     public function actualizarCompleto($id, $descripcion, $estado_id, $tecnico_id)
     {
-        $sql = "UPDATE tickets SET descripcion_falla = ?, estado_id = ?, tecnico_id = ? WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
+        // Construir SQL dinámico: si $estado_id es NULL, no lo tocamos para evitar violar FK o poner NULL en NOT NULL
+        $campos = [ 'descripcion_falla = ?' ];
+        $types = 's';
+        $params = [ $descripcion ];
 
-        // Si tecnico_id es null, usa tipo "i" y pasa null (mysqli lo acepta)
-        if ($tecnico_id === null) {
-            $stmt->bind_param("siii", $descripcion, $estado_id, $tecnico_id, $id);
-        } else {
-            $stmt->bind_param("siii", $descripcion, $estado_id, $tecnico_id, $id);
+        if ($estado_id !== null) {
+            $campos[] = 'estado_id = ?';
+            $types .= 'i';
+            $params[] = (int)$estado_id;
         }
+
+        // tecnico_id puede ser NULL (columna admite NULL); lo seteamos explícitamente aunque sea NULL
+        $campos[] = 'tecnico_id = ?';
+        $types .= 'i';
+        // Para bind_param, usar NULL literal con tipo 'i' está permitido; MySQL lo interpreta como NULL
+        $params[] = $tecnico_id; // puede ser int o NULL
+
+        $sql = 'UPDATE tickets SET ' . implode(', ', $campos) . ' WHERE id = ?';
+        $types .= 'i';
+        $params[] = (int)$id;
+
+        $stmt = $this->conn->prepare($sql);
+        if (!$stmt) return false;
+        // Desempaquetar parámetros
+        $stmt->bind_param($types, ...$params);
         return $stmt->execute();
     }
     public function getTicketsByTecnicoId($tecnico_user_id)

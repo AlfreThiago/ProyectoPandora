@@ -1,7 +1,16 @@
--- Primero eliminar tablas que dependen de otras
+SET FOREIGN_KEY_CHECKS = 0;
+-- Eliminar triggers si existen para re-ejecución segura
+DROP TRIGGER IF EXISTS trigger_insertar_usuario_por_rol;
+DROP TRIGGER IF EXISTS trigger_actualizar_usuario_por_rol;
+-- Primero eliminar tablas que dependen de otras (orden seguro)
 DROP TABLE IF EXISTS ticket_estado_historial;
-DROP TABLE IF EXISTS historial;
+DROP TABLE IF EXISTS pagos;
+DROP TABLE IF EXISTS ticket_ratings;
+DROP TABLE IF EXISTS tecnico_stats;
 DROP TABLE IF EXISTS item_ticket;
+DROP TABLE IF EXISTS ticket_labor;
+DROP TABLE IF EXISTS mail_queue;
+DROP TABLE IF EXISTS historial;
 DROP TABLE IF EXISTS inventarios;
 DROP TABLE IF EXISTS tickets;
 DROP TABLE IF EXISTS dispositivos;
@@ -14,6 +23,7 @@ DROP TABLE IF EXISTS estados_tickets;
 DROP TABLE IF EXISTS categorias_inventario;
 DROP TABLE IF EXISTS categorias;
 DROP TABLE IF EXISTS areas;
+SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE areas (
     id INT(11) NOT NULL AUTO_INCREMENT,
@@ -184,6 +194,15 @@ CREATE TABLE item_ticket (
     FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE,
     FOREIGN KEY (supervisor_id) REFERENCES supervisores(id) ON DELETE CASCADE
 );
+-- Mano de obra por ticket (definida en Diagnóstico)
+CREATE TABLE ticket_labor (
+    ticket_id INT(11) PRIMARY KEY,
+    tecnico_id INT(11) NOT NULL,
+    labor_amount DECIMAL(10,2) NOT NULL DEFAULT 0,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
+    FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE
+);
 CREATE TABLE historial (
     id INT(11) NOT NULL AUTO_INCREMENT,
     acciones VARCHAR(255) NOT NULL,
@@ -212,7 +231,7 @@ CREATE TABLE pagos (
     amount DECIMAL(10,2) NOT NULL,
     method ENUM('EFECTIVO','TARJETA','TRANSFERENCIA','OTRO') NOT NULL DEFAULT 'EFECTIVO',
     reference VARCHAR(100) NULL,
-    user_id INT(11) NOT NULL,
+    user_id INT(11) NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
@@ -249,6 +268,9 @@ CREATE TABLE tecnico_stats (
     tecnico_id INT(11) NOT NULL,
     avg_rating DECIMAL(3,2) NOT NULL DEFAULT 3.00,
     ratings_count INT(11) NOT NULL DEFAULT 0,
+    labor_min DECIMAL(10,2) DEFAULT 0,
+    labor_max DECIMAL(10,2) DEFAULT 0,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY uq_tecnico_stats_tecnico (tecnico_id),
     FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE

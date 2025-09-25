@@ -15,7 +15,7 @@ class PagoModel {
             amount DECIMAL(10,2) NOT NULL,
             method ENUM('EFECTIVO','TARJETA','TRANSFERENCIA','OTRO') NOT NULL DEFAULT 'EFECTIVO',
             reference VARCHAR(100) NULL,
-            user_id INT NOT NULL,
+            user_id INT NULL,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL

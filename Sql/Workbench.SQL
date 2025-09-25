@@ -198,7 +198,7 @@ CREATE TABLE pagos (
     amount DECIMAL(10,2) NOT NULL,
     method ENUM('EFECTIVO','TARJETA','TRANSFERENCIA','OTRO') NOT NULL DEFAULT 'EFECTIVO',
     reference VARCHAR(100) NULL,
-    user_id INT NOT NULL,
+    user_id INT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     CONSTRAINT fk_pagos_ticket FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
@@ -232,6 +232,9 @@ CREATE TABLE tecnico_stats (
     tecnico_id INT NOT NULL,
     avg_rating DECIMAL(3,2) NOT NULL DEFAULT 3.00,
     ratings_count INT NOT NULL DEFAULT 0,
+    labor_min DECIMAL(10,2) DEFAULT 0,
+    labor_max DECIMAL(10,2) DEFAULT 0,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY uq_tecnico_stats_tecnico (tecnico_id),
     CONSTRAINT fk_stats_tecnico FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE

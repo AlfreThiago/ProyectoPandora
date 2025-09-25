@@ -327,5 +327,9 @@ return [
         'controller' => 'Inventario',
         'action' => 'editarCategoria'
     ],
+    'Inventario/EliminarCategoriaInventario'=> [
+        'controller' => 'Inventario',
+        'action' => 'eliminarCategoriaInventario'
+    ],
 ];
 ?>

@@ -10,10 +10,14 @@ class TecnicoStatsModel {
 
     private function ensureTable() {
         $sql = "CREATE TABLE IF NOT EXISTS tecnico_stats (
-            tecnico_id INT PRIMARY KEY,
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            tecnico_id INT NOT NULL,
+            avg_rating DECIMAL(3,2) NOT NULL DEFAULT 3.00,
+            ratings_count INT NOT NULL DEFAULT 0,
             labor_min DECIMAL(10,2) DEFAULT 0,
             labor_max DECIMAL(10,2) DEFAULT 0,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            UNIQUE KEY uq_tecnico_stats_tecnico (tecnico_id),
             FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
         $this->conn->query($sql);
