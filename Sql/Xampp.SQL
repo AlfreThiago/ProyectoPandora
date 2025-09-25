@@ -188,6 +188,54 @@ CREATE TABLE ticket_estado_historial (
     FOREIGN KEY (estado_id) REFERENCES estados_tickets(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+-- Pagos de tickets
+CREATE TABLE pagos (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    ticket_id INT(11) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    method ENUM('EFECTIVO','TARJETA','TRANSFERENCIA','OTRO') NOT NULL DEFAULT 'EFECTIVO',
+    reference VARCHAR(100) NULL,
+    user_id INT(11) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+-- Cola de correos
+CREATE TABLE mail_queue (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    recipient VARCHAR(150) NOT NULL,
+    subject VARCHAR(200) NOT NULL,
+    body TEXT NOT NULL,
+    status ENUM('PENDING','SENT','FAILED') NOT NULL DEFAULT 'PENDING',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    sent_at DATETIME NULL,
+    PRIMARY KEY (id)
+);
+-- Calificaciones de tickets (para promedio de técnicos)
+CREATE TABLE ticket_ratings (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    ticket_id INT(11) NOT NULL,
+    tecnico_id INT(11) NOT NULL,
+    cliente_id INT(11) NOT NULL,
+    stars TINYINT NOT NULL CHECK (stars BETWEEN 1 AND 5),
+    comment VARCHAR(255) NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
+    FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
+);
+-- Estadísticas por técnico (cache de promedio, opcional)
+CREATE TABLE tecnico_stats (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    tecnico_id INT(11) NOT NULL,
+    avg_rating DECIMAL(3,2) NOT NULL DEFAULT 3.00,
+    ratings_count INT(11) NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_tecnico_stats_tecnico (tecnico_id),
+    FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE
+);
 -- Triggers
 DELIMITER $$
 CREATE TRIGGER trigger_insertar_usuario_por_rol

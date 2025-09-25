@@ -84,7 +84,7 @@
 										<span class="badge <?php echo $estado==='Disponible' ? 'badge--success' : ($estado==='Ocupado' ? 'badge--danger' : 'badge--muted'); ?>" title="Estado informativo, gestionado por el técnico en su perfil"><?php echo htmlspecialchars($estado); ?></span>
 									</div>
 									<div class="asignar-card__row" style="gap:6px; align-items:center;">
-										<?php $r = isset($tec['rating_avg']) ? (float)$tec['rating_avg'] : 0; $rc=(int)($tec['rating_count'] ?? 0); $full = (int)floor($r); $half = ($r - $full) >= 0.5; ?>
+										<?php $r = isset($tec['rating_avg']) ? (float)$tec['rating_avg'] : 0; $rc=(int)($tec['rating_count'] ?? 0); if ($rc===0 && $r<=0){ $r=3.0; } $full = (int)floor($r); $half = ($r - $full) >= 0.5; ?>
 										<span title="Promedio: <?php echo round($r,1); ?> (<?php echo $rc; ?> califs)" style="font-size:14px; color:#f5c518;">
 											<?php for($i=1;$i<=5;$i++): ?>
 												<?php if ($i <= $full): ?>★<?php elseif ($half && $i==$full+1): ?>☆<?php else: ?>☆<?php endif; ?>

@@ -2,6 +2,11 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TRIGGER IF EXISTS trigger_insertar_usuario_por_rol;
 DROP TRIGGER IF EXISTS trigger_actualizar_usuario_por_rol;
+DROP TABLE IF EXISTS pagos;
+DROP TABLE IF EXISTS mail_queue;
+DROP TABLE IF EXISTS ticket_ratings;
+DROP TABLE IF EXISTS tecnico_stats;
+DROP TABLE IF EXISTS ticket_estado_historial;
 DROP TABLE IF EXISTS item_ticket;
 DROP TABLE IF EXISTS inventarios;
 DROP TABLE IF EXISTS dispositivos;
@@ -118,7 +123,7 @@ CREATE TABLE ticket_estado_historial (
     CONSTRAINT fk_teh_ticket FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
     CONSTRAINT fk_teh_estado FOREIGN KEY (estado_id) REFERENCES estados_tickets(id) ON DELETE CASCADE,
     CONSTRAINT fk_teh_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE tickets (
     id INT NOT NULL AUTO_INCREMENT,
     dispositivo_id INT NOT NULL,
@@ -132,11 +137,9 @@ CREATE TABLE tickets (
     PRIMARY KEY (id),
     CONSTRAINT fk_tickets_dispositivo FOREIGN KEY (dispositivo_id) REFERENCES dispositivos(id) ON DELETE CASCADE,
     CONSTRAINT fk_tickets_cliente FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
-    CONSTRAINT fk_tickets_tecnico FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE
-    SET NULL,
-        CONSTRAINT fk_tickets_supervisor FOREIGN KEY (supervisor_id) REFERENCES supervisores(id) ON DELETE
-    SET NULL,
-        CONSTRAINT fk_tickets_estado FOREIGN KEY (estado_id) REFERENCES estados_tickets(id) ON DELETE RESTRICT
+    CONSTRAINT fk_tickets_tecnico FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE SET NULL,
+    CONSTRAINT fk_tickets_supervisor FOREIGN KEY (supervisor_id) REFERENCES supervisores(id) ON DELETE SET NULL,
+    CONSTRAINT fk_tickets_estado FOREIGN KEY (estado_id) REFERENCES estados_tickets(id) ON DELETE RESTRICT
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE dispositivos (
     id INT NOT NULL AUTO_INCREMENT,
@@ -165,7 +168,7 @@ CREATE TABLE inventarios (
     PRIMARY KEY (id),
     CONSTRAINT fk_inventarios_categoria FOREIGN KEY (categoria_id) REFERENCES categorias_inventario(id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
-CREATE TABLE tickets (
+CREATE TABLE item_ticket (
     id INT NOT NULL AUTO_INCREMENT,
     ticket_id INT NOT NULL,
     inventario_id INT NOT NULL,
@@ -178,12 +181,60 @@ CREATE TABLE tickets (
     CONSTRAINT fk_item_ticket_ticket FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
     CONSTRAINT fk_item_ticket_inventario FOREIGN KEY (inventario_id) REFERENCES inventarios(id) ON DELETE CASCADE,
     CONSTRAINT fk_item_ticket_tecnico FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE,
-    CONSTRAINT fk_tickets_tecnico FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE SET NULL,
-    CONSTRAINT fk_tickets_supervisor FOREIGN KEY (supervisor_id) REFERENCES supervisores(id) ON DELETE SET NULL,
+    CONSTRAINT fk_item_ticket_supervisor FOREIGN KEY (supervisor_id) REFERENCES supervisores(id) ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+-- Historial simple (acciones generales)
+CREATE TABLE historial (
+    id INT NOT NULL AUTO_INCREMENT,
     acciones VARCHAR(255) NOT NULL,
     detalles TEXT,
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+-- Pagos, Cola de correo, Ratings y Stats
+CREATE TABLE pagos (
+    id INT NOT NULL AUTO_INCREMENT,
+    ticket_id INT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    method ENUM('EFECTIVO','TARJETA','TRANSFERENCIA','OTRO') NOT NULL DEFAULT 'EFECTIVO',
+    reference VARCHAR(100) NULL,
+    user_id INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_pagos_ticket FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
+    CONSTRAINT fk_pagos_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+CREATE TABLE mail_queue (
+    id INT NOT NULL AUTO_INCREMENT,
+    recipient VARCHAR(150) NOT NULL,
+    subject VARCHAR(200) NOT NULL,
+    body TEXT NOT NULL,
+    status ENUM('PENDING','SENT','FAILED') NOT NULL DEFAULT 'PENDING',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    sent_at DATETIME NULL,
+    PRIMARY KEY (id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+CREATE TABLE ticket_ratings (
+    id INT NOT NULL AUTO_INCREMENT,
+    ticket_id INT NOT NULL,
+    tecnico_id INT NOT NULL,
+    cliente_id INT NOT NULL,
+    stars TINYINT NOT NULL,
+    comment VARCHAR(255) NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_ratings_ticket FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
+    CONSTRAINT fk_ratings_tecnico FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE,
+    CONSTRAINT fk_ratings_cliente FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+CREATE TABLE tecnico_stats (
+    id INT NOT NULL AUTO_INCREMENT,
+    tecnico_id INT NOT NULL,
+    avg_rating DECIMAL(3,2) NOT NULL DEFAULT 3.00,
+    ratings_count INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_tecnico_stats_tecnico (tecnico_id),
+    CONSTRAINT fk_stats_tecnico FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 DELIMITER $$
 CREATE TRIGGER trigger_insertar_usuario_por_rol

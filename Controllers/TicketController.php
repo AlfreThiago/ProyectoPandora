@@ -42,8 +42,8 @@ class TicketController
             'En espera' => [],
             // Tras reparación, ahora pasa a 'En pruebas' o 'Listo para retirar'
             'En reparación' => ['En pruebas', 'Listo para retirar'],
-            // En pruebas solo puede finalizar
-            'En pruebas' => ['Listo para retirar', 'Finalizado'],
+            // En pruebas: técnico NO finaliza directamente; supervisor define "Listo" y luego pago
+            'En pruebas' => ['Listo para retirar'],
             'Listo para retirar' => ['Finalizado'],
             'Finalizado' => [],
             'Cancelado' => []
@@ -99,8 +99,8 @@ class TicketController
         if (!$nuevo) { header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones&error=estado'); exit; }
         $estadoNuevo = $nuevo['name'];
 
-        // Validar transición
-        if (!$this->puedeTransicionar($estadoActual, $estadoNuevo)) {
+        // Validar transición (y bloquear finalización por técnico)
+        if (!$this->puedeTransicionar($estadoActual, $estadoNuevo) || strcasecmp($estadoNuevo, 'Finalizado')===0) {
             header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=transicion');
             exit;
         }
@@ -227,6 +227,22 @@ class TicketController
             $stmtU = $conn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
             $stmtU->bind_param("ii", $estadoId, $ticket_id);
             $stmtU->execute();
+
+            // Registrar historial de estado para auditoría
+            $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Supervisor', 'Marcado como listo para retirar');
+
+            // Notificar al cliente por correo (en cola)
+            require_once __DIR__ . '/../Models/MailQueue.php';
+            $stmtMail = $conn->prepare("SELECT u.email FROM tickets t INNER JOIN clientes c ON c.id=t.cliente_id INNER JOIN users u ON u.id=c.user_id WHERE t.id=? LIMIT 1");
+            if ($stmtMail) {
+                $stmtMail->bind_param('i', $ticket_id);
+                $stmtMail->execute();
+                $em = $stmtMail->get_result()->fetch_assoc();
+                if ($em && !empty($em['email'])) {
+                    $mq = new MailQueueModel($conn);
+                    $mq->enqueue($em['email'], 'Listo para retirar', 'Hola, tu equipo del ticket #'.$ticket_id.' está listo para retirar.');
+                }
+            }
         }
         header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&ok=listo');
         exit;
@@ -248,6 +264,18 @@ class TicketController
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=ticket');
             exit;
         }
+        // Datos de pago (opcionales; si no viene monto, se calcula del presupuesto)
+        $amount = isset($_POST['amount']) ? (float)$_POST['amount'] : null;
+        $method = strtoupper(trim($_POST['method'] ?? 'EFECTIVO'));
+        $reference = trim($_POST['reference'] ?? '');
+        // Validar que el cliente haya aprobado el presupuesto
+        require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
+        $dbA = new Database(); $dbA->connectDatabase(); $histM = new TicketEstadoHistorialModel($dbA->getConnection());
+        $aprobado = false; foreach ($histM->listByTicket($ticket_id) as $ev) { if ($ev['user_role']==='Cliente' && stripos($ev['comentario'] ?? '', 'aprob') !== false) { $aprobado = true; break; } }
+        if (!$aprobado) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&error=aprobacion');
+            exit;
+        }
         // Primero aseguramos que esté en Listo para retirar
         $estadoListo = $this->estadoIdPorNombre('Listo para retirar');
         $estadoFinal = $this->estadoIdPorNombre('Finalizado');
@@ -263,11 +291,32 @@ class TicketController
                 $stmtU1 = $conn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
                 $stmtU1->bind_param('ii', $estadoListo, $ticket_id);
                 $stmtU1->execute();
+
+                // Registrar historial por cambio a "Listo para retirar" previo a finalizar
+                $this->histEstadoModel->add($ticket_id, (int)$estadoListo, (int)$user['id'], 'Supervisor', 'Marcado como listo para retirar previo a pago');
             }
             // Finalizar
-            $stmtU2 = $conn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
+            $stmtU2 = $conn->prepare("UPDATE tickets SET estado_id = ?, fecha_cierre = NOW() WHERE id = ?");
             $stmtU2->bind_param('ii', $estadoFinal, $ticket_id);
             $stmtU2->execute();
+
+            // Registrar historial de finalización con pago
+            $this->histEstadoModel->add($ticket_id, (int)$estadoFinal, (int)$user['id'], 'Supervisor', 'Pago registrado y ticket finalizado');
+
+            // Registrar pago (calcular total si no se informó amount)
+            require_once __DIR__ . '/../Models/ItemTicket.php';
+            require_once __DIR__ . '/../Models/TicketLabor.php';
+            require_once __DIR__ . '/../Models/Pago.php';
+            $itemModel = new ItemTicketModel($conn);
+            $laborModel = new TicketLaborModel($conn);
+            $items = $itemModel->listarPorTicket($ticket_id); $subtotal = 0.0; foreach($items as $it){ $subtotal += (float)($it['valor_total'] ?? 0); }
+            $labor = $laborModel->getByTicket($ticket_id); $mano = (float)($labor['labor_amount'] ?? 0);
+            $totalCalc = $subtotal + $mano;
+            if ($amount === null || $amount <= 0) { $amount = $totalCalc; }
+            $metodosValidos = ['EFECTIVO','TARJETA','TRANSFERENCIA','OTRO'];
+            if (!in_array($method, $metodosValidos, true)) { $method = 'EFECTIVO'; }
+            $pago = new PagoModel($conn);
+            $pago->add($ticket_id, (float)$amount, $method, $reference, (int)$user['id']);
         }
         header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&ok=pagado');
         exit;
@@ -296,10 +345,10 @@ class TicketController
         $stmtC->bind_param("i", $user['id']);
         $stmtC->execute();
         $cliente = $stmtC->get_result()->fetch_assoc();
-        $stmtT = $conn->prepare("SELECT cliente_id FROM tickets WHERE id = ? LIMIT 1");
-        $stmtT->bind_param("i", $ticket_id);
-        $stmtT->execute();
-        $rowT = $stmtT->get_result()->fetch_assoc();
+    $stmtT = $conn->prepare("SELECT cliente_id FROM tickets WHERE id = ? LIMIT 1");
+    $stmtT->bind_param("i", $ticket_id);
+    $stmtT->execute();
+    $rowT = $stmtT->get_result()->fetch_assoc();
         if (!$cliente || (int)($rowT['cliente_id'] ?? 0) !== (int)$cliente['id']) {
             header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=forbidden');
             exit;
@@ -453,6 +502,11 @@ class TicketController
         foreach ($items as $it) { $subtotal += (float)($it['valor_total'] ?? 0); }
         $labor = $laborModel->getByTicket($ticket_id);
         $mano = (float)($labor['labor_amount'] ?? 0);
+        // Validar que el presupuesto esté listo: requiere items y mano de obra definida
+        if (empty($items) || $mano <= 0) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&error=presupuesto_incompleto');
+            exit;
+        }
         $total = $subtotal + $mano;
 
         // Cambiar a estado Presupuesto si existe
@@ -468,6 +522,19 @@ class TicketController
         // Historial: publicar presupuesto con total
         $comentario = 'Presupuesto publicado. Total $' . number_format($total, 2, '.', '');
         $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Supervisor', $comentario);
+
+        // Notificar al cliente por correo en cola
+        require_once __DIR__ . '/../Models/MailQueue.php';
+        $stmtMail = $conn->prepare("SELECT u.email FROM tickets t INNER JOIN clientes c ON c.id=t.cliente_id INNER JOIN users u ON u.id=c.user_id WHERE t.id=? LIMIT 1");
+        if ($stmtMail) {
+            $stmtMail->bind_param('i', $ticket_id);
+            $stmtMail->execute();
+            $em = $stmtMail->get_result()->fetch_assoc();
+            if ($em && !empty($em['email'])) {
+                $mq = new MailQueueModel($conn);
+                $mq->enqueue($em['email'], 'Presupuesto publicado', 'Hola, ya podés revisar y aprobar/rechazar el presupuesto de tu ticket #'.$ticket_id.'.');
+            }
+        }
 
         header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&ok=publicado');
         exit;

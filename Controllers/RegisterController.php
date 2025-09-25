@@ -92,6 +92,28 @@ class RegisterController
         }
 
         if ($userModel->createUser($username, $email, $password, $role)) {
+            // Si es técnico, registrar una calificación inicial simulada de 3★ para arrancar con reputación base
+            if (strcasecmp($role, 'Tecnico') === 0) {
+                require_once __DIR__ . '/../Models/Rating.php';
+                // Buscar el tecnico recien creado
+                $newUser = $userModel->findByEmail($email);
+                if ($newUser) {
+                    // Resolver tecnico_id y un cliente fantasma 0 (o null) si el esquema lo permite
+                    $conn = $db->getConnection();
+                    // Obtener tecnico_id por user_id
+                    $stmtT = $conn->prepare("SELECT id FROM tecnicos WHERE user_id = ? LIMIT 1");
+                    if ($stmtT) {
+                        $stmtT->bind_param('i', $newUser['id']);
+                        $stmtT->execute();
+                        $tec = $stmtT->get_result()->fetch_assoc();
+                        if ($tec && isset($tec['id'])) {
+                            $ratingM = new RatingModel($conn);
+                            // Insertar fila de seed usando ticket_id=0 para promedio base (si la PK UNIQUE lo permite). Si no, ignorar errores.
+                            @$conn->query("INSERT IGNORE INTO ticket_ratings (ticket_id, tecnico_id, cliente_id, stars, comment) VALUES (0, ".(int)$tec['id'].", 0, 3, 'Seed inicial 3★')");
+                        }
+                    }
+                }
+            }
             return "Usuario registrado correctamente con rol: $role";
         } else {
             return "Error al registrar usuario.";

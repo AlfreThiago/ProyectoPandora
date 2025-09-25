@@ -37,18 +37,20 @@
                     <?php endif; ?>
                     <button type="submit" class="btn-perfil-guardar">Guardar cambios</button>
                 </form>
+                <?php if ($rol !== 'Administrador'): ?>
                 <div class="perfil-stats">
                     <div class="stat-card">
                         <span class="stat-num"><?= $cantTickets ?></span>
                         <span class="stat-label">Tickets</span>
                     </div>
-                    <?php if ($rol === 'Cliente' || $rol === 'Administrador' || $rol === 'Supervisor'): ?>
+                    <?php if ($rol === 'Cliente' || $rol === 'Supervisor' || $rol === 'Tecnico'): ?>
                     <div class="stat-card">
                         <span class="stat-num"><?= $cantDevices ?></span>
                         <span class="stat-label">Dispositivos</span>
                     </div>
                     <?php endif; ?>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

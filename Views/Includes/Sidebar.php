@@ -73,6 +73,12 @@ if (session_status() === PHP_SESSION_NONE) {
                                 </a>
                             </li>
                             <li class="item menu-item menu-item-static">
+                                <a href="/ProyectoPandora/Public/index.php?route=Historial/ListarHistorial" class="link flex">
+                                    <i class='bx bx-time'></i>
+                                    <span>Historial</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item menu-item-static">
                                 <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados" class="link flex">
                                     <i class='bx bx-list-check'></i>
                                     <span>Estados</span>

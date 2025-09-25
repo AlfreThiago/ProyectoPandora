@@ -76,6 +76,25 @@
                                             <span class="badge badge--muted">Faltan datos: <?= $p['mano_obra'] <= 0 ? 'mano de obra' : '' ?></span>
                                         <?php endif; ?>
                                     </form>
+                                                                        <?php 
+                                                                            $s = strtolower(trim($t['estado'] ?? ''));
+                                                                            $puedeListo = in_array($s, ['en reparación','en reparacion','en pruebas']);
+                                                                            $puedePagar = ($s === 'listo para retirar');
+                                                                        ?>
+                                                                        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+                                                                            <?php if ($puedeListo): ?>
+                                                                            <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/MarcarListoParaRetirar">
+                                                                                <input type="hidden" name="ticket_id" value="<?= (int)$t['id'] ?>" />
+                                                                                <button class="btn btn-primary" type="submit">Marcar listo para retirar</button>
+                                                                            </form>
+                                                                            <?php endif; ?>
+                                                                            <?php if ($puedePagar): ?>
+                                                                            <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/MarcarPagadoYFinalizar">
+                                                                                <input type="hidden" name="ticket_id" value="<?= (int)$t['id'] ?>" />
+                                                                                <button class="btn btn-success" type="submit">Registrar pago y finalizar</button>
+                                                                            </form>
+                                                                            <?php endif; ?>
+                                                                        </div>
                                 </div>
                             </div>
                         </div>

@@ -318,7 +318,19 @@
         <a href="<?= htmlspecialchars($backHref) ?>" class="btn btn-secondary mt-3">Volver</a>
 
         <?php 
-            $mostrarPagadoOverlay = (isset($_GET['ok']) && $_GET['ok']==='pagado') || $finalizado;
+            // Mostrar overlay "PAGADO" solo si hay calificación del cliente
+            $mostrarPagadoOverlay = false;
+            if ((isset($_GET['ok']) && $_GET['ok']==='pagado') || $finalizado) {
+                require_once __DIR__ . '/../../Core/Database.php';
+                require_once __DIR__ . '/../../Models/Rating.php';
+                $dbx = new Database(); $dbx->connectDatabase();
+                $rtM = new RatingModel($dbx->getConnection());
+                $rt = $rtM->getByTicket((int)$ticket['id']);
+                $mostrarPagadoOverlay = !empty($rt) && (int)($rt['stars'] ?? 0) > 0;
+                if (!$mostrarPagadoOverlay && $finalizado && $rol === 'Cliente') {
+                    echo '<div class="alert alert-warning" style="margin-top:10px;">Tu ticket está finalizado. Por favor, califica la atención para completar el cierre.</div>';
+                }
+            }
         ?>
         <?php if ($mostrarPagadoOverlay): ?>
         <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.45); z-index:5;">
