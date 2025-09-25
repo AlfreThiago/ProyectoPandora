@@ -1,6 +1,6 @@
 <?php
-require_once '../Core/Database.php';
-require_once '../Models/Historial.php';
+require_once __DIR__ . '/../Core/Database.php';
+require_once __DIR__ . '/../Models/Historial.php';
 require_once __DIR__ . '/../Core/Auth.php';
 class HistorialController
 {
