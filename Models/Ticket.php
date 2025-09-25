@@ -182,4 +182,79 @@ class Ticket
         }
         return $data;
     }
+    public function getAllTickets()
+    {
+        $sql = "SELECT 
+                    t.id,
+                    d.marca AS dispositivo,
+                    d.modelo,
+                    u.name AS cliente,
+                    t.descripcion_falla AS descripcion,
+                    e.name AS estado,
+                    tec.name AS tecnico
+                FROM tickets t
+                INNER JOIN dispositivos d ON t.dispositivo_id = d.id
+                INNER JOIN clientes c ON t.cliente_id = c.id
+                INNER JOIN users u ON c.user_id = u.id
+                INNER JOIN estados_tickets e ON t.estado_id = e.id
+                LEFT JOIN tecnicos tc ON t.tecnico_id = tc.id
+                LEFT JOIN users tec ON tc.user_id = tec.id
+                ORDER BY t.id DESC";
+        $result = $this->conn->query($sql);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }   
+
+    public function getTicketsSinTecnico()
+    {
+        $sql = "SELECT 
+                    t.id,
+                    d.marca AS dispositivo,
+                    d.modelo,
+                    u.name AS cliente,
+                    t.descripcion_falla AS descripcion,
+                    e.name AS estado
+                FROM tickets t
+                INNER JOIN dispositivos d ON t.dispositivo_id = d.id
+                INNER JOIN clientes c ON t.cliente_id = c.id
+                INNER JOIN users u ON c.user_id = u.id
+                INNER JOIN estados_tickets e ON t.estado_id = e.id
+                WHERE t.tecnico_id IS NULL
+                ORDER BY t.id DESC";
+        $result = $this->conn->query($sql);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    public function asignarTecnico($ticket_id, $tecnico_id)
+    {
+        $sql = "UPDATE tickets SET tecnico_id = ? WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $tecnico_id, $ticket_id);
+        return $stmt->execute();
+    }
+
+    public function getSupervisorId($ticket_id)
+    {
+        $stmt = $this->conn->prepare("SELECT supervisor_id FROM tickets WHERE id = ? LIMIT 1");
+        if (!$stmt) return null;
+        $stmt->bind_param("i", $ticket_id);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+        return $res['supervisor_id'] ?? null;
+    }
+
+    public function asignarSupervisor($ticket_id, $supervisor_id)
+    {
+        $stmt = $this->conn->prepare("UPDATE tickets SET supervisor_id = ? WHERE id = ?");
+        if (!$stmt) return false;
+        $stmt->bind_param("ii", $supervisor_id, $ticket_id);
+        return $stmt->execute();
+    }
 }

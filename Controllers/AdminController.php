@@ -17,8 +17,10 @@ class AdminController
         $db->connectDatabase();
         $this->userModel = new UserModel($db->getConnection());
     }
+        // Panel eliminado: redirige a listado de usuarios
         public function PanelAdmin(){
-        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
+        header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers');
+        exit;
     }
 
     public function listarUsers()

@@ -1,51 +1,6 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
-
-<?php
-// Verificamos el rol logueado desde la sesión
-$rol = $_SESSION['user']['role'] ?? null;
-
-switch ($rol) {
-    case 'Administrador':
-        include_once __DIR__ . '/../Admin/PanelAdmin.php';
-        break;
-    case 'Tecnico':
-        include_once __DIR__ . '/../Paneles/PanelTecnico.php';
-        break;
-    case 'Supervisor':
-        include_once __DIR__ . '/../Paneles/PanelSupervisor.php';
-        break;
-    case 'Cliente':
-        include_once __DIR__ . '/../Paneles/PanelCliente.php';
-        break;
-    default:
-        echo "<p>No tienes un rol asignado o el rol no es válido.</p>";
-        break;
-}
-?>
-
-<?php
-// Verificamos el rol logueado desde la sesión
-$rol = $_SESSION['user']['role'] ?? null;
-
-switch ($rol) {
-    case 'Administrador':
-        include_once __DIR__ . '/../Admin/PanelAdmin.php';
-        break;
-    case 'Tecnico':
-        include_once __DIR__ . '/../Paneles/PanelTecnico.php';
-        break;
-    case 'Supervisor':
-        include_once __DIR__ . '/../Supervisor/PanelSupervisor.php';
-        break;
-    case 'Cliente':
-        include_once __DIR__ . '/../Cliente/PanelCliente.php';
-        break;
-    default:
-        echo "<p>No tienes un rol asignado o el rol no es válido.</p>";
-        break;
-}
-?>
 <main>
+<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
         <h2>Lista de Supervisores</h2>
         <div class="search-container">
@@ -103,4 +58,3 @@ switch ($rol) {
         </table>
     </div>
 </main>
-<?php include_once __DIR__ . '/../Includes/Footer.php' ?>

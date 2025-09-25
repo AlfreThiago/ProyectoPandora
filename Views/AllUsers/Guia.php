@@ -28,5 +28,3 @@
     </ol>
     <p class="p-guia">¡Gracias por confiar en Innovasys!</p>
 </main>
-
-<?php include_once __DIR__ . '/../Includes/Footer.php'; ?>

@@ -31,6 +31,11 @@ class DeviceController
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         }
+        if ($user['role'] === 'Administrador') {
+            // Admin no puede ver dispositivos
+            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            exit;
+        }
         $dispositivos = $this->deviceModel->getAllDevices();
         include_once __DIR__ . '/../Views/Device/ListaDispositivos.php';
     }
@@ -53,13 +58,21 @@ class DeviceController
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         }
-
-        $isAdmin = ($user['role'] === 'Administrador');
-        $clientes = [];
-        if ($isAdmin) {
-            $clientes = $this->userModel->getAllClientes();
+        if ($user['role'] === 'Administrador') {
+            // Admin no puede crear dispositivos
+            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            exit;
         }
+        $isAdmin = false;
+        $clientes = [];
         $categorias = $this->categoryModel->getAllCategories();
+
+        // Verifica que existan categorías
+        if (empty($categorias)) {
+            $errorMsg = "Primero debes crear al menos una categoría antes de poder agregar un dispositivo.";
+            include_once __DIR__ . '/../Views/Device/CrearDevice.php';
+            return;
+        }
 
         include_once __DIR__ . '/../Views/Device/CrearDevice.php';
     }
@@ -71,15 +84,15 @@ class DeviceController
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         }
-
-        $isAdmin = ($user['role'] === 'Administrador');
-        $clientes = [];
-        if ($isAdmin) {
-            $clientes = $this->userModel->getAllClientes();
+        if ($user['role'] === 'Administrador') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            exit;
         }
+        $isAdmin = false;
+        $clientes = [];
         $categorias = $this->categoryModel->getAllCategories();
 
-        $userId = $isAdmin && isset($_POST['user_id']) ? $_POST['user_id'] : $user['id'];
+        $userId = $user['id'];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $categoriaId = $_POST['categoria_id'] ?? 0;
@@ -106,7 +119,8 @@ class DeviceController
                 $detalle = "Usuario {$user['name']} agregó el dispositivo {$marca} {$modelo}";
                 $this->historialController->agregarAccion($accion, $detalle);
 
-                header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice&success=1');
+                // Redirigir a la vista del cliente con sus dispositivos
+                header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice&success=1');
                 exit;
             } else {
                 $error = "Error al registrar el dispositivo.";
@@ -179,7 +193,13 @@ class DeviceController
 
     public function ActualizarDevice()
     {
-        Auth::checkRole(['Administrador', 'Supervisor', 'Tecnico', 'Cliente']);
+        // Admin no puede editar dispositivos
+        Auth::checkRole(['Supervisor', 'Tecnico', 'Cliente']);
+        $u = Auth::user();
+        if ($u && $u['role'] === 'Administrador') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            exit;
+        }
 
         $id = $_GET['id'] ?? null;
         if (!$id || !is_numeric($id)) exit("ID inválido.");
@@ -223,6 +243,10 @@ class DeviceController
         $user = Auth::user();
         if (!$user) {
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        if ($user['role'] === 'Administrador') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
             exit;
         }
         $deviceId = $_GET['id'] ?? 0;

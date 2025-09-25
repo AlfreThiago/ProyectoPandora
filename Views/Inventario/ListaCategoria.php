@@ -1,44 +1,11 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
-<?php
-// Verificamos el rol logueado desde la sesión
-$rol = $_SESSION['user']['role'] ?? null;
-
-switch ($rol) {
-    case 'Administrador':
-        include_once __DIR__ . '/../Admin/PanelAdmin.php';
-        break;
-    case 'Tecnico':
-        include_once __DIR__ . '/../Paneles/PanelTecnico.php';
-        break;
-    case 'Supervisor':
-        include_once __DIR__ . '/../Paneles/PanelSupervisor.php';
-        break;
-    case 'Cliente':
-        include_once __DIR__ . '/../Clientes/PanelCliente.php';
-        break;
-    default:
-        echo "<p>No tienes un rol asignado o el rol no es válido.</p>";
-        break;
-}
-?>
 <main>
+<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
         <h2>Categorías de Inventario</h2>
         <div class="botones">
-            <div class="dropdown">
-                <label for="menu-toggle" class="dropdown-label" >
-                    Opciones<i class='bxr  bx-caret-down'  ></i> </label>
-                <input type="checkbox" id="menu-toggle" />
-            
-                <div class="dropdown-menu">
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados">Estados TIckets</a>
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias">Categoria Item</a>
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria">Categoria Device</a>
-                </div>
-                
-            </div>
             <div class="btn-table-acciones">
-                <a class="btn-acciones-inventario" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearCategoria">Añadir Categoría</a>
+                <a class="btn-all btn-acciones-inventario-cate" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearCategoria">Añadir Categoría</a>
             </div>
         </div>
             <table id="userTable">
@@ -56,8 +23,11 @@ switch ($rol) {
                                 <td><?= $cat['id'] ?></td>
                                 <td><?= htmlspecialchars($cat['name']) ?></td>
                                 <td>
-                                    <!-- Puedes agregar editar si lo implementas -->
-                                    <a href="/ProyectoPandora/Public/index.php?route=Inventario/EliminarCategoriaInventario&id=<?= $cat['id'] ?>" class="btn delete-btn" onclick="return confirm('¿Seguro que deseas eliminar esta categoría?');">Eliminar</a>
+                                    <div class='action-buttons'>
+                                        <a href="/ProyectoPandora/Public/index.php?route=Inventario/ActualizarCategoria&id=<?= $cat['id'] ?>" class="btn edit-btn">Actualizar</a>
+                                        |
+                                        <a href="/ProyectoPandora/Public/index.php?route=Inventario/EliminarCategoriaInventario&id=<?= $cat['id'] ?>" class="btn delete-btn" onclick="return confirm('¿Seguro que deseas eliminar esta categoría?');">Eliminar</a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -68,4 +38,3 @@ switch ($rol) {
             </table>
     </div>
 </main>
-<?php include_once __DIR__ . '/../Includes/Footer.php' ?>

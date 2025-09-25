@@ -115,10 +115,10 @@ const route = urlParams.get('route');
 if (gif) {
   if (
     !route ||
-    route === "Admin/PanelAdmin" ||
-    route === "Clientes/PanelCliente" ||
-    route === "Paneles/PanelTecnico" ||
-    route === "Paneles/PanelSupervisor"
+  route === "Admin/ListarUsers" ||
+  route === "Cliente/MisDevice" ||
+  route === "Tecnico/MisReparaciones" ||
+  route === "Supervisor/Asignar"
   ) {
     gif.style.display = "block";
   } else {
