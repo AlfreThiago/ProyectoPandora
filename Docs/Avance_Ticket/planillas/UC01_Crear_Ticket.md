@@ -1,4 +1,4 @@
-# UC01 - Crear Ticket
+# Crear Ticket
 - Actor principal: Cliente
 - Propósito: Registrar una solicitud de servicio para un dispositivo.
 - Disparador: Cliente selecciona "Crear Ticket".

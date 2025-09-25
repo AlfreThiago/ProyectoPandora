@@ -40,10 +40,10 @@ class TicketController
             'Presupuesto' => [],
             // 'En espera' usado para que supervisor publique presupuesto; técnico no cambia desde aquí
             'En espera' => [],
-            // Tras reparación, solo 'En pruebas' o 'Finalizado'
-            'En reparación' => ['En pruebas', 'Finalizado'],
+            // Tras reparación, ahora pasa a 'En pruebas' o 'Listo para retirar'
+            'En reparación' => ['En pruebas', 'Listo para retirar'],
             // En pruebas solo puede finalizar
-            'En pruebas' => ['Finalizado'],
+            'En pruebas' => ['Listo para retirar', 'Finalizado'],
             'Listo para retirar' => ['Finalizado'],
             'Finalizado' => [],
             'Cancelado' => []
@@ -202,6 +202,74 @@ class TicketController
 
         $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Cliente', $comentario);
         header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&ok=aprobado');
+        exit;
+    }
+
+    // Supervisor marca ticket como "Listo para retirar"
+    public function MarcarListoParaRetirar() {
+        $user = Auth::user();
+        if (!$user || ($user['role'] ?? '') !== 'Supervisor') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+            exit;
+        }
+        $ticket_id = (int)($_POST['ticket_id'] ?? 0);
+        if ($ticket_id <= 0) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=ticket');
+            exit;
+        }
+        $estadoId = $this->estadoIdPorNombre('Listo para retirar');
+        if ($estadoId) {
+            $db = new Database(); $db->connectDatabase(); $conn = $db->getConnection();
+            $stmtU = $conn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
+            $stmtU->bind_param("ii", $estadoId, $ticket_id);
+            $stmtU->execute();
+        }
+        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&ok=listo');
+        exit;
+    }
+
+    // Supervisor marca ticket como pagado y finaliza
+    public function MarcarPagadoYFinalizar() {
+        $user = Auth::user();
+        if (!$user || ($user['role'] ?? '') !== 'Supervisor') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+            exit;
+        }
+        $ticket_id = (int)($_POST['ticket_id'] ?? 0);
+        if ($ticket_id <= 0) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=ticket');
+            exit;
+        }
+        // Primero aseguramos que esté en Listo para retirar
+        $estadoListo = $this->estadoIdPorNombre('Listo para retirar');
+        $estadoFinal = $this->estadoIdPorNombre('Finalizado');
+        $db = new Database(); $db->connectDatabase(); $conn = $db->getConnection();
+        if ($estadoListo && $estadoFinal) {
+            // Si aún no está en "Listo para retirar", moverlo
+            $stmtC = $conn->prepare("SELECT e.name as estado FROM tickets t INNER JOIN estados_tickets e ON e.id=t.estado_id WHERE t.id=? LIMIT 1");
+            $stmtC->bind_param('i', $ticket_id);
+            $stmtC->execute();
+            $row = $stmtC->get_result()->fetch_assoc();
+            $estadoActual = strtolower(trim($row['estado'] ?? ''));
+            if ($estadoActual !== 'listo para retirar') {
+                $stmtU1 = $conn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
+                $stmtU1->bind_param('ii', $estadoListo, $ticket_id);
+                $stmtU1->execute();
+            }
+            // Finalizar
+            $stmtU2 = $conn->prepare("UPDATE tickets SET estado_id = ? WHERE id = ?");
+            $stmtU2->bind_param('ii', $estadoFinal, $ticket_id);
+            $stmtU2->execute();
+        }
+        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&ok=pagado');
         exit;
     }
 

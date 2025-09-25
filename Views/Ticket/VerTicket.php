@@ -1,6 +1,6 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <main>
-    <div class="contenedor" style="max-width:600px;margin:auto;">
+    <div class="contenedor" style="max-width:600px;margin:auto; position:relative;">
         <h2 id="tituloDetalle">Detalle del Ticket</h2>
         <?php if (!empty($ticket)): ?>
             <ul class="list-group" id="detalleTicket" style="list-style:none;padding:0;">
@@ -61,6 +61,9 @@
             <div class="alert alert-success" style="margin-top:10px;">Presupuesto aprobado. El técnico podrá continuar con la reparación.</div>
         <?php elseif (isset($_GET['ok']) && $_GET['ok']==='rechazado'): ?>
             <div class="alert alert-warning" style="margin-top:10px;">Presupuesto rechazado. El ticket ha sido marcado como cancelado.</div>
+        <?php endif; ?>
+        <?php if (isset($_GET['ok']) && $_GET['ok']==='pagado'): ?>
+            <div class="alert alert-success" style="margin-top:10px;">Pago registrado. Ticket finalizado.</div>
         <?php endif; ?>
     <?php 
         $estadoTxt = strtolower(trim($ticket['estado'] ?? $ticket['estado_actual'] ?? ''));
@@ -282,7 +285,40 @@
             $isPrevJson = strpos($prev, 'Ticket/EstadoJson') !== false;
             $backHref = $isPrevJson ? $volverUrl : ($prev ?: $volverUrl);
         ?>
+        <?php if (isset($_GET['ok']) && $_GET['ok']==='listo'): ?>
+            <div class="alert alert-success" style="margin-top:10px;">Equipo listo para retirar.</div>
+        <?php endif; ?>
+
+        <?php if (!empty($ticket) && ($rol === 'Supervisor')): ?>
+            <hr>
+            <h3>Acciones del supervisor</h3>
+            <?php $sSup = strtolower(trim($estadoStr)); ?>
+            <?php if (in_array($sSup, ['en reparación','en reparacion','en pruebas'])): ?>
+                <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/MarcarListoParaRetirar" style="display:inline-block;margin-right:8px;">
+                    <input type="hidden" name="ticket_id" value="<?= (int)$ticket['id'] ?>" />
+                    <button class="btn btn-primary" type="submit">Marcar listo para retirar</button>
+                </form>
+            <?php endif; ?>
+            <?php if ($sSup === 'listo para retirar'): ?>
+                <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/MarcarPagadoYFinalizar" style="display:inline-block;">
+                    <input type="hidden" name="ticket_id" value="<?= (int)$ticket['id'] ?>" />
+                    <button class="btn btn-success" type="submit">Registrar pago y finalizar</button>
+                </form>
+            <?php endif; ?>
+        <?php endif; ?>
+
         <a href="<?= htmlspecialchars($backHref) ?>" class="btn btn-secondary mt-3">Volver</a>
+
+        <?php 
+            $mostrarPagadoOverlay = (isset($_GET['ok']) && $_GET['ok']==='pagado') || $finalizado;
+        ?>
+        <?php if ($mostrarPagadoOverlay): ?>
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.45); z-index:5;">
+            <div style="background:#e8f5e9; color:#2e7d32; border:2px solid #2e7d32; padding:18px 28px; border-radius:10px; font-weight:700; font-size:22px; box-shadow:0 6px 20px rgba(0,0,0,.25);">
+                PAGADO
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
         <?php 
             // Timeline de cambios de estado e interacciones

@@ -251,6 +251,14 @@ return [
         'controller' => 'Ticket',
         'action' => 'PublicarPresupuesto'
     ],
+    'Ticket/MarcarListoParaRetirar' => [
+        'controller' => 'Ticket',
+        'action' => 'MarcarListoParaRetirar'
+    ],
+    'Ticket/MarcarPagadoYFinalizar' => [
+        'controller' => 'Ticket',
+        'action' => 'MarcarPagadoYFinalizar'
+    ],
     'Ticket/EstadoJson' => [
         'controller' => 'Ticket',
         'action' => 'EstadoJson'
