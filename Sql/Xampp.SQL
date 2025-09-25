@@ -1,3 +1,20 @@
+-- Primero eliminar tablas que dependen de otras
+DROP TABLE IF EXISTS ticket_estado_historial;
+DROP TABLE IF EXISTS historial;
+DROP TABLE IF EXISTS item_ticket;
+DROP TABLE IF EXISTS inventarios;
+DROP TABLE IF EXISTS tickets;
+DROP TABLE IF EXISTS dispositivos;
+DROP TABLE IF EXISTS administradores;
+DROP TABLE IF EXISTS supervisores;
+DROP TABLE IF EXISTS tecnicos;
+DROP TABLE IF EXISTS clientes;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS estados_tickets;
+DROP TABLE IF EXISTS categorias_inventario;
+DROP TABLE IF EXISTS categorias;
+DROP TABLE IF EXISTS areas;
+
 CREATE TABLE areas (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
