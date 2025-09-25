@@ -31,3 +31,6 @@ COSAS DE ALE
 ✅-Agregar el Panel Usuario, funcional en la sidebar
 ✅-Arreglar sistema de estrellas
 ✅-Hace horizontal el detalle de ticket
+
+Cosasd de BRUNO
+poner drop table en la base de datos para evitar tener que borrar todo 
