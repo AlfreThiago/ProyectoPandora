@@ -57,6 +57,10 @@ function headerMeta(string $route, string $rol): array {
 			$title = 'Mis Repuestos';
 			$subtitle = 'Solicitud de ítems para tickets asignados';
 			break;
+		case stripos($route, 'Tecnico/MisStats') === 0:
+			$title = 'Mis Stats';
+			$subtitle = 'Rendimiento y métricas personales';
+			break;
 		case stripos($route, 'Cliente/MisDevice') === 0:
 			$title = 'Mis Dispositivos';
 			$subtitle = 'Tus dispositivos y tickets';
@@ -124,12 +128,6 @@ list($title, $subtitle) = headerMeta($route, $rol);
 				</div>
 				<hr>
 				<ul>
-					<li>
-						<a href="/ProyectoPandora/Public/index.php?route=Default/Perfil">
-							<i class='bx bx-user'></i>
-							<span>Perfil</span>
-						</a>
-					</li>
 					<li>
 						<a href="/ProyectoPandora/Public/index.php?route=Default/Guia">
 							<i class='bx bx-help-circle'></i>

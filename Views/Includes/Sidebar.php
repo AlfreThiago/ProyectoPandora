@@ -39,13 +39,17 @@ if (session_status() === PHP_SESSION_NONE) {
                         if (!$avatar) { $avatar = $defaultAvatar; }
                     ?>
                     <?php if ($user): ?>
-                    <li class="item menu-item user-block" style="padding:12px 16px; display:flex; align-items:center; gap:10px;">
-                        <img src="<?= htmlspecialchars($avatar) ?>" alt="Perfil" style="width:36px;height:36px;border-radius:50%;object-fit:cover;"/>
-                        <div style="display:flex;flex-direction:column;">
-                            <span style="font-weight:600;"><?= htmlspecialchars($name) ?></span>
-                            <small style="opacity:.8;"><?= htmlspecialchars($email) ?></small>
-                        </div>
+                    <li class="item menu-item user-block">
+                        <a href="/ProyectoPandora/Public/index.php?route=Default/Perfil" class="user-link">
+                            <img src="<?= htmlspecialchars($avatar) ?>" alt="Perfil" class="user-avatar"/>
+                            <div class="user-info">
+                                <span class="user-name"><?= htmlspecialchars($name) ?></span>
+                                <small class="user-email"><?= htmlspecialchars($email) ?></small>
+                            </div>
+                        </a>
                     </li>
+
+
                     <?php endif; ?>
                     <div class="menu_title flex">
                         <span class="title">Menu</span>

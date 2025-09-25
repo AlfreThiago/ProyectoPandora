@@ -22,3 +22,12 @@ impidiendo, q otros tecnicos tomen tickets.
 - ✅Implementar, un sistema de honor como posible solucion para la asignacion, asi como 
 para el cliente, para dar un orden o sistema de prioridad en el orden de la asignacion 
 de ticket. 
+
+COSAS DE ALE
+✅-Ajustar estilos css que hizo misael
+✅-Arreglar el misStats (tecnico).
+✅-Arreglar css de presupuesto (supervisor)
+✅-Arreglar tablas y bones:User, device, repuestos, Categorias
+✅-Agregar el Panel Usuario, funcional en la sidebar
+✅-Arreglar sistema de estrellas
+✅-Hace horizontal el detalle de ticket

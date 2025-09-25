@@ -5,7 +5,7 @@
         <h2>Categorías de Inventario</h2>
         <div class="botones">
             <div class="btn-table-acciones">
-                <a class="btn-acciones-inventario-cate" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearCategoria">Añadir Categoría</a>
+                <a class="btn-all btn-acciones-inventario-cate" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearCategoria">Añadir Categoría</a>
             </div>
         </div>
             <table id="userTable">
