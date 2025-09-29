@@ -9,7 +9,7 @@ class DeviceModel
         $this->conn = $dbConnection;
     }
 
-    public function createDevice($userId, $categoriaId, $marca, $modelo, $descripcion, $img_dispositivo)
+    public function createDevice($userId, $categoriaId, $marca, $modelo, $descripcion, $img_dispositivo): bool
     {
         $stmt = $this->conn->prepare("INSERT INTO dispositivos (user_id, categoria_id, marca, modelo, descripcion_falla, img_dispositivo) VALUES (?, ?, ?, ?, ?, ?)");
         if ($stmt) {
@@ -19,7 +19,7 @@ class DeviceModel
         return false;
     }
 
-    public function findDeviceById($id)
+    public function findDeviceById($id): ?array
     {
         $sql = "SELECT d.*, u.name AS user_name, c.name AS categoria_name
                 FROM dispositivos d
@@ -35,7 +35,7 @@ class DeviceModel
         return $result->fetch_assoc();
     }
 
-    public function getDevicesByUserId($userId)
+    public function getDevicesByUserId($userId): array
     {
         $sql = "SELECT d.*, c.name AS categoria
                 FROM dispositivos d
@@ -52,7 +52,7 @@ class DeviceModel
         return $data;
     }
 
-    public function getAllDevices()
+    public function getAllDevices(): array
     {
         $stmt = $this->conn->prepare("SELECT d.*, u.name as users, c.name as categoria FROM dispositivos d 
             JOIN users u ON d.user_id = u.id 
@@ -64,7 +64,7 @@ class DeviceModel
         return [];
     }
 
-    public function updateDevice($deviceId, $categoriaId, $marca, $modelo, $descripcion, $img_dispositivo)
+    public function updateDevice($deviceId, $categoriaId, $marca, $modelo, $descripcion, $img_dispositivo): bool
     {
         $stmt = $this->conn->prepare("UPDATE dispositivos SET categoria_id = ?, marca = ?, modelo = ?, descripcion_falla = ?, img_dispositivo = ? WHERE id = ?");
         if ($stmt) {
@@ -74,7 +74,7 @@ class DeviceModel
         return false;
     }
 
-    public function deleteDevice($deviceId)
+    public function deleteDevice($deviceId): bool
     {
         $stmt = $this->conn->prepare("DELETE FROM dispositivos WHERE id = ?");
         if ($stmt) {
@@ -84,7 +84,7 @@ class DeviceModel
         return false;
     }
 
-    public function actualizarDatosPorTicket($ticket_id, $marca, $modelo)
+    public function actualizarDatosPorTicket($ticket_id, $marca, $modelo): bool
     {
         $sql = "UPDATE dispositivos 
                 SET marca = ?, modelo = ?

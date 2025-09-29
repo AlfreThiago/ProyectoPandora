@@ -1,3 +1,30 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TRIGGER IF EXISTS trigger_insertar_usuario_por_rol;
+DROP TRIGGER IF EXISTS trigger_actualizar_usuario_por_rol;
+
+DROP TABLE IF EXISTS ticket_estado_historial;
+DROP TABLE IF EXISTS pagos;
+DROP TABLE IF EXISTS ticket_ratings;
+DROP TABLE IF EXISTS tecnico_stats;
+DROP TABLE IF EXISTS item_ticket;
+DROP TABLE IF EXISTS ticket_labor;
+DROP TABLE IF EXISTS mail_queue;
+DROP TABLE IF EXISTS historial;
+DROP TABLE IF EXISTS inventarios;
+DROP TABLE IF EXISTS tickets;
+DROP TABLE IF EXISTS dispositivos;
+DROP TABLE IF EXISTS administradores;
+DROP TABLE IF EXISTS supervisores;
+DROP TABLE IF EXISTS tecnicos;
+DROP TABLE IF EXISTS clientes;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS estados_tickets;
+DROP TABLE IF EXISTS categorias_inventario;
+DROP TABLE IF EXISTS categorias;
+DROP TABLE IF EXISTS areas;
+SET FOREIGN_KEY_CHECKS = 1;
+
 CREATE TABLE areas (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -8,16 +35,47 @@ CREATE TABLE categorias (
     name VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
 );
+
+INSERT INTO categorias (name) VALUES
+('Celulares'),
+('Computadoras'),
+('Laptops'),
+('Tablets'),
+('Televisiones'),
+('Consolas'),
+('Audio/Video');
 CREATE TABLE categorias_inventario (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
 );
+
+INSERT INTO categorias_inventario (name) VALUES
+('Pantallas'),
+('Baterías'),
+('Cables/Flex'),
+('Cámaras'),
+('Botones'),
+('Puertos/Conectores'),
+('Placas/Boards'),
+('Carcasas'),
+('Protectores/Consumibles');
 CREATE TABLE estados_tickets (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
 );
+
+INSERT INTO estados_tickets (name) VALUES
+('Nuevo'),
+('Diagnóstico'),
+('Presupuesto'),
+('En espera'),
+('En reparación'),
+('En pruebas'),
+('Listo para retirar'),
+('Finalizado'),
+('Cancelado');
 CREATE TABLE users (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
@@ -35,6 +93,10 @@ CREATE TABLE users (
     ) NOT NULL DEFAULT 'Cliente',
     PRIMARY KEY (id)
 );
+
+
+INSERT INTO users (name, email, password, role)
+VALUES ('Admin', 'admin@admin.com', '$2y$10$0J4vZrY0oQvEJq8xv7m0SeH2V7jV7cQO3Yl2oT1rSObJ9z0X7VqJG', 'Administrador');
 CREATE TABLE clientes (
     id INT(11) NOT NULL AUTO_INCREMENT,
     user_id INT(11) NOT NULL,
@@ -43,7 +105,7 @@ CREATE TABLE clientes (
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
--- Requiere Revision
+
 CREATE TABLE tecnicos (
     id INT(11) NOT NULL AUTO_INCREMENT,
     user_id INT(11) NOT NULL,
@@ -61,8 +123,7 @@ CREATE TABLE supervisores (
     estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (area_id) REFERENCES areas(id) ON DELETE
-    SET NULL
+    FOREIGN KEY (area_id) REFERENCES areas(id) ON DELETE SET NULL
 );
 CREATE TABLE administradores (
     id INT(11) NOT NULL AUTO_INCREMENT,
@@ -96,11 +157,9 @@ CREATE TABLE tickets (
     PRIMARY KEY (id),
     FOREIGN KEY (dispositivo_id) REFERENCES dispositivos(id) ON DELETE CASCADE,
     FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
-    FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE
-    SET NULL,
-        FOREIGN KEY (supervisor_id) REFERENCES supervisores(id) ON DELETE
-    SET NULL,
-        FOREIGN KEY (estado_id) REFERENCES estados_tickets(id)
+    FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE SET NULL,
+    FOREIGN KEY (supervisor_id) REFERENCES supervisores(id) ON DELETE SET NULL,
+    FOREIGN KEY (estado_id) REFERENCES estados_tickets(id)
 );
 CREATE TABLE inventarios (
     id INT(11) NOT NULL AUTO_INCREMENT,
@@ -130,6 +189,15 @@ CREATE TABLE item_ticket (
     FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE,
     FOREIGN KEY (supervisor_id) REFERENCES supervisores(id) ON DELETE CASCADE
 );
+
+CREATE TABLE ticket_labor (
+    ticket_id INT(11) PRIMARY KEY,
+    tecnico_id INT(11) NOT NULL,
+    labor_amount DECIMAL(10,2) NOT NULL DEFAULT 0,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
+    FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE
+);
 CREATE TABLE historial (
     id INT(11) NOT NULL AUTO_INCREMENT,
     acciones VARCHAR(255) NOT NULL,
@@ -137,49 +205,112 @@ CREATE TABLE historial (
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
--- Triggers
-DELIMITER $$ CREATE TRIGGER trigger_insertar_usuario_por_rol
-AFTER
-INSERT ON users FOR EACH ROW BEGIN IF NEW.role = 'Cliente' THEN
-INSERT INTO clientes(user_id)
-VALUES (NEW.id);
-ELSEIF NEW.role = 'Tecnico' THEN
-INSERT INTO tecnicos(user_id, disponibilidad)
-VALUES (NEW.id, 'Disponible');
-ELSEIF NEW.role = 'Supervisor' THEN
-INSERT INTO supervisores(user_id)
-VALUES (NEW.id);
-ELSEIF NEW.role = 'Administrador' THEN
-INSERT INTO administradores(user_id)
-VALUES (NEW.id);
-END IF;
-END $$ CREATE TRIGGER trigger_actualizar_usuario_por_rol
-AFTER
-UPDATE ON users FOR EACH ROW BEGIN IF OLD.role = 'Cliente' THEN
-DELETE FROM clientes
-WHERE user_id = OLD.id;
-ELSEIF OLD.role = 'Tecnico' THEN
-DELETE FROM tecnicos
-WHERE user_id = OLD.id;
-ELSEIF OLD.role = 'Supervisor' THEN
-DELETE FROM supervisores
-WHERE user_id = OLD.id;
-ELSEIF OLD.role = 'Administrador' THEN
-DELETE FROM administradores
-WHERE user_id = OLD.id;
-END IF;
--- Insertar nuevo rol
-IF NEW.role = 'Cliente' THEN
-INSERT INTO clientes(user_id)
-VALUES (NEW.id);
-ELSEIF NEW.role = 'Tecnico' THEN
-INSERT INTO tecnicos(user_id, disponibilidad)
-VALUES (NEW.id, 'Disponible');
-ELSEIF NEW.role = 'Supervisor' THEN
-INSERT INTO supervisores(user_id)
-VALUES (NEW.id);
-ELSEIF NEW.role = 'Administrador' THEN
-INSERT INTO administradores(user_id)
-VALUES (NEW.id);
-END IF;
-END $$ DELIMITER;
+
+CREATE TABLE ticket_estado_historial (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    ticket_id INT(11) NOT NULL,
+    estado_id INT(11) NOT NULL,
+    user_id INT(11) NOT NULL,
+    user_role ENUM('Cliente','Tecnico','Supervisor','Administrador') NOT NULL,
+    comentario VARCHAR(255) DEFAULT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
+    FOREIGN KEY (estado_id) REFERENCES estados_tickets(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE pagos (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    ticket_id INT(11) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    method ENUM('EFECTIVO','TARJETA','TRANSFERENCIA','OTRO') NOT NULL DEFAULT 'EFECTIVO',
+    reference VARCHAR(100) NULL,
+    user_id INT(11) NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE mail_queue (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    recipient VARCHAR(150) NOT NULL,
+    subject VARCHAR(200) NOT NULL,
+    body TEXT NOT NULL,
+    status ENUM('PENDING','SENT','FAILED') NOT NULL DEFAULT 'PENDING',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    sent_at DATETIME NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE ticket_ratings (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    ticket_id INT(11) NOT NULL,
+    tecnico_id INT(11) NOT NULL,
+    cliente_id INT(11) NOT NULL,
+    stars TINYINT NOT NULL CHECK (stars BETWEEN 1 AND 5),
+    comment VARCHAR(255) NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
+    FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
+);
+
+CREATE TABLE tecnico_stats (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    tecnico_id INT(11) NOT NULL,
+    avg_rating DECIMAL(3,2) NOT NULL DEFAULT 3.00,
+    ratings_count INT(11) NOT NULL DEFAULT 0,
+    labor_min DECIMAL(10,2) DEFAULT 0,
+    labor_max DECIMAL(10,2) DEFAULT 0,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_tecnico_stats_tecnico (tecnico_id),
+    FOREIGN KEY (tecnico_id) REFERENCES tecnicos(id) ON DELETE CASCADE
+);
+
+DELIMITER $$
+CREATE TRIGGER trigger_insertar_usuario_por_rol
+AFTER INSERT ON users
+FOR EACH ROW
+BEGIN
+    IF NEW.role = 'Cliente' THEN
+        INSERT INTO clientes(user_id) VALUES (NEW.id);
+    ELSEIF NEW.role = 'Tecnico' THEN
+        INSERT INTO tecnicos(user_id, disponibilidad) VALUES (NEW.id, 'Disponible');
+    ELSEIF NEW.role = 'Supervisor' THEN
+        INSERT INTO supervisores(user_id) VALUES (NEW.id);
+    ELSEIF NEW.role = 'Administrador' THEN
+        INSERT INTO administradores(user_id) VALUES (NEW.id);
+    END IF;
+END $$
+
+CREATE TRIGGER trigger_actualizar_usuario_por_rol
+AFTER UPDATE ON users
+FOR EACH ROW
+BEGIN
+    
+    IF OLD.role = 'Cliente' THEN
+        DELETE FROM clientes WHERE user_id = OLD.id;
+    ELSEIF OLD.role = 'Tecnico' THEN
+        DELETE FROM tecnicos WHERE user_id = OLD.id;
+    ELSEIF OLD.role = 'Supervisor' THEN
+        DELETE FROM supervisores WHERE user_id = OLD.id;
+    ELSEIF OLD.role = 'Administrador' THEN
+        DELETE FROM administradores WHERE user_id = OLD.id;
+    END IF;
+
+    
+    IF NEW.role = 'Cliente' THEN
+        INSERT INTO clientes(user_id) VALUES (NEW.id);
+    ELSEIF NEW.role = 'Tecnico' THEN
+        INSERT INTO tecnicos(user_id, disponibilidad) VALUES (NEW.id, 'Disponible');
+    ELSEIF NEW.role = 'Supervisor' THEN
+        INSERT INTO supervisores(user_id) VALUES (NEW.id);
+    ELSEIF NEW.role = 'Administrador' THEN
+        INSERT INTO administradores(user_id) VALUES (NEW.id);
+    END IF;
+END $$
+DELIMITER ;

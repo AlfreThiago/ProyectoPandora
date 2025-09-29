@@ -1,31 +1,31 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <main>
-    <div class="Contenedor">
+    <section class="fondo-login">
+        <div class="login">
+            <h2 class="bienvenida">Bienvenidos a <strong>Innovasys</strong></h2>
+            <h3>Iniciar Sesión</h3>
 
-        <section class="Conenedor-formulario-principal">
-            <h2>Iniciar Sesión</h2>
-
-            <div class="Formulario-general">
-                <div class="Formulario-contenedor">
-
-                    <form action="/ProyectoPandora/Public/index.php?route=Auth/Login" method="POST">
-                        <p>
-                            <label for="email">Email</label>
-                            <input type="email" name="email" required>
-                        </p>
-
-                        <p>
-                            <label for="password">Password</label>
-                            <input type="password" name="password" autocomplete="off" required>
-                        </p>
-
-                        <p class="btn">
-                            <button type="submit">Log in</button>
-                        </p>
-                    </form>
+            
+            <form class="form" action="/ProyectoPandora/Public/index.php?route=Auth/Login" method="POST">
+                <div class="textbox">
+                    <input type="email" name="email" required>
+                    <label for="email">Email</label>
                 </div>
-            </div>
-        </section>
-    </div>
+
+                <div class="textbox">
+                    <input type="password" name="password" autocomplete="off" required>
+                    <label for="password">Contraseña</label>
+                </div>
+
+                <button type="submit">
+                    <span class="material-symbols-outlined">Inciar Sesion</span>
+                </button>
+            </form>
+                <a class="footer-login" href="#">¿Olvidaste tu contraseña?</a>
+                <p>
+                    <a class="footer-login" href="/ProyectoPandora/Public/index.php?route=Register/Register">Registrarse</a>
+                </p>
+
+        </div>
+    </section>
 </main>
-<?php include_once __DIR__ . '/../Includes/Footer.php' ?>

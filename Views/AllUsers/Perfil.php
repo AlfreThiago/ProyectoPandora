@@ -1,5 +1,4 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
-<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 <main>
     <div class="perfil-container">
         <div class="perfil-card">
@@ -26,20 +25,32 @@
                         <label for="role">Rol:</label>
                         <input type="text" id="role" value="<?= htmlspecialchars($rol) ?>" readonly>
                     </div>
+                    <?php if ($rol === 'Tecnico'): ?>
+                    <div class="perfil-campo">
+                        <label for="disponibilidad">Disponibilidad:</label>
+                        <select id="disponibilidad" name="disponibilidad">
+                            <?php $dispActual = $tecnicoDisponibilidad ?? 'Disponible'; ?>
+                            <option value="Disponible" <?= ($dispActual === 'Disponible') ? 'selected' : '' ?>>Disponible</option>
+                            <option value="Ocupado" <?= ($dispActual === 'Ocupado') ? 'selected' : '' ?>>Ocupado</option>
+                        </select>
+                    </div>
+                    <?php endif; ?>
                     <button type="submit" class="btn-perfil-guardar">Guardar cambios</button>
                 </form>
+                <?php if ($rol !== 'Administrador'): ?>
                 <div class="perfil-stats">
                     <div class="stat-card">
                         <span class="stat-num"><?= $cantTickets ?></span>
                         <span class="stat-label">Tickets</span>
                     </div>
-                    <?php if ($rol === 'Cliente' || $rol === 'Administrador' || $rol === 'Supervisor'): ?>
+                    <?php if ($rol === 'Cliente' || $rol === 'Supervisor' || $rol === 'Tecnico'): ?>
                     <div class="stat-card">
                         <span class="stat-num"><?= $cantDevices ?></span>
                         <span class="stat-label">Dispositivos</span>
                     </div>
                     <?php endif; ?>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -53,5 +64,3 @@ document.querySelector('.img-label').addEventListener('click', function() {
     document.getElementById('img_perfil').click();
 });
 </script>
-
-<?php include_once __DIR__ . '/../Includes/Footer.php'; ?>

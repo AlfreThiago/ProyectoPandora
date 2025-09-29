@@ -1,9 +1,9 @@
 <?php
 
 return [
-    //Rutas Funcionales y Logicas 
-    //
-    //Ruta por Defecto Index-Home
+    
+    
+    
     'Default/Index' => [
         'controller' => 'Default',
         'action' => 'index'
@@ -16,9 +16,9 @@ return [
         'controller' => 'Default',
         'action' => 'perfil'
     ],
-    //
-    //Auth del Login 
-    //Register el Registrar
+    
+    
+    
     'Auth/Login' => [
         'controller' => 'Auth',
         'action' => 'Login'
@@ -35,9 +35,9 @@ return [
         'controller' => 'Auth',
         'action' => 'Logout'
     ],
-    //
-    //
-    //Admin
+    
+    
+    
     'Admin/PanelAdmin' => [
         'controller' => 'Admin',
         'action' => 'PanelAdmin'
@@ -70,9 +70,32 @@ return [
         'controller' => 'Admin',
         'action' => 'DeleteUser'
     ],
-    //
-    //
-    //Tecnico
+    
+    
+    
+    'Supervisor/PanelSupervisor'=> [
+        'controller' => 'Supervisor',
+        'action' => 'PanelSupervisor'
+    ],
+    'Supervisor/GestionInventario'=> [
+        'controller' => 'Supervisor',
+        'action' => 'GestionInventario'
+    ],
+    'Supervisor/Asignar'=> [
+        'controller' => 'Supervisor',
+        'action' => 'Asignar'
+    ],
+    'Supervisor/AsignarTecnico'=> [
+        'controller' => 'Supervisor',
+        'action' => 'AsignarTecnico'
+    ],
+    'Supervisor/Presupuestos'=> [
+        'controller' => 'Supervisor',
+        'action' => 'Presupuestos'
+    ],
+    
+    
+    
         'Tecnico/PanelTecnico' => [
         'controller' => 'Tecnico',
         'action' => 'PanelTecnico'
@@ -85,13 +108,21 @@ return [
         'controller' => 'Tecnico',
         'action' => 'MisRepuestos'
     ],
+    'Tecnico/SolicitarRepuesto'=> [
+        'controller' => 'Tecnico',
+        'action' => 'SolicitarRepuesto'
+    ],
     'Tecnico/MisStats'=> [
         'controller' => 'Tecnico',
         'action' => 'MisStats'
     ],
-    //
-    //
-    //Cliente
+    'Tecnico/ActualizarStats'=> [
+        'controller' => 'Tecnico',
+        'action' => 'ActualizarStats'
+    ],
+    
+    
+    
     'Cliente/PanelCliente' => [
         'controller' => 'Cliente',
         'action' => 'PanelCliente'
@@ -104,9 +135,9 @@ return [
         'controller' => 'Cliente',
         'action' => 'MisTicket'
     ],    
-    //
-    //
-    //Device
+    
+    
+    
     'Device/ListarDevice' => [
         'controller' => 'Device',
         'action' => 'listarDevice'
@@ -143,16 +174,16 @@ return [
         'controller' => 'Device',
         'action' => 'deleteCategory'
     ],
-    //
-    //
-    //Historial
+    
+    
+    
     'Historial/ListarHistorial' => [
         'controller' => 'Historial',
         'action' => 'listarHistorial'
     ],
-    //
-    //
-    //EstadoTicket
+    
+    
+    
     'EstadoTicket/Crear' => [
         'controller' => 'EstadoTicket',
         'action' => 'crear'
@@ -173,9 +204,9 @@ return [
         'controller' => 'EstadoTicket',
         'action' => 'eliminar'        
     ],    
-    //
-    //
-    //Ticket
+    
+    
+    
     'Ticket/Agregar' => [
         'controller' => 'Ticket',
         'action' => 'mostrarCrear'
@@ -204,24 +235,50 @@ return [
         'controller' => 'Ticket',
         'action' => 'verTicket'
     ],
+    'Ticket/Calificar' => [
+        'controller' => 'Ticket',
+        'action' => 'Calificar'
+    ],
+    'Ticket/AprobarPresupuesto' => [
+        'controller' => 'Ticket',
+        'action' => 'AprobarPresupuesto'
+    ],
+    'Ticket/RechazarPresupuesto' => [
+        'controller' => 'Ticket',
+        'action' => 'RechazarPresupuesto'
+    ],
+    'Ticket/PublicarPresupuesto' => [
+        'controller' => 'Ticket',
+        'action' => 'PublicarPresupuesto'
+    ],
+    'Ticket/MarcarListoParaRetirar' => [
+        'controller' => 'Ticket',
+        'action' => 'MarcarListoParaRetirar'
+    ],
+    'Ticket/MarcarPagadoYFinalizar' => [
+        'controller' => 'Ticket',
+        'action' => 'MarcarPagadoYFinalizar'
+    ],
+    'Ticket/EstadoJson' => [
+        'controller' => 'Ticket',
+        'action' => 'EstadoJson'
+    ],
+    'Ticket/ActualizarEstado' => [
+        'controller' => 'Ticket',
+        'action' => 'ActualizarEstado'
+    ],
     'Ticket/Eliminar' => [
         'controller' => 'Ticket',
         'action' => 'eliminar'
     ],
-    //
-    //Paneles (Lo hice yo, Ale :)
-    'Dash/PanelSupervisor' => [
-        'controller' => 'Paneles',
-        'action' => 'PanelSupervisor'
-    ],
-
+    
     'Dash/Ajustes' => [
         'controller' => 'Auth',
         'action' => 'Ajustes'
     ],
-    //
-    //
-    //Inventario
+    
+    
+    
     'Inventario/ListarItem' => [
         'controller' => 'Inventario',
         'action' => 'listarInventario'
@@ -246,14 +303,33 @@ return [
         'controller' => 'Inventario',
         'action' => 'crearCategoria'
     ],
-    'Inventario/ActualizarItem'=> [],
-    'Inventario/EditarItem'=> [],
+    'Inventario/ActualizarItem'=> [
+        'controller' => 'Inventario',
+        'action' => 'mostrarActualizar'
+    ],
+    'Inventario/EditarItem'=> [
+        'controller' => 'Inventario',
+        'action' => 'editar'
+    ],
+    'Inventario/SumarStock'=> [
+        'controller' => 'Inventario',
+        'action' => 'sumarStock'
+    ],
     'Inventario/EliminarItem'=> [
         'controller' => 'Inventario',
         'action' => 'eliminar'
     ],
-    'Inventario/EliminarCategoria'=> [
+    'Inventario/ActualizarCategoria'=> [
         'controller' => 'Inventario',
-        'action' => 'eliminarCategoria'
+        'action' => 'mostrarActualizarCategoria'
+    ],
+    'Inventario/EditarCategoria'=> [
+        'controller' => 'Inventario',
+        'action' => 'editarCategoria'
+    ],
+    'Inventario/EliminarCategoriaInventario'=> [
+        'controller' => 'Inventario',
+        'action' => 'eliminarCategoriaInventario'
     ],
 ];
+?>
