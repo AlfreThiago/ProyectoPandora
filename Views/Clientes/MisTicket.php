@@ -3,7 +3,6 @@
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Contenedor">
         <section class="section-mis-tickets">
-            <h2>Mis Tickets</h2>
             <div class="cards-container">
                 <?php if (!empty($tickets)): ?>
                     <?php foreach ($tickets as $ticket): ?>

@@ -56,6 +56,7 @@
     </div>
     <div class="perfil-volver-panel">
         <a href="<?= $panelUrl ?>" class="btn-volver-panel">Volver a mi panel</a>
+        <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" class="btn-volver-panel" style="background:#ef4444; border-color:#ef4444;">Cerrar sesión</a>
     </div>
 </main>
 

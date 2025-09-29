@@ -1,148 +1,31 @@
-<?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
+<?php 
+include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
+
 <main>
-    <div class="ContenedorPrincipal">
-        <div class="Contenedor-home texto">
-            <h2>Home Portal</h2>
-        </div>
-        <section class="Contenido">
-            <div class="informacion">
-                <?php if (isset($_SESSION['user'])): ?>
-                    <?php $role = strtolower($_SESSION['user']['role']); ?>
-                    <?php if ($role === 'administrador'): ?>
-                        <div class="info-user">
-                            <h2>BIENVENIDO <?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : 'Usuario'; ?></h2>
-                        </div>
-                        <div class="">
-                            <tbody>
-                                <div class="grid">
-                                    <div class="small-box">
-                                        <div class="inner">
-                                            <h3>150</h3>
-                                            <p>New Orders</p>
-                                        </div>
-                                    <div class="icon">👜</div>
-                                        <a href="#" class="small-box-footer">
-                                            More info →
-                                        </a>
-                                    </div>
+<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
+	<!-- Estilos de Home consolidados en AdminDash.css -->
 
-                                    <div class="small-box" style="background:var(--color-texto-primario);">
-                                        <div class="inner">
-                                            <h3>53</h3>
-                                            <p>Users Registered</p>
-                                        </div>
-                                        <div class="icon">👤</div>
-                                        <a href="#" class="small-box-footer">
-                                            More info →
-                                        </a>
-                                    </div>
-                                </div>
 
-                            </tbody>
-                        </div>
-                    <?php elseif ($role === 'supervisor'): ?>
-                        <div class="info-user">
-                            <h2>BIENVENIDO <?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : 'Usuario'; ?></h2>
-                        </div>
-                        <div class="">
-                            <tbody>
-                                <div class="grid">
-                                    <div class="small-box">
-                                        <div class="inner">
-                                            <h3>150</h3>
-                                            <p>New Orders</p>
-                                        </div>
-                                    <div class="icon">👜</div>
-                                        <a href="#" class="small-box-footer">
-                                            More info →
-                                        </a>
-                                    </div>
-
-                                    <div class="small-box" style="background:var(--color-texto-primario);">
-                                        <div class="inner">
-                                            <h3>53</h3>
-                                            <p>Users Registered</p>
-                                        </div>
-                                        <div class="icon">👤</div>
-                                        <a href="#" class="small-box-footer">
-                                            More info →
-                                        </a>
-                                    </div>
-                                </div>
-
-                            </tbody>
-                        </div>
-                    <?php elseif ($role === 'tecnico'): ?>
-                        <div class="info-user">
-                            <h2>BIENVENIDO <?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : 'Usuario'; ?></h2>
-                        </div>
-                        <div class="">
-                            <tbody>
-                                <div class="grid">
-                                    <div class="small-box">
-                                        <div class="inner">
-                                            <h3>150</h3>
-                                            <p>New Orders</p>
-                                        </div>
-                                    <div class="icon">👜</div>
-                                        <a href="#" class="small-box-footer">
-                                            More info →
-                                        </a>
-                                    </div>
-
-                                    <div class="small-box" style="background:var(--color-texto-primario);">
-                                        <div class="inner">
-                                            <h3>53</h3>
-                                            <p>Users Registered</p>
-                                        </div>
-                                        <div class="icon">👤</div>
-                                        <a href="#" class="small-box-footer">
-                                            More info →
-                                        </a>
-                                    </div>
-                                </div>
-
-                            </tbody>
-                        </div>
-                    <?php elseif ($role === 'cliente'): ?>
-                        <div class="info-user">
-                            <h2>BIENVENIDO <?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : 'Usuario'; ?></h2>
-                        </div>
-                        <div class="">
-                            <tbody>
-                                <div class="grid">
-                                    <div class="small-box">
-                                        <div class="inner">
-                                            <h3>150</h3>
-                                            <p>New Orders</p>
-                                        </div>
-                                    <div class="icon">👜</div>
-                                        <a href="#" class="small-box-footer">
-                                            More info →
-                                        </a>
-                                    </div>
-
-                                    <div class="small-box" style="background:var(--color-texto-primario);">
-                                        <div class="inner">
-                                            <h3>53</h3>
-                                            <p>Users Registered</p>
-                                        </div>
-                                        <div class="icon">👤</div>
-                                        <a href="#" class="small-box-footer">
-                                            More info →
-                                        </a>
-                                    </div>
-                                </div>
-
-                            </tbody>
-                        </div>
-                    <?php endif; ?>
-                <?php else: ?>
-                    <div class="info-user">
-                        <h2>BIENVENIDO A INNOVASYS</h2>
-                    </div>
-                <?php endif; ?>
-            </div>
-        </section>
-    </div>
+	<div class="home-wrap">
+		<div class="home-grid">
+			<article class="home-card">
+				<div>
+					<h3>Seguimiento en tiempo real</h3>
+					<p>Consultá el estado de tus tickets y recibí notificaciones cuando haya novedades.</p>
+				</div>
+			</article>
+			<article class="home-card">
+				<div>
+					<h3>Presupuestos claros</h3>
+					<p>Detalle de repuestos y mano de obra, con aprobación del cliente antes de reparar.</p>
+				</div>
+			</article>
+			<article class="home-card">
+				<div>
+					<h3>Calificación del servicio</h3>
+					<p>Evaluá a tu técnico al finalizar; nos ayuda a mejorar y balancear cargas.</p>
+				</div>
+			</article>
+		</div>
+	</div>
 </main>

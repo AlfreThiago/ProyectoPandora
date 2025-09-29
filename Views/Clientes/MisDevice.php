@@ -3,7 +3,6 @@
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Contenedor">
         <section class="section-mis-devices">
-            <h2>Mis Dispositivos</h2>
             <div class="cards-container">
                 <?php if (!empty($dispositivos)): ?>
                     <?php foreach ($dispositivos as $device): ?>

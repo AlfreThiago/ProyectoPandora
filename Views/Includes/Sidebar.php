@@ -9,7 +9,8 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/ProyectoPandora/Public/css/AdminDash.css">
+    <?php $adminCssPath = rtrim($_SERVER['DOCUMENT_ROOT'],'/\\') . '/ProyectoPandora/Public/css/AdminDash.css'; ?>
+    <link rel="stylesheet" href="/ProyectoPandora/Public/css/AdminDash.css?v=<?= file_exists($adminCssPath) ? filemtime($adminCssPath) : time(); ?>">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Home Portal</title>
@@ -50,6 +51,14 @@ if (session_status() === PHP_SESSION_NONE) {
                     </li>
 
 
+                    <?php endif; ?>
+                    <?php if ($user): ?>
+                    <li class="item menu-item menu-item-static">
+                        <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" class="link flex logout-link">
+                            <i class='bx bx-log-out'></i>
+                            <span>Cerrar sesión</span>
+                        </a>
+                    </li>
                     <?php endif; ?>
                     <div class="menu_title flex">
                         <span class="title">Menu</span>
