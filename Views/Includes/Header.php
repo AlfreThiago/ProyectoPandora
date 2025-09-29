@@ -98,6 +98,10 @@ function headerMeta(string $route, string $rol): array {
 			$title = 'Estados de Tickets';
 			$subtitle = 'Gestión de estados disponibles';
 			break;
+		case stripos($route, 'Default/Guia') === 0:	
+			$title = 'Guía de Uso';
+			$subtitle = 'Cómo utilizar el sistema';
+			break;
 		default:
 			$title = 'Home Portal';
 			$subtitle = 'Bienvenido al sistema';
@@ -129,21 +133,15 @@ list($title, $subtitle) = headerMeta($route, $rol);
 				<hr>
 				<ul>
 					<li>
-						<a href="/ProyectoPandora/Public/index.php?route=Default/Guia">
-							<i class='bx bx-help-circle'></i>
-							<span>Guía</span>
-						</a>
-					</li>
-					<li>
 						<a href="#">
 							<i class='bx bx-bell-minus'></i>
 							<span>Notificaciones</span>
 						</a>
 					</li>
 					<li>
-						<a href="/ProyectoPandora/Public/index.php?route=Default/Index">
-							<i class='bx bx-home'></i>
-							<span>Inicio</span>
+						<a href="/ProyectoPandora/Public/index.php?route=Default/Guia">
+							<i class='bx bx-help-circle'></i>
+							<span>Guía</span>
 						</a>
 					</li>
 				</ul>
