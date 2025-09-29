@@ -1,8 +1,8 @@
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 
-<main class="main-guia">
-    <h1 class="h1-guia">Guía de Uso de Innovasys</h1>
+<main>
+    <h2>Guía de Uso de Innovasys</h2>
     <h2>¡Aquí te explicamos cómo utilizar nuestro servicio de reparación!</h2>
     <ol class="guia-lista">
         <li>

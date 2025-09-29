@@ -3,9 +3,6 @@
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
         <h2>Lista de Técnicos</h2>
-        <div class="search-container">
-            <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
-        </div>
         <div class="dropdown">
             <label for="menu-toggle" class="dropdown-label">Opciones</label>
             <input type="checkbox" id="menu-toggle" />
