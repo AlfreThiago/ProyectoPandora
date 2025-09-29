@@ -736,8 +736,13 @@ h2, h3{
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
-  .presu-totales { grid-template-columns: 1fr; gap: 12px; }
-  .presu-list { grid-template-columns: 1fr; }
+  .presu-totales {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .presu-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 table {
@@ -1914,9 +1919,18 @@ ul {
     font-weight: 600;
     text-transform: capitalize;
 }
-.badge--success { background: var(--secundario); color: #fff; }
-.badge--danger { background: var(--tercero); color: #fff; }
-.badge--muted { background: var(--color-border); color: var(--color-texto-secundario); }
+.badge--success {
+  background: var(--secundario);
+  color: #fff;
+}
+.badge--danger {
+  background: var(--tercero);
+  color: #fff;
+}
+.badge--muted {
+  background: var(--color-border);
+  color: var(--color-texto-secundario);
+}
 
 /* Botón volver con mejor estilo */
 .btn.btn-secondary {
@@ -2189,20 +2203,66 @@ h2, h3 {
 }
 /* ================= Supervisor: Asignar ================= */ 
 /*ALEEE puedo organizarte con mi prettier (PRETTIER es un organizador de codigo) todo el codigo css como este de aca? para q quede organizado si queres claro, escribme cuando leas esto*/
-.asignar-header { margin-bottom: 16px; }
+.asignar-header {
+  margin-bottom: 16px;
+}
 
-.alert { margin: 8px 0 16px; padding: 10px 12px; border-radius: 8px; }
-.alert-success { background: rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.35); color:#86efac; }
-.alert-error { background: rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.35); color:#fecaca; }
+.alert {
+  margin: 8px 0 16px;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+.alert-success {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #86efac;
+}
+.alert-error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fecaca;
+}
 
-.asignar-panel { display: grid; gap: 16px; }
-.asignar-filters { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
-.asignar-field { min-width:220px; }
-.asignar-field--grow { min-width:260px; flex:1; }
-.asignar-label { display:block; font-size:12px; opacity:.8; margin-bottom:6px; color: var(--color-texto-primario); }
-.asignar-input { width:100%; padding:10px 12px; border-radius:8px; background: rgba(255,255,255,0.04); color: var(--color-texto-primario); border:1px solid rgba(255,255,255,0.08); }
-.asignar-input--small { padding:8px 10px; }
-.asignar-actions { display:flex; gap:8px; align-self:flex-end; }
+.asignar-panel {
+  display: grid;
+  gap: 16px;
+}
+.asignar-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.asignar-field {
+  min-width: 220px;
+}
+.asignar-field--grow {
+  min-width: 260px;
+  flex: 1;
+}
+.asignar-label {
+  display: block;
+  font-size: 12px;
+  opacity: .8;
+  margin-bottom: 6px;
+  color: var(--color-texto-primario);
+}
+.asignar-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-texto-primario);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.asignar-input--small {
+  padding: 8px 10px;
+}
+.asignar-actions {
+  display: flex;
+  gap: 8px;
+  align-self: flex-end;
+}
 
 /* .btn-primary { background: #0ea5e9; color:#fff; padding:5px 14px; border:none; border-radius:8px; cursor:pointer; text-decoration:none; display:inline-block; }
 .btn-outline {
@@ -2215,25 +2275,93 @@ h2, h3 {
   display:inline-block;
 } */
 
-.asignar-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px; }
-.asignar-empty { opacity:.8; color: var(--color-texto-primario); }
+.asignar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.asignar-empty {
+  opacity: .8;
+  color: var(--color-texto-primario);
+}
 
-.asignar-card { background: rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:12px; }
-.asignar-card__head { display:flex; gap:12px; align-items:center; }
-.asignar-avatar { width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,0.12); }
-.asignar-card__title { flex:1; }
-.asignar-card__row { display:flex; align-items:center; gap:8px; }
-.asignar-card__name { margin:0; color: var(--color-texto-primario); font-size:16px; font-weight:600; }
-.asignar-card__subtitle { font-size:12px; opacity:.8; color: var(--color-texto-primario); }
-.asignar-card__chips { display:flex; gap:12px; flex-wrap:wrap; font-size:12px; opacity:.9; }
-.chip { background: rgba(255,255,255,0.06); padding:6px 10px; border-radius:8px; color: var(--color-texto-primario); }
+.asignar-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.asignar-card__head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.asignar-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+}
+.asignar-card__title {
+  flex: 1;
+}
+.asignar-card__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.asignar-card__name {
+  margin: 0;
+  color: var(--color-texto-primario);
+  font-size: 16px;
+  font-weight: 600;
+}
+.asignar-card__subtitle {
+  font-size: 12px;
+  opacity: .8;
+  color: var(--color-texto-primario);
+}
+.asignar-card__chips {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  opacity: .9;
+}
+.chip {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: var(--color-texto-primario);
+}
 
-.badge { display:inline-block; font-size:11px; color:white; padding:2px 8px; border-radius:999px; }
-.badge--success { background:#16a34a; }
-.badge--danger { background:#ef4444; }
-.badge--muted { background:#64748b; }
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.badge--success {
+  background: #16a34a;
+}
+.badge--danger {
+  background: #ef4444;
+}
+.badge--muted {
+  background: #64748b;
+}
 
-.asignar-assign-form { display:flex; gap:8px; align-items:center; margin-top:4px; }
+.asignar-assign-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 4px;
+}
 
 /* ===== Mis Repuestos: input cantidad ===== */
 input[type=number].asignar-input--small::-webkit-outer-spin-button,
@@ -2320,14 +2448,32 @@ input[type="radio"]:checked + label {
 }
 
 /* Ajustes finos visuales */
-.req-form .currency { margin-left: 2px; }
-.js-total { min-width: 72px; text-align: right; }
+.req-form .currency {
+  margin-left: 2px;
+}
+.js-total {
+  min-width: 72px;
+  text-align: right;
+}
 
 /* ===== Gestión Inventario (Supervisor) ===== */
-.row-low-stock { background: rgba(239, 68, 68, 0.08); }
-.row-low-stock td { color: var(--color-texto-primario); }
-.inv-page .Tabla-Contenedor table input[type="number"] { max-width: 120px; }
-.inv-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: var(--fondo-formulario); }
+.row-low-stock {
+  background: rgba(239, 68, 68, 0.08);
+}
+.row-low-stock td {
+  color: var(--color-texto-primario);
+}
+.inv-page .Tabla-Contenedor table input[type="number"] {
+  max-width: 120px;
+}
+.inv-thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--fondo-formulario);
+}
 
 /* ===== Mis Repuestos: Overrides de visibilidad input ===== */
 input.asignar-input.asignar-input--small {
@@ -2355,11 +2501,22 @@ input.asignar-input.asignar-input--small:focus {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.line-clamp-2 { -webkit-line-clamp: 2; line-clamp: 2; }
-.line-clamp-3 { -webkit-line-clamp: 3; line-clamp: 3; }
+.line-clamp-2 {
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.line-clamp-3 {
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
 
-.u-flex-col { display: flex; flex-direction: column; }
-.u-flex-1 { flex: 1; }
+.u-flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.u-flex-1 {
+  flex: 1;
+}
 
 .card-actions {
   margin-top: auto;
