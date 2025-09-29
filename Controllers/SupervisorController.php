@@ -54,8 +54,9 @@ class SupervisorController {
             exit;
         }
 
-        $ticket_id = $_POST['ticket_id'] ?? null;
-        $tecnico_id = $_POST['tecnico_id'] ?? null;
+        // Datos de entrada
+        $ticket_id = isset($_POST['ticket_id']) ? (int)$_POST['ticket_id'] : 0;
+        $tecnico_id = isset($_POST['tecnico_id']) ? (int)$_POST['tecnico_id'] : 0;
         if (!$ticket_id || !$tecnico_id) {
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=Datos incompletos');
             exit;
@@ -65,9 +66,9 @@ class SupervisorController {
         $db->connectDatabase();
         $ticketModel = new Ticket($db->getConnection());
         $userModel = new UserModel($db->getConnection());
-
-        
         $conn = $db->getConnection();
+
+        // 1) Validar ticket libre
         $stmtChk = $conn->prepare("SELECT tecnico_id FROM tickets WHERE id = ? LIMIT 1");
         if ($stmtChk) {
             $stmtChk->bind_param("i", $ticket_id);
@@ -79,32 +80,28 @@ class SupervisorController {
             }
         }
 
-        
-        $conn = $db->getConnection();
-        $stmtChk = $conn->prepare("SELECT tecnico_id FROM tickets WHERE id = ? LIMIT 1");
-        if ($stmtChk) {
-            $stmtChk->bind_param("i", $ticket_id);
-            $stmtChk->execute();
-            $row = $stmtChk->get_result()->fetch_assoc();
-            if (!empty($row['tecnico_id'])) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=El ticket ya tiene un técnico asignado');
-                exit;
-            }
+        // 2) Calcular límite por rating (honor)
+        $ratingAvg = 0.0; $ratingCount = 0; $starsRounded = 0;
+        $stmtRating = $conn->prepare("SELECT AVG(stars) AS avg_stars, COUNT(*) AS cnt FROM ticket_ratings WHERE tecnico_id = ?");
+        if ($stmtRating) {
+            $stmtRating->bind_param("i", $tecnico_id);
+            $stmtRating->execute();
+            $r = $stmtRating->get_result()->fetch_assoc();
+            $ratingAvg = (float)($r['avg_stars'] ?? 0);
+            $ratingCount = (int)($r['cnt'] ?? 0);
         }
-
-        
-        $conn = $db->getConnection();
-        
-        $ratingAvg = 0; $ratingCount = 0; $starsRounded = 0;
-        $ratingRes = $conn->query("SELECT AVG(stars) avg_stars, COUNT(*) cnt FROM ticket_ratings WHERE tecnico_id = ".(int)$tecnico_id);
-        if ($ratingRes) { $r = $ratingRes->fetch_assoc(); $ratingAvg = (float)($r['avg_stars'] ?? 0); $ratingCount = (int)($r['cnt'] ?? 0); }
-        $starsRounded = (int)round($ratingAvg ?: 0);
-        
+        $starsRounded = $ratingCount > 0 ? (int)round($ratingAvg) : 3; // sin califs => 3
         $limits = [1=>3, 2=>5, 3=>10, 4=>15, 5=>PHP_INT_MAX];
-        $limit = $limits[$starsRounded ?: 0] ?? 5; 
-        
-        $resAct = $conn->query("SELECT COUNT(*) c FROM tickets WHERE tecnico_id = ".(int)$tecnico_id." AND fecha_cierre IS NULL");
-        $activos = $resAct ? (int)$resAct->fetch_assoc()['c'] : 0;
+        $limit = $limits[$starsRounded] ?? 5;
+
+        // 3) Chequear carga actual del técnico
+        $stmtAct = $conn->prepare("SELECT COUNT(*) AS c FROM tickets WHERE tecnico_id = ? AND fecha_cierre IS NULL");
+        $activos = 0;
+        if ($stmtAct) {
+            $stmtAct->bind_param("i", $tecnico_id);
+            $stmtAct->execute();
+            $activos = (int)($stmtAct->get_result()->fetch_assoc()['c'] ?? 0);
+        }
         if ($activos >= $limit) {
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=Limite de tickets activos alcanzado segun honor');
             exit;
@@ -112,56 +109,32 @@ class SupervisorController {
 
         $ok = $ticketModel->asignarTecnico((int)$ticket_id, (int)$tecnico_id);
         if ($ok) {
-            
+            // 4) Asignar supervisor al ticket
             $supervisorUserId = $_SESSION['user']['id'] ?? null;
             if ($supervisorUserId) {
-                
-                $conn = $db->getConnection();
-                $stmt = $conn->prepare("SELECT id FROM supervisores WHERE user_id = ? LIMIT 1");
-            
-            $ratingModel = new RatingModel($db->getConnection());
-            list($avg, $rcount) = $ratingModel->getAvgForTecnico((int)$tecnico_id);
-            $stars = $avg ? (int)round((float)$avg) : 3; 
-            $limit = null; 
-            if ($stars <= 1) $limit = 3; elseif ($stars === 2) $limit = 5; elseif ($stars === 3) $limit = 10; elseif ($stars === 4) $limit = 15; else $limit = null; 
-
-            
-            $stmtCnt = $conn->prepare("SELECT COUNT(*) AS c FROM tickets WHERE tecnico_id = ? AND fecha_cierre IS NULL");
-            $stmtCnt->bind_param("i", $tecnico_id);
-            $stmtCnt->execute();
-            $activos = (int)($stmtCnt->get_result()->fetch_assoc()['c'] ?? 0);
-
-            if ($limit !== null && $activos >= $limit) {
-                
-                $userModel->setTecnicoEstado((int)$tecnico_id, 'Ocupado');
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=Limite de tickets activos alcanzado para este técnico');
-                exit;
-            }
-                if ($stmt) {
-                    $stmt->bind_param("i", $supervisorUserId);
-                    $stmt->execute();
-                    $sup = $stmt->get_result()->fetch_assoc();
+                $stmtSup = $conn->prepare("SELECT id FROM supervisores WHERE user_id = ? LIMIT 1");
+                if ($stmtSup) {
+                    $stmtSup->bind_param("i", $supervisorUserId);
+                    $stmtSup->execute();
+                    $sup = $stmtSup->get_result()->fetch_assoc();
                     if ($sup && isset($sup['id'])) {
-                        $ticketModel->asignarSupervisor((int)$ticket_id, (int)$sup['id']);
+                        $ticketModel->asignarSupervisor($ticket_id, (int)$sup['id']);
                     }
-                }
-            }
-            
-            if ($starsRounded < 5) {
-                $resAct = $conn->query("SELECT COUNT(*) c FROM tickets WHERE tecnico_id = ".(int)$tecnico_id." AND fecha_cierre IS NULL");
-                $activos = $resAct ? (int)$resAct->fetch_assoc()['c'] : 0;
-                if ($activos >= $limit) {
-                    $conn->query("UPDATE tecnicos SET disponibilidad = 'Ocupado' WHERE id = ".(int)$tecnico_id);
                 }
             }
 
-                
-                if ($limit !== null) {
-                    $activos += 1;
-                    if ($activos >= $limit) {
-                        $userModel->setTecnicoEstado((int)$tecnico_id, 'Ocupado');
+            // 5) Si alcanzó el límite tras asignar, marcar "Ocupado"
+            if ($limit !== PHP_INT_MAX) {
+                $stmtAct2 = $conn->prepare("SELECT COUNT(*) AS c FROM tickets WHERE tecnico_id = ? AND fecha_cierre IS NULL");
+                if ($stmtAct2) {
+                    $stmtAct2->bind_param("i", $tecnico_id);
+                    $stmtAct2->execute();
+                    $activos2 = (int)($stmtAct2->get_result()->fetch_assoc()['c'] ?? 0);
+                    if ($activos2 >= $limit) {
+                        $userModel->setTecnicoEstado($tecnico_id, 'Ocupado');
                     }
                 }
+            }
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&success=1');
         } else {
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=No se pudo asignar');

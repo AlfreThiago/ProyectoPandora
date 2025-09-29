@@ -600,31 +600,23 @@ class TicketController
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         }
-
-    $isAdmin = false; 
-        $clientes = [];
-        $cliente_id = null;
-
-        if ($isAdmin) {
-            $db = new Database();
-            $db->connectDatabase();
-            $userModel = new UserModel($db->getConnection());
-            $clientes = $userModel->getAllClientes();
-
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cliente_id'])) {
-                $cliente_id = $_POST['cliente_id'];
-            }
-        } else {
-            $cliente = $this->ticketModel->obtenerClientePorUser($user['id']);
-            $cliente_id = $cliente['id'];
+        if (($user['role'] ?? '') !== 'Cliente') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            exit;
         }
 
+        // Obtener cliente_id del usuario actual (cliente)
+        $cliente = $this->ticketModel->obtenerClientePorUser($user['id']);
+        if (!$cliente || !isset($cliente['id'])) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=cliente_no_asociado');
+            exit;
+        }
+    $cliente_id = (int)($cliente['id']);
+
         $data = [];
-        if ($cliente_id) {
-            $dispositivos = $this->ticketModel->obtenerDispositivosPorCliente($cliente_id);
-            while ($row = $dispositivos->fetch_assoc()) {
-                $data[] = $row;
-            }
+        $dispositivos = $this->ticketModel->obtenerDispositivosPorCliente($cliente_id);
+        while ($row = $dispositivos->fetch_assoc()) {
+            $data[] = $row;
         }
 
         
@@ -652,28 +644,35 @@ class TicketController
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         }
-
-        if (isset($_POST['recarga_cliente']) && $_POST['recarga_cliente'] === '1') {
-            $this->mostrarCrear();
-            return;
+        if (($user['role'] ?? '') !== 'Cliente') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            exit;
         }
 
-    $isAdmin = false; 
-        if ($isAdmin && isset($_POST['cliente_id'])) {
-            $cliente_id = $_POST['cliente_id'];
-        } else {
-            $cliente = $this->ticketModel->obtenerClientePorUser($user['id']);
-            if (!$cliente) {
-                die("Error: el usuario no tiene cliente asociado.");
-            }
-            $cliente_id = $cliente['id'];
+        // Obtener cliente del usuario
+        $cliente = $this->ticketModel->obtenerClientePorUser($user['id']);
+        if (!$cliente || !isset($cliente['id'])) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=cliente_no_asociado');
+            exit;
         }
+        $cliente_id = (int)($cliente['id']);
 
         $dispositivo_id = $_POST['dispositivo_id'] ?? '';
         $descripcion = $_POST['descripcion'] ?? '';
 
         if (empty($dispositivo_id)) {
             header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=Debe seleccionar un dispositivo');
+            exit;
+        }
+
+        // Validar que el dispositivo pertenezca a este cliente
+        $pertenece = false;
+        $dispRes = $this->ticketModel->obtenerDispositivosPorCliente($cliente_id);
+        while ($r = $dispRes->fetch_assoc()) {
+            if ((int)($r['id'] ?? 0) === (int)$dispositivo_id) { $pertenece = true; break; }
+        }
+        if (!$pertenece) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=Dispositivo no pertenece al cliente');
             exit;
         }
 

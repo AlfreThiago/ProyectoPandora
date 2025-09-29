@@ -1,0 +1,120 @@
+{\rtf1\ansi\deff0{\fonttbl{\f0 Calibri;}}\fs22
+
+\b Evaluación técnica y plan de implementación – Proyecto Pandora \b0\par
+\par
+\b Resumen ejecutivo\b0\par
+Este documento resume tecnologías, requisitos (hardware y software), conocimientos técnicos y un plan de implementación para el sistema Proyecto Pandora (PHP + MySQL sobre Apache). Incluye un presupuesto estimado de recursos en rangos, sin tablas comparativas.\par
+\par
+\b Alcance y arquitectura actual\b0\par
+- Backend: PHP 8.x, patrón MVC propio, sesiones para autenticación y roles (Supervisor, Técnico, Cliente).\par
+- Base de datos: MySQL 8.x (o MariaDB compatible).\par
+- Servidor web: Apache 2.4 (XAMPP en desarrollo; LAMP con PHP-FPM recomendado en producción).\par
+- Frontend: HTML/CSS/JS sin framework; vistas PHP.\par
+- Email: Cola de correo (MailQueue) con envío por job/cron.\par
+\par
+\b Requisitos de hardware\b0\par
+\i Desarrollo (por persona)\i0\par
+- CPU 2–4 núcleos, 8–16 GB RAM, 20–50 GB SSD.\par
+- Windows 10/11 (XAMPP).\par
+\par
+\i Producción inicial (tráfico pequeño, ~hasta 30 usuarios concurrentes)\i0\par
+- 2 vCPU, 4–8 GB RAM, 40–80 GB SSD, red estable.\par
+- SSD recomendado por IOPS; backups en disco/bucket aparte.\par
+\par
+\i Producción crecimiento (50–150 concurrentes)\i0\par
+- 4 vCPU, 8–16 GB RAM, 80–160 GB SSD.\par
+- Considerar redundancia, snapshots y retención de backups.\par
+\par
+\b Requisitos de software\b0\par
+\i Desarrollo\i0\par
+- XAMPP (Apache 2.4, PHP 8.1–8.3, MySQL 8).\par
+- VS Code, Git, extensiones PHP.\par
+- Extensiones PHP: mysqli, mbstring, intl, openssl, json, (gd/imagick si hay imágenes).\par
+\par
+\i Producción (Linux recomendado, p.ej. Ubuntu 22.04 LTS)\i0\par
+- Apache 2.4 + PHP-FPM 8.2 + MySQL 8.0 (o MariaDB 10.6+).\par
+- OPcache habilitado.\par
+- HTTPS con Let’s Encrypt.\par
+- Cron para: cola de correo y backups.\par
+- Herramientas: firewall (ufw), fail2ban, logrotate.\par
+\par
+\b Conocimientos técnicos requeridos\b0\par
+- PHP 8.x, MVC, sesiones, prepared statements (mysqli).\par
+- SQL relacional, diseño de índices, integridad referencial.\par
+- HTML/CSS/JS básico (DOM, accesibilidad elemental).\par
+- Administración Linux básica: Apache, PHP-FPM, MySQL, permisos, vhosts.\par
+- Seguridad: TLS/HTTPS, gestión de usuarios/roles DB, backups, logs.\par
+- Control de versiones (Git) y despliegues.\par
+\par
+\b Qué se necesita para implementar\b0\par
+\i Infraestructura\i0\par
+- Servidor (VM o físico) con LAMP en producción, dominio y certificado.\par
+- SMTP (servicio externo o propio) para la cola de correo.\par
+- Repositorio Git (GitHub/GitLab/Bitbucket).\par
+\par
+\i Preparación de entorno\i0\par
+- Crear base de datos y usuario con privilegios mínimos; ejecutar scripts SQL del repo en orden.\par
+- Configurar VirtualHost apuntando a la carpeta Public/ como DocumentRoot.\par
+- Configurar variables/secretos (DB_HOST, DB_USER, DB_PASS, SMTP_*).\par
+- Programar cron de MailQueue y backups (retención 7–30 días).\par
+- Ajustar PHP: memory\_limit, post\_max\_size, upload\_max\_filesize.\par
+\par
+\i Seguridad\i0\par
+- HTTPS obligatorio; cookies de sesión con Secure/HttpOnly/SameSite.\par
+- Regenerar ID de sesión tras login.\par
+- Validación/escape de entradas; prepared statements ya presentes.\par
+- Revisar CSRF en formularios POST críticos.\par
+\par
+\i Operación\i0\par
+- Monitoreo básico (CPU, RAM, disco) y health checks.\par
+- Logs centralizados y rotación.\par
+- Ensayar restauración de backups periódicamente.\par
+\par
+\b Roadmap de despliegue (6 pasos)\b0\par
+1) Preparar LAMP con HTTPS y OPcache.\par
+2) Crear DB/usuario y ejecutar scripts SQL; precargar estados del ticket.\par
+3) Configurar VirtualHost → DocumentRoot a Public/.\par
+4) Configuración de app (variables y secretos).\par
+5) Desplegar desde Git y probar flujos críticos end-to-end.\par
+6) Activar cron de MailQueue y backups; documentar accesos/procedimientos.\par
+\par
+\b Escalabilidad y rendimiento\b0\par
+- OPcache y tuning de consultas (índices: tickets(tecnico\_id, fecha\_cierre), ratings(tecnico\_id), etc.).\par
+- Paginación en listados grandes (ya aplicada en Historial).\par
+- A medio plazo: Redis para sesiones/caché; separar DB a instancia dedicada; CDN para estáticos si aplica.\par
+\par
+\b Riesgos y mitigación\b0\par
+- Usar XAMPP en producción: migrar a LAMP Linux por seguridad/estabilidad.\par
+- Envío de correos: asegurar SMTP + worker/cron con reintentos.\par
+- Integridad de estados: mantener reglas de transición y validaciones.\par
+- Pérdida de datos: backups programados y pruebas de restauración.\par
+\par
+\b Checklist de salida a producción\b0\par
+- HTTPS activo sin mixed content.\par
+- Usuario DB de mínimos privilegios; backups automáticos.\par
+- Variables de entorno/secrets fuera del código.\par
+- Cron de MailQueue operativo.\par
+- OPcache habilitado; logs sin errores críticos.\par
+- Flujos clave probados: login, crear ticket, asignar técnico, presupuesto, aprobación, cierre, calificación.\par
+\par
+\b Presupuesto estimado de recursos (rangos orientativos)\b0\par
+\i Infraestructura nube (mensual)\i0\par
+- VM pequeña (2 vCPU, 4–8 GB RAM): ~USD 20–40/mes, según proveedor/región.\par
+- VM mediana (4 vCPU, 8–16 GB RAM): ~USD 60–120/mes.\par
+- Almacenamiento y backups: ~USD 5–15/mes (según volumen y retención).\par
+- SMTP transaccional: ~USD 0–15/mes (planes free con límites; pagados según volumen).\par
+- Dominio: ~USD 10–15/año.\par
+- Certificado SSL: ~USD 0 (Let’s Encrypt).\par
+- Monitoreo/logs básicos: ~USD 0–10/mes (según herramienta).\par
+\par
+\i Mano de obra (implementación inicial)\i0\par
+- Preparación de servidor, configuración, despliegue y pruebas: ~30–50 horas.\par
+- Horas dependen de: calidad del hosting, acceso a DNS/SMTP, ajustes de seguridad, y pruebas de usuario.\par
+\par
+\i Notas\i0\par
+- Los rangos son estimaciones conservadoras; variarán por proveedor (AWS, Azure, GCP, VPS locales), región y políticas de la organización.\par
+- En on-premises, el costo de hardware, energía y mantenimiento reemplaza el fee mensual de la nube y requiere dimensionamiento específico.\par
+\par
+\b Conclusión\b0\par
+El sistema es viable sobre una pila LAMP estándar con costos iniciales bajos y posibilidad de escalar gradualmente. Se recomienda iniciar con una VM pequeña en la nube, OPcache activo, backups y correo transaccional, e iterar según el uso real.\par
+}
