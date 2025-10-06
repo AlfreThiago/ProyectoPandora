@@ -2,6 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once __DIR__ . '/../../Core/Auth.php';
+$authUser = Auth::user();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -29,17 +31,16 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="menu-conteiner">
                 <ul class="menu-items">
                     <?php 
-                        $user = $_SESSION['user'] ?? null;
-                        $name = $user['name'] ?? '';
-                        $email = $user['email'] ?? '';
-                        $avatar = $user['img_perfil'] ?? '';
+                        $name = $authUser['name'] ?? '';
+                        $email = $authUser['email'] ?? '';
+                        $avatar = $authUser['img_perfil'] ?? '';
                         $defaultAvatar = '/ProyectoPandora/Public/img/imgPerfil/default.png';
                         if ($avatar && strpos($avatar, '/ProyectoPandora/') !== 0) {
                             $avatar = '/ProyectoPandora/Public/img/imgPerfil/' . ltrim($avatar, '/');
                         }
                         if (!$avatar) { $avatar = $defaultAvatar; }
                     ?>
-                    <?php if ($user): ?>
+                    <?php if ($authUser): ?>
                     <li class="item menu-item user-block">
                         <a href="/ProyectoPandora/Public/index.php?route=Default/Perfil" class="user-link">
                             <img src="<?= htmlspecialchars($avatar) ?>" alt="Perfil" class="user-avatar"/>
@@ -52,7 +53,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 
                     <?php endif; ?>
-                    <?php if ($user): ?>
+                    <?php if ($authUser): ?>
                     <li class="item menu-item menu-item-static">
                         <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" class="link flex logout-link">
                             <i class='bx bx-log-out'></i>
@@ -70,8 +71,8 @@ if (session_status() === PHP_SESSION_NONE) {
                             <span>Home</span>
                         </a>
                     </li>
-                    <?php if (isset($_SESSION['user'])): ?>
-                        <?php $role = strtolower($_SESSION['user']['role']); ?>
+                    <?php if ($authUser): ?>
+                        <?php $role = strtolower($authUser['role'] ?? ''); ?>
 
                         <?php if ($role === 'administrador'): ?>
                             

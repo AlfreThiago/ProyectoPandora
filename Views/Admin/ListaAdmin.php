@@ -2,8 +2,6 @@
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
-        <h2>Lista de Admins</h2>
-
         <div class="dropdown">
             <label for="menu-toggle" class="dropdown-label-admin">Opciones</label>
             <input type="checkbox" id="menu-toggle" />
