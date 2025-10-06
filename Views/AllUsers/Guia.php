@@ -1,32 +1,57 @@
-<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 
-<main class="main-guia">
-    <h1 class="h1-guia">Guía de Uso de Innovasys</h1>
-    <h2>¡Aquí te explicamos cómo utilizar nuestro servicio de reparación!</h2>
-    <ol class="guia-lista">
-        <li>
-            <strong>Registro:</strong>  
-            Lo primero que debes hacer es registrarte en nuestra página. Haz clic en <b>Registrarse</b> y completa el formulario con tu nombre, correo electrónico y contraseña.
-        </li>
-        <li>
-            <strong>Acceso:</strong>  
-            Una vez registrado, inicia sesión con tus datos para acceder a tu panel personal.
-        </li>
-        <li>
-            <strong>Panel de usuario:</strong>  
-            Desde tu panel podrás ver todos los servicios que ofrecemos y gestionar tus dispositivos y tickets de reparación.
-        </li>
-        <li>
-            <strong>Solicitar reparación:</strong>  
-            Agrega tu dispositivo y crea un ticket para solicitar el servicio de reparación. Podrás ver el estado de tu solicitud en todo momento.
-        </li>
-        <li>
-            <strong>Soporte y seguimiento:</strong>  
-            Si tienes dudas, puedes consultar la sección de ayuda o contactar a nuestro equipo de soporte desde tu panel.
-        </li>
-    </ol>
-    <p class="p-guia">¡Gracias por confiar en Innovasys!</p>
-</main>
+<main>
+    <!-- Estilos de Guía consolidados en AdminDash.css -->
 
-<?php include_once __DIR__ . '/../Includes/Footer.php'; ?>
+    <section class="guia-hero" aria-label="Guía de uso de Innovasys">
+        <span class="badge">Guía rápida</span>
+        <h1>Cómo usar Innovasys</h1>
+        <p>Seguí estos pasos para registrar tus dispositivos, crear tickets y hacer seguimiento de tus reparaciones.</p>
+        <div class="guia-cta">
+            <a class="btn-prim" href="/ProyectoPandora/Public/index.php?route=Register/Register">Registrarme</a>
+            <a class="btn-sec" href="/ProyectoPandora/Public/index.php?route=Auth/Login">Ya tengo cuenta</a>
+        </div>
+    </section>
+
+    <div class="guia-wrap">
+        <div class="guia-grid" role="list" aria-label="Pasos de uso">
+            <article class="guia-card" role="listitem">
+                <div class="guia-num">1</div>
+                <div class="guia-body">
+                    <h3>Registro</h3>
+                    <p>Creá tu cuenta desde <strong>Registrarse</strong> con tu nombre, email y contraseña.</p>
+                </div>
+            </article>
+            <article class="guia-card" role="listitem">
+                <div class="guia-num">2</div>
+                <div class="guia-body">
+                    <h3>Acceso</h3>
+                    <p>Ingresá a tu cuenta desde <strong>Iniciar sesión</strong> para entrar a tu panel.</p>
+                </div>
+            </article>
+            <article class="guia-card" role="listitem">
+                <div class="guia-num">3</div>
+                <div class="guia-body">
+                    <h3>Panel de usuario</h3>
+                    <p>Gestioná tus <em>dispositivos</em> y consultá tus <em>tickets</em> en curso.</p>
+                </div>
+            </article>
+            <article class="guia-card" role="listitem">
+                <div class="guia-num">4</div>
+                <div class="guia-body">
+                    <h3>Solicitar reparación</h3>
+                    <p>Agregá tu dispositivo y <strong>creá un ticket</strong>. Podés ver el estado en todo momento.</p>
+                </div>
+            </article>
+            <article class="guia-card" role="listitem">
+                <div class="guia-num">5</div>
+                <div class="guia-body">
+                    <h3>Soporte y seguimiento</h3>
+                    <p>Ante dudas, consultá la ayuda o contactá a soporte desde tu panel.</p>
+                </div>
+            </article>
+        </div>
+
+        <p class="guia-thanks">¡Gracias por confiar en <strong>Innovasys</strong>! 💜</p>
+    </div>
+</main>

@@ -7,7 +7,8 @@ require_once __DIR__ . '/../Core/Auth.php';
 class ClienteController {
     
     public function PanelCliente(){
-        include_once __DIR__ . '/../Views/Clientes/PanelCliente.php';
+        header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice');
+        exit;
     }
 
     public function MisDevice() {
@@ -21,7 +22,7 @@ class ClienteController {
         $db->connectDatabase();
         $deviceModel = new DeviceModel($db->getConnection());
 
-        // Obtener dispositivos del usuario logueado
+        
         $dispositivos = $deviceModel->getDevicesByUserId($user['id']);
 
         include_once __DIR__ . '/../Views/Clientes/MisDevice.php';
@@ -38,7 +39,7 @@ class ClienteController {
         $db->connectDatabase();
         $ticketModel = new Ticket($db->getConnection());
 
-        // Obtener tickets del usuario logueado
+        
         $tickets = $ticketModel->getTicketsByUserId($user['id']);
 
         include_once __DIR__ . '/../Views/Clientes/MisTicket.php';

@@ -17,8 +17,10 @@ class AdminController
         $db->connectDatabase();
         $this->userModel = new UserModel($db->getConnection());
     }
+        
         public function PanelAdmin(){
-        include_once __DIR__ . '/../Views/Admin/PanelAdmin.php';
+        header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers');
+        exit;
     }
 
     public function listarUsers()
@@ -36,6 +38,18 @@ class AdminController
     public function listarTecs()
     {
         $tecnicos = $this->userModel->getAllTecnicos();
+        // Enriquecer con rating promedio y conteo
+        require_once __DIR__ . '/../Models/Rating.php';
+        $dbx = new Database();
+        $dbx->connectDatabase();
+        $ratingModel = new RatingModel($dbx->getConnection());
+        foreach ($tecnicos as &$tec) {
+            $tecId = (int)($tec['id'] ?? 0);
+            list($avg, $count) = $ratingModel->getAvgForTecnico($tecId);
+            $tec['rating_avg'] = $avg ? (float)$avg : 0.0;
+            $tec['rating_count'] = (int)$count;
+        }
+        unset($tec);
         include_once __DIR__ . '/../Views/Admin/ListaTecnico.php';
     }
 
@@ -72,18 +86,36 @@ class AdminController
 
     public function ActualizarUser()
     {
-        $userId = $_GET['id'];
         $db = new Database();
         $db->connectDatabase();
         $userModel = new UserModel($db->getConnection());
+
+        // Determina el ID desde GET (vista) o POST (submit)
+        $userId = null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userId = isset($_POST['id']) ? (int)$_POST['id'] : null;
+        } else {
+            $userId = isset($_GET['id']) ? (int)$_GET['id'] : null;
+        }
+
+        if (!$userId) {
+            // Si no hay id, volver al listado
+            header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers');
+            exit;
+        }
+
         $user = $userModel->findById($userId);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['name'];
-            $role = $_POST['role'];
+            $name = $_POST['name'] ?? '';
+            $role = $_POST['role'] ?? '';
             $from = $_POST['from'] ?? 'Admin/ListarUsers';
 
-            $userModel->updateUser($userId, $name, $user['email'], $role);
+            // Reobtén el usuario por ID para asegurar email correcto
+            $current = $userModel->findById($userId);
+            $email = $current['email'] ?? ($user['email'] ?? '');
+
+            $userModel->updateUser($userId, $name, $email, $role);
 
             $admin = Auth::user();
             $accion = "Actualización de Usuario";

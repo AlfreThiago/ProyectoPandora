@@ -2,6 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once __DIR__ . '/../../Core/Auth.php';
+$authUser = Auth::user();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -9,7 +11,8 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/ProyectoPandora/Public/css/AdminDash.css">
+    <?php $adminCssPath = rtrim($_SERVER['DOCUMENT_ROOT'],'/\\') . '/ProyectoPandora/Public/css/AdminDash.css'; ?>
+    <link rel="stylesheet" href="/ProyectoPandora/Public/css/AdminDash.css?v=<?= file_exists($adminCssPath) ? filemtime($adminCssPath) : time(); ?>">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Home Portal</title>
@@ -27,6 +30,37 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
             <div class="menu-conteiner">
                 <ul class="menu-items">
+                    <?php 
+                        $name = $authUser['name'] ?? '';
+                        $email = $authUser['email'] ?? '';
+                        $avatar = $authUser['img_perfil'] ?? '';
+                        $defaultAvatar = '/ProyectoPandora/Public/img/imgPerfil/default.png';
+                        if ($avatar && strpos($avatar, '/ProyectoPandora/') !== 0) {
+                            $avatar = '/ProyectoPandora/Public/img/imgPerfil/' . ltrim($avatar, '/');
+                        }
+                        if (!$avatar) { $avatar = $defaultAvatar; }
+                    ?>
+                    <?php if ($authUser): ?>
+                    <li class="item menu-item user-block">
+                        <a href="/ProyectoPandora/Public/index.php?route=Default/Perfil" class="user-link">
+                            <img src="<?= htmlspecialchars($avatar) ?>" alt="Perfil" class="user-avatar"/>
+                            <div class="user-info">
+                                <span class="user-name"><?= htmlspecialchars($name) ?></span>
+                                <small class="user-email"><?= htmlspecialchars($email) ?></small>
+                            </div>
+                        </a>
+                    </li>
+
+
+                    <?php endif; ?>
+                    <?php if ($authUser): ?>
+                    <li class="item menu-item menu-item-static">
+                        <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" class="link flex logout-link">
+                            <i class='bx bx-log-out'></i>
+                            <span>Cerrar sesión</span>
+                        </a>
+                    </li>
+                    <?php endif; ?>
                     <div class="menu_title flex">
                         <span class="title">Menu</span>
                         <span class="line"></span>
@@ -37,50 +71,98 @@ if (session_status() === PHP_SESSION_NONE) {
                             <span>Home</span>
                         </a>
                     </li>
-                    <?php if (isset($_SESSION['user'])): ?>
-                        <?php $role = strtolower($_SESSION['user']['role']); ?>
+                    <?php if ($authUser): ?>
+                        <?php $role = strtolower($authUser['role'] ?? ''); ?>
 
                         <?php if ($role === 'administrador'): ?>
-                            <!-- Admin: ve todos los usuarios y opción de añadir -->
+                            
                             <li class="item menu-item menu-item-static">
-                                <a href="/ProyectoPandora/Public/index.php?route=Admin/PanelAdmin" class="link flex">
-                                    <i class='bx  bx-iframe'></i>
-                                    <span>Panel Admin</span>
+                                <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="link flex">
+                                    <i class='bx bx-user-circle'></i>
+                                    <span>Usuarios</span>
                                 </a>
                             </li>
-                            <!-- Historial -->
-                            <li class="item">
+                            <li class="item menu-item menu-item-static">
                                 <a href="/ProyectoPandora/Public/index.php?route=Historial/ListarHistorial" class="link flex">
-                                    <i class='bxr  bx-history'></i>
+                                    <i class='bx bx-time'></i>
                                     <span>Historial</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item menu-item-static">
+                                <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados" class="link flex">
+                                    <i class='bx bx-list-check'></i>
+                                    <span>Estados</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item menu-item-static">
+                                <a href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria" class="link flex">
+                                    <i class='bx bx-category'></i>
+                                    <span>Cat. Dispositivos</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item menu-item-static">
+                                <a href="/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias" class="link flex">
+                                    <i class='bx bx-purchase-tag'></i>
+                                    <span>Cat. Inventario</span>
                                 </a>
                             </li>
                         <?php elseif ($role === 'supervisor'): ?>
                             <li class="item menu-item-static">
-                                <a href="index.php?route=Dash/PanelSupervisor" class="link flex">
-                                    <i class='bxr  bx-ticket'></i>
-                                    <span>Panel Supervisor</span>
+                                <a href="/ProyectoPandora/Public/index.php?route=Supervisor/Asignar" class="link flex">
+                                    <i class='bx bx-task'></i>
+                                    <span>Asignar Técnico</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item-static">
+                                <a href="/ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario" class="link flex">
+                                    <i class='bx bx-package'></i>
+                                    <span>Gestión Inventario</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item-static">
+                                <a href="/ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos" class="link flex">
+                                    <i class='bx bx-dollar'></i>
+                                    <span>Presupuestos</span>
                                 </a>
                             </li>
                         <?php elseif ($role === 'tecnico'): ?>
-                            <!-- Técnico: solo ve Reparaciones y tickets -->
+                            
                             <li class="item menu-item-static">
-                                <a href="index.php?route=Tecnico/PanelTecnico" class="link flex">
+                                <a href="index.php?route=Tecnico/MisReparaciones" class="link flex">
                                     <i class='bxr  bx-ticket'></i>
-                                    <span>Panel Tecnico</span>
+                                    <span>Tickets</span>
                                 </a>
+                            </li>
+                            <li class="item menu-item-static">
+                                <a href="index.php?route=Tecnico/MisRepuestos" class="link flex">
+                                    <i class='bxr  bx-ticket'></i>
+                                    <span>Repuestos</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item-static">
+                                <a href="index.php?route=Tecnico/MisStats" class="link flex">
+                                    <i class='bxr  bx-ticket'></i>
+                                    <span>Mis Stats</span>
+                                </a>
+
                             </li>
                         <?php elseif ($role === 'cliente'): ?>
                             <li class="item menu-item-static">
-                                <a href="index.php?route=Cliente/PanelCliente" class="link flex">
+                                <a href="index.php?route=Cliente/MisDevice" class="link flex">
                                     <i class='bx  bx-devices'></i>
-                                    <span>Panel Cliente</span>
+                                    <span>Mis Dispositivos</span>
+                                </a>
+                            </li>
+                            <li class="item menu-item-static">
+                                <a href="index.php?route=Cliente/MisTicket" class="link flex">
+                                    <i class='bxr  bx-ticket'></i>
+                                    <span>Mis Tickets</span>
                                 </a>
                             </li>
                         <?php endif; ?>
                     <?php else: ?>
-                        <!-- No logueado -->
-                        <!-- Iniciar sesion, Registro y Guia -->
+                        
+                        
                         <li class="item ">
                             <a href="/ProyectoPandora/Public/index.php?route=Auth/Login" class="link flex">
                                 <i class='bx bx-arrow-out-right-square-half'></i>

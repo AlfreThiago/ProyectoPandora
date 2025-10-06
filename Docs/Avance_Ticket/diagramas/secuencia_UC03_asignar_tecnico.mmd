@@ -1,0 +1,18 @@
+sequenceDiagram
+  autonumber
+  participant S as Supervisor
+  participant V as Vista: Views/Supervisor/Asignar.php
+  participant SC as Controllers/SupervisorController.php
+  participant T as Models/Ticket.php
+  participant DB as MySQL
+
+  S->>V: Selecciona ticket y técnico
+  V->>SC: POST /Supervisor/AsignarTecnico
+  SC->>T: asignarTecnico(ticket_id, tecnico_id)
+  T->>DB: UPDATE tickets SET tecnico_id
+  DB-->>T: ok
+  SC->>T: asignarSupervisor(ticket_id, supervisor_id)
+  T->>DB: UPDATE tickets SET supervisor_id
+  DB-->>T: ok
+  SC-->>V: éxito
+  V-->>S: Asignación realizada

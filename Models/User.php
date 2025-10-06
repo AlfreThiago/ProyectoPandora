@@ -63,9 +63,32 @@ class UserModel
 
     public function getAllTecnicos()
     {
-        $sql = "SELECT t.id, t.user_id, u.name, u.email, u.role, u.created_at, t.disponibilidad, t.especialidad
-            FROM tecnicos t 
-            INNER JOIN users u ON t.user_id = u.id";
+        $sql = "SELECT 
+                    t.id,
+                    t.user_id,
+                    u.name,
+                    u.email,
+                    u.role,
+                    u.created_at,
+                    u.img_perfil,
+                    t.disponibilidad,
+                    t.especialidad,
+                    COALESCE(ta.cantidad, 0) AS tickets_asignados,
+                    COALESCE(tabiertos.cantidad, 0) AS tickets_activos
+                FROM tecnicos t 
+                INNER JOIN users u ON t.user_id = u.id
+                LEFT JOIN (
+                    SELECT tecnico_id, COUNT(*) AS cantidad
+                    FROM tickets
+                    WHERE tecnico_id IS NOT NULL
+                    GROUP BY tecnico_id
+                ) ta ON ta.tecnico_id = t.id
+                LEFT JOIN (
+                    SELECT tecnico_id, COUNT(*) AS cantidad
+                    FROM tickets
+                    WHERE tecnico_id IS NOT NULL AND fecha_cierre IS NULL
+                    GROUP BY tecnico_id
+                ) tabiertos ON tabiertos.tecnico_id = t.id";
         $result = $this->connection->query($sql);
         return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
     }

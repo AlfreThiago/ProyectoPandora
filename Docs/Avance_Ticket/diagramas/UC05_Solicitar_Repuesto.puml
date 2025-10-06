@@ -1,0 +1,14 @@
+@startuml UC05_Solicitar_Repuesto
+left to right direction
+skinparam actorStyle awesome
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+actor "Técnico" as Tecnico
+rectangle Sistema {
+  usecase "Solicitar Repuesto" as UC05
+}
+
+Tecnico --> UC05 : Solicitar ítem
+UC05 --> Sistema : Validar stock y crear item_ticket
+@enduml

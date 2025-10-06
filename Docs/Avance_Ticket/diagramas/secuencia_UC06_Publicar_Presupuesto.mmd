@@ -1,0 +1,34 @@
+sequenceDiagram
+    autonumber
+    participant Sup as Supervisor
+    participant App as App (Controlador)
+    participant Tickets as Tickets (Modelo/DB)
+    participant Items as ItemTicket (Modelo/DB)
+    participant Labor as TicketLabor (Modelo/DB)
+    participant Estados as Estados (Modelo)
+
+    %% Inicio
+    Sup->>App: Publicar presupuesto(ticket_id)
+
+    App->>Tickets: Validar ticket
+    Tickets-->>App: OK / Error
+
+    alt Ticket inválido
+    App-->>Sup: Error: ticket no válido
+    else Ticket válido
+        App->>Items: Obtener subtotal de ítems
+        Items-->>App: subtotal_items
+        App->>Labor: Obtener mano de obra
+        Labor-->>App: labor_amount
+
+        alt Datos incompletos (sin ítems o sin mano de obra)
+            App-->>Sup: Publicación deshabilitada: faltan datos
+        else Preparado (ítems + mano de obra > 0)
+            App->>Estados: Id("Presupuesto")
+            Estados-->>App: estado_id
+            App->>Tickets: Actualizar estado a "Presupuesto"
+            App-->>Sup: OK: presupuesto publicado
+        end
+    end
+
+        Note over Estados: Transiciones relevantes:<br/>- Diagnóstico -> En espera (al estar listo el presupuesto)<br/>- En espera -> Presupuesto (publicación por Supervisor)<br/>- Presupuesto -> En reparación (aprobación del Cliente)

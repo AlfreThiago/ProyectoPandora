@@ -21,7 +21,7 @@ class RegisterController
             $password = $_POST['password'] ?? '';
 
             $result = $this->RegisterUser($username, $email, $password);
-            // Guardar en historial
+            
             $accion = "Registro de usuario";
             $detalle = "Se registró el usuario {$username} con email {$email}. Resultado: {$result}";
             $this->historialController->agregarAccion($accion, $detalle);
@@ -92,6 +92,28 @@ class RegisterController
         }
 
         if ($userModel->createUser($username, $email, $password, $role)) {
+            
+            if (strcasecmp($role, 'Tecnico') === 0) {
+                require_once __DIR__ . '/../Models/Rating.php';
+                
+                $newUser = $userModel->findByEmail($email);
+                if ($newUser) {
+                    
+                    $conn = $db->getConnection();
+                    
+                    $stmtT = $conn->prepare("SELECT id FROM tecnicos WHERE user_id = ? LIMIT 1");
+                    if ($stmtT) {
+                        $stmtT->bind_param('i', $newUser['id']);
+                        $stmtT->execute();
+                        $tec = $stmtT->get_result()->fetch_assoc();
+                        if ($tec && isset($tec['id'])) {
+                            $ratingM = new RatingModel($conn);
+                            
+                            @$conn->query("INSERT IGNORE INTO ticket_ratings (ticket_id, tecnico_id, cliente_id, stars, comment) VALUES (0, ".(int)$tec['id'].", 0, 3, 'Seed inicial 3★')");
+                        }
+                    }
+                }
+            }
             return "Usuario registrado correctamente con rol: $role";
         } else {
             return "Error al registrar usuario.";

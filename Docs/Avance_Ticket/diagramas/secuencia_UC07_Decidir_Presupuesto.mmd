@@ -1,0 +1,40 @@
+%% Secuencia_UC07_Decidir_Presupuesto (Mermaid)
+%% Cliente aprueba/rechaza presupuesto con validaciones
+
+sequenceDiagram
+    autonumber
+    participant Cli as Cliente
+    participant App as App (Controlador)
+    participant Tickets as Tickets (Modelo/DB)
+    participant Estados as Estados (Modelo)
+
+    %% Inicio
+    Cli->>App: Decidir presupuesto(ticket_id, aprobar|rechazar)
+
+    App->>Tickets: Validar pertenencia (dueño del ticket)
+    Tickets-->>App: OK / Error
+
+    alt No pertenece
+    App-->>Cli: Error: ticket no pertenece
+    else Pertenece
+        App->>Tickets: Obtener estado actual
+        Tickets-->>App: estado_actual
+
+        alt Estado != "Presupuesto"
+            App-->>Cli: Error: fuera de estado
+        else Estado = "Presupuesto"
+            alt Cliente aprueba
+                App->>Estados: Id("En reparación")
+                Estados-->>App: estado_id
+                App->>Tickets: Actualizar estado a "En reparación"
+                App-->>Cli: OK: aprobado
+            else Cliente rechaza
+                App->>Estados: Id("Cancelado")
+                Estados-->>App: estado_id
+                App->>Tickets: Actualizar estado a "Cancelado"
+                App-->>Cli: OK: rechazado
+            end
+        end
+    end
+
+        Note over Estados: Transiciones relevantes:<br/>- Presupuesto -> En reparación (aprobación)<br/>- Presupuesto -> Cancelado (rechazo)
