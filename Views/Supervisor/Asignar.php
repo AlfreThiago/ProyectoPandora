@@ -23,8 +23,8 @@
 					<select name="estado" id="estado" class="asignar-input">
 						<?php $estadoSel = $_GET['estado'] ?? 'todos'; ?>
 						<option value="todos" <?php echo $estadoSel==='todos'?'selected':''; ?>>Todos</option>
-						<option value="Disponible" <?php echo $estadoSel==='Disponible'?'selected':''; ?>>Disponibles</option>
-						<option value="Ocupado" <?php echo $estadoSel==='Ocupado'?'selected':''; ?>>Asignados</option>
+						<option value="Disponible" <?php echo $estadoSel==='Disponible'?'selected':''; ?>>Disponible</option>
+						<option value="Ocupado" <?php echo $estadoSel==='Ocupado'?'selected':''; ?>>No disponible</option>
 					</select>
 				</div>
 				<div class="field asignar-field asignar-field--grow">
@@ -81,7 +81,7 @@
 								<div class="asignar-card__title">
 									<div class="asignar-card__row">
 										<h3 class="asignar-card__name"><?php echo htmlspecialchars($tec['name'] ?? ''); ?></h3>
-										<span class="badge <?php echo $estado==='Disponible' ? 'badge--success' : ($estado==='Ocupado' ? 'badge--danger' : 'badge--muted'); ?>" title="Estado informativo, gestionado por el técnico en su perfil"><?php echo htmlspecialchars($estado); ?></span>
+										<span class="badge <?php echo $estado==='Disponible' ? 'badge--success' : ($estado==='Ocupado' ? 'badge--danger' : 'badge--muted'); ?>" title="Estado informativo, gestionado por el técnico en su perfil"><?php echo htmlspecialchars($estado === 'Ocupado' ? 'No disponible' : 'Disponible'); ?></span>
 									</div>
 									<div class="asignar-card__row" style="gap:6px; align-items:center;">
 										<?php $r = isset($tec['rating_avg']) ? (float)$tec['rating_avg'] : 0; $rc=(int)($tec['rating_count'] ?? 0); if ($rc===0 && $r<=0){ $r=3.0; } $full = (int)floor($r); $half = ($r - $full) >= 0.5; ?>
@@ -96,7 +96,7 @@
 								</div>
 							</div>
 							<div class="asignar-card__chips">
-								<div class="chip">Tickets asignados: <?php echo (int)($tec['tickets_asignados'] ?? 0); ?></div>
+								<div class="chip">Tickets totales: <?php echo (int)($tec['tickets_asignados'] ?? 0); ?></div>
 								<div class="chip">Activos: <?php echo (int)($tec['tickets_activos'] ?? 0); ?></div>
 								<div class="chip">Email: <?php echo htmlspecialchars($tec['email'] ?? ''); ?></div>
 							</div>

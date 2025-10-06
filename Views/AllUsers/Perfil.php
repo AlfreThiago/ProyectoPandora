@@ -31,7 +31,7 @@
                         <select id="disponibilidad" name="disponibilidad">
                             <?php $dispActual = $tecnicoDisponibilidad ?? 'Disponible'; ?>
                             <option value="Disponible" <?= ($dispActual === 'Disponible') ? 'selected' : '' ?>>Disponible</option>
-                            <option value="Ocupado" <?= ($dispActual === 'Ocupado') ? 'selected' : '' ?>>Ocupado</option>
+                            <option value="Ocupado" <?= ($dispActual === 'Ocupado') ? 'selected' : '' ?>>No disponible</option>
                         </select>
                     </div>
                     <?php endif; ?>
@@ -53,10 +53,6 @@
                 <?php endif; ?>
             </div>
         </div>
-    </div>
-    <div class="perfil-volver-panel">
-        <a href="<?= $panelUrl ?>" class="btn-volver-panel">Volver a mi panel</a>
-        <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" class="btn-volver-panel" style="background:#ef4444; border-color:#ef4444;">Cerrar sesión</a>
     </div>
 </main>
 

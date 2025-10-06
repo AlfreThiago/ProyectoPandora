@@ -75,7 +75,7 @@ class SupervisorController {
             $stmtChk->execute();
             $rowChk = $stmtChk->get_result()->fetch_assoc();
             if (!empty($rowChk['tecnico_id'])) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=El ticket ya tiene un técnico asignado');
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=El ticket ya tiene técnico (no disponible para reasignar)');
                 exit;
             }
         }

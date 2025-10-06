@@ -1,10 +1,10 @@
 <?php
 require_once __DIR__ . '/../../Core/Auth.php';
-$user = Auth::user();
-$rol = $user['role'] ?? '';
-$name = $user['name'] ?? '';
-$email = $user['email'] ?? '';
-$avatar = $user['img_perfil'] ?? '';
+$authUser = Auth::user();
+$rol = $authUser['role'] ?? '';
+$name = $authUser['name'] ?? '';
+$email = $authUser['email'] ?? '';
+$avatar = $authUser['img_perfil'] ?? '';
 
 $defaultAvatar = '/ProyectoPandora/Public/img/imgPerfil/default.png';
 $fallbackAvatar = '/ProyectoPandora/Public/img/Innovasys.png';
@@ -25,11 +25,22 @@ if (!$avatar || !is_file($avatarFs)) {
 
 // Ruta actual (por si se requiere algún ajuste puntual)
 $route = $_GET['route'] ?? '';
+// ¿Es la Home?
+function isHomeRoute(string $route): bool {
+	if ($route === '' || strtolower($route) === 'default/index') return true;
+	return false;
+}
 // Meta dinámica por ruta (título/subtítulo)
 function headerMeta(string $route, string $rol): array {
 	$title = 'Home Portal';
 	$subtitle = 'Bienvenido al sistema';
 	switch (true) {
+		case stripos($route, 'Default/Index') === 0:
+			$title = 'Home'; $subtitle = 'Resumen y accesos rápidos'; break;
+		case stripos($route, 'EstadoTicket/') === 0:
+			$title = 'Estados de tickets'; $subtitle = 'Definiciones, flujos y transiciones'; break;
+		case stripos($route, 'Historial/') === 0:
+			$title = 'Historial del sistema'; $subtitle = 'Acciones registradas y filtros'; break;
 		case stripos($route, 'Admin/') === 0:
 			$title = 'Administración'; $subtitle = 'Gestión de usuarios y ajustes'; break;
 		case stripos($route, 'Supervisor/Asignar') === 0:
@@ -38,6 +49,8 @@ function headerMeta(string $route, string $rol): array {
 			$title = 'Presupuestos'; $subtitle = 'Repuestos, mano de obra y aprobaciones'; break;
 		case stripos($route, 'Supervisor/GestionInventario') === 0:
 			$title = 'Inventario'; $subtitle = 'Ítems, stock y categorías'; break;
+		case stripos($route, 'Tecnico/MisRepuestos') === 0:
+			$title = 'Mis repuestos'; $subtitle = 'Solicitudes, consumos y stock asignado'; break;
 		case stripos($route, 'Tecnico/MisReparaciones') === 0:
 			$title = 'Mis reparaciones'; $subtitle = 'Trabajos en curso y pendientes'; break;
 		case stripos($route, 'Tecnico/MisStats') === 0:
@@ -65,9 +78,11 @@ list($title, $subtitle) = headerMeta($route, $rol);
 <header class="header hero-header">
 	<div class="hero-row">
 		<div class="hero-left">
-			<p class="hero-greet">
-				<?= $user ? '¡Hola, '.htmlspecialchars($name).'!' : 'Bienvenido a Innovasys'; ?>
-			</p>
+			<?php if (isHomeRoute($route)): ?>
+				<p class="hero-greet">
+					<?= $authUser ? '¡Hola, '.htmlspecialchars($name).'!' : 'Bienvenido a Innovasys'; ?>
+				</p>
+			<?php endif; ?>
 			<p class="hero-sub">
 				<?= htmlspecialchars($title) ?> · <?= htmlspecialchars($subtitle) ?>
 			</p>
