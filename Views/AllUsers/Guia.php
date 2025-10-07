@@ -27,10 +27,4 @@
         </li>
     </ol>
     <p class="p-guia">¡Gracias por confiar en Innovasys!</p>
-<<<<<<< HEAD
 </main>
-
-<?php include_once __DIR__ . '/../Includes/Footer.php'; ?>
-=======
-</main>
->>>>>>> 6dee861c8740e7cfd2ccc0c54eb766d02d6e3b10

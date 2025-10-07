@@ -1,9 +1,9 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
-<?php include_once __DIR__ . '/../Includes/Header.php'; ?>
+
 <main>
+    <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Contenedor">
         <section class="tecnico-stats">
-            <h2>Mis Estadísticas</h2>
             <div class="stats-grid">
                 <div class="stat-card">
                     <span class="stat-num"><?= (int)($counters['finalizados'] ?? 0) ?></span>

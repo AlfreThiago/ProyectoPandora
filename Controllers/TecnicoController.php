@@ -139,9 +139,11 @@ class TecnicoController {
             exit;
         }
 
-    $valor_total = $cantidad * $valor_unitario;
-    $ok = $itemTicketModel->crear($ticket_id, $inventario_id, $tecnico_id, $supervisor_id, $cantidad, $valor_total);
+        // Agregar el ítem al ticket cliente :3
+        $valor_total = $cantidad * $valor_unitario;
+        $ok = $itemTicketModel->crear($ticket_id, $inventario_id, $tecnico_id, $supervisor_id, $cantidad, $valor_total);
         if ($ok) {
+            // Registra en el historial
             $this->historial->agregarAccion(
                 'Solicitud de repuesto',
                 "Técnico {$user['name']} solicitó {$cantidad} und(s) del inventario ID {$inventario_id} para ticket {$ticket_id} (total $valor_total)."

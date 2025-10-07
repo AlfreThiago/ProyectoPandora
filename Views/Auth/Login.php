@@ -2,7 +2,7 @@
 <main>
     <section class="fondo-login">
         <div class="login">
-            <h2 class="bienvenida">Bienvenidos a <strong>Innovasys</strong></h2>
+            <h2 class="bienvenida">Bienvenido a <strong>Innovasys</strong></h2>
             <h3>Iniciar Sesión</h3>
 
             

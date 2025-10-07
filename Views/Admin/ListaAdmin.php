@@ -2,10 +2,6 @@
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
-        <h2>Lista de Admins</h2>
-        <div class="search-container">
-            <input type="text" id="userSearchInput" placeholder="Buscar usuario..." class="search-input">
-        </div>
         <div class="dropdown">
             <label for="menu-toggle" class="dropdown-label-admin">Opciones</label>
             <input type="checkbox" id="menu-toggle" />
@@ -35,15 +31,15 @@
                     foreach ($administradores as $admin) {
                         $role = htmlspecialchars($admin['role']);
                         echo "<tr class='row-role-$role'>";
-                        echo "<td>{$admin['id']}</td>";
-                        echo "<td>{$admin['name']}</td>";
-                        echo "<td>{$admin['email']}</td>";
+                        echo "<td>".htmlspecialchars($admin['id'])."</td>";
+                        echo "<td>".htmlspecialchars($admin['name'])."</td>";
+                        echo "<td>".htmlspecialchars($admin['email'])."</td>";
                         echo "<td><span class='role $role'>$role</span></td>";
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($admin['created_at']) . "</span></td>";
                         echo "<td>
                                 <div class='action-buttons'>
-                                <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id={$admin['id']}&from=Admin/ListarAdmins' class='btn edit-btn'>Actualizar</a>
-                                    <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id={$admin['id']}' class='btn delete-btn'>Eliminar</a>
+                                <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=".htmlspecialchars($admin['id'])."&from=Admin/ListarAdmins' class='btn edit-btn'>Actualizar</a>
+                                    <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=".htmlspecialchars($admin['id'])."' class='btn delete-btn' onclick=\"return confirm('¿Eliminar este usuario?');\">Eliminar</a>
                                 </div>
                               </td>";
                         echo "</tr>";
