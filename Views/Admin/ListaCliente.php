@@ -31,16 +31,17 @@
                     foreach ($clientes as $cliente) {
                        $role = htmlspecialchars($cliente['role']);
                         echo "<tr class='row-role-$role'>";
-                        echo "<td>{$cliente['id']}</td>";
-                        echo "<td>{$cliente['name']}</td>";
-                        echo "<td>{$cliente['email']}</td>";
+                        echo "<td>".htmlspecialchars($cliente['id'])."</td>";
+                        echo "<td>".htmlspecialchars($cliente['name'])."</td>";
+                        echo "<td>".htmlspecialchars($cliente['email'])."</td>";
                         echo "<td><span class='role $role'>$role</span></td>";
-                        echo "<td><span class='created-at'>🕒 " . htmlspecialchars($cliente['created_at']) . "</span></td>";
+                        echo "<td><span class='created-at'>🕒 ".htmlspecialchars($cliente['created_at'])."</span></td>";
+                        $userId = (int)($cliente['user_id'] ?? $cliente['id']);
                         echo "<td>  
                                 <div class='action-buttons'>
-                                    <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id={$cliente['id']}&from=Admin/ListarClientes' class='btn edit-btn'>Actualizar</a>
+                                    <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=".$userId."&from=Admin/ListarClientes' class='btn edit-btn'>Actualizar</a>
                                     |
-                                    <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id={$cliente['id']}' class='btn delete-btn'>Eliminar</a>
+                                    <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=".$userId."' class='btn delete-btn' onclick=\"return confirm('¿Eliminar este usuario?');\">Eliminar</a>
                                 </div>
                               </td>";
                         echo "</tr>";
