@@ -19,7 +19,6 @@ DROP TABLE IF EXISTS historial;
 DROP TABLE IF EXISTS estados_tickets;
 DROP TABLE IF EXISTS categorias_inventario;
 DROP TABLE IF EXISTS categorias;
-DROP TABLE IF EXISTS areas;
 DROP TABLE IF EXISTS users;
 SET FOREIGN_KEY_CHECKS = 1;
 CREATE TABLE users (
@@ -42,11 +41,6 @@ CREATE TABLE users (
 
 INSERT INTO users (name, email, password, role)
 VALUES ('Admin', 'admin@admin.com', '$2y$10$0J4vZrY0oQvEJq8xv7m0SeH2V7jV7cQO3Yl2oT1rSObJ9z0X7VqJG', 'Administrador');
-CREATE TABLE areas (
-    id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    PRIMARY KEY (id)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE clientes (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -69,14 +63,11 @@ CREATE TABLE tecnicos (
 CREATE TABLE supervisores (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
-    area_id INT NULL,
     num_tecnicos INT DEFAULT 0,
     estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
     PRIMARY KEY (id),
     UNIQUE KEY uq_supervisores_user (user_id),
-    CONSTRAINT fk_supervisores_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    CONSTRAINT fk_supervisores_area FOREIGN KEY (area_id) REFERENCES areas(id) ON DELETE
-    SET NULL
+    CONSTRAINT fk_supervisores_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 CREATE TABLE administradores (
     id INT NOT NULL AUTO_INCREMENT,

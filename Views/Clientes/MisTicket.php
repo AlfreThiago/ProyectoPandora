@@ -25,6 +25,9 @@
                                 <div class="card-actions">
                                     <a href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?= $ticket['id'] ?>" class="btn btn-primary">Ver detalle</a>
                                     <a href="/ProyectoPandora/Public/index.php?route=Ticket/Editar&id=<?= $ticket['id'] ?>" class="btn btn-edit">Editar</a>
+                                    <?php if ($estadoLower === 'nuevo'): ?>
+                                        <a href="/ProyectoPandora/Public/index.php?route=Ticket/Eliminar&id=<?= (int)$ticket['id'] ?>" class="btn delete-btn" onclick="return confirm('¿Seguro que deseas eliminar este ticket? Esta acción no se puede deshacer.');">Eliminar</a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
