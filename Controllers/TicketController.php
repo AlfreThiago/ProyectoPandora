@@ -657,7 +657,7 @@ class TicketController
         }
         $cliente_id = (int)($cliente['id']);
 
-        $dispositivo_id = $_POST['dispositivo_id'] ?? '';
+    $dispositivo_id = $_POST['dispositivo_id'] ?? '';
         $descripcion = $_POST['descripcion'] ?? '';
 
         if (empty($dispositivo_id)) {
@@ -676,7 +676,14 @@ class TicketController
             exit;
         }
 
-        $this->ticketModel->crear($cliente_id, $dispositivo_id, $descripcion);
+        // Regla: un ticket activo por dispositivo.
+        // Verificar si ya existe ticket activo para este dispositivo
+        if ($this->ticketModel->hasActiveTicketForDevice((int)$dispositivo_id)) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=Ya existe un ticket activo para este dispositivo');
+            exit;
+        }
+
+    $this->ticketModel->crear($cliente_id, $dispositivo_id, $descripcion);
 
         
         $accion = "Creación de ticket";
@@ -694,9 +701,9 @@ class TicketController
 
     public function eliminar()
     {
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
-            header("Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar&error=ID de ticket no especificado");
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        if ($id <= 0) {
+            header("Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=id");
             exit;
         }
         $user = Auth::user();
@@ -704,18 +711,55 @@ class TicketController
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
             exit;
         }
-        if ($user['role'] === 'Administrador') {
+        
+        // Solo permitimos que el CLIENTE elimine su propio ticket y únicamente en estados seguros
+        if (($user['role'] ?? '') !== 'Cliente') {
             header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
             exit;
         }
+
+        // Cargar ticket y verificar propiedad + estado permitido
+        $tk = $this->ticketModel->ver($id);
+        if (!$tk) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=ticket');
+            exit;
+        }
+
+        // Verificar que el ticket pertenezca al cliente autenticado
+        $db = new Database();
+        $db->connectDatabase();
+        $conn = $db->getConnection();
+        $stmtC = $conn->prepare("SELECT id FROM clientes WHERE user_id = ? LIMIT 1");
+        if ($stmtC) {
+            $stmtC->bind_param('i', $user['id']);
+            $stmtC->execute();
+            $cliente = $stmtC->get_result()->fetch_assoc();
+            
+            $stmtT = $conn->prepare("SELECT cliente_id FROM tickets WHERE id = ? LIMIT 1");
+            $stmtT->bind_param('i', $id);
+            $stmtT->execute();
+            $rowT = $stmtT->get_result()->fetch_assoc();
+            if (!$cliente || (int)($rowT['cliente_id'] ?? 0) !== (int)$cliente['id']) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=forbidden');
+                exit;
+            }
+        }
+
+        $estadoTxt = strtolower(trim($tk['estado'] ?? $tk['estado_actual'] ?? ''));
+        $allowed = ['nuevo','finalizado','cerrado'];
+        if (!in_array($estadoTxt, $allowed, true)) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=estado');
+            exit;
+        }
+
         if ($this->ticketModel->deleteTicket($id)) {
             $accion = "Eliminación de ticket";
             $detalle = "Usuario {$user['name']} eliminó el ticket ID {$id}";
             $this->historialController->agregarAccion($accion, $detalle);
 
-            header("Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar&success=1");
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&deleted=1');
         } else {
-            header("Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar&error=No se pudo eliminar el ticket");
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket&error=delete');
         }
         exit;
     }

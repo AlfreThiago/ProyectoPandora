@@ -31,16 +31,16 @@
                     foreach ($supervisor as $super) {
                         $role = htmlspecialchars($super['role']);
                         echo "<tr class='row-role-$role'>";
-                        echo "<td>{$super['id']}</td>";
-                        echo "<td>{$super['name']}</td>";
-                        echo "<td>{$super['email']}</td>";
+                        echo "<td>".htmlspecialchars($super['id'])."</td>";
+                        echo "<td>".htmlspecialchars($super['name'])."</td>";
+                        echo "<td>".htmlspecialchars($super['email'])."</td>";
                         echo "<td><span class='role $role'>$role</span></td>";
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($super['created_at']) . "</span></td>";
                         echo "<td>
                             <div class='action-buttons'>
-                                <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id={$super['id']}&from=Admin/ListarSupers' class='btn edit-btn'>Actualizar</a>
+                                <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=".htmlspecialchars($super['id'])."&from=Admin/ListarSupers' class='btn edit-btn'>Actualizar</a>
                                 |
-                                <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id={$super['id']}' class='btn delete-btn'>Eliminar</a>
+                                <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=".htmlspecialchars($super['id'])."' class='btn delete-btn' onclick=\"return confirm('¿Eliminar este usuario?');\">Eliminar</a>
                             </div>
                         </td>";
                         echo "</tr>";

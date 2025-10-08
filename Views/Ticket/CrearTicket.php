@@ -36,9 +36,20 @@
                         <label for="dispositivoSelect">Seleccione un dispositivo:</label>
                         <select id="dispositivoSelect" name="dispositivo_id" required onchange="mostrarDescripcion(this)">
                             <option value="">Selecciona un dispositivo</option>
+                            <?php 
+                                // Determinar dispositivos bloqueados por ticket activo
+                                require_once __DIR__ . '/../../Core/Database.php';
+                                require_once __DIR__ . '/../../Models/Ticket.php';
+                                $dbv = new Database(); $dbv->connectDatabase();
+                                $tkM = new Ticket($dbv->getConnection());
+                            ?>
                             <?php foreach ($data as $dispositivo): ?>
-                                <option value="<?= $dispositivo['id'] ?>" data-descripcion="<?= htmlspecialchars($dispositivo['descripcion_falla'] ?? '') ?>">
-                                    <?= htmlspecialchars($dispositivo['marca'] . ' ' . $dispositivo['modelo']) ?>
+                                <?php 
+                                    $hasActive = $tkM->hasActiveTicketForDevice((int)$dispositivo['id']);
+                                    $label = $dispositivo['marca'] . ' ' . $dispositivo['modelo'] . ($hasActive ? ' — (con ticket activo)' : '');
+                                ?>
+                                <option value="<?= $dispositivo['id'] ?>" data-descripcion="<?= htmlspecialchars($dispositivo['descripcion_falla'] ?? '') ?>" <?= $hasActive ? 'disabled' : '' ?>>
+                                    <?= htmlspecialchars($label) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>

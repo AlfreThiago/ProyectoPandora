@@ -54,7 +54,7 @@ class UserModel
     }
     public function getAllClientes()
     {
-        $sql = "SELECT c.id, u.name,  u.role, u.created_at, u.email
+        $sql = "SELECT c.id, u.id AS user_id, u.name,  u.role, u.created_at, u.email
             FROM clientes c
             INNER JOIN users u ON c.user_id = u.id";
         $result = $this->connection->query($sql);
