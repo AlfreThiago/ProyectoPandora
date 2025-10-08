@@ -30,7 +30,7 @@
 
                 <button type="submit">
                     <p>Sign up</p>
-                    <span class="material-symbols-outlined">person_add</span>
+                    <span class="material-symbols-outlined"></span>
                 </button>
             </form>
 

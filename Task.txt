@@ -31,6 +31,19 @@ COSAS DE ALE
 ✅-Agregar el Panel Usuario, funcional en la sidebar
 ✅-Arreglar sistema de estrellas
 ✅-Hace horizontal el detalle de ticket
+✅-Arreglo de zonas bobas de la pagina
+-Arreglo de toda la pagina responsive para dispositivos moviles 
+(cards/tablas/formularios/home/perfil/sidebar-header)
+-Arreglo de Sidebar MINIMIZADO (Hamburguesa)
+-Arreglo y mejorado de perfil / Agregacion de Ajustes
+✅-Agregado de modo claro/oscuro de la pagina web
+-Arreglo de Verticket para PC
+✅-Agregado de colores para la pagina
+✅-Arreglo de Presupuesto (cards) para PC y moviles
+-Agregado de NUEVO HOME DASH 
+(Portal de gestion/ seguimiento caso real/ Novedades / Accesos rapidos / ¿Necesitas ayuda?)
+-¿Nuevo formulario? (no me esta gustando este 😠)
+✅-¿Nuevas tablas? (lo mismo que formulario)
 
 Cosasd de BRUNO
 poner drop table en la base de datos para evitar tener que borrar todo 
