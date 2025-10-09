@@ -278,18 +278,18 @@ class Ticket
      * Retorna true si existe al menos un ticket ACTIVO para el dispositivo dado.
      * Activo = estado distinto de Finalizado, Cerrado o Cancelado.
      */
-    public function hasActiveTicketForDevice(int $dispositivo_id): bool
+    public function hasActiveTicketForDevice(int $deviceId): bool
     {
-        $sql = "SELECT COUNT(*) AS c
-                FROM tickets t
-                INNER JOIN estados_tickets e ON e.id = t.estado_id
-                WHERE t.dispositivo_id = ?
-                  AND LOWER(e.name) NOT IN ('finalizado','cerrado','cancelado')";
-        $stmt = $this->conn->prepare($sql);
-        if (!$stmt) return false;
-        $stmt->bind_param("i", $dispositivo_id);
+        // Activo = sin fecha_cierre (ajusta si usás estados)
+        $stmt = $this->conn->prepare("
+            SELECT COUNT(*) c
+            FROM tickets
+            WHERE dispositivo_id = ? AND fecha_cierre IS NULL
+        ");
+        if (!$stmt) return true;
+        $stmt->bind_param('i', $deviceId);
         $stmt->execute();
-        $res = $stmt->get_result()->fetch_assoc();
-        return ((int)($res['c'] ?? 0)) > 0;
+        $c = (int)($stmt->get_result()->fetch_assoc()['c'] ?? 0);
+        return $c > 0;
     }
 }

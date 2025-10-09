@@ -93,4 +93,22 @@ class DeviceModel
         $stmt->bind_param("ssi", $marca, $modelo, $ticket_id);
         return $stmt->execute();
     }
+
+    public function getOwnerId(int $deviceId): ?int
+    {
+        $stmt = $this->conn->prepare("SELECT user_id FROM dispositivos WHERE id = ?");
+        if (!$stmt) return null;
+        $stmt->bind_param('i', $deviceId);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+        return $res ? (int)$res['user_id'] : null;
+    }
+
+    public function deleteByIdAndUser(int $deviceId, int $userId): bool
+    {
+        $stmt = $this->conn->prepare("DELETE FROM dispositivos WHERE id = ? AND user_id = ? LIMIT 1");
+        if (!$stmt) return false;
+        $stmt->bind_param('ii', $deviceId, $userId);
+        return $stmt->execute();
+    }
 }
