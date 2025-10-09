@@ -8,6 +8,7 @@ class Database
         
         
         
+        
 
         $host = 'localhost';
         $user = 'root';
