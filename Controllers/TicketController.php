@@ -32,17 +32,12 @@ class TicketController
 
     
     private function transicionesValidas(): array {
-        
         return [
-            'Nuevo' => ['Diagnóstico', 'En espera', 'Cancelado'],
-            'Diagnóstico' => ['Presupuesto', 'En espera'],
-            
-            'Presupuesto' => [],
-            
-            'En espera' => [],
-            
-            'En reparación' => ['En pruebas', 'Listo para retirar'],
-            
+            'Nuevo' => ['En espera'],
+            'En espera' => ['Diagnóstico'],
+            'Diagnóstico' => ['Presupuesto'],
+            'Presupuesto' => ['En reparación', 'Cancelado'],
+            'En reparación' => ['En pruebas'],
             'En pruebas' => ['Listo para retirar'],
             'Listo para retirar' => ['Finalizado'],
             'Finalizado' => [],
@@ -50,30 +45,231 @@ class TicketController
         ];
     }
 
-    private function puedeTransicionar(string $from, string $to): bool {
-        $map = $this->transicionesValidas();
-        return in_array($to, $map[$from] ?? [], true);
+    // Normaliza nombres (acentos y variantes)
+    private function normalizarEstadoNombre(string $name): string {
+        $n = strtolower(trim($name));
+        $map = [
+            'diagnostico' => 'diagnóstico',
+            'en reparacion' => 'en reparación',
+        ];
+        return $map[$n] ?? $n;
     }
 
-    
-    private function estadoIdPorNombre(string $name): ?int {
-        
-        $normalize = function(string $s): string {
-            $s = trim($s);
-            $map = [
-                'Á'=>'A','É'=>'E','Í'=>'I','Ó'=>'O','Ú'=>'U','Ñ'=>'N',
-                'á'=>'a','é'=>'e','í'=>'i','ó'=>'o','ú'=>'u','ñ'=>'n'
-            ];
-            $s = strtr($s, $map);
-            return strtolower($s);
-        };
-        $target = $normalize($name);
-        $estados = $this->estadoModel->getAllEstados();
-        foreach ($estados as $e) {
-            $n = $normalize($e['name'] ?? '');
-            if ($n === $target) return (int)$e['id'];
+    // Valida transición usando el flujo fijo (case-insensitive)
+    private function puedeTransicionar(string $desde, string $hacia): bool {
+        $from = $this->normalizarEstadoNombre($desde);
+        $to = $this->normalizarEstadoNombre($hacia);
+        $rules = [];
+        foreach ($this->transicionesValidas() as $k => $arr) {
+            $rules[strtolower($k)] = array_map(fn($x)=>$this->normalizarEstadoNombre($x), $arr);
         }
-        return null;
+        return in_array($to, $rules[$from] ?? [], true);
+    }
+
+    // Obtiene ID por nombre de estado (case-insensitive)
+    private function estadoIdPorNombre(string $nombre): ?int {
+        $db = new Database(); $db->connectDatabase(); $cn = $db->getConnection();
+        $sql = "SELECT id FROM estados_tickets WHERE LOWER(name) = LOWER(?) LIMIT 1";
+        $st = $cn->prepare($sql);
+        if (!$st) return null;
+        $st->bind_param('s', $nombre);
+        $st->execute();
+        $r = $st->get_result()->fetch_assoc();
+        return $r ? (int)$r['id'] : null;
+    }
+
+    // Obtiene nombre de estado por ID
+    private function estadoNombrePorId(int $id): ?string {
+        $db = new Database(); $db->connectDatabase(); $cn = $db->getConnection();
+        $st = $cn->prepare("SELECT name FROM estados_tickets WHERE id = ? LIMIT 1");
+        if (!$st) return null;
+        $st->bind_param('i', $id);
+        $st->execute();
+        $r = $st->get_result()->fetch_assoc();
+        return $r['name'] ?? null;
+    }
+
+    private function badgeClassFor(string $estadoLower): string {
+        if (in_array($estadoLower, ['finalizado','cerrado','cancelado'])) return 'badge badge--danger';
+        if (in_array($estadoLower, ['en proceso','diagnóstico','diagnostico','reparación','reparacion','en reparación'])) return 'badge badge--success';
+        if (in_array($estadoLower, ['en espera','pendiente'])) return 'badge';
+        if (in_array($estadoLower, ['abierto','nuevo','recibido'])) return 'badge';
+        return 'badge badge--muted';
+    }
+
+    private function buildTecnicoAcciones(string $estadoActual, array $estados): array {
+        // Mapea nombre -> id
+        $mapId = [];
+        foreach ($estados as $e) {
+            $mapId[strtolower(trim($e['name']))] = (int)$e['id'];
+        }
+        $s = strtolower(trim($estadoActual));
+        $acciones = [];
+        $mensaje = '';
+
+        if ($s === 'nuevo') {
+            $mensaje = 'El supervisor debe asignar el ticket para pasarlo a "En espera".';
+        } elseif ($s === 'en espera') {
+            if (isset($mapId['diagnóstico'])) $acciones[] = ['label'=>'Comenzar diagnóstico','estado_id'=>$mapId['diagnóstico'],'comentario'=>'Diagnóstico iniciado'];
+            elseif (isset($mapId['diagnostico'])) $acciones[] = ['label'=>'Comenzar diagnóstico','estado_id'=>$mapId['diagnostico'],'comentario'=>'Diagnóstico iniciado'];
+            $mensaje = 'Al abrir el ticket por primera vez, pásalo a "Diagnóstico".';
+        } elseif ($s === 'diagnóstico' || $s === 'diagnostico') {
+            if (isset($mapId['presupuesto'])) $acciones[] = ['label'=>'Diagnóstico finalizado','estado_id'=>$mapId['presupuesto'],'comentario'=>'Diagnóstico finalizado, esperando publicación de presupuesto'];
+            $mensaje = 'Asegúrate de definir mano de obra e insumos antes de finalizar el diagnóstico.';
+        } elseif ($s === 'presupuesto') {
+            $mensaje = 'Aguardando publicación del supervisor y la decisión del cliente.';
+        } elseif ($s === 'en reparación' || $s === 'en reparacion') {
+            if (isset($mapId['en pruebas'])) $acciones[] = ['label'=>'Reparación terminada','estado_id'=>$mapId['en pruebas'],'comentario'=>'Reparación finalizada, iniciando pruebas'];
+        } elseif ($s === 'en pruebas') {
+            if (isset($mapId['listo para retirar'])) $acciones[] = ['label'=>'Pruebas finalizadas','estado_id'=>$mapId['listo para retirar'],'comentario'=>'Pruebas finalizadas, equipo listo para retirar'];
+        } elseif ($s === 'listo para retirar') {
+            $mensaje = 'Esperando que el cliente retire el equipo.';
+        } elseif ($s === 'finalizado' || $s === 'cancelado') {
+            $mensaje = 'El ticket está cerrado; no hay más acciones disponibles.';
+        }
+
+        return [$acciones, $mensaje];
+    }
+
+    public function verTicket($id)
+    {
+        // Roles permitidos (ajusta según tu lógica)
+        $rolesPermitidos = ['Supervisor', 'Tecnico', 'Cliente', 'Administrador'];
+        $user = Auth::user();
+        if (!$user || !in_array($user['role'] ?? '', $rolesPermitidos, true)) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            exit;
+        }
+
+        $ticket = $this->ticketModel->ver((int)$id);
+        if (!$ticket) {
+            // Render sencillo con error
+            $view = [
+                'ticket' => null,
+                'rol' => $user['role'] ?? '',
+                'flash' => $_GET ?? [],
+                'volverUrl' => '/ProyectoPandora/Public/index.php?route=Default/Index',
+                'timeline' => ['Tecnico'=>[], 'Cliente'=>[], 'Supervisor'=>[]],
+            ];
+            require __DIR__ . '/../Views/Ticket/VerTicket.php';
+            return;
+        }
+
+        // Estado y badge
+        $estadoStr = $ticket['estado'] ?? $ticket['estado_actual'] ?? 'No disponible';
+        $estadoLower = strtolower(trim($estadoStr));
+        $estadoClass = $this->badgeClassFor($estadoLower);
+        $finalizado = in_array($estadoLower, ['finalizado','cerrado'], true);
+
+        // Volver URL
+        $rol = $user['role'] ?? '';
+        if ($rol === 'Cliente') $volverUrl = "/ProyectoPandora/Public/index.php?route=Cliente/MisTicket";
+        elseif ($rol === 'Tecnico') $volverUrl = "/ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones";
+        elseif ($rol === 'Supervisor') $volverUrl = "/ProyectoPandora/Public/index.php?route=Supervisor/Asignar";
+        elseif ($rol === 'Administrador') $volverUrl = "/ProyectoPandora/Public/index.php?route=Admin/ListarUsers";
+        else $volverUrl = "/ProyectoPandora/Public/index.php?route=Default/Index";
+        $prev = $_SESSION['prev_url'] ?? '';
+        $isPrevJson = strpos($prev, 'Ticket/EstadoJson') !== false;
+        $backHref = $isPrevJson ? $volverUrl : ($prev ?: $volverUrl);
+
+        // En presupuesto o en espera (para mostrar resumen)
+        $enPresu = ($estadoLower === 'presupuesto' || $estadoLower === 'en espera');
+
+        // Presupuesto: items y mano de obra
+        require_once __DIR__ . '/../Models/ItemTicket.php';
+        require_once __DIR__ . '/../Models/TicketLabor.php';
+        $dbx = new Database();
+        $dbx->connectDatabase();
+        $conn = $dbx->getConnection();
+        $itemM = new ItemTicketModel($conn);
+        $laborM = new TicketLaborModel($conn);
+        $items = $itemM->listarPorTicket((int)$ticket['id']);
+        $subtotalItems = 0.0;
+        foreach ($items as $it) { $subtotalItems += (float)($it['valor_total'] ?? 0); }
+        $laborRow = (array)$laborM->getByTicket((int)$ticket['id']);
+        $laborAmount = (float)($laborRow['labor_amount'] ?? 0);
+        $presuTotal = $subtotalItems + $laborAmount;
+
+        // Acciones técnico
+        $estadosAll = $this->estadoModel->getAllEstados();
+        [$tecAcciones, $tecMensaje] = $this->buildTecnicoAcciones($estadoStr, $estadosAll);
+
+        // Rango sugerido de mano de obra + flags
+        $stmtT2 = $conn->prepare("SELECT tc.id AS tecnico_id, ts.labor_min, ts.labor_max 
+                                  FROM tickets t 
+                                  LEFT JOIN tecnicos tc ON t.tecnico_id = tc.id 
+                                  LEFT JOIN tecnico_stats ts ON ts.tecnico_id = tc.id 
+                                  WHERE t.id = ? LIMIT 1");
+        $laborMin = 0.0; $laborMax = 0.0;
+        if ($stmtT2) {
+            $tid = (int)$ticket['id'];
+            $stmtT2->bind_param('i', $tid);
+            $stmtT2->execute();
+            $rowS = $stmtT2->get_result()->fetch_assoc();
+            if ($rowS) {
+                $laborMin = (float)($rowS['labor_min'] ?? 0);
+                $laborMax = (float)($rowS['labor_max'] ?? 0);
+            }
+        }
+        $hasItemsTech = !empty($items);
+        $hasLaborTech = $laborAmount > 0;
+        $readyPresupuesto = $hasItemsTech && $hasLaborTech;
+        $laborEditable = (($estadoLower === 'diagnóstico' || $estadoLower === 'diagnostico') && !$hasLaborTech);
+
+        // Supervisor acciones
+        $supervisorPuedeMarcarListo = in_array($estadoLower, ['en reparación','en reparacion','en pruebas'], true);
+        $supervisorPuedeFinalizar = ($estadoLower === 'listo para retirar');
+
+        // Timeline agrupada por rol
+        require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
+        $th = new TicketEstadoHistorialModel($conn);
+        $events = $th->listByTicket((int)$ticket['id']);
+        $timeline = ['Tecnico'=>[], 'Cliente'=>[], 'Supervisor'=>[]];
+        foreach ($events as $ev) {
+            $r = $ev['user_role'] ?? '';
+            if (isset($timeline[$r])) $timeline[$r][] = $ev;
+        }
+
+        // Flash (lo que venía de GET)
+        $flash = $_GET ?? [];
+
+        $view = [
+            'ticket' => $ticket,
+            'estadoStr' => $estadoStr,
+            'estadoClass' => $estadoClass,
+            'rol' => $rol,
+            'finalizado' => $finalizado,
+            'backHref' => $backHref,
+            'flash' => $flash,
+
+            'enPresu' => $enPresu,
+            'presupuesto' => [
+                'items' => $items,
+                'subtotal' => $subtotalItems,
+                'mano_obra' => $laborAmount,
+                'total' => $presuTotal,
+            ],
+
+            'tecnico' => [
+                'acciones' => $tecAcciones,
+                'mensaje' => $tecMensaje,
+                'labor_min' => $laborMin,
+                'labor_max' => $laborMax,
+                'has_items' => $hasItemsTech,
+                'has_labor' => $hasLaborTech,
+                'labor_editable' => $laborEditable,
+                'estado_lower' => $estadoLower,
+            ],
+
+            'supervisor' => [
+                'puede_listo' => $supervisorPuedeMarcarListo,
+                'puede_finalizar' => $supervisorPuedeFinalizar,
+            ],
+
+            'timeline' => $timeline,
+        ];
+
+        require __DIR__ . '/../Views/Ticket/VerTicket.php';
     }
 
     public function ActualizarEstado() {
@@ -390,34 +586,6 @@ class TicketController
             $data[] = $row;
         }
         include __DIR__ . '/../Views/Ticket/ListarTickets.php';
-    }
-
-    public function verTicket($id)
-    {
-        $user = Auth::user();
-        if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
-            exit;
-        }
-
-        
-    $rolesPermitidos = ['Supervisor', 'Tecnico', 'Cliente'];
-        if (!in_array($user['role'], $rolesPermitidos)) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
-            exit;
-        }
-
-        $ticket = $this->ticketModel->ver($id);
-
-        
-        if ($user['role'] === 'Cliente') {
-            if ($ticket['cliente'] !== $user['name']) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket');
-                exit;
-            }
-        }
-
-        include __DIR__ . '/../Views/Ticket/VerTicket.php';
     }
 
     public function Calificar() {

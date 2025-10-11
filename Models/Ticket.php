@@ -142,22 +142,43 @@ class Ticket
 
     public function actualizarCompleto($id, $descripcion, $estado_id, $tecnico_id)
     {
-        
+        // Si se asigna técnico y no se envía estado, forzar 'En espera' si el estado actual es 'Nuevo'
+        if ($tecnico_id !== null && ($estado_id === null || $estado_id === '')) {
+            $q = $this->conn->prepare("SELECT e.name AS estado FROM tickets t INNER JOIN estados_tickets e ON e.id = t.estado_id WHERE t.id = ? LIMIT 1");
+            if ($q) {
+                $idInt = (int)$id;
+                $q->bind_param("i", $idInt);
+                $q->execute();
+                $row = $q->get_result()->fetch_assoc();
+                $estadoActual = strtolower(trim($row['estado'] ?? ''));
+                if ($estadoActual === 'nuevo') {
+                    $st = $this->conn->prepare("SELECT id FROM estados_tickets WHERE LOWER(name)=LOWER('En espera') LIMIT 1");
+                    if ($st) {
+                        $st->execute();
+                        $res = $st->get_result()->fetch_assoc();
+                        if ($res && isset($res['id'])) {
+                            $estado_id = (int)$res['id'];
+                        }
+                    }
+                }
+            }
+        }
+
         $campos = [ 'descripcion_falla = ?' ];
         $types = 's';
         $params = [ $descripcion ];
 
-        if ($estado_id !== null) {
+        if ($estado_id !== null && $estado_id !== '') {
             $campos[] = 'estado_id = ?';
             $types .= 'i';
             $params[] = (int)$estado_id;
         }
 
-        
-        $campos[] = 'tecnico_id = ?';
-        $types .= 'i';
-        
-        $params[] = $tecnico_id; 
+        if ($tecnico_id !== null && $tecnico_id !== '') {
+            $campos[] = 'tecnico_id = ?';
+            $types .= 'i';
+            $params[] = (int)$tecnico_id;
+        }
 
         $sql = 'UPDATE tickets SET ' . implode(', ', $campos) . ' WHERE id = ?';
         $types .= 'i';
@@ -165,7 +186,7 @@ class Ticket
 
         $stmt = $this->conn->prepare($sql);
         if (!$stmt) return false;
-        
+
         $stmt->bind_param($types, ...$params);
         return $stmt->execute();
     }
@@ -248,12 +269,61 @@ class Ticket
         return $data;
     }
 
-    public function asignarTecnico($ticket_id, $tecnico_id)
+    public function asignarTecnico($ticket_id, $tecnico_id, ?int $actor_user_id = null, ?string $actor_role = null)
     {
-        $sql = "UPDATE tickets SET tecnico_id = ? WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ii", $tecnico_id, $ticket_id);
-        return $stmt->execute();
+        // Detectar estado actual y decidir si forzar 'En espera'
+        $estadoNuevoId = null;
+        $prev = $this->conn->prepare("SELECT t.tecnico_id, e.name AS estado FROM tickets t INNER JOIN estados_tickets e ON e.id=t.estado_id WHERE t.id=? LIMIT 1");
+        if ($prev) {
+            $tid = (int)$ticket_id;
+            $prev->bind_param("i", $tid);
+            $prev->execute();
+            $row = $prev->get_result()->fetch_assoc();
+            $estadoActual = strtolower(trim($row['estado'] ?? ''));
+            $prevTec = isset($row['tecnico_id']) ? (int)$row['tecnico_id'] : null;
+
+            if ($estadoActual === 'nuevo' && ($prevTec === null || $prevTec === 0) && (int)$tecnico_id > 0) {
+                $q = $this->conn->prepare("SELECT id FROM estados_tickets WHERE LOWER(name)=LOWER('En espera') LIMIT 1");
+                if ($q) {
+                    $q->execute();
+                    $r = $q->get_result()->fetch_assoc();
+                    if ($r && isset($r['id'])) {
+                        $estadoNuevoId = (int)$r['id'];
+                    }
+                }
+            }
+        }
+
+        if ($estadoNuevoId) {
+            $stmt = $this->conn->prepare("UPDATE tickets SET tecnico_id = ?, estado_id = ? WHERE id = ?");
+            $stmt->bind_param("iii", $tecnico_id, $estadoNuevoId, $ticket_id);
+            $ok = $stmt->execute();
+
+            // Registrar historial si nos pasan actor
+            if ($ok && $actor_user_id && $actor_role) {
+                require_once __DIR__ . '/TicketEstadoHistorial.php';
+                $hist = new TicketEstadoHistorialModel($this->conn);
+                $hist->add((int)$ticket_id, (int)$estadoNuevoId, (int)$actor_user_id, $actor_role, 'Técnico asignado. Pasa a En espera');
+            }
+            return $ok;
+        } else {
+            $stmt = $this->conn->prepare("UPDATE tickets SET tecnico_id = ? WHERE id = ?");
+            $stmt->bind_param("ii", $tecnico_id, $ticket_id);
+            $ok = $stmt->execute();
+
+            if ($ok && $actor_user_id && $actor_role) {
+                require_once __DIR__ . '/TicketEstadoHistorial.php';
+                $hist = new TicketEstadoHistorialModel($this->conn);
+                $c = $this->conn->prepare("SELECT estado_id FROM tickets WHERE id = ? LIMIT 1");
+                if ($c) {
+                    $c->bind_param("i", $ticket_id);
+                    $c->execute();
+                    $r = $c->get_result()->fetch_assoc();
+                    $hist->add((int)$ticket_id, (int)($r['estado_id'] ?? 0), (int)$actor_user_id, $actor_role, 'Técnico asignado');
+                }
+            }
+            return $ok;
+        }
     }
 
     public function getSupervisorId($ticket_id)

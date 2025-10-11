@@ -88,12 +88,13 @@ $authUser = Auth::user();
                                     <span>Historial</span>
                                 </a>
                             </li>
-                            <li class="item menu-item menu-item-static">
-                                <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados" class="link flex">
-                                    <i class='bx bx-list-check'></i>
-                                    <span>Estados</span>
-                                </a>
-                            </li>
+                                <!---
+                                <li class="item menu-item menu-item-static">
+                                    <a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados" class="link flex">
+                                        <i class='bx bx-list-check'></i>
+                                        <span>Estados</span>
+                                    </a>
+                                </li> --->
                             <li class="item menu-item menu-item-static">
                                 <a href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria" class="link flex">
                                     <i class='bx bx-category'></i>

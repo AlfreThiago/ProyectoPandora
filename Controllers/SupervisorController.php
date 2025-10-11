@@ -50,7 +50,15 @@ class SupervisorController {
         Auth::checkRole(['Supervisor']);
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/asignar');
+            exit;
+        }
+
+        // Obtener usuario actual (actor)
+        $user = Auth::user();
+        if (!$user) { $user = $_SESSION['user'] ?? null; }
+        if (!$user || empty($user['id'])) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/asignar&error=Sesion%20invalida');
             exit;
         }
 
@@ -58,7 +66,7 @@ class SupervisorController {
         $ticket_id = isset($_POST['ticket_id']) ? (int)$_POST['ticket_id'] : 0;
         $tecnico_id = isset($_POST['tecnico_id']) ? (int)$_POST['tecnico_id'] : 0;
         if (!$ticket_id || !$tecnico_id) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=Datos incompletos');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/asignar&error=Datos incompletos');
             exit;
         }
 
@@ -107,7 +115,7 @@ class SupervisorController {
             exit;
         }
 
-        $ok = $ticketModel->asignarTecnico((int)$ticket_id, (int)$tecnico_id);
+        $ok = $ticketModel->asignarTecnico((int)$ticket_id, (int)$tecnico_id, (int)$user['id'], 'Supervisor');
         if ($ok) {
             // 4) Asignar supervisor al ticket
             $supervisorUserId = $_SESSION['user']['id'] ?? null;

@@ -327,9 +327,9 @@ return [
         'controller' => 'Inventario',
         'action' => 'editarCategoria'
     ],
-    'Inventario/EliminarCategoriaInventario'=> [
+    'Inventario/EliminarCategoriaInventario' => [
         'controller' => 'Inventario',
-        'action' => 'eliminarCategoriaInventario'
+        'action' => 'EliminarCategoriaInventario'
     ],
     'Device/Eliminar' => [
         'controller' => 'Device',
