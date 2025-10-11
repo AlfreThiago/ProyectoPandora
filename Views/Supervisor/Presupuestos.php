@@ -88,23 +88,20 @@
                             $editable = (in_array($sEstado, ['diagnóstico','diagnostico']) && !$laborDef);
                         ?>
 
-                        <form method="post" action="/ProyectoPandora/Public/index.php?route=Tecnico/ActualizarStats" 
-                              class="presu-labor" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                            <input type="hidden" name="ticket_id" value="<?= (int)$t['id'] ?>"/>
+                        <div class="presu-labor" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
                             <label>Mano de obra:</label>
                             <?php if ($editable): ?>
-                                <input type="number" name="labor_amount" step="0.01" min="0" 
-                                       value="<?= number_format((float)$p['mano_obra'], 2, '.', '') ?>" 
+                                <input type="number" name="labor_amount" step="0.01" min="0"
+                                       value="<?= number_format((float)$p['mano_obra'], 2, '.', '') ?>"
                                        class="asignar-input asignar-input--small"/>
-                                <button class="btn btn-primary" type="submit">Guardar</button>
+                                <span class="badge badge--warning">Solo En Diagnóstico</span>
                             <?php else: ?>
                                 <span><strong>$<?= number_format((float)$p['mano_obra'], 2, '.', ',') ?></strong></span>
-                                <button class="btn btn-primary" type="submit" disabled>Guardar</button>
                                 <span class="badge <?= $laborDef ? 'badge--success' : 'badge--warning' ?>">
                                     <?= $laborDef ? 'Ya Definida' : 'Solo En Diagnóstico' ?>
                                 </span>
                             <?php endif; ?>
-                        </form>
+                        </div>
 
                         <div>Total: <strong>$<?= number_format($p['total'], 2, '.', ',') ?></strong></div>
 
