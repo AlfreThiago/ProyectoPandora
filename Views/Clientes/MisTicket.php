@@ -1,4 +1,5 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
+<?php require_once __DIR__ . '/../../Core/Date.php'; ?>
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Contenedor">
@@ -20,7 +21,7 @@
                                     if (in_array($estadoLower, ['finalizado','cerrado','cancelado'])) $estadoClass = 'badge badge--danger';
                                 ?>
                                 <p><strong>Estado:</strong> <span class="<?= $estadoClass ?>"><?= htmlspecialchars($estadoStr) ?></span></p>
-                                <p><strong>Fecha:</strong> <?= htmlspecialchars($ticket['fecha_creacion']) ?></p>
+                                <p><strong>Fecha:</strong> <time title="<?= htmlspecialchars(DateHelper::exact($ticket['fecha_creacion'] ?? '')) ?>"><?= htmlspecialchars(DateHelper::smart($ticket['fecha_creacion'] ?? '')) ?></time></p>
                                 <p><strong>Técnico:</strong> <?= htmlspecialchars($ticket['tecnico'] ?? 'Sin asignar') ?></p>
                                 <div class="card-actions">
                                     <a href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?= $ticket['id'] ?>" class="btn btn-primary">Ver detalle</a>

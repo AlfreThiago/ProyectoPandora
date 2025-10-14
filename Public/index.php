@@ -3,6 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Zona horaria: Uruguay
+date_default_timezone_set('America/Montevideo');
+
 $currentUrl = $_SERVER['REQUEST_URI'];
 
 // Lista de rutas donde NO se debe guardar prev_url

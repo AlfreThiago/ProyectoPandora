@@ -1,4 +1,5 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
+<?php require_once __DIR__ . '/../../Core/Date.php'; ?>
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
@@ -30,12 +31,13 @@
                 if (isset($administradores) && !empty($administradores)) {
                     foreach ($administradores as $admin) {
                         $role = htmlspecialchars($admin['role']);
-                        echo "<tr class='row-role-$role'>";
+                        echo "<tr class='row-role-".$role."'>";
                         echo "<td>".htmlspecialchars($admin['id'])."</td>";
                         echo "<td>".htmlspecialchars($admin['name'])."</td>";
                         echo "<td>".htmlspecialchars($admin['email'])."</td>";
-                        echo "<td><span class='role $role'>$role</span></td>";
-                        echo "<td><span class='created-at'>🕒 " . htmlspecialchars($admin['created_at']) . "</span></td>";
+                        echo "<td><span class='role ".$role."'>".$role."</span></td>";
+                        $created = $admin['created_at'] ?? '';
+                        echo "<td><span class='created-at'>🕒 <time title='".htmlspecialchars(DateHelper::exact($created))."'>".htmlspecialchars(DateHelper::smart($created))."</time></span></td>";
                         echo "<td>
                                 <div class='action-buttons'>
                                 <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=".htmlspecialchars($admin['id'])."&from=Admin/ListarAdmins' class='btn edit-btn'>Actualizar</a>

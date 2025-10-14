@@ -1,4 +1,5 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
+<?php require_once __DIR__ . '/../../Core/Date.php'; ?>
 <main>
   <div class="detalle-ticket-layout">
     <!-- ================== DETALLE IZQUIERDA ================== -->
@@ -15,8 +16,20 @@
               <li><strong>Estado:</strong> <span id="estado-badge" class="<?= htmlspecialchars($view['estadoClass']) ?>"><?= htmlspecialchars($view['estadoStr']) ?></span></li>
               <li><strong>Descripción de la falla:</strong> <?= htmlspecialchars($t['descripcion'] ?? $t['descripcion_falla']) ?></li>
               <li><strong>Técnico asignado:</strong> <?= !empty($t['tecnico']) ? htmlspecialchars($t['tecnico']) : '<span style="color:#d32f2f;">Sin asignar</span>' ?></li>
-              <?php if (isset($t['fecha_creacion'])): ?><li><strong>Fecha de creación:</strong> <?= htmlspecialchars($t['fecha_creacion']) ?></li><?php endif; ?>
-              <?php if (!empty($t['fecha_cierre'])): ?><li><strong>Fecha de cierre:</strong> <?= htmlspecialchars($t['fecha_cierre']) ?></li><?php endif; ?>
+              <?php if (isset($t['fecha_creacion'])): ?>
+                <li><strong>Fecha de creación:</strong> 
+                  <time title="<?= htmlspecialchars(DateHelper::exact($t['fecha_creacion'])) ?>">
+                    <?= htmlspecialchars(DateHelper::smart($t['fecha_creacion'])) ?>
+                  </time>
+                </li>
+              <?php endif; ?>
+              <?php if (!empty($t['fecha_cierre'])): ?>
+                <li><strong>Fecha de cierre:</strong> 
+                  <time title="<?= htmlspecialchars(DateHelper::exact($t['fecha_cierre'])) ?>">
+                    <?= htmlspecialchars(DateHelper::smart($t['fecha_cierre'])) ?>
+                  </time>
+                </li>
+              <?php endif; ?>
               <?php if (!empty($t['img_dispositivo'])): ?>
                   <li>
                     <strong>Imagen del dispositivo:</strong><br>
@@ -232,7 +245,11 @@
             <ul>
               <?php foreach (($view['timeline']['Tecnico'] ?? []) as $ev): ?>
                 <li>
-                  <div class="timeline-fecha"><?= htmlspecialchars($ev['created_at']) ?></div>
+                  <div class="timeline-fecha">
+                    <time title="<?= htmlspecialchars(DateHelper::exact($ev['created_at'])) ?>">
+                      <?= htmlspecialchars(DateHelper::smart($ev['created_at'])) ?>
+                    </time>
+                  </div>
                   <div>Estado: <span class="badge badge--success"><?= htmlspecialchars($ev['estado']) ?></span></div>
                   <?php if (!empty($ev['comentario'])): ?><div>"<?= htmlspecialchars($ev['comentario']) ?>"</div><?php endif; ?>
                 </li>
@@ -244,7 +261,11 @@
             <ul>
               <?php foreach (($view['timeline']['Cliente'] ?? []) as $ev): ?>
                 <li>
-                  <div class="timeline-fecha"><?= htmlspecialchars($ev['created_at']) ?></div>
+                  <div class="timeline-fecha">
+                    <time title="<?= htmlspecialchars(DateHelper::exact($ev['created_at'])) ?>">
+                      <?= htmlspecialchars(DateHelper::smart($ev['created_at'])) ?>
+                    </time>
+                  </div>
                   <div>Estado: <span class="badge badge--muted"><?= htmlspecialchars($ev['estado']) ?></span></div>
                   <?php if (!empty($ev['comentario'])): ?><div>"<?= htmlspecialchars($ev['comentario']) ?>"</div><?php endif; ?>
                 </li>
@@ -256,7 +277,11 @@
             <ul>
               <?php foreach (($view['timeline']['Supervisor'] ?? []) as $ev): ?>
                 <li>
-                  <div class="timeline-fecha"><?= htmlspecialchars($ev['created_at']) ?></div>
+                  <div class="timeline-fecha">
+                    <time title="<?= htmlspecialchars(DateHelper::exact($ev['created_at'])) ?>">
+                      <?= htmlspecialchars(DateHelper::smart($ev['created_at'])) ?>
+                    </time>
+                  </div>
                   <div>Estado: <span class="badge badge--muted"><?= htmlspecialchars($ev['estado']) ?></span></div>
                   <?php if (!empty($ev['comentario'])): ?><div>"<?= htmlspecialchars($ev['comentario']) ?>"</div><?php endif; ?>
                 </li>
