@@ -22,14 +22,8 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS estados_tickets;
 DROP TABLE IF EXISTS categorias_inventario;
 DROP TABLE IF EXISTS categorias;
-DROP TABLE IF EXISTS areas;
 SET FOREIGN_KEY_CHECKS = 1;
 
-CREATE TABLE areas (
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    PRIMARY KEY (id)
-);
 CREATE TABLE categorias (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
@@ -118,12 +112,10 @@ CREATE TABLE tecnicos (
 CREATE TABLE supervisores (
     id INT(11) NOT NULL AUTO_INCREMENT,
     user_id INT(11) NOT NULL,
-    area_id INT(11),
     num_tecnicos INT(11) DEFAULT 0,
     estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (area_id) REFERENCES areas(id) ON DELETE SET NULL
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 CREATE TABLE administradores (
     id INT(11) NOT NULL AUTO_INCREMENT,

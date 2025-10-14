@@ -4,10 +4,6 @@
 <main class="asignar-page">
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 	<section class="content asignar-content">
-		<section class="content">
-
-				
-			</section>
 
 			<?php if (isset($_GET['success'])): ?>
 				<div class="alert alert-success">Asignación realizada correctamente.</div>
@@ -23,8 +19,8 @@
 					<select name="estado" id="estado" class="asignar-input">
 						<?php $estadoSel = $_GET['estado'] ?? 'todos'; ?>
 						<option value="todos" <?php echo $estadoSel==='todos'?'selected':''; ?>>Todos</option>
-						<option value="Disponible" <?php echo $estadoSel==='Disponible'?'selected':''; ?>>Disponible</option>
-						<option value="Ocupado" <?php echo $estadoSel==='Ocupado'?'selected':''; ?>>No disponible</option>
+						<option value="Disponible" <?php echo $estadoSel==='Disponible'?'selected':''; ?>>Disponibles</option>
+						<option value="Ocupado" <?php echo $estadoSel==='Ocupado'?'selected':''; ?>>Asignados</option>
 					</select>
 				</div>
 				<div class="field asignar-field asignar-field--grow">
@@ -71,7 +67,20 @@
 					<?php foreach ($filtrados as $tec): ?>
 						<?php
 							$avatar = $tec['img_perfil'] ?? '';
-							if (!$avatar) { $avatar = '/ProyectoPandora/Public/img/BIGMOLE-4x.gif'; }
+							$defaultAvatar = '/ProyectoPandora/Public/img/imgPerfil/default.png';
+							$fallbackAvatar = '/ProyectoPandora/Public/img/Innovasys.png';
+							if ($avatar && strpos($avatar, '/ProyectoPandora/') !== 0 && !preg_match('#^https?://#i', $avatar)) {
+								$avatar = '/ProyectoPandora/Public/img/imgPerfil/' . ltrim($avatar, '/');
+							}
+							$baseDocRoot = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\');
+							$avatarFs = $baseDocRoot . $avatar;
+							if (!$avatar || ($baseDocRoot && !preg_match('#^https?://#i', $avatar) && !is_file($avatarFs))) {
+								$avatar = $defaultAvatar;
+								$defaultFs = $baseDocRoot . $defaultAvatar;
+								if ($baseDocRoot && !is_file($defaultFs)) {
+									$avatar = $fallbackAvatar;
+								}
+							}
 							$estado = $tec['disponibilidad'] ?? 'Desconocido';
 							$badgeColor = $estado === 'Disponible' ? '#16a34a' : ($estado==='Ocupado' ? '#ef4444' : '#64748b');
 						?>
@@ -81,7 +90,7 @@
 								<div class="asignar-card__title">
 									<div class="asignar-card__row">
 										<h3 class="asignar-card__name"><?php echo htmlspecialchars($tec['name'] ?? ''); ?></h3>
-										<span class="badge <?php echo $estado==='Disponible' ? 'badge--success' : ($estado==='Ocupado' ? 'badge--danger' : 'badge--muted'); ?>" title="Estado informativo, gestionado por el técnico en su perfil"><?php echo htmlspecialchars($estado === 'Ocupado' ? 'No disponible' : 'Disponible'); ?></span>
+										<span class="badge <?php echo $estado==='Disponible' ? 'badge--success' : ($estado==='Ocupado' ? 'badge--danger' : 'badge--muted'); ?>" title="Estado informativo, gestionado por el técnico en su perfil"><?php echo htmlspecialchars($estado); ?></span>
 									</div>
 									<div class="asignar-card__row" style="gap:6px; align-items:center;">
 										<?php $r = isset($tec['rating_avg']) ? (float)$tec['rating_avg'] : 0; $rc=(int)($tec['rating_count'] ?? 0); if ($rc===0 && $r<=0){ $r=3.0; } $full = (int)floor($r); $half = ($r - $full) >= 0.5; ?>
@@ -96,7 +105,7 @@
 								</div>
 							</div>
 							<div class="asignar-card__chips">
-								<div class="chip">Tickets totales: <?php echo (int)($tec['tickets_asignados'] ?? 0); ?></div>
+								<div class="chip">Tickets asignados: <?php echo (int)($tec['tickets_asignados'] ?? 0); ?></div>
 								<div class="chip">Activos: <?php echo (int)($tec['tickets_activos'] ?? 0); ?></div>
 								<div class="chip">Email: <?php echo htmlspecialchars($tec['email'] ?? ''); ?></div>
 							</div>

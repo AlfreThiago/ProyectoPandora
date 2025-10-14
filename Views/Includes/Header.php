@@ -76,6 +76,7 @@ list($title, $subtitle) = headerMeta($route, $rol);
 <!-- Estilos del header consolidados en AdminDash.css -->
 
 <header class="header hero-header">
+	
 	<div class="hero-row">
 		<div class="hero-left">
 			<?php if (isHomeRoute($route)): ?>
@@ -88,4 +89,20 @@ list($title, $subtitle) = headerMeta($route, $rol);
 			</p>
 		</div>
 	</div>
+	<div class="hamburger" id="menuToggle">
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+
 </header>
+<script>
+	const menuBtn = document.getElementById('menuToggle');
+const sidebar = document.querySelector('.sidebar');
+
+menuBtn.addEventListener('click', () => {
+  menuBtn.classList.toggle('active');
+  sidebar.classList.toggle('active');
+});
+
+</script>

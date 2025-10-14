@@ -56,11 +56,12 @@
                         echo "</span> <small>(".round($avg,1).", ".$count.")</small></td>";
                         echo "<td>" . htmlspecialchars($tec['especialidad']) . "</td>";
                         echo "<td><span class='created-at'>🕒 " . htmlspecialchars($tec['created_at']) . "</span></td>";
+                        $userId = (int)($tec['user_id'] ?? 0);
                         echo "<td>
                             <div class='action-buttons'>
-                                <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=" . htmlspecialchars($tec['user_id']) . "&from=Admin/ListarTecs' class='btn edit-btn'>Actualizar</a>
+                                <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=" . htmlspecialchars($userId) . "&from=Admin/ListarTecnicos' class='btn edit-btn'>Actualizar</a>
                                 |
-                                <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=" . htmlspecialchars($tec['id']) . "' class='btn delete-btn'>Eliminar</a>
+                                <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=" . htmlspecialchars($userId) . "' class='btn delete-btn' onclick=\"return confirm('¿Eliminar este usuario?');\">Eliminar</a>
                             </div>
                         </td>";
                         echo "</tr>";

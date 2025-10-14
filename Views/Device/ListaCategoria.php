@@ -37,9 +37,5 @@
             </tbody>
         </table>
     </div>
-    <div class="dark-mode-btn" id="dark-mode-btn">
-        <i class='bx bx-sun'></i>
-        <i class='bx bx-moon'></i>
-    </div>
     <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>
