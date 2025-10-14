@@ -19,7 +19,7 @@ $role = strtolower($authUser['role'] ?? 'invitado');
                     <?php elseif ($role === 'cliente'): ?>
                         <a class="btn-a" href="index.php?route=Cliente/MisTicket"><i class='bx bx-support'></i> Ver mis tickets</a>
                         <a class="btn-b" href="index.php?route=Cliente/MisDevice"><i class='bx bx-laptop'></i> Mis dispositivos</a>
-                        <a class="btn-c" href="index.php?route=Cliente/CrearTicket"><i class='bx bx-plus-circle'></i> Crear ticket</a>
+                        <a class="btn-c" href="index.php?route=Ticket/Crear"><i class='bx bx-plus-circle'></i> Crear ticket</a>
                     <?php elseif ($role === 'tecnico'): ?>
                         <a class="btn-a" href="index.php?route=Tecnico/MisReparaciones"><i class='bx bx-wrench'></i> Mis reparaciones</a>
                         <a class="btn-b" href="index.php?route=Tecnico/MisStats"><i class='bx bx-line-chart'></i> Mis estadísticas</a>
