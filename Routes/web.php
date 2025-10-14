@@ -16,6 +16,10 @@ return [
         'controller' => 'Default',
         'action' => 'perfil'
     ],
+    'Default/StatsJson' => [
+        'controller' => 'Default',
+        'action' => 'StatsJson'
+    ],
     
     
     

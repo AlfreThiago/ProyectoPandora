@@ -19,7 +19,7 @@ $role = strtolower($authUser['role'] ?? 'invitado');
                     <?php elseif ($role === 'cliente'): ?>
                         <a class="btn-a" href="index.php?route=Cliente/MisTicket"><i class='bx bx-support'></i> Ver mis tickets</a>
                         <a class="btn-b" href="index.php?route=Cliente/MisDevice"><i class='bx bx-laptop'></i> Mis dispositivos</a>
-                        <a class="btn-c" href="index.php?route=Cliente/CrearTicket"><i class='bx bx-plus-circle'></i> Crear ticket</a>
+                        <a class="btn-c" href="index.php?route=Ticket/Crear"><i class='bx bx-plus-circle'></i> Crear ticket</a>
                     <?php elseif ($role === 'tecnico'): ?>
                         <a class="btn-a" href="index.php?route=Tecnico/MisReparaciones"><i class='bx bx-wrench'></i> Mis reparaciones</a>
                         <a class="btn-b" href="index.php?route=Tecnico/MisStats"><i class='bx bx-line-chart'></i> Mis estadísticas</a>
@@ -36,17 +36,17 @@ $role = strtolower($authUser['role'] ?? 'invitado');
                 <div class="hero-stats">
                     <div class="stat">
                         <i class='bx bx-time-five'></i>
-                        <span class="num" id="activeTickets">3</span>
+                        <span class="num" id="activeTickets"><?= isset($stats['activeTickets']) ? (int)$stats['activeTickets'] : 0 ?></span>
                         <span class="label">Tickets activos</span>
                     </div>
                     <div class="stat">
                         <i class='bx bx-star'></i>
-                        <span class="num">4.8</span>
+                        <span class="num" id="avgRating"><?= isset($stats['avgRating']) && $stats['avgRating'] !== null ? $stats['avgRating'] : '—' ?></span>
                         <span class="label">Promedio general</span>
                     </div>
                     <div class="stat">
                         <i class='bx bx-refresh'></i>
-                        <span class="num">24h</span>
+                        <span class="num" id="lastUpdate"><?= isset($stats['lastUpdateHuman']) ? htmlspecialchars($stats['lastUpdateHuman']) : '—' ?></span>
                         <span class="label">Última actualización</span>
                     </div>
                 </div>
@@ -88,7 +88,6 @@ $role = strtolower($authUser['role'] ?? 'invitado');
                     <article class="home-card">
                         <h3><i class='bx bx-like'></i> Calificar servicio</h3>
                         <p>Evaluá el servicio recibido y ayudanos a mejorar.</p>
-                        <a class="home-link" href="index.php?route="><i class='bx bx-star'></i> Calificar</a>
                     </article>
 
                 <?php elseif ($role === 'tecnico'): ?>
@@ -172,7 +171,7 @@ $role = strtolower($authUser['role'] ?? 'invitado');
                             <a class="qa" href="index.php?route=Auth/Login"><i class='bx bx-bar-chart'></i> Reportes</a>
                             <a class="qa" href="index.php?route=Auth/Login"><i class='bx bx-receipt'></i> Facturación</a>
                         <?php elseif ($role === 'cliente'): ?>
-                            <a class="qa" href="index.php?route=Cliente/CrearTicket"><i class='bx bx-plus-circle'></i> Crear ticket</a>
+                            <a class="qa" href="index.php?route=Ticket/Crear"><i class='bx bx-plus-circle'></i> Crear ticket</a>
                             <a class="qa" href="index.php?route=Cliente/MisDevice"><i class='bx bx-laptop'></i> Mis dispositivos</a>
                             <a class="qa" href="index.php?route=Cliente/MisTicket"><i class='bx bx-list-ul'></i> Mis tickets</a>
                             <a class="qa" href="#"><i class='bx bx-receipt'></i> Facturación</a>
@@ -196,7 +195,6 @@ $role = strtolower($authUser['role'] ?? 'invitado');
                 <section class="help card-wide">
                     <h3><i class='bx bx-question-mark'></i> ¿Necesitás ayuda?</h3>
                     <p>Contactá al soporte o revisá la documentación rápida.</p>
-                    <a class="home-link" href="index.php?route=Default/Guia"><i class='bx bx-help-circle'></i> Ir a soporte</a>
                 </section>
             </div>
         </div>
@@ -208,11 +206,5 @@ $role = strtolower($authUser['role'] ?? 'invitado');
 
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
-        const active = document.getElementById('activeTickets');
-        let n = parseInt(active.textContent, 10);
-        setInterval(() => {
-            n = n + (Math.random() > .7 ? 1 : 0);
-            active.textContent = n;
-        }, 6000);
     </script>
 </main>
