@@ -155,7 +155,7 @@ $authUser = Auth::user();
                                 </a>
                             </li>
                             <li class="item menu-item-static">
-                                <a href="index.php?route=Cliente/MisTicket" class="link flex">
+                                <a href="index.php?route=Cliente/MisTicketActivo" class="link flex">
                                     <i class='bxr  bx-ticket'></i>
                                     <span>Mis Tickets</span>
                                 </a>

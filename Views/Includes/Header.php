@@ -76,7 +76,6 @@ list($title, $subtitle) = headerMeta($route, $rol);
 <!-- Estilos del header consolidados en AdminDash.css -->
 
 <header class="header hero-header">
-	
 	<div class="hero-row">
 		<div class="hero-left">
 			<?php if (isHomeRoute($route)): ?>
@@ -87,6 +86,12 @@ list($title, $subtitle) = headerMeta($route, $rol);
 			<p class="hero-sub">
 				<?= htmlspecialchars($title) ?> · <?= htmlspecialchars($subtitle) ?>
 			</p>
+		</div>
+		<div class="hero-actions">
+			<?php if (stripos($route, 'Cliente/MisTicket') === 0 || stripos($route, 'Cliente/MisTicketActivo') === 0 || stripos($route, 'Cliente/MisTicketTerminados') === 0): ?>
+				<a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo" class="btn btn-outline small" title="Ver activos">Activos</a>
+				<a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketTerminados" class="btn btn-outline small" title="Ver finalizados">Finalizados</a>
+			<?php endif; ?>
 		</div>
 	</div>
 	<div class="hamburger" id="menuToggle">

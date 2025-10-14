@@ -16,19 +16,7 @@ class DefaultController
         include_once __DIR__ . '/../Views/AllUsers/Home.php';
     }
 
-    public function StatsJson()
-    {
-        $user = Auth::user();
-        $stats = $this->computeHomeStats($user);
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([
-            'activeTickets'   => (int)($stats['activeTickets'] ?? 0),
-            'avgRating'       => $stats['avgRating'] ?? null,
-            'lastUpdateIso'   => $stats['lastUpdateIso'] ?? null,
-            'lastUpdateHuman' => $stats['lastUpdateHuman'] ?? '—',
-        ]);
-        exit;
-    }
+    // Endpoint JSON removido por requerimiento: solo PHP renderizado en servidor
 
     private function computeHomeStats(?array $user): array
     {

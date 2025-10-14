@@ -10,11 +10,36 @@ class Ticket
 
     public function crear($cliente_id, $dispositivo_id, $descripcion_falla)
     {
+        // Determinar estado inicial válido (preferentemente 'Nuevo')
+        $estadoInicialId = null;
+        // 1) Intentar 'Nuevo'
+        if ($st = $this->conn->prepare("SELECT id FROM estados_tickets WHERE LOWER(name) = LOWER('Nuevo') LIMIT 1")) {
+            $st->execute();
+            $row = $st->get_result()->fetch_assoc();
+            if ($row && isset($row['id'])) { $estadoInicialId = (int)$row['id']; }
+        }
+        // 2) Si no existe, crearlo para cumplir con el flujo requerido
+        if (!$estadoInicialId) {
+            if ($ins = $this->conn->prepare("INSERT INTO estados_tickets (name) VALUES ('Nuevo')")) {
+                if ($ins->execute()) {
+                    $estadoInicialId = (int)$this->conn->insert_id;
+                }
+            }
+        }
+        if (!$estadoInicialId) {
+            // No se pudo asegurar el estado 'Nuevo'
+            return false;
+        }
+
         $sql = "INSERT INTO tickets (cliente_id, dispositivo_id, descripcion_falla, estado_id) 
-                VALUES (?, ?, ?, 1)";
+                VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iis", $cliente_id, $dispositivo_id, $descripcion_falla);
-        return $stmt->execute();
+        if (!$stmt) { return false; }
+        $stmt->bind_param("iisi", $cliente_id, $dispositivo_id, $descripcion_falla, $estadoInicialId);
+        if ($stmt->execute()) {
+            return (int)$this->conn->insert_id;
+        }
+        return false;
     }
 
     public function listar()
@@ -122,6 +147,66 @@ class Ticket
                 LEFT JOIN tecnicos tc ON t.tecnico_id = tc.id
                 LEFT JOIN users tec ON tc.user_id = tec.id
                 WHERE c.user_id = ?
+                ORDER BY t.fecha_creacion DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    public function getTicketsActivosByUserId($user_id)
+    {
+        $sql = "SELECT 
+                    t.id,
+                    d.marca AS dispositivo,
+                    d.modelo,
+                    t.descripcion_falla,
+                    e.name AS estado,
+                    t.fecha_creacion,
+                    tec.name AS tecnico
+                FROM tickets t
+                INNER JOIN dispositivos d ON t.dispositivo_id = d.id
+                INNER JOIN clientes c ON t.cliente_id = c.id
+                INNER JOIN estados_tickets e ON t.estado_id = e.id
+                LEFT JOIN tecnicos tc ON t.tecnico_id = tc.id
+                LEFT JOIN users tec ON tc.user_id = tec.id
+                WHERE c.user_id = ?
+                  AND LOWER(e.name) NOT IN ('finalizado','cerrado','cancelado')
+                ORDER BY t.fecha_creacion DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    public function getTicketsTerminadosByUserId($user_id)
+    {
+        $sql = "SELECT 
+                    t.id,
+                    d.marca AS dispositivo,
+                    d.modelo,
+                    t.descripcion_falla,
+                    e.name AS estado,
+                    t.fecha_creacion,
+                    tec.name AS tecnico
+                FROM tickets t
+                INNER JOIN dispositivos d ON t.dispositivo_id = d.id
+                INNER JOIN clientes c ON t.cliente_id = c.id
+                INNER JOIN estados_tickets e ON t.estado_id = e.id
+                LEFT JOIN tecnicos tc ON t.tecnico_id = tc.id
+                LEFT JOIN users tec ON tc.user_id = tec.id
+                WHERE c.user_id = ?
+                  AND LOWER(e.name) IN ('finalizado','cerrado','cancelado')
                 ORDER BY t.fecha_creacion DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $user_id);

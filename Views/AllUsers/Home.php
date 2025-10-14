@@ -18,7 +18,7 @@ require_once __DIR__ . '/../../Core/Date.php';
                         <a class="btn-a" href="index.php?route=Auth/Login"><i class='bx bx-log-in'></i> Iniciar sesión</a>
                         <a class="btn-b" href="index.php?route=Register/Register"><i class='bx bx-user-plus'></i> Registrarse</a>
                     <?php elseif ($role === 'cliente'): ?>
-                        <a class="btn-a" href="index.php?route=Cliente/MisTicket"><i class='bx bx-support'></i> Ver mis tickets</a>
+                        <a class="btn-a" href="index.php?route=Cliente/MisTicketActivo"><i class='bx bx-support'></i> Ver mis tickets</a>
                         <a class="btn-b" href="index.php?route=Cliente/MisDevice"><i class='bx bx-laptop'></i> Mis dispositivos</a>
                         <a class="btn-c" href="index.php?route=Ticket/Crear"><i class='bx bx-plus-circle'></i> Crear ticket</a>
                     <?php elseif ($role === 'tecnico'): ?>
@@ -91,7 +91,7 @@ require_once __DIR__ . '/../../Core/Date.php';
                     <article class="home-card">
                         <h3><i class='bx bx-support'></i> Mis tickets</h3>
                         <p>Consultá el estado de tus reparaciones y mantené contacto directo con el técnico asignado.</p>
-                        <a class="home-link" href="index.php?route=Cliente/MisTicket"><i class='bx bx-list-ul'></i> Ver tickets</a>
+                        <a class="home-link" href="index.php?route=Cliente/MisTicketActivo"><i class='bx bx-list-ul'></i> Ver tickets</a>
                     </article>
 
                     <article class="home-card">
@@ -182,7 +182,7 @@ require_once __DIR__ . '/../../Core/Date.php';
                         <?php elseif ($role === 'cliente'): ?>
                             <a class="qa" href="index.php?route=Ticket/Crear"><i class='bx bx-plus-circle'></i> Crear ticket</a>
                             <a class="qa" href="index.php?route=Cliente/MisDevice"><i class='bx bx-laptop'></i> Mis dispositivos</a>
-                            <a class="qa" href="index.php?route=Cliente/MisTicket"><i class='bx bx-list-ul'></i> Mis tickets</a>
+                            <a class="qa" href="index.php?route=Cliente/MisTicketActivo"><i class='bx bx-list-ul'></i> Mis tickets</a>
                             <a class="qa" href="#"><i class='bx bx-receipt'></i> Facturación</a>
                         <?php elseif ($role === 'tecnico'): ?>
                             <a class="qa" href="index.php?route=Tecnico/MisReparaciones"><i class='bx bx-wrench'></i> Reparaciones</a>

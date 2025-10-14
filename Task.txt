@@ -1,6 +1,4 @@
-Hacer/Solucionar/Mejorar
-
-- Arreglar q no redirecione a los listares del admin al cancelar o guardar como cliente en su panel.
+- ✅Arreglar q no redirecione a los listares del admin al cancelar o guardar como cliente en su panel.
 - ✅Arreglar q aparezca la descripcion de falla del dispositivo selecionado al crear un ticket.
 - ❔Agregar restriciones al momento de registrarse en el correo, para q no ingresen con cosas q no sean @gmail.com, @hotmail.com, @outlook.com. 
 - ✅En el panelSupervisor, agregar las funcionalidades como AsignarTecnico, GestionInventario y Presupuesto(Valor de la mano de obra mas los repuestos usados). 
@@ -46,4 +44,4 @@ COSAS DE ALE
 ✅-¿Nuevas tablas? (lo mismo que formulario)
 
 Cosasd de BRUNO
-poner drop table en la base de datos para evitar tener que borrar todo 
+-✅poner drop table en la base de datos para evitar tener que borrar todo 

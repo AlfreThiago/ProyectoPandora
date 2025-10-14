@@ -16,10 +16,7 @@ return [
         'controller' => 'Default',
         'action' => 'perfil'
     ],
-    'Default/StatsJson' => [
-        'controller' => 'Default',
-        'action' => 'StatsJson'
-    ],
+    // Ruta JSON removida: 'Default/StatsJson'
     
     
     
@@ -135,10 +132,18 @@ return [
         'controller' => 'Cliente',
         'action' => 'MisDevice'
     ],
-    'Cliente/MisTicket' => [
+    'Cliente/MisTicket' => [ // compatibilidad: redirige a activos
         'controller' => 'Cliente',
         'action' => 'MisTicket'
-    ],    
+    ],
+    'Cliente/MisTicketActivo' => [
+        'controller' => 'Cliente',
+        'action' => 'MisTicketActivo'
+    ],
+    'Cliente/MisTicketTerminados' => [
+        'controller' => 'Cliente',
+        'action' => 'MisTicketTerminados'
+    ],
     
     
     
