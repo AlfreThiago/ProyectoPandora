@@ -8,6 +8,7 @@ require_once __DIR__ . '/HistorialController.php';
 require_once __DIR__ . '/../Models/EstadoTicket.php';
 require_once __DIR__ . '/../Models/Rating.php';
 require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
+require_once __DIR__ . '/../Models/Category.php';
 
 class TicketController
 {
@@ -427,18 +428,7 @@ class TicketController
             
             $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Supervisor', 'Marcado como listo para retirar');
 
-            
-            require_once __DIR__ . '/../Models/MailQueue.php';
-            $stmtMail = $conn->prepare("SELECT u.email FROM tickets t INNER JOIN clientes c ON c.id=t.cliente_id INNER JOIN users u ON u.id=c.user_id WHERE t.id=? LIMIT 1");
-            if ($stmtMail) {
-                $stmtMail->bind_param('i', $ticket_id);
-                $stmtMail->execute();
-                $em = $stmtMail->get_result()->fetch_assoc();
-                if ($em && !empty($em['email'])) {
-                    $mq = new MailQueueModel($conn);
-                    $mq->enqueue($em['email'], 'Listo para retirar', 'Hola, tu equipo del ticket #'.$ticket_id.' está listo para retirar.');
-                }
-            }
+            // Nota: envío de mail removido (MailQueue eliminado)
         }
         header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&ok=listo');
         exit;
@@ -691,18 +681,7 @@ class TicketController
         $comentario = 'Presupuesto publicado. Total $' . number_format($total, 2, '.', '');
         $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Supervisor', $comentario);
 
-        
-        require_once __DIR__ . '/../Models/MailQueue.php';
-        $stmtMail = $conn->prepare("SELECT u.email FROM tickets t INNER JOIN clientes c ON c.id=t.cliente_id INNER JOIN users u ON u.id=c.user_id WHERE t.id=? LIMIT 1");
-        if ($stmtMail) {
-            $stmtMail->bind_param('i', $ticket_id);
-            $stmtMail->execute();
-            $em = $stmtMail->get_result()->fetch_assoc();
-            if ($em && !empty($em['email'])) {
-                $mq = new MailQueueModel($conn);
-                $mq->enqueue($em['email'], 'Presupuesto publicado', 'Hola, ya podés revisar y aprobar/rechazar el presupuesto de tu ticket #'.$ticket_id.'.');
-            }
-        }
+        // Nota: envío de mail removido (MailQueue eliminado)
 
         header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&ok=publicado');
         exit;
