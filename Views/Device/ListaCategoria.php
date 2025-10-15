@@ -22,9 +22,12 @@
                         <td><?php echo htmlspecialchars($categoria['name']); ?></td>
                         <td>
                             <div class='action-buttons'>
-                                <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?php echo $categoria['id']; ?>" class="btn edit-btn">Actualizar</a>
+                                <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?= (int)$categoria['id'] ?>" class="btn edit-btn">Actualizar</a>
                                 |
-                                <a href="/ProyectoPandora/Public/index.php?route=Device/Delete-Category&id=<?php echo $categoria['id']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');" class="btn delete-btn">Eliminar</a>
+                                <form method="post" action="/ProyectoPandora/Public/index.php?route=Device/DeleteCategoria" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar esta categoría de dispositivos?');">
+                                    <input type="hidden" name="id" value="<?= (int)$categoria['id'] ?>">
+                                    <button type="submit" class="btn delete-btn">Eliminar</button>
+                                </form>
                             </div>
                         </td>
                     </tr>

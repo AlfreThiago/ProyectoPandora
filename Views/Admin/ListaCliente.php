@@ -1,4 +1,5 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
+<?php require_once __DIR__ . '/../../Core/Date.php'; ?>
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
@@ -35,7 +36,8 @@
                         echo "<td>".htmlspecialchars($cliente['name'])."</td>";
                         echo "<td>".htmlspecialchars($cliente['email'])."</td>";
                         echo "<td><span class='role $role'>$role</span></td>";
-                        echo "<td><span class='created-at'>🕒 ".htmlspecialchars($cliente['created_at'])."</span></td>";
+                        $created = $cliente['created_at'] ?? '';
+                        echo "<td><span class='created-at'>🕒 <time title='".htmlspecialchars(DateHelper::exact($created))."'>".htmlspecialchars(DateHelper::smart($created))."</time></span></td>";
                         $userId = (int)($cliente['user_id'] ?? $cliente['id']);
                         echo "<td>  
                                 <div class='action-buttons'>

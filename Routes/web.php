@@ -16,6 +16,7 @@ return [
         'controller' => 'Default',
         'action' => 'perfil'
     ],
+    // Ruta JSON removida: 'Default/StatsJson'
     
     
     
@@ -131,10 +132,18 @@ return [
         'controller' => 'Cliente',
         'action' => 'MisDevice'
     ],
-    'Cliente/MisTicket' => [
+    'Cliente/MisTicket' => [ // compatibilidad: redirige a activos
         'controller' => 'Cliente',
         'action' => 'MisTicket'
-    ],    
+    ],
+    'Cliente/MisTicketActivo' => [
+        'controller' => 'Cliente',
+        'action' => 'MisTicketActivo'
+    ],
+    'Cliente/MisTicketTerminados' => [
+        'controller' => 'Cliente',
+        'action' => 'MisTicketTerminados'
+    ],
     
     
     
@@ -327,9 +336,13 @@ return [
         'controller' => 'Inventario',
         'action' => 'editarCategoria'
     ],
-    'Inventario/EliminarCategoriaInventario'=> [
+    'Inventario/EliminarCategoriaInventario' => [
         'controller' => 'Inventario',
-        'action' => 'eliminarCategoriaInventario'
+        'action' => 'EliminarCategoriaInventario'
+    ],
+    'Device/Eliminar' => [
+        'controller' => 'Device',
+        'action' => 'Eliminar'
     ],
 ];
 ?>

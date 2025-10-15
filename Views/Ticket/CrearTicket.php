@@ -67,7 +67,7 @@
                     <p>
                         <a href="<?php echo (isset($isAdmin) && $isAdmin) 
                             ? '/ProyectoPandora/Public/index.php?route=Ticket/Listar' 
-                            : '/ProyectoPandora/Public/index.php?route=Cliente/MisTicket'; ?>" 
+                            : '/ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo'; ?>" 
                             class="btn-volver">Cancelar</a>
                     </p>
                 </form>

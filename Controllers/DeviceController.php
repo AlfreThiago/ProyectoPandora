@@ -1,8 +1,11 @@
 <?php
+require_once __DIR__ . '/../Core/Auth.php';
 require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/../Models/Device.php';
 require_once __DIR__ . '/../Models/Category.php';
 require_once __DIR__ . '/../Models/User.php';
+require_once __DIR__ . '/../Models/Ticket.php';
+require_once __DIR__ . '/../Models/Historial.php';
 require_once __DIR__ . '/../Controllers/HistorialController.php';
 
 class DeviceController
@@ -291,5 +294,50 @@ class DeviceController
         }
         header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria&error=ErrorDeletingCategory');
         exit;
+    }
+
+    public function Eliminar()
+    {
+        Auth::checkRole('Cliente');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice');
+            return;
+        }
+
+        $deviceId = isset($_POST['device_id']) ? (int)$_POST['device_id'] : 0;
+        if ($deviceId <= 0) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice&error=param');
+            return;
+        }
+        $db = new Database();
+        $db->connectDatabase();
+        $conn = $db->getConnection();
+
+        $deviceModel = new DeviceModel($conn);
+        $ticketModel = new Ticket($conn);
+        $hist        = new Historial($conn);
+
+        $authUser = Auth::user();
+        $userId = (int) $authUser['id'];
+
+        $ownerId = $deviceModel->getOwnerId($deviceId);
+        if ($ownerId !== $userId) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice&error=forbidden');
+            return;
+        }
+
+        if ($ticketModel->hasActiveTicketForDevice($deviceId)) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice&error=ticket_activo');
+            return;
+        }
+
+        if ($deviceModel->deleteByIdAndUser($deviceId, $userId)) {
+            $hist->agregarAccion('Eliminación de dispositivo', "Usuario ID {$userId} eliminó el dispositivo ID {$deviceId}");
+            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice&deleted=1');
+            return;
+        }
+
+        header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice&error=delete');
     }
 }

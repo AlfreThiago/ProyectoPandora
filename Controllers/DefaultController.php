@@ -9,8 +9,143 @@ class DefaultController
 
     public function index()
     {
+        // Auto-refresh de la página cada 30s sin usar JSON/AJAX
+        header('Refresh: 30');
         $user = Auth::user();
+        $stats = $this->computeHomeStats($user);
         include_once __DIR__ . '/../Views/AllUsers/Home.php';
+    }
+
+    // Endpoint JSON removido por requerimiento: solo PHP renderizado en servidor
+
+    private function computeHomeStats(?array $user): array
+    {
+        $stats = [
+            'activeTickets'    => 0,
+            'avgRating'        => null,
+            'lastUpdateIso'    => null,
+            'lastUpdateHuman'  => '—',
+        ];
+        try {
+            $db = new \Database();
+            $db->connectDatabase();
+            $conn = $db->getConnection();
+
+            $role = $user['role'] ?? 'Invitado';
+            $userId = isset($user['id']) ? (int)$user['id'] : null;
+
+            // Reutilizar modelo Ticket para obtener listados y contar activos por estado
+            $ticketModel = new \Ticket($conn);
+            $inactivos = ['finalizado','cerrado','cancelado'];
+            $activos = 0;
+            if ($role === 'Cliente' && $userId) {
+                $lista = $ticketModel->getTicketsByUserId($userId) ?: [];
+                foreach ($lista as $row) {
+                    $est = strtolower(trim($row['estado'] ?? ''));
+                    if (!in_array($est, $inactivos, true)) $activos++;
+                }
+            } elseif ($role === 'Tecnico' && $userId) {
+                $lista = $ticketModel->getTicketsByTecnicoId($userId) ?: [];
+                foreach ($lista as $row) {
+                    $est = strtolower(trim($row['estado'] ?? ''));
+                    if (!in_array($est, $inactivos, true)) $activos++;
+                }
+            } else {
+                $lista = $ticketModel->getAllTickets() ?: [];
+                foreach ($lista as $row) {
+                    $est = strtolower(trim($row['estado'] ?? ''));
+                    if (!in_array($est, $inactivos, true)) $activos++;
+                }
+            }
+            $stats['activeTickets'] = $activos;
+
+            // Promedio de calificaciones
+            @require_once __DIR__ . '/../Models/Rating.php';
+            if (class_exists('RatingModel')) {
+                new \RatingModel($conn); // ensureTable
+            }
+            if ($q = $conn->query("SELECT ROUND(AVG(stars), 1) AS avg_s FROM ticket_ratings")) {
+                $row = $q->fetch_assoc();
+                $stats['avgRating'] = $row && $row['avg_s'] !== null ? (float)$row['avg_s'] : null;
+            }
+
+            // Última actualización
+            $lastIso = null;
+            if ($role === 'Cliente' && $userId) {
+                $sqlH = "SELECT MAX(h.created_at) AS last
+                         FROM ticket_estado_historial h
+                         INNER JOIN tickets t ON h.ticket_id = t.id
+                         INNER JOIN clientes c ON t.cliente_id = c.id
+                         WHERE c.user_id = ?";
+                if ($st = $conn->prepare($sqlH)) {
+                    $st->bind_param('i', $userId);
+                    $st->execute();
+                    $lastIso = $st->get_result()->fetch_assoc()['last'] ?? null;
+                }
+                if (!$lastIso) {
+                    $sqlF = "SELECT MAX(t.fecha_creacion) AS last
+                             FROM tickets t
+                             INNER JOIN clientes c ON t.cliente_id = c.id
+                             WHERE c.user_id = ?";
+                    if ($st2 = $conn->prepare($sqlF)) {
+                        $st2->bind_param('i', $userId);
+                        $st2->execute();
+                        $lastIso = $st2->get_result()->fetch_assoc()['last'] ?? null;
+                    }
+                }
+            } elseif ($role === 'Tecnico' && $userId) {
+                $sqlH = "SELECT MAX(h.created_at) AS last
+                         FROM ticket_estado_historial h
+                         INNER JOIN tickets t ON h.ticket_id = t.id
+                         INNER JOIN tecnicos tc ON t.tecnico_id = tc.id
+                         WHERE tc.user_id = ?";
+                if ($st = $conn->prepare($sqlH)) {
+                    $st->bind_param('i', $userId);
+                    $st->execute();
+                    $lastIso = $st->get_result()->fetch_assoc()['last'] ?? null;
+                }
+                if (!$lastIso) {
+                    $sqlF = "SELECT MAX(t.fecha_creacion) AS last
+                             FROM tickets t
+                             INNER JOIN tecnicos tc ON t.tecnico_id = tc.id
+                             WHERE tc.user_id = ?";
+                    if ($st2 = $conn->prepare($sqlF)) {
+                        $st2->bind_param('i', $userId);
+                        $st2->execute();
+                        $lastIso = $st2->get_result()->fetch_assoc()['last'] ?? null;
+                    }
+                }
+            } else {
+                if ($q = $conn->query("SELECT MAX(created_at) AS last FROM ticket_estado_historial")) {
+                    $lastIso = $q->fetch_assoc()['last'] ?? null;
+                }
+                if (!$lastIso) {
+                    if ($q2 = $conn->query("SELECT MAX(fecha_creacion) AS last FROM tickets")) {
+                        $lastIso = $q2->fetch_assoc()['last'] ?? null;
+                    }
+                }
+            }
+
+            $stats['lastUpdateIso'] = $lastIso;
+            if ($lastIso) {
+                $ts = strtotime($lastIso);
+                if ($ts !== false) {
+                    $diff = time() - $ts;
+                    if ($diff < 60) {
+                        $stats['lastUpdateHuman'] = 'hace ' . $diff . 's';
+                    } elseif ($diff < 3600) {
+                        $stats['lastUpdateHuman'] = 'hace ' . floor($diff / 60) . 'm';
+                    } elseif ($diff < 86400) {
+                        $stats['lastUpdateHuman'] = 'hace ' . floor($diff / 3600) . 'h';
+                        } else {
+                        $stats['lastUpdateHuman'] = date('d/m/Y H:i', $ts);
+                    }
+                }
+            }
+    } catch (\Throwable $e) {
+            // error_log('[Home stats] ' . $e->getMessage());
+        }
+        return $stats;
     }
     public function index2() {
         $user = Auth::user();

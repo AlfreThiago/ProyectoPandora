@@ -1,4 +1,5 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
+<?php require_once __DIR__ . '/../../Core/Date.php'; ?>
 <main>
     <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 
@@ -37,7 +38,11 @@
             <?php foreach ($historial as $mov): ?>
                 <tr data-fecha="<?= htmlspecialchars(substr($mov['fecha'],0,10)) ?>"
                     data-tipo="<?= htmlspecialchars(strtolower(preg_match('/ticket|inventario|usuario|estado/i', $mov['acciones'], $m) ? $m[0] : '')) ?>">
-                    <td><?= htmlspecialchars($mov['fecha']) ?></td>
+                    <td>
+                        <time title="<?= htmlspecialchars(DateHelper::exact($mov['fecha'])) ?>">
+                            <?= htmlspecialchars(DateHelper::smart($mov['fecha'])) ?>
+                        </time>
+                    </td>
                     <td><?= htmlspecialchars($mov['acciones']) ?></td>
                     <td><?= htmlspecialchars($mov['detalles']) ?></td>
                 </tr>

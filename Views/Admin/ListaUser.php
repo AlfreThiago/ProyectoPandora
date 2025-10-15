@@ -1,4 +1,5 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
+<?php require_once __DIR__ . '/../../Core/Date.php'; ?>
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
@@ -42,7 +43,8 @@
                         echo "<td>" . htmlspecialchars($user['email']) . "</td>";
                         $role = htmlspecialchars($user['role']);
                         echo "<td><span class='role $role'>$role</span></td>";
-                        echo "<td><span class='created-at'>🕒 " . htmlspecialchars($user['created_at']) . "</span></td>";
+                        $created = $user['created_at'] ?? '';
+                        echo "<td><span class='created-at'>🕒 <time title='".htmlspecialchars(DateHelper::exact($created))."'>".htmlspecialchars(DateHelper::smart($created))."</time></span></td>";
                         echo "<td>";
                         echo "<div class='action-buttons'>";
                         echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=" . htmlspecialchars($user['id']) . "&from=Admin/ListarUsers' class='btn edit-btn'>Actualizar</a> |";

@@ -10,11 +10,36 @@ class Ticket
 
     public function crear($cliente_id, $dispositivo_id, $descripcion_falla)
     {
+        // Determinar estado inicial válido (preferentemente 'Nuevo')
+        $estadoInicialId = null;
+        // 1) Intentar 'Nuevo'
+        if ($st = $this->conn->prepare("SELECT id FROM estados_tickets WHERE LOWER(name) = LOWER('Nuevo') LIMIT 1")) {
+            $st->execute();
+            $row = $st->get_result()->fetch_assoc();
+            if ($row && isset($row['id'])) { $estadoInicialId = (int)$row['id']; }
+        }
+        // 2) Si no existe, crearlo para cumplir con el flujo requerido
+        if (!$estadoInicialId) {
+            if ($ins = $this->conn->prepare("INSERT INTO estados_tickets (name) VALUES ('Nuevo')")) {
+                if ($ins->execute()) {
+                    $estadoInicialId = (int)$this->conn->insert_id;
+                }
+            }
+        }
+        if (!$estadoInicialId) {
+            // No se pudo asegurar el estado 'Nuevo'
+            return false;
+        }
+
         $sql = "INSERT INTO tickets (cliente_id, dispositivo_id, descripcion_falla, estado_id) 
-                VALUES (?, ?, ?, 1)";
+                VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iis", $cliente_id, $dispositivo_id, $descripcion_falla);
-        return $stmt->execute();
+        if (!$stmt) { return false; }
+        $stmt->bind_param("iisi", $cliente_id, $dispositivo_id, $descripcion_falla, $estadoInicialId);
+        if ($stmt->execute()) {
+            return (int)$this->conn->insert_id;
+        }
+        return false;
     }
 
     public function listar()
@@ -133,6 +158,66 @@ class Ticket
         }
         return $data;
     }
+
+    public function getTicketsActivosByUserId($user_id)
+    {
+        $sql = "SELECT 
+                    t.id,
+                    d.marca AS dispositivo,
+                    d.modelo,
+                    t.descripcion_falla,
+                    e.name AS estado,
+                    t.fecha_creacion,
+                    tec.name AS tecnico
+                FROM tickets t
+                INNER JOIN dispositivos d ON t.dispositivo_id = d.id
+                INNER JOIN clientes c ON t.cliente_id = c.id
+                INNER JOIN estados_tickets e ON t.estado_id = e.id
+                LEFT JOIN tecnicos tc ON t.tecnico_id = tc.id
+                LEFT JOIN users tec ON tc.user_id = tec.id
+                WHERE c.user_id = ?
+                  AND LOWER(e.name) NOT IN ('finalizado','cerrado','cancelado')
+                ORDER BY t.fecha_creacion DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    public function getTicketsTerminadosByUserId($user_id)
+    {
+        $sql = "SELECT 
+                    t.id,
+                    d.marca AS dispositivo,
+                    d.modelo,
+                    t.descripcion_falla,
+                    e.name AS estado,
+                    t.fecha_creacion,
+                    tec.name AS tecnico
+                FROM tickets t
+                INNER JOIN dispositivos d ON t.dispositivo_id = d.id
+                INNER JOIN clientes c ON t.cliente_id = c.id
+                INNER JOIN estados_tickets e ON t.estado_id = e.id
+                LEFT JOIN tecnicos tc ON t.tecnico_id = tc.id
+                LEFT JOIN users tec ON tc.user_id = tec.id
+                WHERE c.user_id = ?
+                  AND LOWER(e.name) IN ('finalizado','cerrado','cancelado')
+                ORDER BY t.fecha_creacion DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }
     public function actualizarDescripcion($id, $descripcion)
     {
         $stmt = $this->conn->prepare("UPDATE tickets SET descripcion_falla = ? WHERE id = ?");
@@ -142,22 +227,43 @@ class Ticket
 
     public function actualizarCompleto($id, $descripcion, $estado_id, $tecnico_id)
     {
-        
+        // Si se asigna técnico y no se envía estado, forzar 'En espera' si el estado actual es 'Nuevo'
+        if ($tecnico_id !== null && ($estado_id === null || $estado_id === '')) {
+            $q = $this->conn->prepare("SELECT e.name AS estado FROM tickets t INNER JOIN estados_tickets e ON e.id = t.estado_id WHERE t.id = ? LIMIT 1");
+            if ($q) {
+                $idInt = (int)$id;
+                $q->bind_param("i", $idInt);
+                $q->execute();
+                $row = $q->get_result()->fetch_assoc();
+                $estadoActual = strtolower(trim($row['estado'] ?? ''));
+                if ($estadoActual === 'nuevo') {
+                    $st = $this->conn->prepare("SELECT id FROM estados_tickets WHERE LOWER(name)=LOWER('En espera') LIMIT 1");
+                    if ($st) {
+                        $st->execute();
+                        $res = $st->get_result()->fetch_assoc();
+                        if ($res && isset($res['id'])) {
+                            $estado_id = (int)$res['id'];
+                        }
+                    }
+                }
+            }
+        }
+
         $campos = [ 'descripcion_falla = ?' ];
         $types = 's';
         $params = [ $descripcion ];
 
-        if ($estado_id !== null) {
+        if ($estado_id !== null && $estado_id !== '') {
             $campos[] = 'estado_id = ?';
             $types .= 'i';
             $params[] = (int)$estado_id;
         }
 
-        
-        $campos[] = 'tecnico_id = ?';
-        $types .= 'i';
-        
-        $params[] = $tecnico_id; 
+        if ($tecnico_id !== null && $tecnico_id !== '') {
+            $campos[] = 'tecnico_id = ?';
+            $types .= 'i';
+            $params[] = (int)$tecnico_id;
+        }
 
         $sql = 'UPDATE tickets SET ' . implode(', ', $campos) . ' WHERE id = ?';
         $types .= 'i';
@@ -165,7 +271,7 @@ class Ticket
 
         $stmt = $this->conn->prepare($sql);
         if (!$stmt) return false;
-        
+
         $stmt->bind_param($types, ...$params);
         return $stmt->execute();
     }
@@ -248,12 +354,61 @@ class Ticket
         return $data;
     }
 
-    public function asignarTecnico($ticket_id, $tecnico_id)
+    public function asignarTecnico($ticket_id, $tecnico_id, ?int $actor_user_id = null, ?string $actor_role = null)
     {
-        $sql = "UPDATE tickets SET tecnico_id = ? WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ii", $tecnico_id, $ticket_id);
-        return $stmt->execute();
+        // Detectar estado actual y decidir si forzar 'En espera'
+        $estadoNuevoId = null;
+        $prev = $this->conn->prepare("SELECT t.tecnico_id, e.name AS estado FROM tickets t INNER JOIN estados_tickets e ON e.id=t.estado_id WHERE t.id=? LIMIT 1");
+        if ($prev) {
+            $tid = (int)$ticket_id;
+            $prev->bind_param("i", $tid);
+            $prev->execute();
+            $row = $prev->get_result()->fetch_assoc();
+            $estadoActual = strtolower(trim($row['estado'] ?? ''));
+            $prevTec = isset($row['tecnico_id']) ? (int)$row['tecnico_id'] : null;
+
+            if ($estadoActual === 'nuevo' && ($prevTec === null || $prevTec === 0) && (int)$tecnico_id > 0) {
+                $q = $this->conn->prepare("SELECT id FROM estados_tickets WHERE LOWER(name)=LOWER('En espera') LIMIT 1");
+                if ($q) {
+                    $q->execute();
+                    $r = $q->get_result()->fetch_assoc();
+                    if ($r && isset($r['id'])) {
+                        $estadoNuevoId = (int)$r['id'];
+                    }
+                }
+            }
+        }
+
+        if ($estadoNuevoId) {
+            $stmt = $this->conn->prepare("UPDATE tickets SET tecnico_id = ?, estado_id = ? WHERE id = ?");
+            $stmt->bind_param("iii", $tecnico_id, $estadoNuevoId, $ticket_id);
+            $ok = $stmt->execute();
+
+            // Registrar historial si nos pasan actor
+            if ($ok && $actor_user_id && $actor_role) {
+                require_once __DIR__ . '/TicketEstadoHistorial.php';
+                $hist = new TicketEstadoHistorialModel($this->conn);
+                $hist->add((int)$ticket_id, (int)$estadoNuevoId, (int)$actor_user_id, $actor_role, 'Técnico asignado. Pasa a En espera');
+            }
+            return $ok;
+        } else {
+            $stmt = $this->conn->prepare("UPDATE tickets SET tecnico_id = ? WHERE id = ?");
+            $stmt->bind_param("ii", $tecnico_id, $ticket_id);
+            $ok = $stmt->execute();
+
+            if ($ok && $actor_user_id && $actor_role) {
+                require_once __DIR__ . '/TicketEstadoHistorial.php';
+                $hist = new TicketEstadoHistorialModel($this->conn);
+                $c = $this->conn->prepare("SELECT estado_id FROM tickets WHERE id = ? LIMIT 1");
+                if ($c) {
+                    $c->bind_param("i", $ticket_id);
+                    $c->execute();
+                    $r = $c->get_result()->fetch_assoc();
+                    $hist->add((int)$ticket_id, (int)($r['estado_id'] ?? 0), (int)$actor_user_id, $actor_role, 'Técnico asignado');
+                }
+            }
+            return $ok;
+        }
     }
 
     public function getSupervisorId($ticket_id)
@@ -278,18 +433,18 @@ class Ticket
      * Retorna true si existe al menos un ticket ACTIVO para el dispositivo dado.
      * Activo = estado distinto de Finalizado, Cerrado o Cancelado.
      */
-    public function hasActiveTicketForDevice(int $dispositivo_id): bool
+    public function hasActiveTicketForDevice(int $deviceId): bool
     {
-        $sql = "SELECT COUNT(*) AS c
-                FROM tickets t
-                INNER JOIN estados_tickets e ON e.id = t.estado_id
-                WHERE t.dispositivo_id = ?
-                  AND LOWER(e.name) NOT IN ('finalizado','cerrado','cancelado')";
-        $stmt = $this->conn->prepare($sql);
-        if (!$stmt) return false;
-        $stmt->bind_param("i", $dispositivo_id);
+        // Activo = sin fecha_cierre (ajusta si usás estados)
+        $stmt = $this->conn->prepare("
+            SELECT COUNT(*) c
+            FROM tickets
+            WHERE dispositivo_id = ? AND fecha_cierre IS NULL
+        ");
+        if (!$stmt) return true;
+        $stmt->bind_param('i', $deviceId);
         $stmt->execute();
-        $res = $stmt->get_result()->fetch_assoc();
-        return ((int)($res['c'] ?? 0)) > 0;
+        $c = (int)($stmt->get_result()->fetch_assoc()['c'] ?? 0);
+        return $c > 0;
     }
 }

@@ -1,4 +1,5 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
+<?php require_once __DIR__ . '/../../Core/Date.php'; ?>
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
@@ -55,7 +56,8 @@
                         }
                         echo "</span> <small>(".round($avg,1).", ".$count.")</small></td>";
                         echo "<td>" . htmlspecialchars($tec['especialidad']) . "</td>";
-                        echo "<td><span class='created-at'>🕒 " . htmlspecialchars($tec['created_at']) . "</span></td>";
+                        $created = $tec['created_at'] ?? '';
+                        echo "<td><span class='created-at'>🕒 <time title='".htmlspecialchars(DateHelper::exact($created))."'>".htmlspecialchars(DateHelper::smart($created))."</time></span></td>";
                         $userId = (int)($tec['user_id'] ?? 0);
                         echo "<td>
                             <div class='action-buttons'>
