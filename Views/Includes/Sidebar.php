@@ -19,7 +19,7 @@ $authUser = Auth::user();
 </head>
 
 <body>
-    <Aside class="sidebar">
+    <aside class="sidebar">
         <nav class="sidebar">
             <div>
                 <div class="nav_image flex">
@@ -187,5 +187,36 @@ $authUser = Auth::user();
             </div>
         </nav>
     </aside>
+
+    <!-- === SCRIPT GLOBAL DE MODO OSCURO (Mover luego a la zona js) === -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const body = document.body;
+        const modo = localStorage.getItem("modo") || "claro";
+
+        // Aplicar el modo al cargar
+        if (modo === "oscuro") {
+          body.classList.add("dark-mode");
+        } else {
+          body.classList.remove("dark-mode");
+        }
+
+        // Si existe el toggle en la página actual, sincronizarlo
+        const toggle = document.getElementById("toggle-darkmode");
+        if (toggle) {
+          toggle.checked = (modo === "oscuro");
+          toggle.addEventListener("change", () => {
+            if (toggle.checked) {
+              body.classList.add("dark-mode");
+              localStorage.setItem("modo", "oscuro");
+            } else {
+              body.classList.remove("dark-mode");
+              localStorage.setItem("modo", "claro");
+            }
+          });
+        }
+      });
+    </script>
+
 </body>
 </html>

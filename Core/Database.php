@@ -4,11 +4,6 @@ class Database
     private $connection;
     function connectDatabase()
     {
-        
-        
-        
-        
-
         $host = 'localhost';
         $user = 'root';
         $password = '';

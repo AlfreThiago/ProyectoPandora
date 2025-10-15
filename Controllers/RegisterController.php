@@ -62,9 +62,15 @@ class RegisterController
         $userModel = new UserModel($db->getConnection());
         $existingUser = $userModel->findByEmail($email);
         if ($existingUser) {
-            $isAdmin = isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'RegisterAdminPortal') !== false;
-            $route = $isAdmin ? 'Register/RegisterAdminPortal' : 'Register/Register';
-            header("Location: /ProyectoPandora/Public/index.php?route=$route&error=EmailYaRegistrado");
+            // Si ya existe y venimos del flujo admin, no mandamos al registro público
+            $u = Auth::user();
+            $ref = $_SERVER['HTTP_REFERER'] ?? '';
+            $isAdminCtx = ($u && (($u['role'] ?? '') === 'Administrador')) || (strpos($ref, 'Register/RegisterAdmin') !== false);
+            if ($isAdminCtx) {
+                header("Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin&error=EmailYaRegistrado");
+            } else {
+                header("Location: /ProyectoPandora/Public/index.php?route=Register/Register&error=EmailYaRegistrado");
+            }
             exit;
         }
 
@@ -85,9 +91,16 @@ class RegisterController
 
         $existingUser = $userModel->findByEmail($email);
         if ($existingUser) {
-            $isAdmin = isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'RegisterAdminPortal') !== false;
-            $route = $isAdmin ? 'Register/RegisterAdminPortal' : 'Register/Register';
-            header("Location: /ProyectoPandora/Public/index.php?route=$route&error=EmailYaRegistrado");
+            // Detección robusta de contexto admin: por rol en sesión o referer
+            $u = Auth::user();
+            $ref = $_SERVER['HTTP_REFERER'] ?? '';
+            $isAdminCtx = ($u && (($u['role'] ?? '') === 'Administrador')) || (strpos($ref, 'Register/RegisterAdmin') !== false);
+            if ($isAdminCtx) {
+                // Desde panel admin: devolver a la lista con aviso (o de vuelta al form admin, si prefieres)
+                header("Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers&info=EmailYaRegistrado");
+            } else {
+                header("Location: /ProyectoPandora/Public/index.php?route=Register/Register&error=EmailYaRegistrado");
+            }
             exit;
         }
 
