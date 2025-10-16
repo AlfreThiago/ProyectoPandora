@@ -426,7 +426,6 @@ class TicketController
             
             $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Supervisor', 'Marcado como listo para retirar');
 
-            // Nota: envío de mail removido (MailQueue eliminado)
         }
         header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&ok=listo');
         exit;

@@ -15,9 +15,7 @@ return [
     'Default/Perfil' => [
         'controller' => 'Default',
         'action' => 'perfil'
-    ],
-    // Ruta JSON removida: 'Default/StatsJson'
-    
+    ],    
     
     
     'Auth/Login' => [

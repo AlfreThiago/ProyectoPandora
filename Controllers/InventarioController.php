@@ -3,7 +3,7 @@ require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/../Core/Auth.php';
 require_once __DIR__ . '/../Models/Inventario.php';
 require_once __DIR__ . '/HistorialController.php';
-require_once __DIR__ . '/../Models/Category.php';
+require_once __DIR__ . '/../Models/InventoryCategory.php';
 
 class InventarioController
 {
@@ -16,16 +16,17 @@ class InventarioController
         $db = new Database();
         $db->connectDatabase();
         $this->inventarioModel = new InventarioModel($db->getConnection());
-        $this->categoryModel = new CategoryModel($db->getConnection());
+    $this->categoryModel = new InventoryCategoryModel($db->getConnection());
         $this->historialController = new HistorialController();
     }
 
     public function listarInventario()
     {
-        
+        // Ruta legacy: no existe vista Inventario/InventarioLista.
+        // Redirigimos al panel vigente de gestión para mantener compatibilidad.
         Auth::checkRole(['Supervisor', 'Tecnico']);
-        $items = $this->inventarioModel->listar();
-        include_once __DIR__ . '/../Views/Inventario/InventarioLista.php';
+        header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+        exit;
     }
 
     public function mostrarCrear()
@@ -109,9 +110,11 @@ class InventarioController
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
             exit;
         }
-        $item = $this->inventarioModel->obtenerPorId($id);
-        $categorias = $this->inventarioModel->listarCategorias();
-        include_once __DIR__ . '/../Views/Inventario/ActualizarItem.php';
+    $item = $this->inventarioModel->obtenerPorId($id);
+    $categorias = $this->inventarioModel->listarCategorias();
+    // Vista de actualización de item no existe; redirigimos al panel de gestión con foco por id.
+    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&id=' . urlencode((string)$id));
+    exit;
     }
 
     public function editar()
@@ -144,11 +147,13 @@ class InventarioController
                 header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
                 exit;
             } else {
-                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ActualizarItem&id=' . $id . '&error=1');
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
                 exit;
             }
         }
-        $this->mostrarActualizar();
+    // No hay vista dedicada; regresar al panel.
+    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+    exit;
     }
 
     public function sumarStock()
@@ -195,7 +200,7 @@ class InventarioController
         Auth::checkRole(['Administrador', 'Supervisor']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'] ?? '';
-            if ($this->categoryModel->crearInventarioCategory($name)) {
+            if ($this->categoryModel->createCategory($name)) {
                 $user = Auth::user();
                 $accion = "Creación de categoría de inventario";
                 $detalle = "Usuario {$user['name']} creó la categoría '{$name}'";
@@ -225,7 +230,7 @@ class InventarioController
         
         Auth::checkRole(['Administrador', 'Supervisor']);
         $id = $_GET['id'] ?? null;
-        if ($id && $this->categoryModel->eliminarCategory($id)) {
+    if ($id && $this->categoryModel->deleteCategory((int)$id)) {
             $user = Auth::user();
             $accion = "Eliminación de categoría de inventario";
             $detalle = "Usuario {$user['name']} eliminó la categoría ID {$id}";
@@ -311,9 +316,10 @@ class InventarioController
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
             exit;
         }
-        $item = $this->inventarioModel->obtenerPorId($id);
-        $categorias = $this->inventarioModel->listarCategorias();
-        include_once __DIR__ . '/../Views/Inventario/ActualizarItem.php';
+    $item = $this->inventarioModel->obtenerPorId($id);
+    $categorias = $this->inventarioModel->listarCategorias();
+    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&id=' . urlencode((string)$id));
+    exit;
     }
 }
 

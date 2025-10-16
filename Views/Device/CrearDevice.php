@@ -77,7 +77,7 @@
                 $user = $_SESSION['user'] ?? null;
                 $rol = $user['role'] ?? '';
                 if ($rol === 'Administrador') {
-                    $volverUrl = "/ProyectoPandora/Public/index.php?route=Device/ListarDevice";
+                    $volverUrl = "/ProyectoPandora/Public/index.php?route=Default/Index";
                 } elseif ($rol === 'Cliente') {
                     $volverUrl = "/ProyectoPandora/Public/index.php?route=Cliente/MisDevice";
                 } else {

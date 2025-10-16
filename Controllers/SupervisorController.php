@@ -4,7 +4,6 @@ require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/../Models/Ticket.php';
 require_once __DIR__ . '/../Models/Inventario.php';
-require_once __DIR__ . '/../Models/Category.php';
 require_once __DIR__ . '/../Models/ItemTicket.php';
 require_once __DIR__ . '/../Models/TicketLabor.php';
 require_once __DIR__ . '/../Models/Rating.php';
@@ -156,8 +155,6 @@ class SupervisorController {
         $db = new Database();
         $db->connectDatabase();
         $inventarioModel = new InventarioModel($db->getConnection());
-        $categoryModel = new CategoryModel($db->getConnection());
-
         $items = $inventarioModel->listar();
         $categorias = $inventarioModel->listarCategorias();
 
