@@ -27,7 +27,7 @@ class SupervisorController {
         $tecnicos = $userModel->getAllTecnicos();
         $ticketsSinTecnico = $ticketModel->getTicketsSinTecnico();
 
-        
+
         foreach ($tecnicos as &$tec) {
             $tecId = (int)($tec['id'] ?? 0);
             list($avg, $count) = $ratingModel->getAvgForTecnico($tecId);
@@ -49,7 +49,7 @@ class SupervisorController {
         Auth::checkRole(['Supervisor']);
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/asignar');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
             exit;
         }
 
@@ -57,7 +57,7 @@ class SupervisorController {
         $user = Auth::user();
         if (!$user) { $user = $_SESSION['user'] ?? null; }
         if (!$user || empty($user['id'])) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/asignar&error=Sesion%20invalida');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=Sesion%20invalida');
             exit;
         }
 
@@ -65,7 +65,7 @@ class SupervisorController {
         $ticket_id = isset($_POST['ticket_id']) ? (int)$_POST['ticket_id'] : 0;
         $tecnico_id = isset($_POST['tecnico_id']) ? (int)$_POST['tecnico_id'] : 0;
         if (!$ticket_id || !$tecnico_id) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/asignar&error=Datos incompletos');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=Datos incompletos');
             exit;
         }
 
@@ -83,6 +83,19 @@ class SupervisorController {
             $rowChk = $stmtChk->get_result()->fetch_assoc();
             if (!empty($rowChk['tecnico_id'])) {
                 header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=El ticket ya tiene técnico (no disponible para reasignar)');
+                exit;
+            }
+        }
+
+        // 1b) Validar que el técnico esté disponible
+        $stmtTec = $conn->prepare("SELECT disponibilidad FROM tecnicos WHERE id = ? LIMIT 1");
+        if ($stmtTec) {
+            $stmtTec->bind_param("i", $tecnico_id);
+            $stmtTec->execute();
+            $rowTec = $stmtTec->get_result()->fetch_assoc();
+            $disp = strtolower(trim($rowTec['disponibilidad'] ?? ''));
+            if ($disp !== 'disponible') {
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=Técnico no disponible para asignación');
                 exit;
             }
         }

@@ -103,6 +103,16 @@ class AdminController
             $detalle = "El administrador {$admin['name']} editó el usuario con ID {$userId} (Nuevo nombre: {$name}, Nuevo rol: {$role}).";
             $this->historialController->agregarAccion($accion, $detalle);
 
+            // Si el admin se cambia a sí mismo el rol, forzar logout para refrescar permisos
+            $currentAdmin = Auth::user();
+            if ($currentAdmin && (int)$currentAdmin['id'] === (int)$userId && ($role !== ($currentAdmin['role'] ?? ''))) {
+                // Limpiar sesión y redirigir a login
+                session_unset();
+                session_destroy();
+                header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login&info=Reinicio%20de%20sesion%20por%20cambio%20de%20rol');
+                exit;
+            }
+
             header("Location: index.php?route=$from");
             exit;
         }
