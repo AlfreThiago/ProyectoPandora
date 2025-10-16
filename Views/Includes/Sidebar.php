@@ -135,12 +135,6 @@ $authUser = Auth::user();
                                 </a>
                             </li>
                             <li class="item menu-item-static">
-                                <a href="index.php?route=Tecnico/MisRepuestos" class="link flex">
-                                    <i class='bxr  bx-ticket'></i>
-                                    <span>Repuestos</span>
-                                </a>
-                            </li>
-                            <li class="item menu-item-static">
                                 <a href="index.php?route=Tecnico/MisStats" class="link flex">
                                     <i class='bxr  bx-ticket'></i>
                                     <span>Mis Stats</span>

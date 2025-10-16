@@ -232,6 +232,22 @@ class TicketController
         // Flash (lo que venía de GET)
         $flash = $_GET ?? [];
 
+        // Galería de fotos del ticket (carpeta por ticket)
+        $fotoDir = __DIR__ . '/../Public/img/imgTickets/' . (int)$ticket['id'] . '/';
+        $fotoUrlBase = '/ProyectoPandora/Public/img/imgTickets/' . (int)$ticket['id'] . '/';
+        $fotos = [];
+        if (is_dir($fotoDir)) {
+            $allowed = ['jpg','jpeg','png','gif','webp'];
+            $files = @scandir($fotoDir) ?: [];
+            foreach ($files as $fn) {
+                if ($fn === '.' || $fn === '..') continue;
+                $ext = strtolower(pathinfo($fn, PATHINFO_EXTENSION));
+                if (in_array($ext, $allowed, true)) {
+                    $fotos[] = $fotoUrlBase . rawurlencode($fn);
+                }
+            }
+        }
+
         $view = [
             'ticket' => $ticket,
             'estadoStr' => $estadoStr,
@@ -240,6 +256,7 @@ class TicketController
             'finalizado' => $finalizado,
             'backHref' => $backHref,
             'flash' => $flash,
+            'fotos_ticket' => $fotos,
 
             'enPresu' => $enPresu,
             'presupuesto' => [
@@ -696,6 +713,22 @@ class TicketController
         $estados = $this->estadoModel->getAllEstados();
         $tecnicos = $this->userModel->getAllTecnicos();
 
+        // Fotos existentes del ticket
+        $fotoDir = __DIR__ . '/../Public/img/imgTickets/' . (int)$ticket['id'] . '/';
+        $fotoUrlBase = '/ProyectoPandora/Public/img/imgTickets/' . (int)$ticket['id'] . '/';
+        $fotos = [];
+        if (is_dir($fotoDir)) {
+            $allowed = ['jpg','jpeg','png','gif','webp'];
+            $files = @scandir($fotoDir) ?: [];
+            foreach ($files as $fn) {
+                if ($fn === '.' || $fn === '..') continue;
+                $ext = strtolower(pathinfo($fn, PATHINFO_EXTENSION));
+                if (in_array($ext, $allowed, true)) {
+                    $fotos[] = $fotoUrlBase . rawurlencode($fn);
+                }
+            }
+        }
+
         include_once __DIR__ . '/../Views/Ticket/ActualizarTicket.php';
     }
 
@@ -723,6 +756,25 @@ class TicketController
         
         $ticketActual = $this->ticketModel->ver($id);
         $old_tecnico_id = $ticketActual['tecnico_id'] ?? null;
+
+        // Manejo de imágenes múltiples (opcional)
+        if (!empty($_FILES['fotos']) && is_array($_FILES['fotos']['name'])) {
+            $destBase = __DIR__ . '/../Public/img/imgTickets/' . (int)$id . '/';
+            if (!is_dir($destBase)) { @mkdir($destBase, 0777, true); }
+            $allowed = ['jpg','jpeg','png','gif','webp'];
+            $count = count($_FILES['fotos']['name']);
+            for ($i=0; $i < $count; $i++) {
+                $name = $_FILES['fotos']['name'][$i] ?? '';
+                $tmp  = $_FILES['fotos']['tmp_name'][$i] ?? '';
+                $err  = $_FILES['fotos']['error'][$i] ?? UPLOAD_ERR_NO_FILE;
+                if ($err !== UPLOAD_ERR_OK || !$tmp) continue;
+                $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+                if (!in_array($ext, $allowed, true)) continue;
+                $safe = preg_replace('/[^a-zA-Z0-9_\.-]/','_', basename($name));
+                $target = $destBase . (time()) . '_' . $safe;
+                @move_uploaded_file($tmp, $target);
+            }
+        }
 
         $this->ticketModel->actualizarCompleto($id, $descripcion, $estado_id, $tecnico_id);
 

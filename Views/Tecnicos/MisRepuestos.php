@@ -16,23 +16,35 @@
 
         <div class="asignar-panel">
             <div class="Tabla-Contenedor">
-                        <div style="display:flex; gap:12px; align-items:end; flex-wrap:wrap; justify-content:space-between; margin-bottom:12px;">
-                            <div>
-                                <h2 style="margin:0;">Solicitar repuesto</h2>
-                                <small>Selecciona el ticket y filtra el inventario.</small>
-                            </div>
+                                                <div style="display:flex; gap:12px; align-items:end; flex-wrap:wrap; justify-content:space-between; margin-bottom:12px;">
+                                                        <div>
+                                                                <h2 style="margin:0;">Solicitar repuesto</h2>
+                                                                <?php $prefijado = isset($ticket_id) && (int)$ticket_id > 0; ?>
+                                                                <small>
+                                                                    <?= $prefijado ? 'Agregando repuestos para el ticket #'.(int)$ticket_id : 'Selecciona el ticket y filtra el inventario.' ?>
+                                                                </small>
+                                                                <?php if ($prefijado): ?>
+                                                                    <div style="margin-top:8px;">
+                                                                        <a class="btn btn-secondary" href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?php echo (int)$ticket_id; ?>">← Volver al ticket</a>
+                                                                    </div>
+                                                                <?php endif; ?>
+                                                        </div>
                                         <form method="get" action="/ProyectoPandora/Public/index.php" style="display:flex; gap:8px; align-items:end; flex-wrap:wrap;">
                                 <input type="hidden" name="route" value="Tecnico/MisRepuestos" />
-                                <div>
-                                    <label class="asignar-label" for="ticket_id">Ticket:</label>
-                                    <select class="asignar-input" name="ticket_id" id="ticket_id">
-                                        <?php foreach (($tickets ?? []) as $t): ?>
-                                            <option value="<?php echo (int)$t['id']; ?>" <?php echo (isset($ticket_id) && (int)$ticket_id === (int)$t['id']) ? 'selected' : ''; ?>>
-                                                #<?php echo (int)$t['id']; ?> · <?php echo htmlspecialchars($t['marca'] . ' ' . $t['modelo']); ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
+                                <?php if (!$prefijado): ?>
+                                  <div>
+                                      <label class="asignar-label" for="ticket_id">Ticket:</label>
+                                      <select class="asignar-input" name="ticket_id" id="ticket_id">
+                                          <?php foreach (($tickets ?? []) as $t): ?>
+                                              <option value="<?php echo (int)$t['id']; ?>" <?php echo (isset($ticket_id) && (int)$ticket_id === (int)$t['id']) ? 'selected' : ''; ?>>
+                                                  #<?php echo (int)$t['id']; ?> · <?php echo htmlspecialchars($t['marca'] . ' ' . $t['modelo']); ?>
+                                              </option>
+                                          <?php endforeach; ?>
+                                      </select>
+                                  </div>
+                                <?php else: ?>
+                                  <input type="hidden" name="ticket_id" id="ticket_id" value="<?php echo (int)$ticket_id; ?>" />
+                                <?php endif; ?>
                                 <div>
                                     <label class="asignar-label" for="categoria_id">Categoría:</label>
                                     <select class="asignar-input" name="categoria_id" id="categoria_id">

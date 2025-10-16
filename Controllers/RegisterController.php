@@ -16,9 +16,15 @@ class RegisterController
     public function Register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = $_POST['name'] ?? '';
+            $username = trim((string)($_POST['name'] ?? ''));
             $email = strtolower(trim($_POST['email'] ?? ''));
             $password = $_POST['password'] ?? '';
+
+            // Requisito: nombre obligatorio
+            if ($username === '') {
+                header('Location: /ProyectoPandora/Public/index.php?route=Register/Register&error=NombreRequerido');
+                exit;
+            }
 
             // Requisito: contraseña mínima de 8 caracteres
             if (strlen((string)$password) < 8) {
@@ -47,10 +53,16 @@ class RegisterController
         Auth::checkRole('Administrador');
         $user = Auth::user();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = $_POST['name'] ?? '';
+            $username = trim((string)($_POST['name'] ?? ''));
             $email = strtolower(trim($_POST['email'] ?? ''));
             $password = $_POST['password'] ?? '';
             $role = $_POST['role'] ?? 'Cliente';
+
+            // Requisito: nombre obligatorio
+            if ($username === '') {
+                header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin&error=NombreRequerido');
+                exit;
+            }
 
             // Requisito: contraseña mínima de 8 caracteres
             if (strlen((string)$password) < 8) {

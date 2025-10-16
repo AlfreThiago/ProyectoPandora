@@ -189,6 +189,14 @@
                     </div>
                 <?php endif; ?>
             </div>
+
+            <?php
+              // Botón para gestionar repuestos durante Diagnóstico
+              if (in_array($estadoLower, ['diagnóstico','diagnostico'])): ?>
+                <div style="margin-top:12px;">
+                  <a class="btn btn-outline" href="/ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&ticket_id=<?= (int)$view['ticket']['id'] ?>">Añadir repuestos a este ticket</a>
+                </div>
+            <?php endif; ?>
         <?php endif; ?>
 
 
@@ -211,6 +219,20 @@
         <?php endif; ?>
 
         <a href="<?= htmlspecialchars($view['backHref'] ?? '/ProyectoPandora/Public/index.php?route=Default/Index') ?>" class="btn btn-secondary mt-3">Volver</a>
+
+        <?php
+          // Galería de fotos del ticket (si el controlador las provee)
+          $fotos = $view['fotos_ticket'] ?? [];
+          if (!empty($fotos)):
+        ?>
+          <hr>
+          <h3>Fotos del ticket</h3>
+          <div class="galeria-slider" style="display:flex; gap:8px; overflow-x:auto; padding:6px 0;">
+            <?php foreach ($fotos as $src): ?>
+              <img src="<?= htmlspecialchars($src) ?>" alt="Foto ticket" style="height:140px; border-radius:8px; object-fit:cover;"/>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
 
         <!-- === OVERLAY PAGADO === -->
         <?php
