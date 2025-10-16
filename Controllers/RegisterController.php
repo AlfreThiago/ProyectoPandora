@@ -17,8 +17,16 @@ class RegisterController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = $_POST['name'] ?? '';
-            $email = $_POST['email'] ?? '';
+            $email = strtolower(trim($_POST['email'] ?? ''));
             $password = $_POST['password'] ?? '';
+
+            // Requisito: contraseña mínima de 8 caracteres
+            if (strlen((string)$password) < 8) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Register/Register&error=PasswordCorta');
+                exit;
+            }
+
+            // Validación de email delegada al cliente (JS); servidor solo controla duplicados
 
             $result = $this->RegisterUser($username, $email, $password);
             
@@ -40,9 +48,17 @@ class RegisterController
         $user = Auth::user();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = $_POST['name'] ?? '';
-            $email = $_POST['email'] ?? '';
+            $email = strtolower(trim($_POST['email'] ?? ''));
             $password = $_POST['password'] ?? '';
             $role = $_POST['role'] ?? 'Cliente';
+
+            // Requisito: contraseña mínima de 8 caracteres
+            if (strlen((string)$password) < 8) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin&error=PasswordCorta');
+                exit;
+            }
+
+            // Validación de email delegada al cliente (JS); servidor solo controla duplicados
 
             $result = $this->RegisterUserWithRole($username, $email, $password, $role);
 
@@ -114,4 +130,6 @@ class RegisterController
             return "Error al registrar usuario.";
         }
     }
+
+    // Nota: validación de email realizada en el cliente (JS). Aquí solo se controla existencia y creación.
 }

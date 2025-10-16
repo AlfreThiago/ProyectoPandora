@@ -13,7 +13,6 @@ $noGuardar = [
     'Ticket/Ver',
     'Ticket/Editar',
     'Ticket/Actualizar',
-    'Ticket/EstadoJson',
     'Device/ActualizarDevice',
     'Device/CrearDevice',
     'Inventario/CrearItem',

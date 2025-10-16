@@ -64,25 +64,6 @@ class AdminController
         $administradores = $this->userModel->getAllAdministradores();
         include_once __DIR__ . '/../Views/Admin/ListaAdmin.php';
     }
-    public function changeRole()
-    {
-        Auth::checkRole('Administrador');
-
-        $userId = $_POST['user_id'];
-        $newRole = $_POST['newRole'];
-
-        $db = new Database();
-        $db->connectDatabase();
-        $userModel = new UserModel($db->getConnection());
-        $userModel->updateRole($userId, $newRole);
-
-        $admin = Auth::user();
-        $accion = "Cambio de rol";
-        $detalle = "El administrador {$admin['name']} cambió el rol del usuario con ID {$userId} a {$newRole}.";
-        $this->historialController->agregarAccion($accion, $detalle);
-
-        exit;
-    }
 
     public function ActualizarUser()
     {

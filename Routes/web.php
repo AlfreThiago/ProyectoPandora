@@ -268,10 +268,6 @@ return [
         'controller' => 'Ticket',
         'action' => 'MarcarPagadoYFinalizar'
     ],
-    'Ticket/EstadoJson' => [
-        'controller' => 'Ticket',
-        'action' => 'EstadoJson'
-    ],
     'Ticket/ActualizarEstado' => [
         'controller' => 'Ticket',
         'action' => 'ActualizarEstado'

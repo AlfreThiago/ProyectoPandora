@@ -8,7 +8,6 @@ require_once __DIR__ . '/HistorialController.php';
 require_once __DIR__ . '/../Models/EstadoTicket.php';
 require_once __DIR__ . '/../Models/Rating.php';
 require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
-require_once __DIR__ . '/../Models/Category.php';
 
 class TicketController
 {
@@ -169,9 +168,8 @@ class TicketController
         elseif ($rol === 'Supervisor') $volverUrl = "/ProyectoPandora/Public/index.php?route=Supervisor/Asignar";
         elseif ($rol === 'Administrador') $volverUrl = "/ProyectoPandora/Public/index.php?route=Admin/ListarUsers";
         else $volverUrl = "/ProyectoPandora/Public/index.php?route=Default/Index";
-        $prev = $_SESSION['prev_url'] ?? '';
-        $isPrevJson = strpos($prev, 'Ticket/EstadoJson') !== false;
-        $backHref = $isPrevJson ? $volverUrl : ($prev ?: $volverUrl);
+    $prev = $_SESSION['prev_url'] ?? '';
+    $backHref = $prev ?: $volverUrl;
 
         // En presupuesto o en espera (para mostrar resumen)
         $enPresu = ($estadoLower === 'presupuesto' || $estadoLower === 'en espera');
@@ -913,80 +911,8 @@ class TicketController
         exit;
     }
 
-    public function mostrarCrearItem()
-    {
-        $user = Auth::user();
-        if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
-            exit;
-        }
-
-        $db = new Database();
-        $db->connectDatabase();
-        $categoryModel = new CategoryModel($db->getConnection());
-        $categorias = $categoryModel->getAllInventarioCategories();
-
-        if (empty($categorias)) {
-            $errorMsg = "Primero debes crear al menos una categoría de inventario antes de poder agregar un item.";
-            include_once __DIR__ . '/../Views/Inventario/CrearItem.php';
-            return;
-        }
-
-        
-        include_once __DIR__ . '/../Views/Inventario/CrearItem.php';
-    }
+    
 
     
-    public function EstadoJson()
-    {
-        $id = (int)($_GET['id'] ?? 0);
-        $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
-        $xhr = $_SERVER['HTTP_X_REQUESTED_WITH'] ?? '';
-        $wantsJson = (stripos($accept, 'application/json') !== false) || (strcasecmp($xhr, 'XMLHttpRequest') === 0) || (($_GET['ajax'] ?? '') === '1');
-        if (!$wantsJson) {
-            $dest = '/ProyectoPandora/Public/index.php?route=Ticket/Ver' . ($id ? ('&id='.(int)$id) : '');
-            header('Location: '.$dest);
-            exit;
-        }
-
-        $user = Auth::user();
-        if (!$user) {
-            http_response_code(401);
-            header('Content-Type: application/json');
-            echo json_encode(['error' => 'unauthorized']);
-            return;
-        }
-        if (!$id) {
-            http_response_code(400);
-            header('Content-Type: application/json');
-            echo json_encode(['error' => 'missing id']);
-            return;
-        }
-
-        $tk = $this->ticketModel->ver($id);
-        if (!$tk) {
-            http_response_code(404);
-            header('Content-Type: application/json');
-            echo json_encode(['error' => 'not found']);
-            return;
-        }
-
-        
-        if ($user['role'] === 'Cliente') {
-            if (($tk['cliente'] ?? '') !== ($user['name'] ?? '')) {
-                http_response_code(403);
-                header('Content-Type: application/json');
-                echo json_encode(['error' => 'forbidden']);
-                return;
-            }
-        }
-
-        header('Content-Type: application/json');
-        echo json_encode([
-            'id' => (int)$tk['id'],
-            'estado' => $tk['estado'] ?? null,
-            'fecha_cierre' => $tk['fecha_cierre'] ?? null,
-            'ts' => time(),
-        ]);
-    }
+    
 }
