@@ -58,7 +58,7 @@ class SupervisorController {
         if (!$user) { $user = $_SESSION['user'] ?? null; }
         if (!$user || empty($user['id'])) {
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=Sesion%20invalida');
-            exit;
+            exit; 
         }
 
         // Datos de entrada

@@ -288,26 +288,26 @@ CREATE TRIGGER trigger_actualizar_usuario_por_rol
 AFTER UPDATE ON users
 FOR EACH ROW
 BEGIN
-    
-    IF OLD.role = 'Cliente' THEN
-        DELETE FROM clientes WHERE user_id = OLD.id;
-    ELSEIF OLD.role = 'Tecnico' THEN
-        DELETE FROM tecnicos WHERE user_id = OLD.id;
-    ELSEIF OLD.role = 'Supervisor' THEN
-        DELETE FROM supervisores WHERE user_id = OLD.id;
-    ELSEIF OLD.role = 'Administrador' THEN
-        DELETE FROM administradores WHERE user_id = OLD.id;
-    END IF;
+    IF OLD.role <> NEW.role THEN
+        IF OLD.role = 'Cliente' THEN
+            DELETE FROM clientes WHERE user_id = OLD.id;
+        ELSEIF OLD.role = 'Tecnico' THEN
+            DELETE FROM tecnicos WHERE user_id = OLD.id;
+        ELSEIF OLD.role = 'Supervisor' THEN
+            DELETE FROM supervisores WHERE user_id = OLD.id;
+        ELSEIF OLD.role = 'Administrador' THEN
+            DELETE FROM administradores WHERE user_id = OLD.id;
+        END IF;
 
-    
-    IF NEW.role = 'Cliente' THEN
-        INSERT INTO clientes(user_id) VALUES (NEW.id);
-    ELSEIF NEW.role = 'Tecnico' THEN
-        INSERT INTO tecnicos(user_id, disponibilidad) VALUES (NEW.id, 'Disponible');
-    ELSEIF NEW.role = 'Supervisor' THEN
-        INSERT INTO supervisores(user_id) VALUES (NEW.id);
-    ELSEIF NEW.role = 'Administrador' THEN
-        INSERT INTO administradores(user_id) VALUES (NEW.id);
+        IF NEW.role = 'Cliente' THEN
+            INSERT INTO clientes(user_id) VALUES (NEW.id);
+        ELSEIF NEW.role = 'Tecnico' THEN
+            INSERT INTO tecnicos(user_id, disponibilidad) VALUES (NEW.id, 'Disponible');
+        ELSEIF NEW.role = 'Supervisor' THEN
+            INSERT INTO supervisores(user_id) VALUES (NEW.id);
+        ELSEIF NEW.role = 'Administrador' THEN
+            INSERT INTO administradores(user_id) VALUES (NEW.id);
+        END IF;
     END IF;
 END $$
 DELIMITER ;
