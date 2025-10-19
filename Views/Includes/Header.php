@@ -75,32 +75,39 @@ list($title, $subtitle) = headerMeta($route, $rol);
 ?>
 <!-- Estilos del header consolidados en AdminDash.css -->
 
-<header class="header hero-header">
-	<div class="hero-row">
-		<div class="hero-left">
-			<?php if (isHomeRoute($route)): ?>
-				<p class="hero-greet">
-					<?= $authUser ? '¡Hola, '.htmlspecialchars($name).'!' : 'Bienvenido a Innovasys'; ?>
-				</p>
-			<?php endif; ?>
-			<p class="hero-sub">
-				<?= htmlspecialchars($title) ?> · <?= htmlspecialchars($subtitle) ?>
-			</p>
-		</div>
-		<div class="hero-actions">
-			<?php if (stripos($route, 'Cliente/MisTicket') === 0 || stripos($route, 'Cliente/MisTicketActivo') === 0 || stripos($route, 'Cliente/MisTicketTerminados') === 0): ?>
-				<a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo" class="btn btn-outline small" title="Ver activos">Activos</a>
-				<a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketTerminados" class="btn btn-outline small" title="Ver finalizados">Finalizados</a>
-			<?php endif; ?>
-		</div>
-	</div>
-	<div class="hamburger" id="menuToggle">
-		<span></span>
-		<span></span>
-		<span></span>
-	</div>
+<header class="header hero-header bg-base shadow-sm p-3">
+  <div class="hero-row flex items-center justify-between gap-4 flex-wrap">
 
+    <div class="hero-left flex flex-col">
+      <?php if (isHomeRoute($route)): ?>
+        <p class="hero-greet text-lg font-semibold text-primary">
+          <?= $authUser ? '¡Hola, '.htmlspecialchars($name).'!' : 'Bienvenido a Innovasys'; ?>
+        </p>
+      <?php endif; ?>
+      <p class="hero-sub text-sm text-secondary">
+        <?= htmlspecialchars($title) ?> · <?= htmlspecialchars($subtitle) ?>
+      </p>
+    </div>
+
+    <div class="hero-actions flex items-center gap-3">
+      <?php if (stripos($route, 'Cliente/MisTicket') === 0 || stripos($route, 'Cliente/MisTicketActivo') === 0 || stripos($route, 'Cliente/MisTicketTerminados') === 0): ?>
+        <a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo" 
+           class="btn-modern active" 
+           title="Ver activos">Activos</a>
+        <a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketTerminados" 
+           class="btn-modern finalized" 
+           title="Ver finalizados">Finalizados</a>
+      <?php endif; ?>
+    </div>
+
+  </div>
+
+  <div class="hamburger" id="menuToggle">
+    <span></span><span></span><span></span>
+  </div>
 </header>
+
+
 <script>
 	const menuBtn = document.getElementById('menuToggle');
 const sidebar = document.querySelector('.sidebar');

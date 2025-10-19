@@ -4,8 +4,8 @@
   <div class="detalle-ticket-layout">
     <!-- ================== DETALLE IZQUIERDA ================== -->
     <div class="detalle-izquierda">
+      <h2 id="tituloDetalle">Detalle del Ticket</h2>
       <div class="contenedor">
-        <h2 id="tituloDetalle">Detalle del Ticket</h2>
 
         <?php if (!empty($view['ticket'])): ?>
           <?php $t = $view['ticket']; ?>
