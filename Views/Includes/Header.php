@@ -88,6 +88,25 @@ list($title, $subtitle) = headerMeta($route, $rol);
 			</p>
 		</div>
 		<div class="hero-actions">
+			<?php 
+			// Unread count minimal (no JSON): calcular rápido solo cuando hay usuario
+			$unread = 0; 
+			if ($authUser) {
+				require_once __DIR__ . '/../../Core/Database.php';
+				require_once __DIR__ . '/../../Models/Notification.php';
+				$dbh = new Database(); $dbh->connectDatabase();
+				$nm = new NotificationModel($dbh->getConnection());
+				$unread = $nm->countUnread((int)$authUser['id'], (string)$authUser['role']);
+			}
+			?>
+			<?php if ($authUser): ?>
+			<a href="/ProyectoPandora/Public/index.php?route=Notification/Index" class="btn btn-outline small" title="Notificaciones" id="notifBell">
+				<span class="icon-bell">🔔</span>
+				<span class="badge" id="notifBadge" style="display: <?= ($unread>0?'inline-block':'none') ?>;">
+					<?= (int)$unread ?>
+				</span>
+			</a>
+			<?php endif; ?>
 			<?php if (stripos($route, 'Cliente/MisTicket') === 0 || stripos($route, 'Cliente/MisTicketActivo') === 0 || stripos($route, 'Cliente/MisTicketTerminados') === 0): ?>
 				<a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo" class="btn btn-outline small" title="Ver activos">Activos</a>
 				<a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketTerminados" class="btn btn-outline small" title="Ver finalizados">Finalizados</a>
@@ -110,4 +129,47 @@ menuBtn.addEventListener('click', () => {
   sidebar.classList.toggle('active');
 });
 
+</script>
+<?php if ($authUser): ?>
+<script>
+	// Polling sencillo cada 10 segundos para actualizar el contador del badge
+	(function(){
+		const badge = document.getElementById('notifBadge');
+		if (!badge) return;
+		const refresh = () => {
+			fetch('/ProyectoPandora/Public/index.php?route=Notification/Count', { cache: 'no-store' })
+				.then(r => r.ok ? r.text() : '0')
+				.then(txt => {
+					const n = parseInt((txt||'0').trim(), 10);
+					if (isNaN(n) || n <= 0) {
+						badge.style.display = 'none';
+						badge.textContent = '0';
+					} else {
+						badge.style.display = 'inline-block';
+						badge.textContent = String(n);
+					}
+				})
+				.catch(() => {/* noop */});
+		};
+		// Primera carga inmediata y luego cada 10s
+		refresh();
+		setInterval(refresh, 10000);
+	})();
+</script>
+<?php endif; ?>
+<script>
+// Auto-refresh global (10s) con salvaguardas básicas
+(function(){
+	if (window.AUTO_REFRESH === false) return; // opt-out explícito
+	const PERIOD = 10000; // 10s
+	function canReload(){
+		if (document.hidden) return false; // no recargar si la pestaña no está visible
+		const ae = document.activeElement;
+		if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.tagName === 'SELECT' || ae.isContentEditable)) return false; // evitar perder edición
+		return !window.NO_AUTO_REFRESH; // otro opt-out simple
+	}
+	setInterval(function(){
+		try { if (canReload()) { location.reload(); } } catch(e){}
+	}, PERIOD);
+})();
 </script>

@@ -338,5 +338,23 @@ return [
         'controller' => 'Device',
         'action' => 'Eliminar'
     ],
+    
+    // Notificaciones
+    'Notification/Index' => [
+        'controller' => 'Notification',
+        'action' => 'Index'
+    ],
+    'Notification/Count' => [
+        'controller' => 'Notification',
+        'action' => 'Count'
+    ],
+    'Notification/MarkRead' => [
+        'controller' => 'Notification',
+        'action' => 'MarkRead'
+    ],
+    'Notification/Create' => [
+        'controller' => 'Notification',
+        'action' => 'Create'
+    ],
 ];
 ?>

@@ -1,5 +1,7 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <?php require_once __DIR__ . '/../../Core/Date.php'; ?>
+<?php require_once __DIR__ . '/../../Core/LogFormatter.php'; ?>
+<?php require_once __DIR__ . '/../../Core/Date.php'; ?>
 
 <main class="inv-page">
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
@@ -118,7 +120,7 @@
                                 </td>
                                 <td><?php echo htmlspecialchars($row['categoria']); ?></td>
                                 <td><?php echo htmlspecialchars($row['name_item']); ?></td>
-                                <td>$<span class="precio" data-precio="<?php echo (float)$row['valor_unitario']; ?>"><?php echo number_format((float)$row['valor_unitario'], 2); ?></span></td>
+                                <td><span class="precio" data-precio="<?php echo (float)$row['valor_unitario']; ?>"><?php echo htmlspecialchars(LogFormatter::monto((float)$row['valor_unitario'])); ?></span></td>
                                                 <td><?php echo (int)$row['stock_actual']; ?><?php if ((int)$row['stock_actual'] <= 0) echo ' <span class="badge badge--muted">Sin stock</span>'; ?></td>
                                                 <td>
                                                     <form class="req-form" action="/ProyectoPandora/Public/index.php?route=Tecnico/SolicitarRepuesto" method="post">
@@ -172,7 +174,7 @@
                                 <td><?php echo htmlspecialchars($it['categoria']); ?></td>
                                 <td><?php echo htmlspecialchars($it['name_item']); ?></td>
                                 <td><?php echo (int)$it['cantidad']; ?></td>
-                                <td>$<?php echo number_format((float)$it['valor_total'], 2); ?></td>
+                                <td><?php echo htmlspecialchars(LogFormatter::monto((float)$it['valor_total'])); ?></td>
                             </tr>
                         <?php endforeach; ?>
                         <?php if (empty($items_ticket)): ?>

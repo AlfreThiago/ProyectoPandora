@@ -37,7 +37,7 @@ class RegisterController
             $result = $this->RegisterUser($username, $email, $password);
             
             $accion = "Registro de usuario";
-            $detalle = "Se registró el usuario {$username} con email {$email}. Resultado: {$result}";
+            $detalle = "Se creó la cuenta de {$username} (email {$email}). Resultado: {$result}.";
             $this->historialController->agregarAccion($accion, $detalle);
 
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
@@ -74,8 +74,8 @@ class RegisterController
 
             $result = $this->RegisterUserWithRole($username, $email, $password, $role);
 
-            $accion = "Registro de usuario por admin";
-            $detalle = "El administrador registró el usuario {$username} con email {$email} y rol {$role}. Resultado: {$result}";
+            $accion = "Registro de usuario por administrador";
+            $detalle = "Se creó la cuenta {$username} (email {$email}) con rol {$role} desde el panel de administración. Resultado: {$result}.";
             $this->historialController->agregarAccion($accion, $detalle);
 
             header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers');

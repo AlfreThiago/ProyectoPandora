@@ -1,4 +1,5 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
+<?php require_once __DIR__ . '/../../Core/LogFormatter.php'; ?>
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 <div class="Contenedor">
@@ -71,8 +72,8 @@
                                     <td><?= htmlspecialchars($it['name_item']) ?></td>
                                     <td><?= htmlspecialchars($it['categoria']) ?></td>
                                     <td><?= (int)$it['cantidad'] ?></td>
-                                    <td>$<?= number_format((float)$it['valor_unitario'], 2, '.', ',') ?></td>
-                                    <td>$<?= number_format((float)$it['valor_total'], 2, '.', ',') ?></td>
+                                    <td><?= LogFormatter::monto((float)$it['valor_unitario']) ?></td>
+                                    <td><?= LogFormatter::monto((float)$it['valor_total']) ?></td>
                                 </tr>
                             <?php endforeach; ?>
                             <?php endif; ?>
@@ -80,7 +81,7 @@
                     </table>
 
                     <div class="presu-totales">
-                        <div>Subtotal repuestos: <strong>$<?= number_format($p['subtotal_items'], 2, '.', ',') ?></strong></div>
+                        <div>Subtotal repuestos: <strong><?= LogFormatter::monto((float)$p['subtotal_items']) ?></strong></div>
 
                         <?php 
                             $sEstado = strtolower(trim($t['estado'] ?? ''));
@@ -96,14 +97,14 @@
                                        class="asignar-input asignar-input--small"/>
                                 <span class="badge badge--warning">Solo En Diagnóstico</span>
                             <?php else: ?>
-                                <span><strong>$<?= number_format((float)$p['mano_obra'], 2, '.', ',') ?></strong></span>
+                                <span><strong><?= LogFormatter::monto((float)$p['mano_obra']) ?></strong></span>
                                 <span class="badge <?= $laborDef ? 'badge--success' : 'badge--warning' ?>">
                                     <?= $laborDef ? 'Ya Definida' : 'Solo En Diagnóstico' ?>
                                 </span>
                             <?php endif; ?>
                         </div>
 
-                        <div>Total: <strong>$<?= number_format($p['total'], 2, '.', ',') ?></strong></div>
+                        <div>Total: <strong><?= LogFormatter::monto((float)$p['total']) ?></strong></div>
 
                         <?php $ready = ($p['subtotal_items'] > 0 && $p['mano_obra'] > 0); ?>
                         <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/PublicarPresupuesto" 

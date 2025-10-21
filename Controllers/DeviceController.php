@@ -125,8 +125,8 @@ class DeviceController
             }
 
             if ($this->deviceModel->createDevice($userId, $categoriaId, $marca, $modelo, $descripcion, $img_dispositivo)) {
-                $accion = "Agregar dispositivo";
-                $detalle = "Usuario {$user['name']} agregó el dispositivo {$marca} {$modelo}";
+                $accion = "Registro de dispositivo";
+                $detalle = "{$user['name']} registró su dispositivo {$marca} {$modelo}";
                 $this->historialController->agregarAccion($accion, $detalle);
 
                 
@@ -237,7 +237,7 @@ class DeviceController
                 $admin = Auth::user();
                 $this->historialController->agregarAccion(
                     "Actualización de dispositivo",
-                    "{$admin['name']} actualizó el dispositivo con ID {$id}."
+                    "{$admin['name']} actualizó el dispositivo #{$id} ({$marca} {$modelo})."
                 );
                 header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice');
                 exit;
@@ -266,8 +266,8 @@ class DeviceController
         }
         if ($this->deviceModel->deleteDevice($deviceId)) {
             
-            $accion = "Eliminar dispositivo";
-            $detalle = "Usuario {$user['name']} eliminó el dispositivo con ID: $deviceId";
+            $accion = "Eliminación de dispositivo";
+            $detalle = "{$user['name']} eliminó el dispositivo #{$deviceId}.";
             $this->historialController->agregarAccion($accion, $detalle);
 
             header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice&success=1');

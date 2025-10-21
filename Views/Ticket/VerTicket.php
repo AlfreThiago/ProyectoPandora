@@ -1,5 +1,6 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <?php require_once __DIR__ . '/../../Core/Date.php'; ?>
+<?php require_once __DIR__ . '/../../Core/LogFormatter.php'; ?>
 <main>
   <div class="detalle-ticket-layout">
     <!-- ================== DETALLE IZQUIERDA ================== -->
@@ -75,8 +76,8 @@
           <?php if (!empty($view['enPresu'])): ?>
             <?php $p = $view['presupuesto']; ?>
             <?php $msgPrefix = ($estadoLower === 'presupuesto') ? 'Presupuesto publicado por' : 'Presupuesto preparado por'; ?>
-            <div class="alert alert-info">
-                <?= $msgPrefix ?> <strong>$<?= number_format((float)$p['total'], 2, '.', ',') ?></strong>.
+      <div class="alert alert-info">
+        <?= $msgPrefix ?> <strong><?= htmlspecialchars($p['total_fmt'] ?? LogFormatter::monto((float)$p['total'])) ?></strong>.
                 <?php if ($estadoLower === 'en espera'): ?> <span>(pendiente de publicación del supervisor)</span><?php endif; ?>
             </div>
 
@@ -86,24 +87,24 @@
                     <tbody>
                     <?php if (empty($p['items'])): ?>
                         <tr><td colspan="4">Sin repuestos</td></tr>
-                    <?php else: foreach ($p['items'] as $it): ?>
+          <?php else: foreach ($p['items'] as $it): ?>
                         <tr>
                             <td><?= htmlspecialchars($it['name_item']) ?></td>
                             <td><?= htmlspecialchars($it['categoria']) ?></td>
                             <td><?= (int)$it['cantidad'] ?></td>
-                            <td>$<?= number_format((float)$it['valor_total'], 2, '.', ',') ?></td>
+              <td><?= htmlspecialchars($it['valor_total_fmt'] ?? LogFormatter::monto((float)$it['valor_total'])) ?></td>
                         </tr>
                     <?php endforeach; endif; ?>
                     </tbody>
                 </table>
                 <div class="tabla-totales">
-                    <div>Subtotal repuestos: <strong>$<?= number_format((float)$p['subtotal'], 2, '.', ',') ?></strong></div>
-                    <div>Mano de obra: <strong>$<?= number_format((float)$p['mano_obra'], 2, '.', ',') ?></strong>
+          <div>Subtotal repuestos: <strong><?= htmlspecialchars($p['subtotal_fmt'] ?? LogFormatter::monto((float)$p['subtotal'])) ?></strong></div>
+          <div>Mano de obra: <strong><?= htmlspecialchars($p['mano_obra_fmt'] ?? LogFormatter::monto((float)$p['mano_obra'])) ?></strong>
                         <?php if ((float)$p['mano_obra'] <= 0): ?>
                             <span class="badge badge--muted">Falta definir mano de obra</span>
                         <?php endif; ?>
                     </div>
-                    <div>Total: <strong>$<?= number_format((float)$p['total'], 2, '.', ',') ?></strong></div>
+          <div>Total: <strong><?= htmlspecialchars($p['total_fmt'] ?? LogFormatter::monto((float)$p['total'])) ?></strong></div>
                 </div>
             </div>
 
@@ -164,7 +165,7 @@
 
             <div>
                 <h4>Mano de obra</h4>
-                <div class="subtexto">Rango sugerido: $<?= number_format((float)$view['tecnico']['labor_min'], 2, '.', ',') ?> a $<?= number_format((float)$view['tecnico']['labor_max'], 2, '.', ',') ?></div>
+                <div class="subtexto">Rango sugerido: <?= htmlspecialchars($view['tecnico']['labor_min_fmt'] ?? LogFormatter::monto((float)$view['tecnico']['labor_min'])) ?> a <?= htmlspecialchars($view['tecnico']['labor_max_fmt'] ?? LogFormatter::monto((float)$view['tecnico']['labor_max'])) ?></div>
 
                 <?php $ready = !empty($view['tecnico']['has_items']) && !empty($view['tecnico']['has_labor']); ?>
                 <div class="alert <?= $ready ? 'alert-success':'alert-warning' ?>">
@@ -175,16 +176,16 @@
                     <form method="post" action="/ProyectoPandora/Public/index.php?route=Tecnico/ActualizarStats" class="presu-labor">
                         <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>"/>
                         <label>Importe:</label>
-                        <input type="number" name="labor_amount" step="0.01"
-                            min="<?= $view['tecnico']['labor_min'] > 0 ? number_format((float)$view['tecnico']['labor_min'],2,'.','') : '0' ?>"
-                            <?= $view['tecnico']['labor_max'] > 0 ? 'max="'.number_format((float)$view['tecnico']['labor_max'],2,'.','').'"' : '' ?>
+            <input type="number" name="labor_amount" step="0.01"
+              min="<?= $view['tecnico']['labor_min'] > 0 ? htmlspecialchars((string)(float)$view['tecnico']['labor_min']) : '0' ?>"
+              <?= $view['tecnico']['labor_max'] > 0 ? 'max="'.htmlspecialchars((string)(float)$view['tecnico']['labor_max']).'"' : '' ?>
                             class="asignar-input asignar-input--small" required />
                         <button class="btn btn-primary" type="submit">Guardar mano de obra</button>
                     </form>
                 <?php else: ?>
-                    <?php $lb = (float)($view['presupuesto']['mano_obra'] ?? 0); ?>
+          <?php $lb = (float)($view['presupuesto']['mano_obra'] ?? 0); ?>
                     <div class="alert alert-info">
-                        Mano de obra <?= $lb > 0 ? 'definida' : 'no disponible para edición' ?><?= $lb > 0 ? ': <strong>$'.number_format($lb,2,'.',',').'</strong>' : '' ?>.
+                        Mano de obra <?= $lb > 0 ? 'definida' : 'no disponible para edición' ?><?= $lb > 0 ? ': <strong>'.LogFormatter::monto((float)$lb).'</strong>' : '' ?>.
                         <?= ($estadoLower!=='diagnóstico' && $estadoLower!=='diagnostico') ? 'Solo editable durante Diagnóstico.' : 'Una vez definida no puede modificarse.' ?>
                     </div>
                 <?php endif; ?>
@@ -268,11 +269,11 @@
               <?php foreach (($view['timeline']['Tecnico'] ?? []) as $ev): ?>
                 <li>
                   <div class="timeline-fecha">
-                    <time title="<?= htmlspecialchars(DateHelper::exact($ev['created_at'])) ?>">
-                      <?= htmlspecialchars(DateHelper::smart($ev['created_at'])) ?>
+                    <time title="<?= htmlspecialchars($ev['fecha_exact'] ?? '') ?>">
+                      <?= htmlspecialchars($ev['fecha_human'] ?? '') ?>
                     </time>
                   </div>
-                  <div>Estado: <span class="badge badge--success"><?= htmlspecialchars($ev['estado']) ?></span></div>
+                  <div>Estado: <span class="<?= htmlspecialchars($ev['badge_class'] ?? 'badge') ?>"><?= htmlspecialchars($ev['estado']) ?></span></div>
                   <?php if (!empty($ev['comentario'])): ?><div>"<?= htmlspecialchars($ev['comentario']) ?>"</div><?php endif; ?>
                 </li>
               <?php endforeach; ?>
@@ -284,11 +285,11 @@
               <?php foreach (($view['timeline']['Cliente'] ?? []) as $ev): ?>
                 <li>
                   <div class="timeline-fecha">
-                    <time title="<?= htmlspecialchars(DateHelper::exact($ev['created_at'])) ?>">
-                      <?= htmlspecialchars(DateHelper::smart($ev['created_at'])) ?>
+                    <time title="<?= htmlspecialchars($ev['fecha_exact'] ?? '') ?>">
+                      <?= htmlspecialchars($ev['fecha_human'] ?? '') ?>
                     </time>
                   </div>
-                  <div>Estado: <span class="badge badge--muted"><?= htmlspecialchars($ev['estado']) ?></span></div>
+                  <div>Estado: <span class="<?= htmlspecialchars($ev['badge_class'] ?? 'badge') ?>"><?= htmlspecialchars($ev['estado']) ?></span></div>
                   <?php if (!empty($ev['comentario'])): ?><div>"<?= htmlspecialchars($ev['comentario']) ?>"</div><?php endif; ?>
                 </li>
               <?php endforeach; ?>
@@ -300,11 +301,11 @@
               <?php foreach (($view['timeline']['Supervisor'] ?? []) as $ev): ?>
                 <li>
                   <div class="timeline-fecha">
-                    <time title="<?= htmlspecialchars(DateHelper::exact($ev['created_at'])) ?>">
-                      <?= htmlspecialchars(DateHelper::smart($ev['created_at'])) ?>
+                    <time title="<?= htmlspecialchars($ev['fecha_exact'] ?? '') ?>">
+                      <?= htmlspecialchars($ev['fecha_human'] ?? '') ?>
                     </time>
                   </div>
-                  <div>Estado: <span class="badge badge--muted"><?= htmlspecialchars($ev['estado']) ?></span></div>
+                  <div>Estado: <span class="<?= htmlspecialchars($ev['badge_class'] ?? 'badge') ?>"><?= htmlspecialchars($ev['estado']) ?></span></div>
                   <?php if (!empty($ev['comentario'])): ?><div>"<?= htmlspecialchars($ev['comentario']) ?>"</div><?php endif; ?>
                 </li>
               <?php endforeach; ?>

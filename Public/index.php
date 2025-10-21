@@ -18,7 +18,10 @@ $noGuardar = [
     'Inventario/CrearItem',
     'Inventario/ActualizarItem',
     'EstadoTicket/Actualizar',
-    'EstadoTicket/CrearEstado'
+    'EstadoTicket/CrearEstado',
+    // Evitar que el polling y acciones AJAX sobreescriban prev_url
+    'Notification/Count',
+    'Notification/MarkRead'
 ];
 
 $guardarPrevUrl = true;

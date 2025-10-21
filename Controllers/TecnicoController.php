@@ -8,10 +8,74 @@ require_once __DIR__ . '/../Models/Rating.php';
 require_once __DIR__ . '/../Models/TecnicoStats.php';
 require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/HistorialController.php';
+require_once __DIR__ . '/../Core/Date.php';
 
 class TecnicoController {  
     private $db;
     private $historial;
+
+    private function estadoBadgeClass(?string $estado): string {
+        $s = strtolower(trim($estado ?? ''));
+        if (in_array($s, ['abierto','nuevo','recibido'], true)) return 'badge';
+        if (in_array($s, ['en proceso','diagnóstico','diagnostico','reparación','reparacion','en reparación'], true)) return 'badge badge--success';
+        if (in_array($s, ['en espera','pendiente'], true)) return 'badge';
+        if (in_array($s, ['finalizado','cerrado','cancelado'], true)) return 'badge badge--danger';
+        return 'badge badge--muted';
+    }
+
+    private function aplicarFiltrosYPresentacion(array $tickets): array {
+        $estado = strtolower(trim($_GET['estado'] ?? 'activos'));
+        $q = trim((string)($_GET['q'] ?? ''));
+        $desde = trim((string)($_GET['desde'] ?? ''));
+        $hasta = trim((string)($_GET['hasta'] ?? ''));
+
+        // Filtro por estado (activos: sin fecha_cierre; finalizados: con fecha_cierre)
+        if ($estado === 'activos' || $estado === 'finalizados') {
+            $tickets = array_values(array_filter($tickets, function($t) use ($estado){
+                $cerrado = !empty($t['fecha_cierre']);
+                return $estado === 'activos' ? !$cerrado : $cerrado;
+            }));
+        }
+
+        // Filtro por texto
+        if ($q !== '') {
+            $qLower = mb_strtolower($q, 'UTF-8');
+            $tickets = array_values(array_filter($tickets, function($t) use ($qLower){
+                $fields = [
+                    $t['cliente'] ?? '',
+                    $t['marca'] ?? '',
+                    $t['modelo'] ?? '',
+                    $t['descripcion_falla'] ?? '',
+                    $t['estado'] ?? '',
+                ];
+                foreach ($fields as $f) {
+                    if ($f !== null && $f !== '' && strpos(mb_strtolower((string)$f, 'UTF-8'), $qLower) !== false) return true;
+                }
+                return false;
+            }));
+        }
+
+        // Filtro por fechas (creación)
+        if ($desde !== '' || $hasta !== '') {
+            $tickets = array_values(array_filter($tickets, function($t) use ($desde, $hasta){
+                $f = substr((string)($t['fecha_creacion'] ?? ''), 0, 10);
+                if ($desde !== '' && $f < $desde) return false;
+                if ($hasta !== '' && $f > $hasta) return false;
+                return true;
+            }));
+        }
+
+        // Enriquecer (badge + fechas preformateadas)
+        foreach ($tickets as &$t) {
+            $t['estadoClass'] = $this->estadoBadgeClass($t['estado'] ?? '');
+            if (!empty($t['fecha_creacion'])) {
+                $t['fecha_exact'] = DateHelper::exact($t['fecha_creacion']);
+                $t['fecha_human'] = DateHelper::smart($t['fecha_creacion']);
+            }
+        }
+        unset($t);
+        return $tickets;
+    }
 
     public function __construct() {
         $this->db = new Database();
@@ -34,9 +98,10 @@ class TecnicoController {
     $ticketModel = new Ticket($this->db->getConnection());
 
         
-        $tickets = $ticketModel->getTicketsByTecnicoId($user['id']);
+    $tickets = $ticketModel->getTicketsByTecnicoId($user['id']);
+    $tickets = $this->aplicarFiltrosYPresentacion($tickets);
 
-        include_once __DIR__ . '/../Views/Tecnicos/MisReparaciones.php';
+    include_once __DIR__ . '/../Views/Tecnicos/MisReparaciones.php';
     }
 
     public function MisRepuestos() {

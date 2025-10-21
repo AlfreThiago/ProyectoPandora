@@ -67,10 +67,10 @@ class InventarioController
 
             if ($ok) {
                 $user = Auth::user();
-                $accion = $existente ? "Ingreso de stock" : "Alta inventario";
+                $accion = $existente ? "Ingreso de stock" : "Alta de ítem en inventario";
                 $detalle = $existente
-                    ? "El usuario {$user['name']} sumó {$stock_actual} al item '{$name_item}' (ID {$existente['id']})."
-                    : "El usuario {$user['name']} creó el item '{$name_item}' con stock {$stock_actual} (mínimo {$stock_minimo}).";
+                    ? "{$user['name']} agregó {$stock_actual} unidad(es) a '{$name_item}' (ID {$existente['id']}). Nuevo stock reflejado en la ficha."
+                    : "{$user['name']} dio de alta el ítem '{$name_item}' con stock inicial {$stock_actual} (stock mínimo sugerido {$stock_minimo}).";
                 $this->historialController->agregarAccion($accion, $detalle);
                 header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
                 exit;
@@ -90,8 +90,8 @@ class InventarioController
         if ($id && $this->inventarioModel->eliminar($id)) {
             $user = Auth::user();
             $this->historialController->agregarAccion(
-                "Baja inventario",
-                "El usuario {$user['name']} eliminó el item con ID $id del inventario."
+                "Baja de ítem en inventario",
+                "{$user['name']} eliminó el ítem con ID {$id} del inventario."
             );
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
             exit;
@@ -141,8 +141,8 @@ class InventarioController
             if ($this->inventarioModel->actualizar($id, $categoria_id, $name_item, $valor_unitario, $descripcion, $foto_item, $stock_actual, $stock_minimo)) {
                 $user = Auth::user();
                 $this->historialController->agregarAccion(
-                    "Edición inventario",
-                    "El usuario {$user['name']} editó el item '$name_item' (ID $id) del inventario."
+                    "Edición de ítem en inventario",
+                    "{$user['name']} actualizó la ficha de '{$name_item}' (ID {$id})."
                 );
                 header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
                 exit;
@@ -168,7 +168,7 @@ class InventarioController
                     $user = Auth::user();
                     $this->historialController->agregarAccion(
                         'Ingreso de stock',
-                        "Usuario {$user['name']} sumó {$cantidad} unidades al item ID {$id}."
+                        "{$user['name']} sumó {$cantidad} unidad(es) al ítem ID {$id}."
                     );
                     header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
                     exit;
@@ -203,7 +203,7 @@ class InventarioController
             if ($this->categoryModel->createCategory($name)) {
                 $user = Auth::user();
                 $accion = "Creación de categoría de inventario";
-                $detalle = "Usuario {$user['name']} creó la categoría '{$name}'";
+                $detalle = "{$user['name']} creó la categoría de inventario '{$name}'.";
                 $this->historialController->agregarAccion($accion, $detalle);
                 
                 if (($user['role'] ?? '') === 'Supervisor') {
@@ -233,7 +233,7 @@ class InventarioController
     if ($id && $this->categoryModel->deleteCategory((int)$id)) {
             $user = Auth::user();
             $accion = "Eliminación de categoría de inventario";
-            $detalle = "Usuario {$user['name']} eliminó la categoría ID {$id}";
+            $detalle = "{$user['name']} eliminó la categoría de inventario (ID {$id}).";
             $this->historialController->agregarAccion($accion, $detalle);
             if (($user['role'] ?? '') === 'Supervisor') {
                 header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');
@@ -285,7 +285,7 @@ class InventarioController
             if ($this->categoryModel->actualizarCategory($id, $name)) {
                 $user = Auth::user();
                 $accion = "Edición de categoría de inventario";
-                $detalle = "Usuario {$user['name']} editó la categoría '{$name}' (ID {$id})";
+                $detalle = "{$user['name']} renombró/ajustó la categoría '{$name}' (ID {$id}).";
                 $this->historialController->agregarAccion($accion, $detalle);
                 if (($user['role'] ?? '') === 'Supervisor') {
                     header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&success=1');

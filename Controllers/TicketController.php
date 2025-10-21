@@ -8,6 +8,9 @@ require_once __DIR__ . '/HistorialController.php';
 require_once __DIR__ . '/../Models/EstadoTicket.php';
 require_once __DIR__ . '/../Models/Rating.php';
 require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
+require_once __DIR__ . '/../Models/Notification.php';
+require_once __DIR__ . '/../Core/LogFormatter.php';
+require_once __DIR__ . '/../Core/Date.php';
 
 class TicketController
 {
@@ -169,6 +172,15 @@ class TicketController
         elseif ($rol === 'Administrador') $volverUrl = "/ProyectoPandora/Public/index.php?route=Admin/ListarUsers";
         else $volverUrl = "/ProyectoPandora/Public/index.php?route=Default/Index";
     $prev = $_SESSION['prev_url'] ?? '';
+    // Seguridad/filtros: evitar volver a endpoints de notificaciones o a la misma pantalla de ver ticket
+    if ($prev) {
+        $lower = strtolower($prev);
+        if (strpos($lower, 'route=notification/count') !== false ||
+            strpos($lower, 'route=notification/markread') !== false ||
+            strpos($lower, 'route=ticket/ver') !== false) {
+            $prev = '';
+        }
+    }
     $backHref = $prev ?: $volverUrl;
 
         // En presupuesto o en espera (para mostrar resumen)
@@ -188,6 +200,13 @@ class TicketController
         $laborRow = (array)$laborM->getByTicket((int)$ticket['id']);
         $laborAmount = (float)($laborRow['labor_amount'] ?? 0);
         $presuTotal = $subtotalItems + $laborAmount;
+
+        // Enriquecer items con montos formateados (para simplificar la vista)
+        $itemsFmt = [];
+        foreach ($items as $it) {
+            $it['valor_total_fmt'] = LogFormatter::monto((float)($it['valor_total'] ?? 0));
+            $itemsFmt[] = $it;
+        }
 
         // Acciones técnico
         $estadosAll = $this->estadoModel->getAllEstados();
@@ -225,6 +244,11 @@ class TicketController
         $events = $th->listByTicket((int)$ticket['id']);
         $timeline = ['Tecnico'=>[], 'Cliente'=>[], 'Supervisor'=>[]];
         foreach ($events as $ev) {
+            // Preformatear fecha y badge para la vista
+            $ev['fecha_exact'] = DateHelper::exact($ev['created_at'] ?? '');
+            $ev['fecha_human'] = DateHelper::smart($ev['created_at'] ?? '');
+            $evEstadoLower = strtolower(trim($ev['estado'] ?? ''));
+            $ev['badge_class'] = $this->badgeClassFor($evEstadoLower);
             $r = $ev['user_role'] ?? '';
             if (isset($timeline[$r])) $timeline[$r][] = $ev;
         }
@@ -260,10 +284,14 @@ class TicketController
 
             'enPresu' => $enPresu,
             'presupuesto' => [
-                'items' => $items,
+                'items' => $itemsFmt,
                 'subtotal' => $subtotalItems,
                 'mano_obra' => $laborAmount,
                 'total' => $presuTotal,
+                // Montos formateados listos para imprimir
+                'subtotal_fmt' => LogFormatter::monto((float)$subtotalItems),
+                'mano_obra_fmt' => LogFormatter::monto((float)$laborAmount),
+                'total_fmt' => LogFormatter::monto((float)$presuTotal),
             ],
 
             'tecnico' => [
@@ -271,6 +299,8 @@ class TicketController
                 'mensaje' => $tecMensaje,
                 'labor_min' => $laborMin,
                 'labor_max' => $laborMax,
+                'labor_min_fmt' => LogFormatter::monto((float)$laborMin),
+                'labor_max_fmt' => LogFormatter::monto((float)$laborMax),
                 'has_items' => $hasItemsTech,
                 'has_labor' => $hasLaborTech,
                 'labor_editable' => $laborEditable,
@@ -358,6 +388,34 @@ class TicketController
         
         $this->histEstadoModel->add($ticket_id, $estado_id, (int)$user['id'], $user['role'], $comentario);
 
+        // Historial general: cambio de estado por técnico con detalle humano
+        try {
+            $actor = $user['name'] ?? ('Usuario ID '.(int)$user['id']);
+            $desde = trim((string)$estadoActual);
+            $hacia = trim((string)$estadoNuevo);
+            $accion = 'Cambio de estado de ticket';
+            $detalle = $actor . " movió el ticket #{$ticket_id} de '" . $desde . "' a '" . $hacia . "'.";
+            if ($comentario) { $detalle .= " Comentario: " . trim($comentario); }
+            $this->historialController->agregarAccion($accion, $detalle);
+        } catch (\Throwable $e) { /* noop */ }
+
+        // Notificación: estado cambiado (al cliente dueño del ticket)
+        try {
+            $dbn = new Database(); $dbn->connectDatabase(); $cnn = $dbn->getConnection();
+            $stmtC = $cnn->prepare("SELECT u.id AS user_id FROM tickets t INNER JOIN clientes c ON t.cliente_id=c.id INNER JOIN users u ON u.id=c.user_id WHERE t.id=? LIMIT 1");
+            if ($stmtC) {
+                $stmtC->bind_param('i', $ticket_id);
+                $stmtC->execute();
+                $uidRow = $stmtC->get_result()->fetch_assoc();
+                if ($uidRow && isset($uidRow['user_id'])) {
+                    $nm = new NotificationModel($cnn);
+                    $title = 'Estado de ticket actualizado';
+                    $body  = 'El estado de tu ticket #'.$ticket_id.' cambió a '.($estadoNuevo ?? '#').'.';
+                    $nm->create($title, $body, 'USER', null, (int)$uidRow['user_id'], (int)$user['id']);
+                }
+            }
+        } catch (\Throwable $e) { /* noop */ }
+
         header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&ok=estado');
         exit;
     }
@@ -413,6 +471,46 @@ class TicketController
         }
 
         $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Cliente', $comentario);
+
+        // Historial general: Rechazo de presupuesto con detalles
+        try {
+            require_once __DIR__ . '/../Models/ItemTicket.php';
+            require_once __DIR__ . '/../Models/TicketLabor.php';
+            $itemM = new ItemTicketModel($conn);
+            $laborM = new TicketLaborModel($conn);
+            $items = $itemM->listarPorTicket($ticket_id);
+            $subtotal = 0.0; foreach ($items as $it) { $subtotal += (float)($it['valor_total'] ?? 0); }
+            $labor = $laborM->getByTicket($ticket_id); $mano = (float)($labor['labor_amount'] ?? 0);
+            $total = $subtotal + $mano;
+            $montoTxt = $total>0 ? LogFormatter::monto((float)$total) : null;
+            $accion = 'Rechazo de presupuesto';
+            $detalle = $user['name'] . " rechazó el presupuesto del ticket #{$ticket_id}" . ($montoTxt?" por {$montoTxt}":'') . ".";
+            if ($comentario) { $detalle .= " Motivo/comentario: " . trim($comentario); }
+            $this->historialController->agregarAccion($accion, $detalle);
+        } catch (\Throwable $e) { /* noop */ }
+
+        // Historial general: Aprobación de presupuesto con detalles
+        try {
+            require_once __DIR__ . '/../Models/ItemTicket.php';
+            require_once __DIR__ . '/../Models/TicketLabor.php';
+            $itemM = new ItemTicketModel($conn);
+            $laborM = new TicketLaborModel($conn);
+            $items = $itemM->listarPorTicket($ticket_id);
+            $subtotal = 0.0; foreach ($items as $it) { $subtotal += (float)($it['valor_total'] ?? 0); }
+            $labor = $laborM->getByTicket($ticket_id); $mano = (float)($labor['labor_amount'] ?? 0);
+            $total = $subtotal + $mano;
+            $tecNombre = null;
+            if ($stN = $conn->prepare("SELECT ut.name AS tec FROM tickets t LEFT JOIN tecnicos tc ON t.tecnico_id=tc.id LEFT JOIN users ut ON ut.id=tc.user_id WHERE t.id=? LIMIT 1")) {
+                $stN->bind_param('i', $ticket_id); $stN->execute();
+                $tecNombre = $stN->get_result()->fetch_assoc()['tec'] ?? null;
+            }
+            $accion = 'Aprobación de presupuesto';
+            $montoTxt = LogFormatter::monto((float)$total);
+            $detalle = $user['name'] . " aprobó el presupuesto del ticket #{$ticket_id} por {$montoTxt}.";
+            if ($tecNombre) { $detalle .= " Técnico asignado: {$tecNombre}."; }
+            if ($comentario) { $detalle .= " Comentario: " . trim($comentario); }
+            $this->historialController->agregarAccion($accion, $detalle);
+        } catch (\Throwable $e) { /* noop */ }
         header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&ok=aprobado');
         exit;
     }
@@ -442,6 +540,25 @@ class TicketController
 
             
             $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Supervisor', 'Marcado como listo para retirar');
+
+            // Historial general: Listo para retirar con nombres
+            try {
+                $cliNombre = null; $tecNombre = null;
+                if ($stC = $conn->prepare("SELECT uc.name AS cliente FROM tickets t INNER JOIN clientes c ON t.cliente_id=c.id INNER JOIN users uc ON uc.id=c.user_id WHERE t.id=? LIMIT 1")) {
+                    $stC->bind_param('i', $ticket_id); $stC->execute();
+                    $cliNombre = $stC->get_result()->fetch_assoc()['cliente'] ?? null;
+                }
+                if ($stT = $conn->prepare("SELECT ut.name AS tec FROM tickets t LEFT JOIN tecnicos tc ON t.tecnico_id=tc.id LEFT JOIN users ut ON ut.id=tc.user_id WHERE t.id=? LIMIT 1")) {
+                    $stT->bind_param('i', $ticket_id); $stT->execute();
+                    $tecNombre = $stT->get_result()->fetch_assoc()['tec'] ?? null;
+                }
+                $accion = 'Listo para retirar';
+                $detalle = $user['name'] . " marcó el ticket #{$ticket_id} como 'Listo para retirar'";
+                if ($cliNombre) { $detalle .= ", cliente: {$cliNombre}"; }
+                if ($tecNombre) { $detalle .= ", técnico asignado: {$tecNombre}"; }
+                $detalle .= '.';
+                $this->historialController->agregarAccion($accion, $detalle);
+            } catch (\Throwable $e) { /* noop */ }
 
         }
         header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&ok=listo');
@@ -517,6 +634,25 @@ class TicketController
             if (!in_array($method, $metodosValidos, true)) { $method = 'EFECTIVO'; }
             $pago = new PagoModel($conn);
             $pago->add($ticket_id, (float)$amount, $method, $reference, (int)$user['id']);
+
+            // Historial: pago registrado y cierre con detalles
+            try {
+                $cliNombre = null; $tecNombre = null;
+                if ($stC = $conn->prepare("SELECT uc.name AS cliente FROM tickets t INNER JOIN clientes c ON t.cliente_id=c.id INNER JOIN users uc ON uc.id=c.user_id WHERE t.id=? LIMIT 1")) {
+                    $stC->bind_param('i', $ticket_id); $stC->execute();
+                    $cliNombre = $stC->get_result()->fetch_assoc()['cliente'] ?? null;
+                }
+                if ($stT = $conn->prepare("SELECT ut.name AS tec FROM tickets t LEFT JOIN tecnicos tc ON t.tecnico_id=tc.id LEFT JOIN users ut ON ut.id=tc.user_id WHERE t.id=? LIMIT 1")) {
+                    $stT->bind_param('i', $ticket_id); $stT->execute();
+                    $tecNombre = $stT->get_result()->fetch_assoc()['tec'] ?? null;
+                }
+                $accion = 'Pago y cierre de ticket';
+                $montoTxt = LogFormatter::monto((float)$amount);
+                $detalle = $user['name'] . " registró un pago de {$montoTxt} (método: {$method}" . ($reference?", ref: {$reference}":'') . ") y finalizó el ticket #{$ticket_id}.";
+                if ($cliNombre) { $detalle .= " Cliente: {$cliNombre}."; }
+                if ($tecNombre) { $detalle .= " Técnico: {$tecNombre}."; }
+                $this->historialController->agregarAccion($accion, $detalle);
+            } catch (\Throwable $e) { /* noop */ }
         }
         header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&ok=pagado');
         exit;
@@ -692,8 +828,35 @@ class TicketController
         }
 
         
-        $comentario = 'Presupuesto publicado. Total $' . number_format($total, 2, '.', '');
+    $comentario = 'Presupuesto publicado. Total ' . LogFormatter::monto((float)$total);
         $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Supervisor', $comentario);
+
+        // Historial general: publicación de presupuesto con desglose
+        try {
+            $actor = $user['name'] ?? ('Usuario ID '.(int)$user['id']);
+            $accion = 'Publicación de presupuesto';
+            $detalle = $actor . " publicó el presupuesto del ticket #{$ticket_id}: "
+                . count($items) . " ítem(s) por " . LogFormatter::monto((float)$subtotal)
+                . ", mano de obra " . LogFormatter::monto((float)$mano)
+                . ", total " . LogFormatter::monto((float)$total) . ".";
+            $this->historialController->agregarAccion($accion, $detalle);
+        } catch (\Throwable $e) { /* noop */ }
+
+        // Notificación: Presupuesto publicado (al cliente dueño del ticket)
+        try {
+            $stmtC = $conn->prepare("SELECT u.id AS user_id FROM tickets t INNER JOIN clientes c ON t.cliente_id=c.id INNER JOIN users u ON u.id=c.user_id WHERE t.id=? LIMIT 1");
+            if ($stmtC) {
+                $stmtC->bind_param('i', $ticket_id);
+                $stmtC->execute();
+                $uidRow = $stmtC->get_result()->fetch_assoc();
+                if ($uidRow && isset($uidRow['user_id'])) {
+                    $nm = new NotificationModel($conn);
+                    $title = 'Presupuesto publicado';
+                    $body  = 'Se publicó el presupuesto del ticket #'.$ticket_id.' por '.LogFormatter::monto((float)$total).'.';
+                    $nm->create($title, $body, 'USER', null, (int)$uidRow['user_id'], (int)$user['id']);
+                }
+            }
+        } catch (\Throwable $e) { /* noop */ }
 
         // Nota: envío de mail removido (MailQueue eliminado)
 
@@ -884,8 +1047,19 @@ class TicketController
         }
 
         
+        // Enriquecer detalle con info del dispositivo y cliente
         $accion = "Creación de ticket";
-        $detalle = "Usuario {$user['name']} creó un ticket para el dispositivo ID {$dispositivo_id} con descripción: {$descripcion}";
+        try {
+            $dbd = new Database(); $dbd->connectDatabase(); $cnd = $dbd->getConnection();
+            $stmtD = $cnd->prepare("SELECT d.marca, d.modelo, c.name AS categoria FROM dispositivos d LEFT JOIN categorias c ON c.id = d.categoria_id WHERE d.id = ? LIMIT 1");
+            $stmtD && $stmtD->bind_param('i', $dispositivo_id) && $stmtD->execute();
+            $rowD = $stmtD ? $stmtD->get_result()->fetch_assoc() : null;
+            $dispDesc = $rowD ? (trim(($rowD['marca']??'')." ".($rowD['modelo']??'')) ?: 'dispositivo') : 'dispositivo';
+            $cat = $rowD['categoria'] ?? '';
+            $detalle = "{$user['name']} creó un ticket para {$dispDesc}" . ($cat?" (categoría {$cat})":"") . ". Descripción del problema: " . trim($descripcion);
+        } catch (\Throwable $e) {
+            $detalle = "{$user['name']} creó un ticket para el dispositivo ID {$dispositivo_id}. Descripción: " . trim($descripcion);
+        }
         $this->historialController->agregarAccion($accion, $detalle);
 
         

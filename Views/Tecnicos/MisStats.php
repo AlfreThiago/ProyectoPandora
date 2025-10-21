@@ -14,7 +14,7 @@
                     <span class="stat-label">Tickets activos</span>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-num"><?= $avg ? number_format($avg, 1) : '—' ?></span>
+                    <span class="stat-num"><?= isset($avg) ? htmlspecialchars(number_format((float)$avg,1,'.','')) : '—' ?></span>
                     <span class="stat-label">Honor promedio (★)</span>
                 </div>
                 <div class="stat-card">

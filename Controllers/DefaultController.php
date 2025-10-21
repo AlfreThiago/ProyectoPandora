@@ -309,7 +309,7 @@ class DefaultController
                         if (class_exists('HistorialController')) {
                             $hist = new \HistorialController();
                             $accion = 'Cambio de contraseña';
-                            $detalle = 'El usuario ID ' . (int)$userId . ' actualizó su contraseña desde Perfil.';
+                            $detalle = 'El usuario ' . ($user['name'] ?? ('ID '.(int)$userId)) . ' actualizó su contraseña desde la sección Perfil.';
                             $hist->agregarAccion($accion, $detalle);
                         }
                     }

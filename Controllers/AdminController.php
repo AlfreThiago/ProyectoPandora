@@ -85,7 +85,7 @@ class AdminController
             exit;
         }
 
-        $user = $userModel->findById($userId);
+    $user = $userModel->findById($userId);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'] ?? '';
@@ -96,11 +96,22 @@ class AdminController
             $current = $userModel->findById($userId);
             $email = $current['email'] ?? ($user['email'] ?? '');
 
+            // Guardar datos previos para un log más claro
+            $before = $userModel->findById($userId);
+            $oldName = $before['name'] ?? '—';
+            $oldEmail = $before['email'] ?? '—';
+            $oldRole = $before['role'] ?? '—';
+
             $userModel->updateUser($userId, $name, $email, $role);
 
             $admin = Auth::user();
-            $accion = "Actualización de Usuario";
-            $detalle = "El administrador {$admin['name']} editó el usuario con ID {$userId} (Nuevo nombre: {$name}, Nuevo rol: {$role}).";
+            $accion = "Actualización de usuario";
+            $cambios = [];
+            if ($name !== '' && $name !== $oldName) { $cambios[] = "nombre: '{$oldName}' → '{$name}'"; }
+            if ($role !== '' && $role !== $oldRole) { $cambios[] = "rol: {$oldRole} → {$role}"; }
+            // El email lo resolvemos siempre del registro real por seguridad
+            $detalle = "{$admin['name']} editó a {$oldName} (ID {$userId}, email {$oldEmail})";
+            if (!empty($cambios)) { $detalle .= ". Cambios: " . implode(', ', $cambios) . "."; }
             $this->historialController->agregarAccion($accion, $detalle);
 
             // Si el admin se cambia a sí mismo el rol, forzar logout para refrescar permisos
@@ -126,11 +137,17 @@ class AdminController
         $db = new Database();
         $db->connectDatabase();
         $userModel = new UserModel($db->getConnection());
+        // Capturar info antes de eliminar para tener un log legible
+        $victim = $userModel->findById((int)$userId);
         $userModel->deleteUser($userId);
 
         $admin = Auth::user();
         $accion = "Eliminación de usuario";
-        $detalle = "El administrador {$admin['name']} eliminó el usuario con ID {$userId}.";
+        if ($victim) {
+            $detalle = "{$admin['name']} eliminó al usuario {$victim['name']} (ID {$userId}, email {$victim['email']}, rol {$victim['role']}).";
+        } else {
+            $detalle = "{$admin['name']} eliminó al usuario con ID {$userId}.";
+        }
         $this->historialController->agregarAccion($accion, $detalle);
 
         header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers');
