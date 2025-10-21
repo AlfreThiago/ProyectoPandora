@@ -68,7 +68,7 @@ function headerMeta(string $route, string $rol): array {
 		case stripos($route, 'Default/Guia') === 0:
 			$title = 'Guía de uso'; $subtitle = 'Cómo utilizar Innovasys'; break;
 	}
-	return [$title, $subtitle];
+    return [$title, $subtitle];
 }
 
 list($title, $subtitle) = headerMeta($route, $rol);
@@ -112,14 +112,14 @@ list($title, $subtitle) = headerMeta($route, $rol);
 				<a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketTerminados" class="btn btn-outline small" title="Ver finalizados">Finalizados</a>
 			<?php endif; ?>
 		</div>
-	</div>
-	<div class="hamburger" id="menuToggle">
-		<span></span>
-		<span></span>
-		<span></span>
-	</div>
+  </div>
 
+	<div class="hamburger" id="menuToggle">
+    <span></span><span></span><span></span>
+  </div>
 </header>
+
+
 <script>
 	const menuBtn = document.getElementById('menuToggle');
 const sidebar = document.querySelector('.sidebar');

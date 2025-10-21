@@ -39,13 +39,12 @@
                                     <a href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?= $ticket['id'] ?>" class="btn btn-primary">Ver detalle</a>
                                 </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>No tienes reparaciones asignadas.</p>
-                <?php endif; ?>
-            </div>
-        </section>
-    </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No tienes reparaciones asignadas.</p>
+                    <?php endif; ?>
+                </div>
+            </section>
+        </div>
+    </section>
 </main>
- 
