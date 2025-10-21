@@ -93,10 +93,12 @@ class TicketController
     }
 
     private function badgeClassFor(string $estadoLower): string {
-        if (in_array($estadoLower, ['finalizado','cerrado','cancelado'])) return 'badge badge--danger';
-        if (in_array($estadoLower, ['en proceso','diagnóstico','diagnostico','reparación','reparacion','en reparación'])) return 'badge badge--success';
-        if (in_array($estadoLower, ['en espera','pendiente'])) return 'badge';
-        if (in_array($estadoLower, ['abierto','nuevo','recibido'])) return 'badge';
+        // Colores estandarizados y visibles en todas las vistas
+        if (in_array($estadoLower, ['finalizado'])) return 'badge badge--success';
+        if (in_array($estadoLower, ['cerrado','cancelado'])) return 'badge badge--danger';
+        if (in_array($estadoLower, ['en proceso','diagnóstico','diagnostico','reparación','reparacion','en reparación','en pruebas'])) return 'badge badge--info';
+        if (in_array($estadoLower, ['en espera','pendiente','presupuesto'])) return 'badge badge--warning';
+        if (in_array($estadoLower, ['abierto','nuevo','recibido'])) return 'badge badge--primary';
         return 'badge badge--muted';
     }
 

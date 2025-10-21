@@ -226,6 +226,7 @@ class SupervisorController {
 
         
         $ticket_id = isset($_GET['ticket_id']) ? (int)$_GET['ticket_id'] : 0;
+        $filtroCierre = strtolower(trim($_GET['cierre'] ?? 'todos')); // todos|activos|finalizados
         $tickets = $ticket_id ? [$ticketModel->ver($ticket_id)] : $ticketModel->getAllTickets();
         if (!$ticket_id) {
             
@@ -235,6 +236,13 @@ class SupervisorController {
         
         if ($ticket_id && $tickets && isset($tickets['id'])) {
             $tickets = [$tickets];
+        }
+
+        // Filtro por cierre (finalizados vs no finalizados)
+        if ($filtroCierre === 'finalizados') {
+            $tickets = array_values(array_filter($tickets, function($t){ return !empty($t['fecha_cierre']); }));
+        } elseif ($filtroCierre === 'activos') {
+            $tickets = array_values(array_filter($tickets, function($t){ return empty($t['fecha_cierre']); }));
         }
 
         $presupuestos = [];

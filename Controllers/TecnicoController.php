@@ -16,10 +16,11 @@ class TecnicoController {
 
     private function estadoBadgeClass(?string $estado): string {
         $s = strtolower(trim($estado ?? ''));
-        if (in_array($s, ['abierto','nuevo','recibido'], true)) return 'badge';
-        if (in_array($s, ['en proceso','diagnóstico','diagnostico','reparación','reparacion','en reparación'], true)) return 'badge badge--success';
-        if (in_array($s, ['en espera','pendiente'], true)) return 'badge';
-        if (in_array($s, ['finalizado','cerrado','cancelado'], true)) return 'badge badge--danger';
+        if (in_array($s, ['finalizado'], true)) return 'badge badge--success';
+        if (in_array($s, ['cerrado','cancelado'], true)) return 'badge badge--danger';
+        if (in_array($s, ['en proceso','diagnóstico','diagnostico','reparación','reparacion','en reparación','en pruebas'], true)) return 'badge badge--info';
+        if (in_array($s, ['en espera','pendiente','presupuesto'], true)) return 'badge badge--warning';
+        if (in_array($s, ['abierto','nuevo','recibido'], true)) return 'badge badge--primary';
         return 'badge badge--muted';
     }
 
@@ -217,16 +218,11 @@ class TecnicoController {
             $laborModel2 = new TicketLaborModel($this->db->getConnection());
             $labor = $laborModel2->getByTicket($ticket_id);
             if ($labor && (float)($labor['labor_amount'] ?? 0) > 0) {
-                require_once __DIR__ . '/../Models/EstadoTicket.php';
-                $em2 = new EstadoTicketModel($this->db->getConnection());
-                $estados = $em2->getAllEstados();
-                $esperaId = 0; foreach ($estados as $e) { if (strcasecmp($e['name'],'En espera')===0) { $esperaId = (int)$e['id']; break; } }
-                if ($esperaId) {
-                    $this->db->getConnection()->query("UPDATE tickets SET estado_id = ".$esperaId." WHERE id = ".$ticket_id);
-                    require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
-                    $hist2 = new TicketEstadoHistorialModel($this->db->getConnection());
-                    $hist2->add($ticket_id, $esperaId, (int)$user['id'], 'Tecnico', 'Repuestos listos + mano de obra definida: presupuesto listo para publicar');
-                }
+                // No cambiamos el estado automáticamente para evitar retrocesos a "En espera".
+                // El técnico verá el botón "Diagnóstico finalizado" en la vista del ticket si está en Diagnóstico.
+                require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
+                $hist2 = new TicketEstadoHistorialModel($this->db->getConnection());
+                $hist2->add($ticket_id, (int)($ticketModel->ver($ticket_id)['estado_id'] ?? 0), (int)$user['id'], 'Tecnico', 'Repuestos listos + mano de obra definida: presupuesto listo para publicar');
             }
             header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&success=1&ticket_id=' . $ticket_id);
             exit;

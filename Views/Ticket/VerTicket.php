@@ -145,18 +145,21 @@
 
 
         <!-- === BLOQUE TÉCNICO === -->
-        <?php if (!empty($view['ticket']) && $rol === 'Tecnico'): ?>
+    <?php if (!empty($view['ticket']) && $rol === 'Tecnico'): ?>
             <hr>
             <h3>Cambiar estado</h3>
             <?php if (!empty($view['tecnico']['acciones'])): ?>
-                <?php foreach ($view['tecnico']['acciones'] as $accion): ?>
-                    <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/ActualizarEstado" class="inline-form">
-                        <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>" />
-                        <input type="hidden" name="estado_id" value="<?= (int)$accion['estado_id'] ?>" />
-                        <input type="hidden" name="comentario" value="<?= htmlspecialchars($accion['comentario'], ENT_QUOTES, 'UTF-8') ?>" />
-                        <button class="btn btn-primary" type="submit"><?= htmlspecialchars($accion['label']) ?></button>
-                    </form>
-                <?php endforeach; ?>
+        <?php $readyDiag = !empty($view['tecnico']['has_items']) && !empty($view['tecnico']['has_labor']); ?>
+        <?php foreach ($view['tecnico']['acciones'] as $accion): ?>
+          <?php $label = (string)$accion['label']; $isFinDiag = (stripos($label,'diagnóstico finalizado') !== false || stripos($label,'diagnostico finalizado') !== false); ?>
+          <?php if ($isFinDiag && !$readyDiag) continue; ?>
+          <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/ActualizarEstado" class="inline-form">
+            <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>" />
+            <input type="hidden" name="estado_id" value="<?= (int)$accion['estado_id'] ?>" />
+            <input type="hidden" name="comentario" value="<?= htmlspecialchars($accion['comentario'], ENT_QUOTES, 'UTF-8') ?>" />
+            <button class="btn btn-primary" type="submit"><?= htmlspecialchars($accion['label']) ?></button>
+          </form>
+        <?php endforeach; ?>
             <?php endif; ?>
 
             <?php if (!empty($view['tecnico']['mensaje'])): ?>

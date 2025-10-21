@@ -9,10 +9,11 @@ class ClienteController {
     // Helpers de presentación pedidos en el controlador
     private function estadoBadgeClass(?string $estado): string {
         $s = strtolower(trim($estado ?? ''));
-        if (in_array($s, ['abierto','nuevo','recibido'], true)) return 'badge';
-        if (in_array($s, ['en proceso','diagnóstico','diagnostico','reparación','reparacion','en reparación'], true)) return 'badge badge--success';
-        if (in_array($s, ['en espera','pendiente'], true)) return 'badge';
-        if (in_array($s, ['finalizado','cerrado','cancelado'], true)) return 'badge badge--danger';
+        if (in_array($s, ['finalizado'], true)) return 'badge badge--success';
+        if (in_array($s, ['cerrado','cancelado'], true)) return 'badge badge--danger';
+        if (in_array($s, ['en proceso','diagnóstico','diagnostico','reparación','reparacion','en reparación','en pruebas'], true)) return 'badge badge--info';
+        if (in_array($s, ['en espera','pendiente','presupuesto'], true)) return 'badge badge--warning';
+        if (in_array($s, ['abierto','nuevo','recibido'], true)) return 'badge badge--primary';
         return 'badge badge--muted';
     }
     private function puedeEliminarTicket(?string $estado): bool {
