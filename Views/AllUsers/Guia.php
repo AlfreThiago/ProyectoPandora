@@ -108,14 +108,38 @@ const textos = {
     soporte_titulo: "Support and tracking",
     soporte_desc: "If you have questions, check the help section or contact support from your dashboard.",
     gracias: "Thanks for trusting <strong>Innovasys</strong>! 💜"
+  },
+  pt: {
+    guia_rapida: "Guia rápida",
+    titulo: "Como usar o Innovasys",
+    descripcion: "Siga estes passos para registrar seus dispositivos, criar tickets e acompanhar seus reparos.",
+    registrarme: "Registrar-me",
+    ya_cuenta: "Já tenho conta",
+    registro_titulo: "Registro",
+    registro_desc: "Crie sua conta em <strong>Registrar</strong> com seu nome, email e senha.",
+    acceso_titulo: "Acesso",
+    acceso_desc: "Faça login em <strong>Entrar</strong> para acessar seu painel.",
+    panel_titulo: "Painel do usuário",
+    panel_desc: "Gerencie seus <em>dispositivos</em> e verifique seus <em>tickets</em> em andamento.",
+    reparacion_titulo: "Solicitar reparo",
+    reparacion_desc: "Adicione seu dispositivo e <strong>crie um ticket</strong>. Você pode acompanhar o status a qualquer momento.",
+    soporte_titulo: "Suporte e acompanhamento",
+    soporte_desc: "Em caso de dúvidas, consulte a seção de ajuda ou entre em contato com o suporte através do seu painel.",
+    gracias: "Obrigado por confiar no <strong>Innovasys</strong>! 💜"
   }
 };
-
 let currentLang = "es";
+const langs = ["es", "en", "pt"];
+let langIndex = 0;
 
 langBtn.addEventListener("click", () => {
-  currentLang = currentLang === "es" ? "en" : "es";
-  langBtn.textContent = currentLang === "es" ? "EN 🇬🇧" : "ES 🇪🇸";
+  langIndex = (langIndex + 1) % langs.length;
+  currentLang = langs[langIndex];
+
+  langBtn.textContent =
+    currentLang === "es" ? "EN 🇬🇧" :
+    currentLang === "en" ? "PT 🇧🇷" :
+    "ES 🇪🇸";
   
   document.querySelectorAll("[data-lang]").forEach(el => {
     const key = el.getAttribute("data-lang");
@@ -123,3 +147,4 @@ langBtn.addEventListener("click", () => {
   });
 });
 </script>
+
