@@ -15,9 +15,7 @@ return [
     'Default/Perfil' => [
         'controller' => 'Default',
         'action' => 'perfil'
-    ],
-    // Ruta JSON removida: 'Default/StatsJson'
-    
+    ],    
     
     
     'Auth/Login' => [
@@ -339,6 +337,24 @@ return [
     'Device/Eliminar' => [
         'controller' => 'Device',
         'action' => 'Eliminar'
+    ],
+    
+    // Notificaciones
+    'Notification/Index' => [
+        'controller' => 'Notification',
+        'action' => 'Index'
+    ],
+    'Notification/Count' => [
+        'controller' => 'Notification',
+        'action' => 'Count'
+    ],
+    'Notification/MarkRead' => [
+        'controller' => 'Notification',
+        'action' => 'MarkRead'
+    ],
+    'Notification/Create' => [
+        'controller' => 'Notification',
+        'action' => 'Create'
     ],
 ];
 ?>

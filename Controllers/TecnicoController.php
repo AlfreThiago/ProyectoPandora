@@ -8,10 +8,75 @@ require_once __DIR__ . '/../Models/Rating.php';
 require_once __DIR__ . '/../Models/TecnicoStats.php';
 require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/HistorialController.php';
+require_once __DIR__ . '/../Core/Date.php';
 
 class TecnicoController {  
     private $db;
     private $historial;
+
+    private function estadoBadgeClass(?string $estado): string {
+        $s = strtolower(trim($estado ?? ''));
+        if (in_array($s, ['finalizado'], true)) return 'badge badge--success';
+        if (in_array($s, ['cerrado','cancelado'], true)) return 'badge badge--danger';
+        if (in_array($s, ['en proceso','diagnóstico','diagnostico','reparación','reparacion','en reparación','en pruebas'], true)) return 'badge badge--info';
+        if (in_array($s, ['en espera','pendiente','presupuesto'], true)) return 'badge badge--warning';
+        if (in_array($s, ['abierto','nuevo','recibido'], true)) return 'badge badge--primary';
+        return 'badge badge--muted';
+    }
+
+    private function aplicarFiltrosYPresentacion(array $tickets): array {
+        $estado = strtolower(trim($_GET['estado'] ?? 'activos'));
+        $q = trim((string)($_GET['q'] ?? ''));
+        $desde = trim((string)($_GET['desde'] ?? ''));
+        $hasta = trim((string)($_GET['hasta'] ?? ''));
+
+        // Filtro por estado (activos: sin fecha_cierre; finalizados: con fecha_cierre)
+        if ($estado === 'activos' || $estado === 'finalizados') {
+            $tickets = array_values(array_filter($tickets, function($t) use ($estado){
+                $cerrado = !empty($t['fecha_cierre']);
+                return $estado === 'activos' ? !$cerrado : $cerrado;
+            }));
+        }
+
+        // Filtro por texto
+        if ($q !== '') {
+            $qLower = mb_strtolower($q, 'UTF-8');
+            $tickets = array_values(array_filter($tickets, function($t) use ($qLower){
+                $fields = [
+                    $t['cliente'] ?? '',
+                    $t['marca'] ?? '',
+                    $t['modelo'] ?? '',
+                    $t['descripcion_falla'] ?? '',
+                    $t['estado'] ?? '',
+                ];
+                foreach ($fields as $f) {
+                    if ($f !== null && $f !== '' && strpos(mb_strtolower((string)$f, 'UTF-8'), $qLower) !== false) return true;
+                }
+                return false;
+            }));
+        }
+
+        // Filtro por fechas (creación)
+        if ($desde !== '' || $hasta !== '') {
+            $tickets = array_values(array_filter($tickets, function($t) use ($desde, $hasta){
+                $f = substr((string)($t['fecha_creacion'] ?? ''), 0, 10);
+                if ($desde !== '' && $f < $desde) return false;
+                if ($hasta !== '' && $f > $hasta) return false;
+                return true;
+            }));
+        }
+
+        // Enriquecer (badge + fechas preformateadas)
+        foreach ($tickets as &$t) {
+            $t['estadoClass'] = $this->estadoBadgeClass($t['estado'] ?? '');
+            if (!empty($t['fecha_creacion'])) {
+                $t['fecha_exact'] = DateHelper::exact($t['fecha_creacion']);
+                $t['fecha_human'] = DateHelper::smart($t['fecha_creacion']);
+            }
+        }
+        unset($t);
+        return $tickets;
+    }
 
     public function __construct() {
         $this->db = new Database();
@@ -34,9 +99,10 @@ class TecnicoController {
     $ticketModel = new Ticket($this->db->getConnection());
 
         
-        $tickets = $ticketModel->getTicketsByTecnicoId($user['id']);
+    $tickets = $ticketModel->getTicketsByTecnicoId($user['id']);
+    $tickets = $this->aplicarFiltrosYPresentacion($tickets);
 
-        include_once __DIR__ . '/../Views/Tecnicos/MisReparaciones.php';
+    include_once __DIR__ . '/../Views/Tecnicos/MisReparaciones.php';
     }
 
     public function MisRepuestos() {
@@ -152,16 +218,11 @@ class TecnicoController {
             $laborModel2 = new TicketLaborModel($this->db->getConnection());
             $labor = $laborModel2->getByTicket($ticket_id);
             if ($labor && (float)($labor['labor_amount'] ?? 0) > 0) {
-                require_once __DIR__ . '/../Models/EstadoTicket.php';
-                $em2 = new EstadoTicketModel($this->db->getConnection());
-                $estados = $em2->getAllEstados();
-                $esperaId = 0; foreach ($estados as $e) { if (strcasecmp($e['name'],'En espera')===0) { $esperaId = (int)$e['id']; break; } }
-                if ($esperaId) {
-                    $this->db->getConnection()->query("UPDATE tickets SET estado_id = ".$esperaId." WHERE id = ".$ticket_id);
-                    require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
-                    $hist2 = new TicketEstadoHistorialModel($this->db->getConnection());
-                    $hist2->add($ticket_id, $esperaId, (int)$user['id'], 'Tecnico', 'Repuestos listos + mano de obra definida: presupuesto listo para publicar');
-                }
+                // No cambiamos el estado automáticamente para evitar retrocesos a "En espera".
+                // El técnico verá el botón "Diagnóstico finalizado" en la vista del ticket si está en Diagnóstico.
+                require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
+                $hist2 = new TicketEstadoHistorialModel($this->db->getConnection());
+                $hist2->add($ticket_id, (int)($ticketModel->ver($ticket_id)['estado_id'] ?? 0), (int)$user['id'], 'Tecnico', 'Repuestos listos + mano de obra definida: presupuesto listo para publicar');
             }
             header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&success=1&ticket_id=' . $ticket_id);
             exit;

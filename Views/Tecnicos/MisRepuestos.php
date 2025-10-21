@@ -1,5 +1,7 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <?php require_once __DIR__ . '/../../Core/Date.php'; ?>
+<?php require_once __DIR__ . '/../../Core/LogFormatter.php'; ?>
+<?php require_once __DIR__ . '/../../Core/Date.php'; ?>
 
 <main class="inv-page">
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
@@ -16,23 +18,35 @@
 
         <div class="asignar-panel">
             <div class="Tabla-Contenedor">
-                        <div style="display:flex; gap:12px; align-items:end; flex-wrap:wrap; justify-content:space-between; margin-bottom:12px;">
-                            <div>
-                                <h2 style="margin:0;">Solicitar repuesto</h2>
-                                <small>Selecciona el ticket y filtra el inventario.</small>
-                            </div>
+                                                <div style="display:flex; gap:12px; align-items:end; flex-wrap:wrap; justify-content:space-between; margin-bottom:12px;">
+                                                        <div>
+                                                                <h2 style="margin:0;">Solicitar repuesto</h2>
+                                                                <?php $prefijado = isset($ticket_id) && (int)$ticket_id > 0; ?>
+                                                                <small>
+                                                                    <?= $prefijado ? 'Agregando repuestos para el ticket #'.(int)$ticket_id : 'Selecciona el ticket y filtra el inventario.' ?>
+                                                                </small>
+                                                                <?php if ($prefijado): ?>
+                                                                    <div style="margin-top:8px;">
+                                                                        <a class="btn btn-secondary" href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?php echo (int)$ticket_id; ?>">← Volver al ticket</a>
+                                                                    </div>
+                                                                <?php endif; ?>
+                                                        </div>
                                         <form method="get" action="/ProyectoPandora/Public/index.php" style="display:flex; gap:8px; align-items:end; flex-wrap:wrap;">
                                 <input type="hidden" name="route" value="Tecnico/MisRepuestos" />
-                                <div>
-                                    <label class="asignar-label" for="ticket_id">Ticket:</label>
-                                    <select class="asignar-input" name="ticket_id" id="ticket_id">
-                                        <?php foreach (($tickets ?? []) as $t): ?>
-                                            <option value="<?php echo (int)$t['id']; ?>" <?php echo (isset($ticket_id) && (int)$ticket_id === (int)$t['id']) ? 'selected' : ''; ?>>
-                                                #<?php echo (int)$t['id']; ?> · <?php echo htmlspecialchars($t['marca'] . ' ' . $t['modelo']); ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
+                                <?php if (!$prefijado): ?>
+                                  <div>
+                                      <label class="asignar-label" for="ticket_id">Ticket:</label>
+                                      <select class="asignar-input" name="ticket_id" id="ticket_id">
+                                          <?php foreach (($tickets ?? []) as $t): ?>
+                                              <option value="<?php echo (int)$t['id']; ?>" <?php echo (isset($ticket_id) && (int)$ticket_id === (int)$t['id']) ? 'selected' : ''; ?>>
+                                                  #<?php echo (int)$t['id']; ?> · <?php echo htmlspecialchars($t['marca'] . ' ' . $t['modelo']); ?>
+                                              </option>
+                                          <?php endforeach; ?>
+                                      </select>
+                                  </div>
+                                <?php else: ?>
+                                  <input type="hidden" name="ticket_id" id="ticket_id" value="<?php echo (int)$ticket_id; ?>" />
+                                <?php endif; ?>
                                 <div>
                                     <label class="asignar-label" for="categoria_id">Categoría:</label>
                                     <select class="asignar-input" name="categoria_id" id="categoria_id">
@@ -106,7 +120,7 @@
                                 </td>
                                 <td><?php echo htmlspecialchars($row['categoria']); ?></td>
                                 <td><?php echo htmlspecialchars($row['name_item']); ?></td>
-                                <td>$<span class="precio" data-precio="<?php echo (float)$row['valor_unitario']; ?>"><?php echo number_format((float)$row['valor_unitario'], 2); ?></span></td>
+                                <td><span class="precio" data-precio="<?php echo (float)$row['valor_unitario']; ?>"><?php echo htmlspecialchars(LogFormatter::monto((float)$row['valor_unitario'])); ?></span></td>
                                                 <td><?php echo (int)$row['stock_actual']; ?><?php if ((int)$row['stock_actual'] <= 0) echo ' <span class="badge badge--muted">Sin stock</span>'; ?></td>
                                                 <td>
                                                     <form class="req-form" action="/ProyectoPandora/Public/index.php?route=Tecnico/SolicitarRepuesto" method="post">
@@ -160,7 +174,7 @@
                                 <td><?php echo htmlspecialchars($it['categoria']); ?></td>
                                 <td><?php echo htmlspecialchars($it['name_item']); ?></td>
                                 <td><?php echo (int)$it['cantidad']; ?></td>
-                                <td>$<?php echo number_format((float)$it['valor_total'], 2); ?></td>
+                                <td><?php echo htmlspecialchars(LogFormatter::monto((float)$it['valor_total'])); ?></td>
                             </tr>
                         <?php endforeach; ?>
                         <?php if (empty($items_ticket)): ?>

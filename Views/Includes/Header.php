@@ -68,41 +68,53 @@ function headerMeta(string $route, string $rol): array {
 		case stripos($route, 'Default/Guia') === 0:
 			$title = 'Guía de uso'; $subtitle = 'Cómo utilizar Innovasys'; break;
 	}
-	return [$title, $subtitle];
+    return [$title, $subtitle];
 }
 
 list($title, $subtitle) = headerMeta($route, $rol);
 ?>
 <!-- Estilos del header consolidados en AdminDash.css -->
 
-<header class="header hero-header bg-base shadow-sm p-3">
-  <div class="hero-row flex items-center justify-between gap-4 flex-wrap">
-
-    <div class="hero-left flex flex-col">
-      <?php if (isHomeRoute($route)): ?>
-        <p class="hero-greet text-lg font-semibold text-primary">
-          <?= $authUser ? '¡Hola, '.htmlspecialchars($name).'!' : 'Bienvenido a Innovasys'; ?>
-        </p>
-      <?php endif; ?>
-      <p class="hero-sub text-sm text-secondary">
-        <?= htmlspecialchars($title) ?> · <?= htmlspecialchars($subtitle) ?>
-      </p>
-    </div>
-
-    <div class="hero-actions flex items-center gap-3">
-      <?php if (stripos($route, 'Cliente/MisTicket') === 0 || stripos($route, 'Cliente/MisTicketActivo') === 0 || stripos($route, 'Cliente/MisTicketTerminados') === 0): ?>
-        <a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo" 
-           class="btn-modern active" 
-           title="Ver activos">Activos</a>
-        <a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketTerminados" 
-           class="btn-modern finalized" 
-           title="Ver finalizados">Finalizados</a>
-      <?php endif; ?>
-    </div>
-
+<header class="header hero-header">
+	<div class="hero-row">
+		<div class="hero-left">
+			<?php if (isHomeRoute($route)): ?>
+				<p class="hero-greet">
+					<?= $authUser ? '¡Hola, '.htmlspecialchars($name).'!' : 'Bienvenido a Innovasys'; ?>
+				</p>
+			<?php endif; ?>
+			<p class="hero-sub">
+				<?= htmlspecialchars($title) ?> · <?= htmlspecialchars($subtitle) ?>
+			</p>
+		</div>
+		<div class="hero-actions">
+			<?php 
+			// Unread count minimal (no JSON): calcular rápido solo cuando hay usuario
+			$unread = 0; 
+			if ($authUser) {
+				require_once __DIR__ . '/../../Core/Database.php';
+				require_once __DIR__ . '/../../Models/Notification.php';
+				$dbh = new Database(); $dbh->connectDatabase();
+				$nm = new NotificationModel($dbh->getConnection());
+				$unread = $nm->countUnread((int)$authUser['id'], (string)$authUser['role']);
+			}
+			?>
+			<?php if ($authUser): ?>
+			<a href="/ProyectoPandora/Public/index.php?route=Notification/Index" class="btn btn-outline small" title="Notificaciones" id="notifBell">
+				<span class="icon-bell">🔔</span>
+				<span class="badge" id="notifBadge" style="display: <?= ($unread>0?'inline-block':'none') ?>;">
+					<?= (int)$unread ?>
+				</span>
+			</a>
+			<?php endif; ?>
+			<?php if (stripos($route, 'Cliente/MisTicket') === 0 || stripos($route, 'Cliente/MisTicketActivo') === 0 || stripos($route, 'Cliente/MisTicketTerminados') === 0): ?>
+				<a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo" class="btn btn-outline small" title="Ver activos">Activos</a>
+				<a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketTerminados" class="btn btn-outline small" title="Ver finalizados">Finalizados</a>
+			<?php endif; ?>
+		</div>
   </div>
 
-  <div class="hamburger" id="menuToggle">
+	<div class="hamburger" id="menuToggle">
     <span></span><span></span><span></span>
   </div>
 </header>
@@ -117,4 +129,47 @@ menuBtn.addEventListener('click', () => {
   sidebar.classList.toggle('active');
 });
 
+</script>
+<?php if ($authUser): ?>
+<script>
+	// Polling sencillo cada 10 segundos para actualizar el contador del badge
+	(function(){
+		const badge = document.getElementById('notifBadge');
+		if (!badge) return;
+		const refresh = () => {
+			fetch('/ProyectoPandora/Public/index.php?route=Notification/Count', { cache: 'no-store' })
+				.then(r => r.ok ? r.text() : '0')
+				.then(txt => {
+					const n = parseInt((txt||'0').trim(), 10);
+					if (isNaN(n) || n <= 0) {
+						badge.style.display = 'none';
+						badge.textContent = '0';
+					} else {
+						badge.style.display = 'inline-block';
+						badge.textContent = String(n);
+					}
+				})
+				.catch(() => {/* noop */});
+		};
+		// Primera carga inmediata y luego cada 10s
+		refresh();
+		setInterval(refresh, 10000);
+	})();
+</script>
+<?php endif; ?>
+<script>
+// Auto-refresh global (10s) con salvaguardas básicas
+(function(){
+	if (window.AUTO_REFRESH === false) return; // opt-out explícito
+	const PERIOD = 10000; // 10s
+	function canReload(){
+		if (document.hidden) return false; // no recargar si la pestaña no está visible
+		const ae = document.activeElement;
+		if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.tagName === 'SELECT' || ae.isContentEditable)) return false; // evitar perder edición
+		return !window.NO_AUTO_REFRESH; // otro opt-out simple
+	}
+	setInterval(function(){
+		try { if (canReload()) { location.reload(); } } catch(e){}
+	}, PERIOD);
+})();
 </script>

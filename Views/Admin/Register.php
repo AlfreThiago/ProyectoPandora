@@ -6,6 +6,11 @@
             El correo electrónico ya está registrado. Por favor, usa otro.
         </div>
     <?php endif; ?>
+    <?php if (isset($_GET['error']) && $_GET['error'] === 'NombreRequerido'): ?>
+        <div style="color: red; margin-bottom: 10px; text-align:center;">
+            El nombre es obligatorio.
+        </div>
+    <?php endif; ?>
 
     <div class="form-vertical-wrapper">
         <div class="form-vertical">

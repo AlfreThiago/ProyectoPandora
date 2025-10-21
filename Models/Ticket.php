@@ -167,7 +167,8 @@ class Ticket
                     d.modelo,
                     t.descripcion_falla,
                     e.name AS estado,
-                    t.fecha_creacion,
+                                        t.fecha_creacion,
+                                        t.fecha_cierre,
                     tec.name AS tecnico
                 FROM tickets t
                 INNER JOIN dispositivos d ON t.dispositivo_id = d.id
@@ -176,7 +177,7 @@ class Ticket
                 LEFT JOIN tecnicos tc ON t.tecnico_id = tc.id
                 LEFT JOIN users tec ON tc.user_id = tec.id
                 WHERE c.user_id = ?
-                  AND LOWER(e.name) NOT IN ('finalizado','cerrado','cancelado')
+                                    AND t.fecha_cierre IS NULL
                 ORDER BY t.fecha_creacion DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $user_id);
@@ -197,7 +198,8 @@ class Ticket
                     d.modelo,
                     t.descripcion_falla,
                     e.name AS estado,
-                    t.fecha_creacion,
+                                        t.fecha_creacion,
+                                        t.fecha_cierre,
                     tec.name AS tecnico
                 FROM tickets t
                 INNER JOIN dispositivos d ON t.dispositivo_id = d.id
@@ -206,7 +208,7 @@ class Ticket
                 LEFT JOIN tecnicos tc ON t.tecnico_id = tc.id
                 LEFT JOIN users tec ON tc.user_id = tec.id
                 WHERE c.user_id = ?
-                  AND LOWER(e.name) IN ('finalizado','cerrado','cancelado')
+                                    AND t.fecha_cierre IS NOT NULL
                 ORDER BY t.fecha_creacion DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $user_id);
@@ -285,7 +287,8 @@ class Ticket
                     u.name AS cliente,
                     t.descripcion_falla,
                     e.name AS estado,
-                    t.fecha_creacion
+                    t.fecha_creacion,
+                    t.fecha_cierre
                 FROM tickets t
                 INNER JOIN dispositivos d ON t.dispositivo_id = d.id
                 INNER JOIN clientes c ON t.cliente_id = c.id
@@ -313,7 +316,9 @@ class Ticket
                     u.name AS cliente,
                     t.descripcion_falla AS descripcion,
                     e.name AS estado,
-                    tec.name AS tecnico
+                    tec.name AS tecnico,
+                    t.fecha_creacion,
+                    t.fecha_cierre
                 FROM tickets t
                 INNER JOIN dispositivos d ON t.dispositivo_id = d.id
                 INNER JOIN clientes c ON t.cliente_id = c.id

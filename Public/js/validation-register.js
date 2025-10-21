@@ -38,8 +38,13 @@
   }
 
   window.validarEmailRegistro = function(form){
+    var nameInput = form.querySelector('input[name="name"]');
     var emailInput = form.querySelector('input[name="email"]');
     var passInput = form.querySelector('input[name="password"]');
+    if (!nameInput || (nameInput.value || '').trim() === '') {
+      showValidationDialog('El nombre es obligatorio.', nameInput);
+      return false;
+    }
     var val = emailInput ? (emailInput.value || '').trim().toLowerCase() : '';
     if (!isValidEmail(val)) {
       showValidationDialog('Ingresá un email válido (debe incluir un dominio con punto, ej: usuario@dominio.com)', emailInput);
@@ -53,8 +58,13 @@
   };
 
   window.validarEmailRegistroAdmin = function(form){
+    var nameInput = form.querySelector('input[name="name"]');
     var emailInput = form.querySelector('input[name="email"]');
     var passInput = form.querySelector('input[name="password"]');
+    if (!nameInput || (nameInput.value || '').trim() === '') {
+      showValidationDialog('El nombre es obligatorio.', nameInput);
+      return false;
+    }
     var val = emailInput ? (emailInput.value || '').trim().toLowerCase() : '';
     if (!isValidEmail(val)) {
       showValidationDialog('Ingresá un email válido (debe incluir un dominio con punto, ej: usuario@dominio.com)', emailInput);
