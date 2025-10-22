@@ -214,4 +214,13 @@ $authUser = Auth::user();
     </script>
 
 </body>
+<?php 
+    // Cargar JS de login (se auto-inicializa sólo si existe #loginForm)
+    $authJsPath = rtrim($_SERVER['DOCUMENT_ROOT'],'/\\') . '/ProyectoPandora/Public/js/auth-login.js';
+?>
+<script src="/ProyectoPandora/Public/js/auth-login.js?v=<?= file_exists($authJsPath) ? filemtime($authJsPath) : time(); ?>" defer></script>
+        <script src="/ProyectoPandora/Public/js/notifications.js?v=<?php echo time(); ?>" defer></script>
+        <script src="/ProyectoPandora/Public/js/ticket-actions.js?v=<?php echo time(); ?>" defer></script>
+        <script src="/ProyectoPandora/Public/js/list-filters.js?v=<?php echo time(); ?>" defer></script>
+        <script src="/ProyectoPandora/Public/js/presupuestos.js?v=<?php echo time(); ?>" defer></script>
 </html>

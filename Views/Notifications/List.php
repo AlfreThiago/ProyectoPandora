@@ -34,7 +34,7 @@
                 </span>
               </div>
               <?php if (!$n['is_read']): ?>
-                <form method="POST" action="/ProyectoPandora/Public/index.php?route=Notification/MarkRead" style="display:inline;">
+                <form method="POST" action="/ProyectoPandora/Public/index.php?route=Notification/MarkRead" class="js-mark-read" style="display:inline;">
                   <input type="hidden" name="id" value="<?= (int)$n['id'] ?>">
                   <button class="btn small" type="submit">Marcar como leída</button>
                 </form>

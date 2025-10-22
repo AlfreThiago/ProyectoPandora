@@ -154,19 +154,4 @@ menuBtn.addEventListener('click', () => {
 	})();
 </script>
 <?php endif; ?>
-<script>
-// Auto-refresh global (10s) con salvaguardas básicas
-(function(){
-	if (window.AUTO_REFRESH === false) return; // opt-out explícito
-	const PERIOD = 10000; // 10s
-	function canReload(){
-		if (document.hidden) return false; // no recargar si la pestaña no está visible
-		const ae = document.activeElement;
-		if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.tagName === 'SELECT' || ae.isContentEditable)) return false; // evitar perder edición
-		return !window.NO_AUTO_REFRESH; // otro opt-out simple
-	}
-	setInterval(function(){
-		try { if (canReload()) { location.reload(); } } catch(e){}
-	}, PERIOD);
-})();
-</script>
+<!-- Auto-refresh global deshabilitado: la UI se actualiza por AJAX en puntos específicos -->

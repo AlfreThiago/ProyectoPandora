@@ -5,7 +5,7 @@
             <h2 class="bienvenida">Bienvenido a <strong>Innovasys</strong></h2>
             <h3>Iniciar Sesión</h3>
 
-            <form class="form" id="loginForm">
+            <form class="form" id="loginForm" method="post" action="/ProyectoPandora/Public/index.php?route=Auth/Login">
                 <div class="textbox">
                     <input type="email" name="email" id="email" required>
                     <label for="email">Email</label>
@@ -32,30 +32,4 @@
     </section>
 </main>
 
-<!-- script AJAX -->
-<script>
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // no recarga la página
-
-    const form = e.target;
-    const formData = new FormData(form);
-
-    // url del backend php que procesa el login
-    const url = '/ProyectoPandora/Public/index.php?route=Auth/Login';
-
-    fetch(url, {
-        method: 'POST',
-        body: formData
-    })
-    .then(resp => resp.text()) // si el backend responde html, usar .text()
-    .then(data => {
-        // muestra la respuesta del servidor
-        document.getElementById('respuesta').innerHTML = data;
-
-    })
-    .catch(err => {
-        document.getElementById('respuesta').textContent = 'Error: ' + err;
-    });
-});
-</script>
 

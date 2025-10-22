@@ -11,8 +11,6 @@ class NotificationController
     {
         Auth::check();
         $user = Auth::user();
-        // Auto-refresh de la página cada 10s para ver nuevas notificaciones
-        header('Refresh: 10');
         $db = new Database(); $db->connectDatabase();
         $model = new NotificationModel($db->getConnection());
 
