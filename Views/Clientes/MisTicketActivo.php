@@ -38,9 +38,9 @@
             ?>
 
             <div class="device-card">
-              <div class="device-img">
+              <!-- <div class="device-img">
                 <img src="<?= $imgUrl ?>" alt="Imagen del dispositivo">
-              </div>
+              </div> -->
 
               <div class="device-info u-flex-col u-flex-1">
                 <h3><?= htmlspecialchars($ticket['dispositivo']) ?> <?= htmlspecialchars($ticket['modelo']) ?></h3>

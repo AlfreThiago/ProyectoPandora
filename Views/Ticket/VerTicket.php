@@ -6,82 +6,86 @@
     <!-- ================== DETALLE IZQUIERDA ================== -->
     <div class="detalle-izquierda">
       <h2 id="tituloDetalle">Detalle del Ticket</h2>
-      <div class="contenedor">
 
+      <!-- BLOQUE PRINCIPAL: INFO HORIZONTAL -->
+      <div class="bloque-principal">
         <?php if (!empty($view['ticket'])): ?>
           <?php $t = $view['ticket']; ?>
-          <ul class="list-group" id="detalleTicket" style="list-style:none;padding:0;">
-              <li><strong>ID Ticket:</strong> <?= htmlspecialchars($t['id']) ?></li>
-              <li><strong>Dispositivo:</strong> <?= htmlspecialchars($t['marca']) ?> <?= htmlspecialchars($t['modelo']) ?></li>
-              <li><strong>Cliente:</strong> <?= htmlspecialchars($t['cliente'] ?? $t['cliente_nombre'] ?? $t['user_name'] ?? 'No disponible') ?></li>
-              <li><strong>Estado:</strong> <span id="estado-badge" class="<?= htmlspecialchars($view['estadoClass']) ?>"><?= htmlspecialchars($view['estadoStr']) ?></span></li>
-              <li><strong>Descripción de la falla:</strong> <?= htmlspecialchars($t['descripcion'] ?? $t['descripcion_falla']) ?></li>
-              <li><strong>Técnico asignado:</strong> <?= !empty($t['tecnico']) ? htmlspecialchars($t['tecnico']) : '<span style="color:#d32f2f;">Sin asignar</span>' ?></li>
+          <ul class="detalle-grid" id="detalleTicket" style="list-style:none;padding:0;margin:0;">
+              <li class="dato-item"><strong>ID Ticket:</strong><span><?= htmlspecialchars($t['id']) ?></span></li>
+              <li class="dato-item"><strong>Dispositivo:</strong><span><?= htmlspecialchars($t['marca']) ?> <?= htmlspecialchars($t['modelo']) ?></span></li>
+              <li class="dato-item"><strong>Cliente:</strong><span><?= htmlspecialchars($t['cliente'] ?? $t['cliente_nombre'] ?? $t['user_name'] ?? 'No disponible') ?></span></li>
+              <li class="dato-item"><strong>Estado:</strong><span id="estado-badge" class="<?= htmlspecialchars($view['estadoClass']) ?>"><?= htmlspecialchars($view['estadoStr']) ?></span></li>
+              <li class="dato-item dato-larga"><strong>Descripción de la falla:</strong><span><?= htmlspecialchars($t['descripcion'] ?? $t['descripcion_falla']) ?></span></li>
+              <li class="dato-item"><strong>Técnico asignado:</strong><span><?= !empty($t['tecnico']) ? htmlspecialchars($t['tecnico']) : '<span class="sin-asignar">Sin asignar</span>' ?></span></li>
               <?php if (isset($t['fecha_creacion'])): ?>
-                <li><strong>Fecha de creación:</strong> 
+                <li class="dato-item"><strong>Fecha de creación:</strong>
                   <time title="<?= htmlspecialchars(DateHelper::exact($t['fecha_creacion'])) ?>">
                     <?= htmlspecialchars(DateHelper::smart($t['fecha_creacion'])) ?>
                   </time>
                 </li>
               <?php endif; ?>
               <?php if (!empty($t['fecha_cierre'])): ?>
-                <li><strong>Fecha de cierre:</strong> 
+                <li class="dato-item"><strong>Fecha de cierre:</strong>
                   <time title="<?= htmlspecialchars(DateHelper::exact($t['fecha_cierre'])) ?>">
                     <?= htmlspecialchars(DateHelper::smart($t['fecha_cierre'])) ?>
                   </time>
                 </li>
               <?php endif; ?>
+
+              <!-- Zona imagen: destacada -->
               <?php if (!empty($t['img_dispositivo'])): ?>
-                  <li>
-                    <strong>Imagen del dispositivo:</strong><br>
-                    <img src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($t['img_dispositivo']) ?>" style="max-width:180px;border-radius:8px;">
+                  <li class="dato-item imagen-wrap">
+                    <strong>Imagen del dispositivo:</strong>
+                    <div class="imagen-contenedor">
+                      <img class="imagen-dispositivo" src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($t['img_dispositivo']) ?>" alt="Imagen dispositivo">
+                    </div>
                   </li>
               <?php endif; ?>
           </ul>
         <?php else: ?>
           <div class="alert alert-danger">No se encontró información para este ticket.</div>
         <?php endif; ?>
+      </div> <!-- .bloque-principal -->
 
+      <!-- BLOQUE: MENSAJES / ALERTAS YA EXISTENTES (NO TOCAR su CSS original) -->
+      <?php if (!empty($view['flash']['error']) && $view['flash']['error']==='estado'): ?>
+          <div class="alert alert-warning">Solo puedes calificar cuando el ticket esté finalizado.</div>
+      <?php endif; ?>
+      <?php if (!empty($view['flash']['error']) && $view['flash']['error']==='aprobacion'): ?>
+          <div class="alert alert-warning">Aún falta que el cliente apruebe el presupuesto.</div>
+      <?php endif; ?>
+      <?php if (!empty($view['flash']['ok']) && $view['flash']['ok']==='aprobado'): ?>
+          <div class="alert alert-success">Presupuesto aprobado. El técnico podrá continuar con la reparación.</div>
+      <?php elseif (!empty($view['flash']['ok']) && $view['flash']['ok']==='rechazado'): ?>
+          <div class="alert alert-warning">Presupuesto rechazado. El ticket ha sido marcado como cancelado.</div>
+      <?php endif; ?>
+      <?php if (!empty($view['flash']['ok']) && $view['flash']['ok']==='pagado'): ?>
+          <div class="alert alert-success">Pago registrado. Ticket finalizado.</div>
+      <?php endif; ?>
 
-        <!-- ================== BLOQUES DE MENSAJES / ALERTAS ================== -->
-        <?php if (!empty($view['flash']['error']) && $view['flash']['error']==='estado'): ?>
-            <div class="alert alert-warning">Solo puedes calificar cuando el ticket esté finalizado.</div>
-        <?php endif; ?>
-        <?php if (!empty($view['flash']['error']) && $view['flash']['error']==='aprobacion'): ?>
-            <div class="alert alert-warning">Aún falta que el cliente apruebe el presupuesto.</div>
-        <?php endif; ?>
-        <?php if (!empty($view['flash']['ok']) && $view['flash']['ok']==='aprobado'): ?>
-            <div class="alert alert-success">Presupuesto aprobado. El técnico podrá continuar con la reparación.</div>
-        <?php elseif (!empty($view['flash']['ok']) && $view['flash']['ok']==='rechazado'): ?>
-            <div class="alert alert-warning">Presupuesto rechazado. El ticket ha sido marcado como cancelado.</div>
-        <?php endif; ?>
-        <?php if (!empty($view['flash']['ok']) && $view['flash']['ok']==='pagado'): ?>
-            <div class="alert alert-success">Pago registrado. Ticket finalizado.</div>
-        <?php endif; ?>
+      <?php
+        $rol = $view['rol'] ?? '';
+        $finalizado = !empty($view['finalizado']);
+        $estadoLower = strtolower(trim($view['estadoStr'] ?? ''));
+      ?>
 
+      <?php if (!empty($view['ticket']) && $rol === 'Cliente' && !empty($view['ticket']['tecnico']) && !$finalizado): ?>
+          <div class="alert alert-info">Podrás calificar al técnico cuando el ticket esté finalizado.</div>
+      <?php endif; ?>
 
-        <!-- ================== LÓGICA PRINCIPAL ================== -->
-        <?php
-          $rol = $view['rol'] ?? '';
-          $finalizado = !empty($view['finalizado']);
-          $estadoLower = strtolower(trim($view['estadoStr'] ?? ''));
-        ?>
-
-        <?php if (!empty($view['ticket']) && $rol === 'Cliente' && !empty($view['ticket']['tecnico']) && !$finalizado): ?>
-            <div class="alert alert-info">Podrás calificar al técnico cuando el ticket esté finalizado.</div>
-        <?php endif; ?>
-
-        <!-- === BLOQUE CLIENTE (Presupuesto, botones aprobar/rechazar, calificación) === -->
+      <!-- === BLOQUE CLIENTE (Presupuesto, botones aprobar/rechazar, calificación) === -->
+      <div class="bloque-cliente">
         <?php if (!empty($view['ticket']) && $rol === 'Cliente'): ?>
           <?php if (!empty($view['enPresu'])): ?>
             <?php $p = $view['presupuesto']; ?>
             <?php $msgPrefix = ($estadoLower === 'presupuesto') ? 'Presupuesto publicado por' : 'Presupuesto preparado por'; ?>
-      <div class="alert alert-info">
-        <?= $msgPrefix ?> <strong><?= htmlspecialchars($p['total_fmt'] ?? LogFormatter::monto((float)$p['total'])) ?></strong>.
-                <?php if ($estadoLower === 'en espera'): ?> <span>(pendiente de publicación del supervisor)</span><?php endif; ?>
+            <div class="alert alert-info">
+              <?= $msgPrefix ?> <strong><?= $p['total_fmt'] ?? LogFormatter::monto((float)$p['total']) ?></strong>.
+              <?php if ($estadoLower === 'en espera'): ?> <span>(pendiente de publicación del supervisor)</span><?php endif; ?>
             </div>
 
-            <div class="Tabla-Contenedor">
+            <div class="Tabla-Contenedor presu-tabla">
                 <table>
                     <thead><tr><th>Ítem</th><th>Categoría</th><th>Cant.</th><th>Subtotal</th></tr></thead>
                     <tbody>
@@ -98,13 +102,13 @@
                     </tbody>
                 </table>
                 <div class="tabla-totales">
-          <div>Subtotal repuestos: <strong><?= htmlspecialchars($p['subtotal_fmt'] ?? LogFormatter::monto((float)$p['subtotal'])) ?></strong></div>
-          <div>Mano de obra: <strong><?= htmlspecialchars($p['mano_obra_fmt'] ?? LogFormatter::monto((float)$p['mano_obra'])) ?></strong>
+                  <div>Subtotal repuestos: <strong><?= htmlspecialchars($p['subtotal_fmt'] ?? LogFormatter::monto((float)$p['subtotal'])) ?></strong></div>
+                  <div>Mano de obra: <strong><?= htmlspecialchars($p['mano_obra_fmt'] ?? LogFormatter::monto((float)$p['mano_obra'])) ?></strong>
                         <?php if ((float)$p['mano_obra'] <= 0): ?>
                             <span class="badge badge--muted">Falta definir mano de obra</span>
                         <?php endif; ?>
                     </div>
-          <div>Total: <strong><?= htmlspecialchars($p['total_fmt'] ?? LogFormatter::monto((float)$p['total'])) ?></strong></div>
+                  <div>Total: <strong><?= htmlspecialchars($p['total_fmt'] ?? LogFormatter::monto((float)$p['total'])) ?></strong></div>
                 </div>
             </div>
 
@@ -122,9 +126,11 @@
             <?php endif; ?>
           <?php endif; ?>
         <?php endif; ?>
+      </div> <!-- .bloque-cliente -->
 
-
-        <?php if (!empty($view['ticket']) && $rol === 'Cliente' && !empty($view['ticket']['tecnico']) && $finalizado): ?>
+      <!-- === CALIFICACIÓN CLIENTE (si corresponde) === -->
+      <?php if (!empty($view['ticket']) && $rol === 'Cliente' && !empty($view['ticket']['tecnico']) && $finalizado): ?>
+          <div class="bloque-cliente calificacion">
             <hr>
             <h3>Calificar atención del técnico</h3>
             <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/Calificar">
@@ -138,14 +144,15 @@
                     <input type="radio" id="star1" name="stars" value="1"/><label for="star1" class="star">&#9733;</label>
                 </div>
                 <label>Comentario (opcional):</label>
-                <input type="text" name="comment" class="asignar-input asignar-input--small" placeholder="Tu experiencia"/>
+                <input type="text" name="comment" class="asignar-input-rating asignar-input--small-ratign" placeholder="Tu experiencia"/>
                 <button class="btn btn-primary-submit" type="submit">Enviar</button>
             </form>
-        <?php endif; ?>
+          </div>
+      <?php endif; ?>
 
-
-        <!-- === BLOQUE TÉCNICO === -->
-    <?php if (!empty($view['ticket']) && $rol === 'Tecnico'): ?>
+      <!-- === BLOQUE TÉCNICO === -->
+      <div class="bloque-tecnico">
+        <?php if (!empty($view['ticket']) && $rol === 'Tecnico'): ?>
             <hr>
             <h3>Cambiar estado</h3>
             <?php if (!empty($view['tecnico']['acciones'])): ?>
@@ -166,7 +173,7 @@
                 <div class="alert <?= empty($view['tecnico']['acciones']) ? 'alert-warning' : 'alert-info' ?>"><?= htmlspecialchars($view['tecnico']['mensaje']) ?></div>
             <?php endif; ?>
 
-            <div>
+            <div class="mano-obra">
                 <h4>Mano de obra</h4>
                 <div class="subtexto">Rango sugerido: <?= htmlspecialchars($view['tecnico']['labor_min_fmt'] ?? LogFormatter::monto((float)$view['tecnico']['labor_min'])) ?> a <?= htmlspecialchars($view['tecnico']['labor_max_fmt'] ?? LogFormatter::monto((float)$view['tecnico']['labor_max'])) ?></div>
 
@@ -202,9 +209,10 @@
                 </div>
             <?php endif; ?>
         <?php endif; ?>
+      </div> <!-- .bloque-tecnico -->
 
-
-        <!-- === BLOQUE SUPERVISOR === -->
+      <!-- === BLOQUE SUPERVISOR === -->
+      <div class="bloque-supervisor">
         <?php if (!empty($view['ticket']) && $rol === 'Supervisor'): ?>
             <hr>
             <h3>Acciones del supervisor</h3>
@@ -221,44 +229,44 @@
                 </form>
             <?php endif; ?>
         <?php endif; ?>
+      </div> <!-- .bloque-supervisor -->
 
-        <a href="<?= htmlspecialchars($view['backHref'] ?? '/ProyectoPandora/Public/index.php?route=Default/Index') ?>" class="btn btn-secondary mt-3">Volver</a>
+      <a href="<?= htmlspecialchars($view['backHref'] ?? '/ProyectoPandora/Public/index.php?route=Default/Index') ?>" class="boton-volver">Volver</a>
 
-        <?php
-          // Galería de fotos del ticket (si el controlador las provee)
-          $fotos = $view['fotos_ticket'] ?? [];
-          if (!empty($fotos)):
-        ?>
-          <hr>
-          <h3>Fotos del ticket</h3>
-          <div class="galeria-slider" style="display:flex; gap:8px; overflow-x:auto; padding:6px 0;">
-            <?php foreach ($fotos as $src): ?>
-              <img src="<?= htmlspecialchars($src) ?>" alt="Foto ticket" style="height:140px; border-radius:8px; object-fit:cover;"/>
-            <?php endforeach; ?>
-          </div>
-        <?php endif; ?>
-
-        <!-- === OVERLAY PAGADO === -->
-        <?php
-            $mostrarPagadoOverlay = false;
-            if ((!empty($view['flash']['ok']) && $view['flash']['ok']==='pagado') || $finalizado) {
-                require_once __DIR__ . '/../../Core/Database.php';
-                require_once __DIR__ . '/../../Models/Rating.php';
-                $dbx = new Database(); $dbx->connectDatabase();
-                $rtM = new RatingModel($dbx->getConnection());
-                $rt = $rtM->getByTicket((int)$view['ticket']['id']);
-                $mostrarPagadoOverlay = !empty($rt) && (int)($rt['stars'] ?? 0) > 0;
-                if (!$mostrarPagadoOverlay && $finalizado && $rol === 'Cliente') {
-                    echo '<div class="alert alert-warning">Tu ticket está finalizado. Por favor, califica la atención para completar el cierre.</div>';
-                }
-            }
-        ?>
-        <?php if ($mostrarPagadoOverlay): ?>
-        <div class="overlay-pagado">
-            <div class="overlay-box">PAGADO</div>
+      <?php
+        // Galería de fotos del ticket (si el controlador las provee)
+        $fotos = $view['fotos_ticket'] ?? [];
+        if (!empty($fotos)):
+      ?>
+        <hr>
+        <h3>Fotos del ticket</h3>
+        <div class="galeria-slider" style="display:flex; gap:8px; overflow-x:auto; padding:6px 0;">
+          <?php foreach ($fotos as $src): ?>
+            <img src="<?= htmlspecialchars($src) ?>" alt="Foto ticket" style="height:140px; border-radius:8px; object-fit:cover;"/>
+          <?php endforeach; ?>
         </div>
-        <?php endif; ?>
+      <?php endif; ?>
+
+      <!-- === OVERLAY PAGADO === -->
+      <?php
+          $mostrarPagadoOverlay = false;
+          if ((!empty($view['flash']['ok']) && $view['flash']['ok']==='pagado') || $finalizado) {
+              require_once __DIR__ . '/../../Core/Database.php';
+              require_once __DIR__ . '/../../Models/Rating.php';
+              $dbx = new Database(); $dbx->connectDatabase();
+              $rtM = new RatingModel($dbx->getConnection());
+              $rt = $rtM->getByTicket((int)$view['ticket']['id']);
+              $mostrarPagadoOverlay = !empty($rt) && (int)($rt['stars'] ?? 0) > 0;
+              if (!$mostrarPagadoOverlay && $finalizado && $rol === 'Cliente') {
+                  echo '<div class="alert alert-warning">Tu ticket está finalizado. Por favor, califica la atención para completar el cierre.</div>';
+              }
+          }
+      ?>
+      <?php if ($mostrarPagadoOverlay): ?>
+      <div class="overlay-pagado">
+          <div class="overlay-box">PAGADO</div>
       </div>
+      <?php endif; ?>
     </div>
 
     <!-- ================== LÍNEA DE TIEMPO DERECHA ================== -->
