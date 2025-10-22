@@ -15,6 +15,16 @@
                     El nombre es obligatorio.
                 </div>
             <?php endif; ?>
+            <?php if (isset($_GET['error']) && $_GET['error'] === 'PasswordCorta'): ?>
+                <div style="color: red; margin-bottom: 10px;">
+                    La contraseña debe tener al menos 8 caracteres.
+                </div>
+            <?php endif; ?>
+            <?php if (isset($_GET['error']) && $_GET['error'] === 'PasswordEspacios'): ?>
+                <div style="color: red; margin-bottom: 10px;">
+                    La contraseña no puede contener espacios ni caracteres en blanco.
+                </div>
+            <?php endif; ?>
 
             
             <form class="form" action="/ProyectoPandora/Public/index.php?route=Register/Register" method="POST" novalidate onsubmit="return validarEmailRegistro(this)">
@@ -29,7 +39,7 @@
                 </div>
 
                 <div class="textbox">
-                    <input type="password" name="password" autocomplete="off" required minlength="8" title="La contraseña debe tener al menos 8 caracteres">
+                    <input type="password" name="password" autocomplete="off" required minlength="8" pattern="^\S{8,}$" title="La contraseña debe tener al menos 8 caracteres y no puede contener espacios">
                     <label for="password">Contraseña</label>
                 </div>
 

@@ -88,9 +88,20 @@ class AdminController
     $user = $userModel->findById($userId);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['name'] ?? '';
-            $role = $_POST['role'] ?? '';
+            $name = trim((string)($_POST['name'] ?? ''));
+            $role = trim((string)($_POST['role'] ?? ''));
             $from = $_POST['from'] ?? 'Admin/ListarUsers';
+
+            // Validaciones básicas del servidor
+            if ($name === '') {
+                header('Location: /ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id='.(int)$userId.'&error=NombreRequerido&from='.urlencode($from));
+                exit;
+            }
+            $rolesValidos = ['Cliente','Tecnico','Supervisor','Administrador'];
+            if ($role === '' || !in_array($role, $rolesValidos, true)) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id='.(int)$userId.'&error=RolInvalido&from='.urlencode($from));
+                exit;
+            }
 
             // Reobtén el usuario por ID para asegurar email correcto
             $current = $userModel->findById($userId);

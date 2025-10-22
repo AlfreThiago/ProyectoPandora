@@ -51,33 +51,8 @@
 
     <!-- AJUSTES -->
     <div class="perfil-content" id="ajustes">
+      <?php if ($rol === 'Tecnico'): ?>
       <form method="POST" action="">
-        <?php if (isset($_GET['ok']) && $_GET['ok'] === 'pass'): ?>
-          <div class="alert success">Contraseña actualizada correctamente.</div>
-        <?php elseif (isset($_GET['error']) && $_GET['error'] === 'pass'): ?>
-          <div class="alert error">Las contraseñas no coinciden o no cumplen los requisitos.</div>
-        <?php elseif (isset($_GET['error']) && $_GET['error'] === 'wrongpass'): ?>
-          <div class="alert error">La contraseña actual es incorrecta.</div>
-        <?php elseif (isset($_GET['error']) && $_GET['error'] === 'passsame'): ?>
-          <div class="alert error">La nueva contraseña no puede ser igual a la actual.</div>
-        <?php endif; ?>
-
-        <div class="perfil-campo">
-          <label>Contraseña actual:</label>
-          <input type="password" name="current_password" placeholder="••••••••" required>
-        </div>
-        <div class="perfil-campo">
-          <label>Nueva contraseña:</label>
-          <input type="password" name="new_password" placeholder="••••••••">
-        </div>
-        <div class="perfil-campo">
-          <label>Confirmar contraseña:</label>
-          <input type="password" name="confirm_password" placeholder="••••••••">
-        </div>
-        <button type="submit" class="btn-perfil-guardar">Actualizar contraseña</button>
-
-        <?php if ($rol === 'Tecnico'): ?>
-        <hr>
         <div class="perfil-campo">
           <label>Disponibilidad:</label>
           <?php $dispActual = $tecnicoDisponibilidad ?? 'Disponible'; ?>
@@ -86,8 +61,9 @@
             <option value="Ocupado" <?= ($dispActual === 'Ocupado') ? 'selected' : '' ?>>No disponible</option>
           </select>
         </div>
-        <?php endif; ?>
+        <button type="submit" class="btn-perfil-guardar">Guardar ajustes</button>
       </form>
+      <?php endif; ?>
 
       <!-- TOGGLE GLOBAL -->
       <div class="perfil-campo modo-oscuro-toggle">
