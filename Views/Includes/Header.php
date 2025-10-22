@@ -107,10 +107,7 @@ list($title, $subtitle) = headerMeta($route, $rol);
 				</span>
 			</a>
 			<?php endif; ?>
-			<?php if (stripos($route, 'Cliente/MisTicket') === 0 || stripos($route, 'Cliente/MisTicketActivo') === 0 || stripos($route, 'Cliente/MisTicketTerminados') === 0): ?>
-				<a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo" class="btn btn-outline small" title="Ver activos">Activos</a>
-				<a href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketTerminados" class="btn btn-outline small" title="Ver finalizados">Finalizados</a>
-			<?php endif; ?>
+			
 		</div>
   </div>
 

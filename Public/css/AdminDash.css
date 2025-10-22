@@ -3056,126 +3056,129 @@ input.asignar-input.asignar-input--small:focus {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.line-clamp-2 {
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-}
-.line-clamp-3 {
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-}
+.line-clamp-2 { -webkit-line-clamp: 2; line-clamp: 2; }
+.line-clamp-3 { -webkit-line-clamp: 3; line-clamp: 3; }
 
-.u-flex-col {
-  display: flex;
-  flex-direction: column;
-}
-.u-flex-1 {
-  flex: 1;
-}
+.u-flex-col { display: flex; flex-direction: column; }
+.u-flex-1 { flex: 1; }
 
 .card-actions {
   margin-top: auto;
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  justify-content: center;
 }
+
 /* === Contenedor general de las cards === */
 .cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: flex-start;
-    align-items: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  align-items: stretch;
 }
 
 /* === Tarjeta de dispositivo === */
 .device-card {
-    position: relative;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    backdrop-filter: blur(8px);
-    color: #eaeaea;
-    width: 280px;
-    min-height: 390px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.25s ease, box-shadow 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  color: #eaeaea;
+  width: 280px;
+  min-height: 390px;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
 }
 
-/* Efecto al pasar el mouse */
+/* Hover effect */
 .device-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transform: translateY(-6px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Barra lateral de color animada */
+/* Barra lateral animada */
 .device-card::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 5px;
-    height: 100%;
-    background: linear-gradient(180deg, #007bff, #800abb);
-    opacity: 0;
-    transition: opacity 0.3s;
-    border-radius: 12px 0 0 12px;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(180deg, #007bff, #800abb);
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: 12px 0 0 12px;
 }
 
 .device-card:hover::before {
-    opacity: 1;
+  opacity: 1;
 }
 
 /* === Imagen del dispositivo === */
 .device-img {
-    position: relative;
+  position: relative;
 }
 
 .device-img img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px 16px 0 0;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px 16px 0 0;
 }
 
-/* Overlay oscuro para mejorar contraste */
+/* Overlay oscuro */
 .device-img::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.4));
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.4));
 }
 
 /* === Información === */
 .device-info {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
 }
 
 .device-info h3 {
-    margin: 0;
-    font-size: 1.25em;
-    font-weight: 600;
-    color: #fff;
-    text-align: center;
-    letter-spacing: 0.3px;
+  margin: 0;
+  font-size: 1.25em;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 0.3px;
 }
 
 .device-info p {
-    margin: 6px 0;
-    font-size: 0.95em;
-    color: #cfcfcf;
-    text-align: center;
+  margin: 6px 0;
+  font-size: 0.95em;
+  color: #cfcfcf;
+  text-align: center;
 }
 
 .device-info p strong {
-    color: #fff;
+  color: #fff;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .cards-container {
+    justify-content: center;
+  }
+  .device-card {
+    width: 90%;
+    max-width: 340px;
+  }
 }
 
 /* === Estado con color según tipo === */
