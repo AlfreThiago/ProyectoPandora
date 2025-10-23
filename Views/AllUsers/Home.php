@@ -78,9 +78,10 @@ require_once __DIR__ . '/../../Core/Date.php';
                 </section>
 
                 <!-- ESTADÍSTICAS -->
-                <section class="home-charts card-wide">
-                <h3><i class='bx bx-analyse'></i> Estadísticas del sistema</h3>
-                <div class="charts-grid">
+        <section class="home-charts card-wide">
+        <h3><i class='bx bx-analyse'></i> Estadísticas del sistema</h3>
+        <div id="chartsStatus" class="alert alert-warning" style="display:none;"></div>
+        <div class="charts-grid">
 
                     <!-- GRÁFICA 1: Tickets activos vs finalizados -->
                     <div class="chart-box">
@@ -116,109 +117,9 @@ require_once __DIR__ . '/../../Core/Date.php';
             <small>© <span id="year"></span> Innovasys — Portal</small>
         </footer>
     </div>
-
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
 </main>
-<script>
-document.getElementById('year').textContent = new Date().getFullYear();
-
-// ======= GRÁFICA 1 =======
-const ctx1 = document.getElementById('ticketsChart');
-new Chart(ctx1, {
-  type: 'doughnut',
-  data: {
-    labels: ['Activos', 'Finalizados'],
-    datasets: [{
-      data: [5, 12], // ACA VAN LOS DATOS REALES OK NICOLAS
-      backgroundColor: ['#58a6ff', '#2ea043'],
-      borderColor: '#0d1117',
-      borderWidth: 2
-    }]
-  },
-  options: {
-    plugins: {
-      legend: { labels: { color: '#c9d1d9' } },
-      title: {
-        display: true,
-        text: 'Tickets activos vs finalizados',
-        color: '#c9d1d9'
-      }
-    }
-  }
-});
-
-// ======= GRÁFICA 2 =======
-const ctx2 = document.getElementById('rankingChart');
-new Chart(ctx2, {
-  type: 'bar',
-  data: {
-    labels: ['Lucas', 'Ana', 'Carlos', 'María', 'José'], //datos nico
-    datasets: [{
-      label: 'Puntaje de honor',
-      data: [95, 88, 76, 92, 84],
-      backgroundColor: 'rgba(255, 214, 10, 0.6)',
-      borderColor: 'rgba(255, 214, 10, 1)',
-      borderWidth: 1
-    }]
-  },
-  options: {
-    plugins: {
-      legend: { labels: { color: '#c9d1d9' } },
-      title: {
-        display: true,
-        text: 'Ranking de técnicos',
-        color: '#c9d1d9'
-      }
-    },
-    scales: {
-      x: {
-        ticks: { color: '#c9d1d9' },
-        grid: { color: 'rgba(255,255,255,0.1)' }
-      },
-      y: {
-        ticks: { color: '#c9d1d9' },
-        grid: { color: 'rgba(255,255,255,0.1)' }
-      }
-    }
-  }
-});
-
-// ======= GRÁFICA 3 =======
-const ctx3 = document.getElementById('categoryChart');
-new Chart(ctx3, {
-  type: 'line',
-  data: {
-    labels: ['PC', 'Notebook', 'Celular', 'Tablet', 'Otros'], //mas datos nico
-    datasets: [{
-      label: 'Reparaciones',
-      data: [10, 14, 6, 3, 4],
-      borderColor: '#f78166',
-      backgroundColor: 'rgba(247,129,102,0.3)',
-      tension: 0.3,
-      fill: true
-    }]
-  },
-  options: {
-    plugins: {
-      legend: { labels: { color: '#c9d1d9' } },
-      title: {
-        display: true,
-        text: 'Reparaciones por categoría',
-        color: '#c9d1d9'
-      }
-    },
-    scales: {
-      x: {
-        ticks: { color: '#c9d1d9' },
-        grid: { color: 'rgba(255,255,255,0.1)' }
-      },
-      y: {
-        ticks: { color: '#c9d1d9' },
-        grid: { color: 'rgba(255,255,255,0.1)' }
-      }
-    }
-  }
-});
-</script>
+<?php
+$homeJsPath = rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') . '/ProyectoPandora/Public/js/home-dashboard.js';
+$homeJsVersion = file_exists($homeJsPath) ? filemtime($homeJsPath) : time();
+?>
+<script src="/ProyectoPandora/Public/js/home-dashboard.js?v=<?= $homeJsVersion ?>"></script>

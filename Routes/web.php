@@ -16,6 +16,10 @@ return [
         'controller' => 'Default',
         'action' => 'perfil'
     ],    
+    'Default/HomeMetrics' => [
+        'controller' => 'Default',
+        'action' => 'HomeMetrics'
+    ],
     
     
     'Auth/Login' => [
