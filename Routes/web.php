@@ -270,6 +270,10 @@ return [
         'controller' => 'Ticket',
         'action' => 'ActualizarEstado'
     ],
+    'Ticket/SyncStatus' => [
+        'controller' => 'Ticket',
+        'action' => 'SyncStatus'
+    ],
     'Ticket/Eliminar' => [
         'controller' => 'Ticket',
         'action' => 'eliminar'

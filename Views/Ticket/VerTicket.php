@@ -184,6 +184,7 @@
     <?php if (!empty($view['tecnico']['labor_editable'])): ?>
                     <form method="post" action="/ProyectoPandora/Public/index.php?route=Tecnico/ActualizarStats" class="presu-labor">
                         <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>"/>
+            <input type="hidden" name="rev_state" value="<?= htmlspecialchars((string)($view['rev_state'] ?? ''), ENT_QUOTES, 'UTF-8') ?>"/>
             <label>Importe:</label>
             <input type="number" name="labor_amount" step="0.01" min="0" class="asignar-input asignar-input--small" required />
                         <button class="btn btn-primary" type="submit">Guardar mano de obra</button>
@@ -191,6 +192,7 @@
         <?php elseif (!empty($view['tecnico']['labor_editable_en_espera'])): ?>
           <form method="post" action="/ProyectoPandora/Public/index.php?route=Tecnico/ActualizarStats" class="presu-labor">
             <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>"/>
+            <input type="hidden" name="rev_state" value="<?= htmlspecialchars((string)($view['rev_state'] ?? ''), ENT_QUOTES, 'UTF-8') ?>"/>
             <label>Importe:</label>
             <input type="number" name="labor_amount" step="0.01" min="0" class="asignar-input asignar-input--small" value="<?= htmlspecialchars((string)($view['presupuesto']['mano_obra'] ?? '0'), ENT_QUOTES, 'UTF-8') ?>" required />
             <button class="btn btn-primary" type="submit">Editar mano de obra</button>
@@ -208,11 +210,11 @@
         // Botón para gestionar repuestos: durante Diagnóstico (añadir) o en Espera con diagnóstico listo (editar)
         if (in_array($estadoLower, ['diagnóstico','diagnostico'])): ?>
                 <div style="margin-top:12px;">
-                  <a class="btn btn-outline" href="/ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&ticket_id=<?= (int)$view['ticket']['id'] ?>">Añadir repuestos a este ticket</a>
+                  <a class="btn btn-outline" href="/ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&ticket_id=<?= (int)$view['ticket']['id'] ?>&rev=<?= urlencode((string)($view['rev_state'] ?? '')) ?>">Añadir repuestos a este ticket</a>
                 </div>
       <?php elseif ($estadoLower === 'en espera' && !empty($view['tecnico']['has_items']) && !empty($view['tecnico']['has_labor'])): ?>
         <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-          <a class="btn btn-outline" href="/ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&ticket_id=<?= (int)$view['ticket']['id'] ?>">Editar repuestos</a>
+                  <a class="btn btn-outline" href="/ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&ticket_id=<?= (int)$view['ticket']['id'] ?>&rev=<?= urlencode((string)($view['rev_state'] ?? '')) ?>">Editar repuestos</a>
         </div>
       <?php endif; ?>
         <?php endif; ?>

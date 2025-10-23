@@ -225,4 +225,5 @@ $locale = I18n::getLocale();
         <script src="/ProyectoPandora/Public/js/ticket-actions.js?v=<?php echo time(); ?>" defer></script>
         <script src="/ProyectoPandora/Public/js/list-filters.js?v=<?php echo time(); ?>" defer></script>
         <script src="/ProyectoPandora/Public/js/presupuestos.js?v=<?php echo time(); ?>" defer></script>
+    <script src="/ProyectoPandora/Public/js/ticket-sync.js?v=<?php echo time(); ?>" defer></script>
 </html>

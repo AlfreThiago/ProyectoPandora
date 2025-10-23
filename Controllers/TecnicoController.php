@@ -159,6 +159,7 @@ class TecnicoController {
             exit;
         }
     $ticket_id = (int)($_POST['ticket_id'] ?? 0);
+        $clientRev = isset($_POST['rev_state']) ? (string)$_POST['rev_state'] : null;
         $inventario_id = (int)($_POST['inventario_id'] ?? 0);
         $cantidad = (int)($_POST['cantidad'] ?? 0);
     $valor_unitario = 0.0; 
@@ -187,21 +188,49 @@ class TecnicoController {
         }
         $valor_unitario = (float)$inv['valor_unitario'];
         $supervisor_id = (int)($ticketModel->getSupervisorId($ticket_id) ?? 0);
-        if ($supervisor_id <= 0) {
-            
-            $supervisor_id = 0;
-        }
+        if ($supervisor_id <= 0) { $supervisor_id = 0; }
 
-        
-        if (!$inventarioModel->reducirStock($inventario_id, $cantidad)) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=stock');
-            exit;
-        }
-
-        
+        // Identificar técnico antes de alterar stock
         $tecnico_id = $this->obtenerTecnicoIdPorUserId($user['id']);
         if (!$tecnico_id) {
             header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=tecnico');
+            exit;
+        }
+
+        // Reglas de estado y concurrencia (previas a descontar stock)
+        // Estado actual del ticket
+        $conn = $this->db->getConnection();
+        if ($st = $conn->prepare("SELECT e.name AS estado FROM tickets t INNER JOIN estados_tickets e ON e.id=t.estado_id WHERE t.id=? LIMIT 1")) {
+            $st->bind_param('i', $ticket_id); $st->execute(); $row = $st->get_result()->fetch_assoc();
+            $estadoActualNombre = strtolower(trim($row['estado'] ?? ''));
+        } else { $estadoActualNombre = ''; }
+
+        // Labor e items actuales
+        $laborModel2 = new TicketLaborModel($conn);
+        $labor = $laborModel2->getByTicket($ticket_id);
+        $itemsTicket = $itemTicketModel->listarPorTicket($ticket_id);
+        $laborAmountNow = (float)($labor['labor_amount'] ?? 0);
+        $itemsCountNow = is_array($itemsTicket) ? count($itemsTicket) : 0;
+        $serverRev = md5($estadoActualNombre.'|'.(string)$laborAmountNow.'|'.(string)$itemsCountNow);
+
+        if ($clientRev && $clientRev !== $serverRev && $estadoActualNombre === 'presupuesto') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=stale&ticket_id='.(int)$ticket_id);
+            exit;
+        }
+
+        // Permitir agregar repuestos en Diagnóstico; en En espera solo si ya hay mano de obra (diagnóstico finalizado) y no publicado
+        if ($estadoActualNombre === 'presupuesto') {
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=locked&ticket_id='.(int)$ticket_id);
+            exit;
+        }
+        if ($estadoActualNombre === 'en espera' && $laborAmountNow <= 0) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=labor_required&ticket_id='.(int)$ticket_id);
+            exit;
+        }
+
+        // Solo ahora, descontar stock
+        if (!$inventarioModel->reducirStock($inventario_id, $cantidad)) {
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=stock');
             exit;
         }
 
@@ -215,7 +244,7 @@ class TecnicoController {
                 "Técnico {$user['name']} solicitó {$cantidad} und(s) del inventario ID {$inventario_id} para ticket {$ticket_id} (total $valor_total)."
             );
             
-            $laborModel2 = new TicketLaborModel($this->db->getConnection());
+            // Recalcular tras agregar
             $labor = $laborModel2->getByTicket($ticket_id);
             if ($labor && (float)($labor['labor_amount'] ?? 0) > 0) {
                 // No cambiamos el estado automáticamente para evitar retrocesos a "En espera".
@@ -265,7 +294,7 @@ class TecnicoController {
         $conn = $this->db->getConnection();
         $tecnico_id = $this->obtenerTecnicoIdPorUserId($user['id']);
 
-        if (isset($_POST['ticket_id']) && isset($_POST['labor_amount'])) {
+    if (isset($_POST['ticket_id']) && isset($_POST['labor_amount'])) {
             
             $ticket_id = (int)$_POST['ticket_id'];
             $labor_amount = max(0, (float)$_POST['labor_amount']);
@@ -352,10 +381,33 @@ class TecnicoController {
                 }
             }
 
+            // Concurrency guard: if client sent a rev_state, compare with server-side current rev
+            $clientRev = isset($_POST['rev_state']) ? (string)$_POST['rev_state'] : null;
+            if ($clientRev) {
+                // Build current rev like in verTicket
+                $currLabor = (float)($existing['labor_amount'] ?? 0);
+                $currItems = $itemsX_pre; // set below but we compute early after we fetch
+            }
             $laborModel->upsert($ticket_id, (int)$saveTecnicoId, $labor_amount);
             
             // Reutilizamos lista de ítems
             $itemModelX = $itemModelX_pre; $itemsX = $itemsX_pre;
+
+            // Rebuild server rev and compare if provided
+            if ($clientRev) {
+                $serverEstadoLower = strtolower($estadoActualNombre);
+                // After upsert, reload labor
+                $reloaded = $laborModel->getByTicket($ticket_id);
+                $laborNow = (float)($reloaded['labor_amount'] ?? 0);
+                $revNow = md5($serverEstadoLower.'|'.(string)$laborNow.'|'.(string)count($itemsX));
+                if ($revNow !== $clientRev) {
+                    // If already published (estado pasó a 'Presupuesto'), block and redirect
+                    if ($serverEstadoLower === 'presupuesto') {
+                        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id.'&error=stale');
+                        exit;
+                    }
+                }
+            }
             if (!empty($itemsX) && $labor_amount > 0) {
                 
                 require_once __DIR__ . '/../Models/EstadoTicket.php';
