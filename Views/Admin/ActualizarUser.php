@@ -5,6 +5,13 @@
         <div class="actualizar-wrapper animated bounceInUp">
             <h3>Actualizar Usuario</h3>
 
+            <?php if (isset($_GET['error']) && $_GET['error'] === 'NombreRequerido'): ?>
+                <div class="alert alert-warning" role="alert" style="margin-bottom:10px;">El nombre es obligatorio.</div>
+            <?php endif; ?>
+            <?php if (isset($_GET['error']) && $_GET['error'] === 'RolInvalido'): ?>
+                <div class="alert alert-warning" role="alert" style="margin-bottom:10px;">Seleccioná un rol válido.</div>
+            <?php endif; ?>
+
             <?php if (empty($user)): ?>
                 <p>Usuario no encontrado.</p>
             <?php else: ?>
@@ -14,7 +21,7 @@
                 <input type="hidden" name="id" value="<?= $user['id'] ?? '' ?>">
 
                 <label>Nombre</label>
-                <input type="text" name="name" value="<?= $user['name'] ?? '' ?>" required>
+                <input type="text" name="name" value="<?= htmlspecialchars(trim($user['name'] ?? '')) ?>" required>
 
                 <label>Rol</label>
                 <?php if ($isSelf): ?>

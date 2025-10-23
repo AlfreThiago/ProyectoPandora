@@ -33,6 +33,38 @@ class TicketController
     $this->histEstadoModel = new TicketEstadoHistorialModel($db->getConnection());
     }
 
+    // Endpoint ligero para sincronizar estado de edición (AJAX polling)
+    public function SyncStatus() {
+        $user = Auth::user();
+        if (!$user) { http_response_code(401); echo json_encode(['error'=>'auth']); return; }
+        $ticket_id = (int)($_GET['ticket_id'] ?? 0);
+        if ($ticket_id <= 0) { http_response_code(400); echo json_encode(['error'=>'ticket']); return; }
+        $db = new Database(); $db->connectDatabase(); $conn = $db->getConnection();
+        header('Content-Type: application/json');
+        try {
+            // Estado actual
+            $st = $conn->prepare("SELECT e.name AS estado FROM tickets t INNER JOIN estados_tickets e ON e.id=t.estado_id WHERE t.id=? LIMIT 1");
+            $st->bind_param('i', $ticket_id); $st->execute(); $row = $st->get_result()->fetch_assoc();
+            $estadoLower = strtolower(trim($row['estado'] ?? ''));
+
+            // Labor actual
+            require_once __DIR__ . '/../Models/TicketLabor.php';
+            $lm = new TicketLaborModel($conn); $labor = $lm->getByTicket($ticket_id); $laborAmount = (float)($labor['labor_amount'] ?? 0);
+            // Items count
+            require_once __DIR__ . '/../Models/ItemTicket.php';
+            $im = new ItemTicketModel($conn); $items = $im->listarPorTicket($ticket_id); $itemsCount = is_array($items) ? count($items) : 0;
+            $rev = md5($estadoLower.'|'.(string)$laborAmount.'|'.(string)$itemsCount);
+            $published = ($estadoLower === 'presupuesto');
+            $canEdit = (!$published) && (($estadoLower === 'diagnóstico' || $estadoLower === 'diagnostico') || ($estadoLower === 'en espera' && $itemsCount>0 && $laborAmount>0));
+            echo json_encode([
+                'published' => $published,
+                'rev' => $rev,
+                'canEdit' => $canEdit,
+            ]);
+        } catch (\Throwable $e) {
+            echo json_encode(['error'=>'server']);
+        }
+    }
     
     private function transicionesValidas(): array {
         return [
@@ -213,6 +245,16 @@ class TicketController
         // Acciones técnico
         $estadosAll = $this->estadoModel->getAllEstados();
         [$tecAcciones, $tecMensaje] = $this->buildTecnicoAcciones($estadoStr, $estadosAll);
+        // Si ya hay ítems + mano definidos y el estado está en 'En espera', no ofrecer "Comenzar diagnóstico".
+        // En este caso el técnico solo debe poder editar mano de obra y repuestos hasta la publicación.
+        if ($estadoLower === 'en espera') {
+            $hasItemsTech = !empty($items);
+            $hasLaborTech = $laborAmount > 0;
+            if ($hasItemsTech && $hasLaborTech) {
+                $tecAcciones = [];
+                $tecMensaje = 'Diagnóstico finalizado. Puedes editar mano de obra y repuestos hasta la publicación del presupuesto.';
+            }
+        }
 
         // Rango sugerido de mano de obra + flags
         $stmtT2 = $conn->prepare("SELECT tc.id AS tecnico_id, ts.labor_min, ts.labor_max 
@@ -231,10 +273,12 @@ class TicketController
                 $laborMax = (float)($rowS['labor_max'] ?? 0);
             }
         }
-        $hasItemsTech = !empty($items);
-        $hasLaborTech = $laborAmount > 0;
+    $hasItemsTech = !empty($items);
+    $hasLaborTech = $laborAmount > 0;
         $readyPresupuesto = $hasItemsTech && $hasLaborTech;
         $laborEditable = (($estadoLower === 'diagnóstico' || $estadoLower === 'diagnostico') && !$hasLaborTech);
+    // Edición permitida en 'En espera' mientras no esté publicado (cuando pasa a 'Presupuesto' deja de aplicar)
+    $laborEditableEnEspera = ($estadoLower === 'en espera' && $readyPresupuesto);
 
         // Supervisor acciones
         $supervisorPuedeMarcarListo = in_array($estadoLower, ['en reparación','en reparacion','en pruebas'], true);
@@ -252,7 +296,9 @@ class TicketController
             $evEstadoLower = strtolower(trim($ev['estado'] ?? ''));
             $ev['badge_class'] = $this->badgeClassFor($evEstadoLower);
             $r = $ev['user_role'] ?? '';
-            if (isset($timeline[$r])) $timeline[$r][] = $ev;
+            // Mapear eventos de Administrador a la columna de Supervisor para no perderlos en la vista
+            if ($r === 'Administrador') { $r = 'Supervisor'; }
+            if (isset($timeline[$r])) { $timeline[$r][] = $ev; }
         }
 
         // Flash (lo que venía de GET)
@@ -274,6 +320,9 @@ class TicketController
             }
         }
 
+        // Compute a simple revision token to detect concurrent changes (estado + labor + items count)
+        $revState = md5($estadoLower.'|'.(string)$laborAmount.'|'.(string)count($items));
+
         $view = [
             'ticket' => $ticket,
             'estadoStr' => $estadoStr,
@@ -283,6 +332,7 @@ class TicketController
             'backHref' => $backHref,
             'flash' => $flash,
             'fotos_ticket' => $fotos,
+            'rev_state' => $revState,
 
             'enPresu' => $enPresu,
             'presupuesto' => [
@@ -306,6 +356,7 @@ class TicketController
                 'has_items' => $hasItemsTech,
                 'has_labor' => $hasLaborTech,
                 'labor_editable' => $laborEditable,
+                'labor_editable_en_espera' => $laborEditableEnEspera,
                 'estado_lower' => $estadoLower,
             ],
 

@@ -11,6 +11,16 @@
             El nombre es obligatorio.
         </div>
     <?php endif; ?>
+    <?php if (isset($_GET['error']) && $_GET['error'] === 'PasswordCorta'): ?>
+        <div style="color: red; margin-bottom: 10px; text-align:center;">
+            La contraseña debe tener al menos 8 caracteres.
+        </div>
+    <?php endif; ?>
+    <?php if (isset($_GET['error']) && $_GET['error'] === 'PasswordEspacios'): ?>
+        <div style="color: red; margin-bottom: 10px; text-align:center;">
+            La contraseña no puede contener espacios ni caracteres en blanco.
+        </div>
+    <?php endif; ?>
 
     <div class="form-vertical-wrapper">
         <div class="form-vertical">
@@ -30,7 +40,7 @@
 
                 <p>
                     <label for="password">Contraseña:</label>
-                    <input type="password" name="password" id="password" autocomplete="off" required minlength="8" title="La contraseña debe tener al menos 8 caracteres">
+                    <input type="password" name="password" id="password" autocomplete="off" required minlength="8" pattern="^\S{8,}$" title="La contraseña debe tener al menos 8 caracteres y no puede contener espacios">
                 </p>
 
                 <p>

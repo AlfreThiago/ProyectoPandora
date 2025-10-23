@@ -26,6 +26,11 @@ class RegisterController
                 exit;
             }
 
+            // Requisito: prohibir espacios/blancos en contraseña
+            if (preg_match('/\s/', (string)$password)) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Register/Register&error=PasswordEspacios');
+                exit;
+            }
             // Requisito: contraseña mínima de 8 caracteres
             if (strlen((string)$password) < 8) {
                 header('Location: /ProyectoPandora/Public/index.php?route=Register/Register&error=PasswordCorta');
@@ -64,6 +69,11 @@ class RegisterController
                 exit;
             }
 
+            // Requisito: prohibir espacios/blancos en contraseña
+            if (preg_match('/\s/', (string)$password)) {
+                header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin&error=PasswordEspacios');
+                exit;
+            }
             // Requisito: contraseña mínima de 8 caracteres
             if (strlen((string)$password) < 8) {
                 header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin&error=PasswordCorta');

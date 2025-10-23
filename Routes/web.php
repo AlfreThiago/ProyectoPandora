@@ -270,6 +270,10 @@ return [
         'controller' => 'Ticket',
         'action' => 'ActualizarEstado'
     ],
+    'Ticket/SyncStatus' => [
+        'controller' => 'Ticket',
+        'action' => 'SyncStatus'
+    ],
     'Ticket/Eliminar' => [
         'controller' => 'Ticket',
         'action' => 'eliminar'
@@ -355,6 +359,11 @@ return [
     'Notification/Create' => [
         'controller' => 'Notification',
         'action' => 'Create'
+    ],
+    // Idioma
+    'Language/Set' => [
+        'controller' => 'Language',
+        'action' => 'Set'
     ],
 ];
 ?>
