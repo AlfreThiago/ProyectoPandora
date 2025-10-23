@@ -68,7 +68,6 @@
         <p class="guia-thanks" data-lang="gracias">¡Gracias por confiar en <strong>Innovasys</strong>! 💜</p>
     </div>
 </main>
-
 <script>
 const langBtn = document.getElementById("toggleLang");
 
@@ -128,23 +127,32 @@ const textos = {
     gracias: "Obrigado por confiar no <strong>Innovasys</strong>! 💜"
   }
 };
-let currentLang = "es";
+
 const langs = ["es", "en", "pt"];
 let langIndex = 0;
 
-langBtn.addEventListener("click", () => {
-  langIndex = (langIndex + 1) % langs.length;
-  currentLang = langs[langIndex];
-
+function updateLangButton() {
+  const nextLang = langs[(langIndex + 1) % langs.length];
   langBtn.textContent =
-    currentLang === "es" ? "EN 🇬🇧" :
-    currentLang === "en" ? "PT 🇧🇷" :
+    nextLang === "en" ? "EN 🇬🇧" :
+    nextLang === "pt" ? "PT 🇧🇷" :
     "ES 🇪🇸";
-  
+}
+
+function applyLanguage() {
+  const currentLang = langs[langIndex];
   document.querySelectorAll("[data-lang]").forEach(el => {
     const key = el.getAttribute("data-lang");
     el.innerHTML = textos[currentLang][key];
   });
+  updateLangButton();
+}
+
+langBtn.addEventListener("click", () => {
+  langIndex = (langIndex + 1) % langs.length;
+  applyLanguage();
 });
+
+applyLanguage(); // idioma inicial
 </script>
 

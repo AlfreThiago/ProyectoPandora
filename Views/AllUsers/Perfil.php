@@ -21,8 +21,7 @@
 
     <!-- PERFIL -->
     <div class="perfil-content active" id="info">
-      <!-- ... campos ... -->
-       <form method="POST" action="">
+      <form method="POST" action="">
         <div class="perfil-campo">
           <label><?= __('profile.field.name') ?>:</label>
           <input type="text" name="name" value="<?= htmlspecialchars($userName) ?>">
@@ -65,22 +64,22 @@
       </form>
       <?php endif; ?>
 
-      <!-- Selector de idioma (en Perfil) -->
+      <!-- Selector de idioma -->
       <?php 
         $current = $_SERVER['REQUEST_URI'] ?? '/ProyectoPandora/Public/index.php?route=Default/Perfil';
         $prev = htmlspecialchars($current, ENT_QUOTES, 'UTF-8');
         $locale = function_exists('I18n\\getLocale') ? I18n::getLocale() : ($_SESSION['lang'] ?? 'es');
       ?>
-      <form method="get" action="/ProyectoPandora/Public/index.php" class="perfil-idioma" style="margin-top:12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+      <form method="get" action="/ProyectoPandora/Public/index.php" class="perfil-idioma">
         <input type="hidden" name="route" value="Language/Set" />
         <input type="hidden" name="prev" value="<?= $prev ?>" />
         <label for="langSelect"><?= __('profile.language.label') ?>:</label>
-        <select id="langSelect" name="lang" class="asignar-input asignar-input--small">
+        <select id="langSelect" name="lang">
           <option value="es" <?= ($locale==='es'?'selected':'') ?>><?= __('lang.spanish') ?></option>
           <option value="en" <?= ($locale==='en'?'selected':'') ?>><?= __('lang.english') ?></option>
           <option value="pt" <?= ($locale==='pt'?'selected':'') ?>><?= __('lang.portuguese') ?></option>
         </select>
-        <button type="submit" class="btn btn-outline"><?= __('profile.language.change') ?></button>
+        <button type="submit"><?= __('profile.language.change') ?></button>
       </form>
 
       <!-- TOGGLE GLOBAL -->
@@ -94,7 +93,7 @@
     </div>
 
     <div class="perfil-volver-panel">
-      <a href="/ProyectoPandora/Public/index.php?route=Default/Index" class="btn-volver">
+      <a href="/ProyectoPandora/Public/index.php?route=Default/Index" class="btn-volver-panel">
         <i class="bx bx-arrow-back"></i> <?= __('profile.back') ?>
       </a>
     </div>
