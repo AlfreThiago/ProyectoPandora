@@ -68,6 +68,7 @@ class Ticket
     {
         $sql = "SELECT 
                     t.id,
+                    t.estado_id AS estado_id,
                     d.marca,
                     d.modelo,
                     d.img_dispositivo,

@@ -154,8 +154,8 @@
       <div class="bloque-tecnico">
         <?php if (!empty($view['ticket']) && $rol === 'Tecnico'): ?>
             <hr>
-            <h3>Cambiar estado</h3>
-            <?php if (!empty($view['tecnico']['acciones'])): ?>
+      <h3>Cambiar estado</h3>
+      <?php if (!empty($view['tecnico']['acciones'])): ?>
         <?php $readyDiag = !empty($view['tecnico']['has_items']) && !empty($view['tecnico']['has_labor']); ?>
         <?php foreach ($view['tecnico']['acciones'] as $accion): ?>
           <?php $label = (string)$accion['label']; $isFinDiag = (stripos($label,'diagnóstico finalizado') !== false || stripos($label,'diagnostico finalizado') !== false); ?>
@@ -173,41 +173,48 @@
                 <div class="alert <?= empty($view['tecnico']['acciones']) ? 'alert-warning' : 'alert-info' ?>"><?= htmlspecialchars($view['tecnico']['mensaje']) ?></div>
             <?php endif; ?>
 
-            <div class="mano-obra">
+      <div class="mano-obra">
                 <h4>Mano de obra</h4>
-                <div class="subtexto">Rango sugerido: <?= htmlspecialchars($view['tecnico']['labor_min_fmt'] ?? LogFormatter::monto((float)$view['tecnico']['labor_min'])) ?> a <?= htmlspecialchars($view['tecnico']['labor_max_fmt'] ?? LogFormatter::monto((float)$view['tecnico']['labor_max'])) ?></div>
 
                 <?php $ready = !empty($view['tecnico']['has_items']) && !empty($view['tecnico']['has_labor']); ?>
                 <div class="alert <?= $ready ? 'alert-success':'alert-warning' ?>">
                     <?= $ready ? 'Presupuesto listo para publicar.' : 'Para preparar el presupuesto: agrega repuestos y define mano de obra.' ?>
                 </div>
 
-                <?php if (!empty($view['tecnico']['labor_editable'])): ?>
+    <?php if (!empty($view['tecnico']['labor_editable'])): ?>
                     <form method="post" action="/ProyectoPandora/Public/index.php?route=Tecnico/ActualizarStats" class="presu-labor">
                         <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>"/>
-                        <label>Importe:</label>
-            <input type="number" name="labor_amount" step="0.01"
-              min="<?= $view['tecnico']['labor_min'] > 0 ? htmlspecialchars((string)(float)$view['tecnico']['labor_min']) : '0' ?>"
-              <?= $view['tecnico']['labor_max'] > 0 ? 'max="'.htmlspecialchars((string)(float)$view['tecnico']['labor_max']).'"' : '' ?>
-                            class="asignar-input asignar-input--small" required />
+            <label>Importe:</label>
+            <input type="number" name="labor_amount" step="0.01" min="0" class="asignar-input asignar-input--small" required />
                         <button class="btn btn-primary" type="submit">Guardar mano de obra</button>
                     </form>
-                <?php else: ?>
-          <?php $lb = (float)($view['presupuesto']['mano_obra'] ?? 0); ?>
+        <?php elseif (!empty($view['tecnico']['labor_editable_en_espera'])): ?>
+          <form method="post" action="/ProyectoPandora/Public/index.php?route=Tecnico/ActualizarStats" class="presu-labor">
+            <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>"/>
+            <label>Importe:</label>
+            <input type="number" name="labor_amount" step="0.01" min="0" class="asignar-input asignar-input--small" value="<?= htmlspecialchars((string)($view['presupuesto']['mano_obra'] ?? '0'), ENT_QUOTES, 'UTF-8') ?>" required />
+            <button class="btn btn-primary" type="submit">Editar mano de obra</button>
+          </form>
+        <?php else: ?>
+      <?php $lb = (float)($view['presupuesto']['mano_obra'] ?? 0); ?>
                     <div class="alert alert-info">
-                        Mano de obra <?= $lb > 0 ? 'definida' : 'no disponible para edición' ?><?= $lb > 0 ? ': <strong>'.LogFormatter::monto((float)$lb).'</strong>' : '' ?>.
-                        <?= ($estadoLower!=='diagnóstico' && $estadoLower!=='diagnostico') ? 'Solo editable durante Diagnóstico.' : 'Una vez definida no puede modificarse.' ?>
+            Mano de obra <?= $lb > 0 ? 'definida' : 'no disponible para edición' ?><?= $lb > 0 ? ': <strong>'.LogFormatter::monto((float)$lb).'</strong>' : '' ?>.
+            <?= ($estadoLower!=='diagnóstico' && $estadoLower!=='diagnostico') ? 'Solo editable durante Diagnóstico.' : '' ?>
                     </div>
                 <?php endif; ?>
             </div>
 
-            <?php
-              // Botón para gestionar repuestos durante Diagnóstico
-              if (in_array($estadoLower, ['diagnóstico','diagnostico'])): ?>
+      <?php
+        // Botón para gestionar repuestos: durante Diagnóstico (añadir) o en Espera con diagnóstico listo (editar)
+        if (in_array($estadoLower, ['diagnóstico','diagnostico'])): ?>
                 <div style="margin-top:12px;">
                   <a class="btn btn-outline" href="/ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&ticket_id=<?= (int)$view['ticket']['id'] ?>">Añadir repuestos a este ticket</a>
                 </div>
-            <?php endif; ?>
+      <?php elseif ($estadoLower === 'en espera' && !empty($view['tecnico']['has_items']) && !empty($view['tecnico']['has_labor'])): ?>
+        <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+          <a class="btn btn-outline" href="/ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&ticket_id=<?= (int)$view['ticket']['id'] ?>">Editar repuestos</a>
+        </div>
+      <?php endif; ?>
         <?php endif; ?>
       </div> <!-- .bloque-tecnico -->
 

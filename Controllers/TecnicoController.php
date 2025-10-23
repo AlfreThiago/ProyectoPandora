@@ -299,21 +299,13 @@ class TecnicoController {
                     }
                 }
                 
-                if (!in_array($estadoActualNombre, ['diagnóstico','diagnostico'], true)) {
+                // Permitir editar mano de obra durante Diagnóstico o En espera (mientras no esté publicado el presupuesto)
+                if (!in_array($estadoActualNombre, ['diagnóstico','diagnostico','en espera'], true)) {
                     header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id.'&error=labor_estado');
                     exit;
                 }
                 
-                $statsModel = new TecnicoStatsModel($conn);
-                $statsRow = $statsModel->getByTecnico((int)$ticketTecnicoId);
-                if ($statsRow) {
-                    $min = (float)($statsRow['labor_min'] ?? 0);
-                    $max = (float)($statsRow['labor_max'] ?? 0);
-                    if ($max > 0 && ($labor_amount < $min || $labor_amount > $max)) {
-                        header('Location: ' . ($_SESSION['prev_url'] ?? '/ProyectoPandora/Public/index.php?route=Tecnico/MisStats') . '&error=labor_range');
-                        exit;
-                    }
-                }
+                // Se elimina validación por rangos predefinidos (labor_min/labor_max)
                 $saveTecnicoId = (int)$ticketTecnicoId;
             } elseif ($isSupervisor) {
                 
@@ -334,19 +326,36 @@ class TecnicoController {
             $laborModel = new TicketLaborModel($conn);
             $existing = $laborModel->getByTicket($ticket_id);
             if ($existing && (float)($existing['labor_amount'] ?? 0) > 0) {
-                
-                if ($isSupervisor) {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&error=labor_locked');
-                } else {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id.'&error=labor_locked');
+                // Si ya existe mano de obra, permitir editarla SOLO si está en 'En espera' (antes de que el supervisor publique presupuesto)
+                if ($estadoActualNombre !== 'en espera') {
+                    if ($isSupervisor) {
+                        header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&error=labor_locked');
+                    } else {
+                        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id.'&error=labor_locked');
+                    }
+                    exit;
                 }
-                exit;
             }
+            // Reglas de edición según estado
+            // 1) En Diagnóstico: permitir definir mano de obra solo si aún no existe (como ya se valida arriba)
+            // 2) En En espera: permitir editar mano de obra solo si YA existía mano de obra (>0) y hay ítems (diagnóstico finalizado previamente)
+            require_once __DIR__ . '/../Models/ItemTicket.php';
+            $itemModelX_pre = new ItemTicketModel($conn);
+            $itemsX_pre = $itemModelX_pre->listarPorTicket($ticket_id);
+            if ($estadoActualNombre === 'en espera') {
+                $hadLabor = $existing && (float)($existing['labor_amount'] ?? 0) > 0;
+                if (!$hadLabor || empty($itemsX_pre)) {
+                    // No permitir crear mano de obra por primera vez en "En espera",
+                    // ni editar si aún no hubo diagnóstico completo (sin ítems)
+                    header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id.'&error=labor_estado');
+                    exit;
+                }
+            }
+
             $laborModel->upsert($ticket_id, (int)$saveTecnicoId, $labor_amount);
             
-            require_once __DIR__ . '/../Models/ItemTicket.php';
-            $itemModelX = new ItemTicketModel($conn);
-            $itemsX = $itemModelX->listarPorTicket($ticket_id);
+            // Reutilizamos lista de ítems
+            $itemModelX = $itemModelX_pre; $itemsX = $itemsX_pre;
             if (!empty($itemsX) && $labor_amount > 0) {
                 
                 require_once __DIR__ . '/../Models/EstadoTicket.php';
@@ -354,12 +363,15 @@ class TecnicoController {
                 $stmtEstados = $conn->query("SELECT id, name FROM estados_tickets");
                 $enEsperaId = 0;
                 if ($stmtEstados) { while($r=$stmtEstados->fetch_assoc()){ if (strcasecmp($r['name'],'En espera')===0) { $enEsperaId=(int)$r['id']; break; } } }
-                if ($enEsperaId) {
+                if ($enEsperaId && $estadoActualNombre !== 'presupuesto') {
+                    // Si aún no fue publicado (no está en 'Presupuesto'), dejar/forzar 'En espera'
                     $conn->query("UPDATE tickets SET estado_id = ".$enEsperaId." WHERE id = ".$ticket_id);
-                    
-                    require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
-                    $histM = new TicketEstadoHistorialModel($conn);
-                    $histM->add($ticket_id, $enEsperaId, (int)($user['id']), $user['role'], 'Presupuesto preparado: items y mano de obra listos');
+                    // Registrar en historial solo si provenía de Diagnóstico
+                    if (in_array($estadoActualNombre, ['diagnóstico','diagnostico'], true)) {
+                        require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
+                        $histM = new TicketEstadoHistorialModel($conn);
+                        $histM->add($ticket_id, $enEsperaId, (int)($user['id']), $user['role'], 'Diagnóstico finalizado: items y mano de obra listos (En espera)');
+                    }
                 }
             }
             
@@ -371,23 +383,7 @@ class TecnicoController {
             exit;
         }
 
-        if (isset($_POST['labor_min']) || isset($_POST['labor_max'])) {
-            
-            if (($user['role'] ?? '') !== 'Tecnico') {
-                header('Location: /ProyectoPandora/Public/index.php?route=Default/Index&error=permiso');
-                exit;
-            }
-            if (!$tecnico_id) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisStats&error=tecnico');
-                exit;
-            }
-            $min = max(0, (float)($_POST['labor_min'] ?? 0));
-            $max = max($min, (float)($_POST['labor_max'] ?? 0));
-            $statsModel = new TecnicoStatsModel($conn);
-            $statsModel->upsert((int)$tecnico_id, $min, $max);
-            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisStats&ok=1');
-            exit;
-        }
+        // Se elimina la ruta de configuración de labor_min/labor_max; no se aceptan más estos parámetros
 
         header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
     }

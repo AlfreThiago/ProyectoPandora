@@ -213,6 +213,16 @@ class TicketController
         // Acciones técnico
         $estadosAll = $this->estadoModel->getAllEstados();
         [$tecAcciones, $tecMensaje] = $this->buildTecnicoAcciones($estadoStr, $estadosAll);
+        // Si ya hay ítems + mano definidos y el estado está en 'En espera', no ofrecer "Comenzar diagnóstico".
+        // En este caso el técnico solo debe poder editar mano de obra y repuestos hasta la publicación.
+        if ($estadoLower === 'en espera') {
+            $hasItemsTech = !empty($items);
+            $hasLaborTech = $laborAmount > 0;
+            if ($hasItemsTech && $hasLaborTech) {
+                $tecAcciones = [];
+                $tecMensaje = 'Diagnóstico finalizado. Puedes editar mano de obra y repuestos hasta la publicación del presupuesto.';
+            }
+        }
 
         // Rango sugerido de mano de obra + flags
         $stmtT2 = $conn->prepare("SELECT tc.id AS tecnico_id, ts.labor_min, ts.labor_max 
@@ -231,10 +241,12 @@ class TicketController
                 $laborMax = (float)($rowS['labor_max'] ?? 0);
             }
         }
-        $hasItemsTech = !empty($items);
-        $hasLaborTech = $laborAmount > 0;
+    $hasItemsTech = !empty($items);
+    $hasLaborTech = $laborAmount > 0;
         $readyPresupuesto = $hasItemsTech && $hasLaborTech;
         $laborEditable = (($estadoLower === 'diagnóstico' || $estadoLower === 'diagnostico') && !$hasLaborTech);
+    // Edición permitida en 'En espera' mientras no esté publicado (cuando pasa a 'Presupuesto' deja de aplicar)
+    $laborEditableEnEspera = ($estadoLower === 'en espera' && $readyPresupuesto);
 
         // Supervisor acciones
         $supervisorPuedeMarcarListo = in_array($estadoLower, ['en reparación','en reparacion','en pruebas'], true);
@@ -252,7 +264,9 @@ class TicketController
             $evEstadoLower = strtolower(trim($ev['estado'] ?? ''));
             $ev['badge_class'] = $this->badgeClassFor($evEstadoLower);
             $r = $ev['user_role'] ?? '';
-            if (isset($timeline[$r])) $timeline[$r][] = $ev;
+            // Mapear eventos de Administrador a la columna de Supervisor para no perderlos en la vista
+            if ($r === 'Administrador') { $r = 'Supervisor'; }
+            if (isset($timeline[$r])) { $timeline[$r][] = $ev; }
         }
 
         // Flash (lo que venía de GET)
@@ -306,6 +320,7 @@ class TicketController
                 'has_items' => $hasItemsTech,
                 'has_labor' => $hasLaborTech,
                 'labor_editable' => $laborEditable,
+                'labor_editable_en_espera' => $laborEditableEnEspera,
                 'estado_lower' => $estadoLower,
             ],
 
