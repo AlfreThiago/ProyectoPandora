@@ -356,5 +356,10 @@ return [
         'controller' => 'Notification',
         'action' => 'Create'
     ],
+    // Idioma
+    'Language/Set' => [
+        'controller' => 'Language',
+        'action' => 'Set'
+    ],
 ];
 ?>
