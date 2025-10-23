@@ -3991,7 +3991,7 @@ input:checked + .slider:before {
   background: var(--cuarto);
   transform: scale(1.03);
 }
-
+  
 /* === BLOQUE USUARIO EN SIDEBAR === */
 .user-block {
   padding: 12px 16px;
