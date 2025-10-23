@@ -2563,6 +2563,67 @@ ul {
     margin-bottom: 8px;
   }
 }
+/* ==============================
+   SELECT MODERNO GLOBAL
+   ============================== */
+select {
+
+  background-color: var(--fondo-formulario, #1e1f26);
+  color: var(--color-texto-primario, #e4e4e7);
+  border: 1px solid var(--borde-select, rgba(255,255,255,0.15));
+  border-radius: 10px;
+  padding: 10px 40px 10px 15px;
+  font-size: 0.95rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+}
+
+/* Flechita personalizada */
+select::-ms-expand {
+  display: none;
+}
+
+select::after {
+  content: '';
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Hover y focus */
+select:hover {
+  border-color: var(--color-acento, #6366f1);
+  background-color: rgba(99,102,241,0.1);
+}
+
+select:focus {
+  border-color: var(--color-acento, #6366f1);
+  box-shadow: 0 0 6px rgba(99,102,241,0.5);
+}
+
+/* Opciones del menú desplegable */
+select option {
+  background-color: var(--fondo-select-opcion, #23242b);
+  color: var(--color-texto-primario, #f1f1f1);
+  border: none;
+  padding: 10px;
+}
+
+/* Tema claro opcional */
+body.light-mode select {
+  background-color: #f0f0f8;
+  color: #1a1a1a;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+
+body.light-mode select option {
+  background-color: #fff;
+  color: #1a1a1a;
+}
 
 
 /* === SUBMENU === */
@@ -3208,24 +3269,86 @@ input[type="radio"]:checked + label {
 }
 
 /* ===== Mis Repuestos: Overrides de visibilidad input ===== */
-input.asignar-input.asignar-input--small {
+
+/* ==========================================
+   FILTRADOR (zona "Mis reparaciones")
+   Solo aplica a <form> con clase .filtros
+   ========================================== */
+form.filtros {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin: 10px 0;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+}
+
+form.filtros input,
+form.filtros select {
+  flex: 0 1 auto;
   background: var(--fondo-formulario) !important;
   color: var(--color-texto-primario) !important;
-  -webkit-text-fill-color: var(--color-texto-primario) !important;
-  caret-color: var(--color-texto-primario);
-  text-shadow: none;
-  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 8px 12px;
   font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
-input.asignar-input.asignar-input--small::placeholder {
-  color: rgba(255,255,255,0.7);
-}
-
-input.asignar-input.asignar-input--small:focus {
+form.filtros input:focus,
+form.filtros select:focus {
   border-color: var(--secundario);
   box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.25);
+  outline: none;
 }
+
+/* Botones */
+form.filtros .btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+form.filtros .btn-primary {
+  background: var(--secundario);
+  color: white;
+  border: none;
+}
+
+form.filtros .btn-outline {
+  border: 1px solid var(--secundario);
+  color: var(--secundario);
+  background: transparent;
+}
+
+form.filtros .btn-outline:hover {
+  background: rgba(88, 166, 255, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  form.filtros {
+    flex-direction: column !important;
+    align-items: stretch;
+  }
+
+  form.filtros input,
+  form.filtros select,
+  form.filtros button,
+  form.filtros a {
+    width: 100%;
+  }
+}
+
 
 /* === Utilidades globales: cards y truncado === */
 .line-clamp-2, .line-clamp-3 {
@@ -3959,27 +4082,28 @@ input:checked + .slider:before {
 }
 
 /* =====================================================================
-   HEADER HERO - ESTILO MODERNO CON BOTONES A LA DERECHA
+   HEADER HERO - ESTILO MODERNO CON BOTONES A LA DERECHA (MEJORADO)
    ===================================================================== */
 
 /* ======= Header base ======= */
 .header.hero-header {
   position: relative;
-  margin: 0 0 1rem;
-  border-radius: 14px;
-  padding: clamp(1rem, 2.5vw, 1.4rem);
-  background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 60%, #a855f7 100%);
+  margin: 0 0 1.1rem;
+  border-radius: 16px;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 55%, #a855f7 100%);
   color: #fff;
-  box-shadow: 0 8px 22px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-/* ======= Sutil brillo decorativo ======= */
+/* ======= Efecto de brillo suave ======= */
 .header.hero-header::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.15), transparent 70%);
+  background: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.18), transparent 70%);
   pointer-events: none;
 }
 
@@ -3989,7 +4113,7 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 20rem;
   position: relative;
   z-index: 1;
 }
@@ -3997,69 +4121,23 @@ input:checked + .slider:before {
 /* ======= Lado izquierdo (títulos) ======= */
 .hero-left {
   flex: 1;
-  min-width: 220px;
+  min-width: 230px;
 }
 
 .hero-greet {
   margin: 0;
   font-weight: 800;
   letter-spacing: 0.3px;
-  font-size: clamp(1.3rem, 2.8vw, 1.8rem);
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  font-size: clamp(1.4rem, 2.8vw, 1.9rem);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
 .hero-sub {
-  margin-top: 0.25rem;
+  margin-top: 0.3rem;
   font-weight: 500;
   opacity: 0.95;
-  font-size: clamp(0.9rem, 1.9vw, 1.05rem);
+  font-size: clamp(0.9rem, 1.9vw, 1.1rem);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-}
-
-/* ======= Botones a la derecha ======= */
-.hero-actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-  position: relative;
-  right: -190%;
-  justify-content: flex-end;
-}
-
-/* ======= Botones estilo moderno ======= */
-.btn-modern {
-  display: inline-block;
-  padding: 0.55rem 1.4rem;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  letter-spacing: 0.3px;
-  text-decoration: none;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(6px);
-  transition: all 0.3s ease;
-}
-.btn-modern.finalized{
-  background: linear-gradient(135deg, #a31616, #fd2d2d);
-  border-color: rgba(22, 163, 74, 0.6);
-  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.45);
-  color: #fff;
-}
-.btn-modern:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-}
-
-.btn-modern.active {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  border-color: rgba(34, 197, 94, 0.6);
-  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.45);
-  color: #fff;
 }
 
 /* ======= Botón hamburguesa ======= */
@@ -4071,7 +4149,7 @@ input:checked + .slider:before {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  z-index: 2;
+  z-index: 3;
 }
 
 .hamburger span {
@@ -4082,11 +4160,12 @@ input:checked + .slider:before {
   transition: 0.3s ease;
 }
 
-/* ======= Hover hamburguesa ======= */
+/* Hover hamburguesa */
 .hamburger:hover span {
   background: #c7d2fe;
 }
 
+/* Animación activa del ícono */
 .hamburger.active span:nth-child(1) {
   transform: rotate(45deg) translate(6px, 5px);
 }
@@ -4101,7 +4180,18 @@ input:checked + .slider:before {
 
 /* ======= Modo oscuro ======= */
 body.dark-mode .header.hero-header {
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  background: linear-gradient(135deg, #0b0b28, #1e1e4b);
+  color: #f3f4f6;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .btn-modern {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+body.dark-mode .btn-modern:hover {
+  background: rgba(255, 255, 255, 0.18);
 }
 
 /* ======= Responsivo ======= */
@@ -4120,7 +4210,7 @@ body.dark-mode .header.hero-header {
 
   .btn-modern {
     font-size: 0.85rem;
-    padding: 0.5rem 1.1rem;
+    padding: 0.55rem 1.2rem;
   }
 
   .hamburger {
@@ -4131,19 +4221,349 @@ body.dark-mode .header.hero-header {
 /* ======= Pantallas grandes ======= */
 @media (min-width: 1400px) {
   .header.hero-header {
-    padding: 1.5rem 2rem;
+    padding: 1.6rem 2.2rem;
   }
 
   .hero-greet {
-    font-size: 1.9rem;
+    font-size: 2rem;
   }
 
   .btn-modern {
     font-size: 1rem;
-    padding: 0.65rem 1.6rem;
+    padding: 0.7rem 1.6rem;
   }
 }
+/* BOTON DE NOTIFICACIONES */
+.notif-btn {
+  position: fixed;
+  top: 2rem;
+  right: 1.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 1.4rem;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  z-index: 9999; /* Muy alto para que esté siempre visible */
+}
 
+/* Hover y efecto */
+.notif-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Badge de notificaciones */
+.notif-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #ef4444;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.7rem;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+
+/* Animación cuando hay nuevas notificaciones */
+@keyframes bell-ring {
+  0% { transform: rotate(0deg); }
+  15% { transform: rotate(10deg); }
+  30% { transform: rotate(-10deg); }
+  45% { transform: rotate(8deg); }
+  60% { transform: rotate(-8deg); }
+  75% { transform: rotate(4deg); }
+  100% { transform: rotate(0deg); }
+}
+
+#notifBell.shake i {
+  animation: bell-ring 1s ease;
+}
+
+/* ======= Adaptado al modo oscuro ======= */
+body.dark-mode .notif-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .notif-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* ======= Responsivo ======= */
+@media (max-width: 900px) {
+  .notif-btn {
+    top: 0.8rem;
+    right: 0.8rem;
+    width: 42px;
+    height: 42px;
+    font-size: 1.25rem;
+  }
+
+  .notif-badge {
+    width: 16px;
+    height: 16px;
+    font-size: 0.65rem;
+  }
+}
+/* NOTIFICACIONES CSS */
+
+/* Panel principal */
+.panel {
+  background: var(--fondo-contenido, #1c1f26);
+  border-radius: 14px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  padding: 20px 30px;
+  color: var(--color-texto-primario, #f1f1f1);
+  transition: background 0.3s ease;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.panel-header h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--color-acento, #66aaff);
+}
+
+.panel-body {
+  padding: 10px 0;
+}
+
+/* LISTAR DEL NOTI */
+.notif-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notif-item {
+  background: #232730;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-left: 4px solid var(--color-acento, #66aaff);
+  padding: 16px 20px;
+  border-radius: 10px;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.notif-item:hover {
+  transform: translateY(-2px);
+  background: #2a2f3a;
+}
+
+.notif-item.unread {
+  border-left-color: #ffb84d;
+  background: #2d2f36;
+}
+
+.notif-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+.notif-body {
+  opacity: 0.9;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.notif-meta {
+  font-size: 0.8rem;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+}
+
+.badge {
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+.badge--primary {
+  background: #0078ff;
+  color: #fff;
+}
+
+.badge--muted {
+  background: #444;
+  color: #ccc;
+}
+
+/* Botones pequeños dentro del listado */
+.btn.small {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  margin-left: 12px;
+}
+
+/* CREAR NOTI */
+.notif-panel {
+  background: #1e1f25;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 20px auto;
+  max-width: 650px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.3);
+}
+
+.notif-panel-header h2 {
+  color: #f1f1f1;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 8px;
+}
+
+.notif-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* CAMPOS */
+.notif-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.notif-field label {
+  font-weight: 500;
+  color: #d0d0d0;
+  font-size: 0.9rem;
+}
+
+.notif-field input,
+.notif-field textarea,
+.notif-field select {
+  background: #2b2e38;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 9px 11px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.notif-field input:focus,
+.notif-field textarea:focus,
+.notif-field select:focus {
+  border-color: #66aaff;
+  box-shadow: 0 0 0 2px rgba(102,170,255,0.15);
+  outline: none;
+}
+
+.notif-field textarea {
+  resize: vertical;
+}
+
+.notif-input-small {
+  background: #2b2e38;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.notif-select-large {
+  width: 100%;
+  max-width: 480px;
+  background: #2b2e38;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  border-radius: 6px;
+  padding: 6px;
+  font-size: 0.85rem;
+}
+
+.notif-field small {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+/* BOTÓN */
+.notif-btn {
+  align-self: flex-start;
+  background: linear-gradient(90deg, #5b8aff, #70b7ff);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.notif-btn:hover {
+  background: linear-gradient(90deg, #4d7de6, #62a5e6);
+  transform: translateY(-1px);
+}
+
+/* ALERTAS */
+.notif-alert {
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.notif-alert-warning {
+  background: #ffcc6a;
+  color: #222;
+}
+
+/* REPONSIVE DEL NOTIF */
+@media (max-width: 600px) {
+  .notif-panel {
+    padding: 18px;
+    margin: 10px;
+  }
+
+  .notif-panel-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .notif-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
 
 /* ======= GUIA ======= */
 .guia-container {

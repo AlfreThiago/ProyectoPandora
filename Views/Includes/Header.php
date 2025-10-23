@@ -107,12 +107,13 @@ $subtitle = __($subtitleKey);
 			}
 			?>
 			<?php if ($authUser): ?>
-			<a href="/ProyectoPandora/Public/index.php?route=Notification/Index" class="btn btn-outline small" title="<?= __('notifications.title') ?>" id="notifBell">
-				<span class="icon-bell">🔔</span>
-				<span class="badge" id="notifBadge" style="display: <?= ($unread>0?'inline-block':'none') ?>;">
+			<a href="/ProyectoPandora/Public/index.php?route=Notification/Index" class="notif-btn" title="Notificaciones" id="notifBell">
+				<i class='bx bx-bell'></i>
+				<span class="notif-badge" id="notifBadge" style="display: <?= ($unread>0?'inline-block':'none') ?>;">
 					<?= (int)$unread ?>
 				</span>
 			</a>
+
 			<?php endif; ?>
 			
 		</div>
@@ -134,6 +135,15 @@ menuBtn.addEventListener('click', () => {
 });
 
 </script>
+<script>
+  const badge = document.getElementById('notifBadge');
+  const bell = document.getElementById('notifBell');
+  if (badge && badge.style.display !== 'none') {
+    bell.classList.add('shake');
+    setTimeout(() => bell.classList.remove('shake'), 1200);
+  }
+</script>
+
 <?php if ($authUser): ?>
 <script>
 	// Polling sencillo cada 10 segundos para actualizar el contador del badge
