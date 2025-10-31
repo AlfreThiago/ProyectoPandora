@@ -22,6 +22,7 @@ $noGuardar = [
     'Inventario/ActualizarItem',
     'Inventario/CrearCategoria',
     'Inventario/MostrarCrearCategoria',
+    'Inventario/MostrarCrearItem',
     'EstadoTicket/Actualizar',
     'EstadoTicket/CrearEstado',
     'Register/RegisterAdmin',

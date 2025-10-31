@@ -260,5 +260,46 @@ class Storage
         }
         return self::fallbackProfileUrl();
     }
+
+    public static function resolveInventoryUrl(?string $storedPath): string
+    {
+        $storedPath = $storedPath ? trim((string)$storedPath) : '';
+        if ($storedPath === '') {
+            return self::fallbackInventoryUrl();
+        }
+        if (preg_match('/^https?:\/\//i', $storedPath)) {
+            return $storedPath;
+        }
+        if ($storedPath[0] === '/') {
+            $fs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $storedPath;
+            if ($fs && is_file($fs)) {
+                return $storedPath;
+            }
+            return self::fallbackInventoryUrl();
+        }
+        if (self::exists($storedPath)) {
+            return self::publicUrl($storedPath);
+        }
+        $maybeInventory = 'inventory/' . ltrim($storedPath, '/');
+        if ($maybeInventory !== $storedPath && self::exists($maybeInventory)) {
+            return self::publicUrl($maybeInventory);
+        }
+        $legacy = '/ProyectoPandora/Public/img/imgInventario/' . ltrim($storedPath, '/');
+        $legacyFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $legacy;
+        if ($legacyFs && is_file($legacyFs)) {
+            return $legacy;
+        }
+        return self::fallbackInventoryUrl();
+    }
+
+    public static function fallbackInventoryUrl(): string
+    {
+        $candidate = '/ProyectoPandora/Public/img/imgInventario/NoItem.jpg';
+        $candidateFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $candidate;
+        if ($candidateFs && is_file($candidateFs)) {
+            return $candidate;
+        }
+        return self::fallbackDeviceUrl();
+    }
 }
 
