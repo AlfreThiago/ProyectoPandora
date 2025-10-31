@@ -20,8 +20,12 @@ $noGuardar = [
     'Device/CrearDevice',
     'Inventario/CrearItem',
     'Inventario/ActualizarItem',
+    'Inventario/CrearCategoria',
+    'Inventario/MostrarCrearCategoria',
     'EstadoTicket/Actualizar',
     'EstadoTicket/CrearEstado',
+    'Register/RegisterAdmin',
+    'Admin/Register',
     // Evitar que el polling y acciones AJAX sobreescriban prev_url
     'Notification/Count',
     'Notification/MarkRead'

@@ -274,6 +274,7 @@ class TecnicoController {
         $ticketModel = new Ticket($conn);
         $stats = $statsModel->getByTecnico($tecnico_id) ?: ['labor_min'=>0,'labor_max'=>0];
         list($avg, $count) = $ratingModel->getAvgForTecnico($tecnico_id);
+        $reviews = $tecnico_id ? $ratingModel->listForTecnico($tecnico_id) : [];
 
         
         $res = $conn->query("SELECT 

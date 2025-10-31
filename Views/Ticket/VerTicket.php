@@ -1,6 +1,7 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <?php require_once __DIR__ . '/../../Core/Date.php'; ?>
 <?php require_once __DIR__ . '/../../Core/LogFormatter.php'; ?>
+<?php require_once __DIR__ . '/../../Core/Storage.php'; ?>
 <main>
   <div class="detalle-ticket-layout">
     <!-- ================== DETALLE IZQUIERDA ================== -->
@@ -15,53 +16,56 @@
     <ul class="detalle-grid" id="detalleTicket" style="list-style:none;padding:0;margin:0;">
 
         <li class="dato-item"><strong>ID Ticket:</strong><span><?= htmlspecialchars($t['id']) ?></span></li>
-        <li class="dato-item"><strong>Dispositivo:</strong><span><?= htmlspecialchars($t['marca']) ?> <?= htmlspecialchars($t['modelo']) ?></span></li>
+        <li class="dato-item"><strong>Dispositivo:</strong><span data-field="device-nombre"><?= htmlspecialchars($t['marca']) ?> <?= htmlspecialchars($t['modelo']) ?></span></li>
         <li class="dato-item"><strong>Cliente:</strong>
-          <span><?= htmlspecialchars($t['cliente'] ?? $t['cliente_nombre'] ?? $t['user_name'] ?? 'No disponible') ?></span>
+          <span data-field="cliente-nombre"><?= htmlspecialchars($t['cliente'] ?? $t['cliente_nombre'] ?? $t['user_name'] ?? 'No disponible') ?></span>
         </li>
 
         <li class="dato-item"><strong>Estado:</strong>
-          <span id="estado-badge" class="<?= htmlspecialchars($view['estadoClass']) ?>">
+          <span id="estado-badge" data-field="estado-label" class="<?= htmlspecialchars($view['estadoClass']) ?>">
             <?= htmlspecialchars($view['estadoStr']) ?>
           </span>
         </li>
 
         <li class="dato-item"><strong>Técnico asignado:</strong>
-          <span>
+          <span data-field="tecnico-nombre">
             <?= !empty($t['tecnico']) ? htmlspecialchars($t['tecnico']) : '<span class="sin-asignar">Sin asignar</span>' ?>
           </span>
         </li>
 
         <?php if (isset($t['fecha_creacion'])): ?>
           <li class="dato-item"><strong>Fecha de creación:</strong>
-            <time title="<?= htmlspecialchars(DateHelper::exact($t['fecha_creacion'])) ?>">
+            <time data-field="fecha-creacion" data-exact="<?= htmlspecialchars(DateHelper::exact($t['fecha_creacion'])) ?>" title="<?= htmlspecialchars(DateHelper::exact($t['fecha_creacion'])) ?>">
               <?= htmlspecialchars(DateHelper::smart($t['fecha_creacion'])) ?>
             </time>
           </li>
         <?php endif; ?>
 
-        <?php if (!empty($t['fecha_cierre'])): ?>
-          <li class="dato-item"><strong>Fecha de cierre:</strong>
-            <time title="<?= htmlspecialchars(DateHelper::exact($t['fecha_cierre'])) ?>">
-              <?= htmlspecialchars(DateHelper::smart($t['fecha_cierre'])) ?>
-            </time>
-          </li>
-        <?php endif; ?>
+        <?php $hasClose = !empty($t['fecha_cierre']); ?>
+        <li class="dato-item" data-field="fecha-cierre-row"<?= $hasClose ? '' : ' style="display:none;"' ?>><strong>Fecha de cierre:</strong>
+          <time data-field="fecha-cierre" data-exact="<?= $hasClose ? htmlspecialchars(DateHelper::exact($t['fecha_cierre'])) : '' ?>" title="<?= $hasClose ? htmlspecialchars(DateHelper::exact($t['fecha_cierre'])) : '' ?>">
+            <?= $hasClose ? htmlspecialchars(DateHelper::smart($t['fecha_cierre'])) : '' ?>
+          </time>
+        </li>
 
         <!-- ✅ Descripción ocupa toda la fila -->
         <li class="dato-item dato-larga descripcion-falla">
           <strong>Descripción de la falla:</strong>
-          <span><?= htmlspecialchars($t['descripcion'] ?? $t['descripcion_falla']) ?></span>
+          <span data-field="descripcion-falla"><?= htmlspecialchars($t['descripcion'] ?? $t['descripcion_falla']) ?></span>
         </li>
 
         <!-- ✅ Imagen del dispositivo como item -->
-        <?php if (!empty($t['img_dispositivo'])): ?>
-        <li class="dato-item imagen-card">
+        <?php
+          $resolvedImg = \Storage::resolveDeviceUrl($t['img_dispositivo'] ?? '');
+          $hasImg = $resolvedImg !== '';
+        ?>
+        <li class="dato-item imagen-card" data-field="device-image-card"<?= $hasImg ? '' : ' style="display:none;"' ?> >
           <h3 style="margin-top:0;">Imagen del dispositivo</h3>
           <div class="imagen-contenedor">
             <img
               class="imagen-dispositivo"
-              src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($t['img_dispositivo']) ?>"
+              data-field="device-image"
+              src="<?= $hasImg ? htmlspecialchars($resolvedImg) : '' ?>"
               alt="Imagen del dispositivo"
             >
           </div>
@@ -69,7 +73,6 @@
             Cargada el <?= htmlspecialchars($t['fecha_creacion'] ?? '---') ?>
           </div>
         </li>
-        <?php endif; ?>
 
     </ul>
 
@@ -315,7 +318,7 @@
         <div class="timeline-2col">
           <div>
             <strong>Técnico</strong>
-            <ul>
+            <ul data-timeline="Tecnico">
               <?php foreach (($view['timeline']['Tecnico'] ?? []) as $ev): ?>
                 <li>
                   <div class="timeline-fecha">
@@ -331,7 +334,7 @@
           </div>
           <div>
             <strong>Cliente</strong>
-            <ul>
+            <ul data-timeline="Cliente">
               <?php foreach (($view['timeline']['Cliente'] ?? []) as $ev): ?>
                 <li>
                   <div class="timeline-fecha">
@@ -347,7 +350,7 @@
           </div>
           <div>
             <strong>Supervisor</strong>
-            <ul>
+            <ul data-timeline="Supervisor">
               <?php foreach (($view['timeline']['Supervisor'] ?? []) as $ev): ?>
                 <li>
                   <div class="timeline-fecha">

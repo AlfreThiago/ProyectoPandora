@@ -11,6 +11,7 @@ require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
 require_once __DIR__ . '/../Models/Notification.php';
 require_once __DIR__ . '/../Core/LogFormatter.php';
 require_once __DIR__ . '/../Core/Date.php';
+require_once __DIR__ . '/../Core/Storage.php';
 
 class TicketController
 {
@@ -56,11 +57,75 @@ class TicketController
             $rev = md5($estadoLower.'|'.(string)$laborAmount.'|'.(string)$itemsCount);
             $published = ($estadoLower === 'presupuesto');
             $canEdit = (!$published) && (($estadoLower === 'diagnóstico' || $estadoLower === 'diagnostico') || ($estadoLower === 'en espera' && $itemsCount>0 && $laborAmount>0));
-            echo json_encode([
+            $clientRev = isset($_GET['rev']) ? trim((string)$_GET['rev']) : '';
+
+            $response = [
                 'published' => $published,
                 'rev' => $rev,
                 'canEdit' => $canEdit,
-            ]);
+            ];
+
+            if ($clientRev !== $rev) {
+                $ticket = $this->ticketModel->ver($ticket_id);
+                if ($ticket) {
+                    $estadoStr = $ticket['estado'] ?? $ticket['estado_actual'] ?? '';
+                    $estadoBadge = $this->badgeClassFor(strtolower(trim($estadoStr)));
+                    $clienteNombre = $ticket['cliente'] ?? $ticket['cliente_nombre'] ?? $ticket['user_name'] ?? '';
+                    $deviceNombre = trim(($ticket['marca'] ?? '') . ' ' . ($ticket['modelo'] ?? ''));
+                    $descripcion = $ticket['descripcion'] ?? $ticket['descripcion_falla'] ?? '';
+                    $fechaCreacion = $ticket['fecha_creacion'] ?? null;
+                    $fechaCierre = $ticket['fecha_cierre'] ?? null;
+                    $imgUrl = \Storage::resolveDeviceUrl($ticket['img_dispositivo'] ?? '');
+
+                    $response['detail'] = [
+                        'cliente' => $clienteNombre,
+                        'device' => $deviceNombre,
+                        'estado' => [
+                            'label' => $estadoStr,
+                            'badge_class' => $estadoBadge,
+                        ],
+                        'tecnico' => [
+                            'name' => $ticket['tecnico'] ?? null,
+                        ],
+                        'fechas' => [
+                            'creacion' => [
+                                'human' => $fechaCreacion ? DateHelper::smart($fechaCreacion) : '',
+                                'exact' => $fechaCreacion ? DateHelper::exact($fechaCreacion) : '',
+                            ],
+                            'cierre' => [
+                                'human' => $fechaCierre ? DateHelper::smart($fechaCierre) : '',
+                                'exact' => $fechaCierre ? DateHelper::exact($fechaCierre) : '',
+                            ],
+                        ],
+                        'descripcion' => $descripcion,
+                        'image' => [
+                            'url' => $imgUrl,
+                        ],
+                        'rev' => $rev,
+                    ];
+
+                    require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
+                    $th = new TicketEstadoHistorialModel($conn);
+                    $events = $th->listByTicket($ticket_id);
+                    $timeline = ['Tecnico'=>[], 'Cliente'=>[], 'Supervisor'=>[]];
+                    foreach ($events as $ev) {
+                        $role = $ev['user_role'] ?? '';
+                        if ($role === 'Administrador') { $role = 'Supervisor'; }
+                        if (!isset($timeline[$role])) { continue; }
+                        $evEstado = $ev['estado'] ?? '';
+                        $timeline[$role][] = [
+                            'human' => DateHelper::smart($ev['created_at'] ?? ''),
+                            'exact' => DateHelper::exact($ev['created_at'] ?? ''),
+                            'estado' => $evEstado,
+                            'badge_class' => $this->badgeClassFor(strtolower(trim($evEstado))),
+                            'comentario' => $ev['comentario'] ?? '',
+                        ];
+                    }
+                    $response['timeline'] = $timeline;
+                }
+            }
+
+            echo json_encode($response);
         } catch (\Throwable $e) {
             echo json_encode(['error'=>'server']);
         }
