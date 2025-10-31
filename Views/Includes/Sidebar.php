@@ -27,7 +27,9 @@ $locale = I18n::getLocale();
             <div>
                 <div class="nav_image flex">
                     <div class="brand">
-                        <img class="brand-dark" src="/ProyectoPandora/Public/img/Innovasys_V2.png" alt="logo">
+                        <a href="/ProyectoPandora/Public/index.php?route=Default/Index" style="cursor: pointer;">
+                            <img class="brand-dark" src="/ProyectoPandora/Public/img/Innovasys_V2.png" alt="logo">
+                        </a>
                     </div>
                 </div>
             </div>
