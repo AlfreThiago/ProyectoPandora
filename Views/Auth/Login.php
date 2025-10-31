@@ -23,8 +23,6 @@
 
             <!-- ZONA DE RESPUESTA -->
             <div id="respuesta" style="margin-top: 10px; color: red;"></div>
-
-            <a class="footer-login" href="#">¿Olvidaste tu contraseña?</a>
             <p>
                 <a class="footer-login" href="/ProyectoPandora/Public/index.php?route=Register/Register"><?= __('auth.register.title') ?></a>
             </p>
