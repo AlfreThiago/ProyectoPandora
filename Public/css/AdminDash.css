@@ -3,61 +3,63 @@
 @import url("https://fonts.googleapis.com/css2?family=Bitcount:wght@100..900&display=swap");
 
 
-/* 🎨 Modo oscuro (GitHub Dark) */
+/* 🎨 Modo oscuro (azul neón coherente con el login) */
 :root {
-  --primario: #c9d1d9; /* texto base */
-  --secundario: #58a6ff; /* links / acentos */
-  --tercero:#1c20f1;
-  --cuarto:#7802c7;
-  --quinto:#a62feb;
-  --sexto:#c539fc;
-  --septimo:#2df9b5;
-  --fondo: #0d1117; /* fondo general */
-  --fondo-header: #161b22; /* header / sidebar */
-  --fondo-formulario: #161b22; /* inputs / modales */
-  --sombra: #30363d; /* bordes y separadores */
-  --sombra-formulario: #21262d;
+  --primario: #e2e8f0; /* texto base claro */
+  --secundario: #3ba4ff; /* acento principal coherente con el logo */
+  --tercero: #007bff; /* azul medio intenso */
+  --cuarto: #00bfff; /* azul neón brillante */
+  --quinto: #4f46e5; /* violeta azulado suave */
+  --sexto: #60a5fa; /* celeste azulado para hover */
+  --septimo: #2df9b5; /* acento complementario suave (verde neón) */
+  --fondo: #0a0f1a; /* fondo general más profundo */
+  --fondo-header: #111827; /* sidebar/header */
+  --fondo-formulario: #141c2c; /* formulario tipo vidrio */
+  --sombra: #1f2937; /* bordes suaves */
+  --sombra-formulario: #1e2533;
   --tipografia: "Poppins", Arial, sans-serif;
-  --color-primario: #a240ff;
-  --color-secundario: #a392b3;
-  --bg-900:#0b0f14;
-  --bg-800:#0f1720;
-  --card:#0f1722;
-  --accent:#3b82f6; /* primary */
-  --muted:#9aa6b2;
-  --glass: rgba(255,255,255,0.03);
+  --color-primario: #00bfff;
+  --color-secundario: #7dd3fc;
+  --bg-900: #0a0e17;
+  --bg-800: #101623;
+  --card: #141b2d;
+  --accent: #3b82f6; /* azul principal */
+  --muted: #94a3b8;
+  --glass: rgba(255, 255, 255, 0.04);
 
   --color-surface: #161b22; 
-  --color-texto-primario: #c9d1d9;
-  --color-texto-secundario: #8b949e;
-  --color-border: #30363d;
-  --color-tooltip-bg: #1f2428;
+  --color-texto-primario: #e2e8f0;
+  --color-texto-secundario: #94a3b8;
+  --color-border: #1e293b;
+  --color-tooltip-bg: #1f2937;
   --color-tooltip-text: #f0f6fc;
   --color-bg: #0d1117;
   --shadow-border: rgba(0, 0, 0, 0.5);
 }
-/* 🎨 Modo claro (GitHub Light) */
+
+/* 🎨 Modo claro (mantiene coherencia con el azul base) */
 body.dark-mode {
-  --primario: #24292f; /* texto base */
-  --secundario: #0969da; /* links / acentos */
-  --tercero:#bd1919;
-  --cuarto:#781ab6;
-  --quinto:#23ad2a;
-  --fondo: #ffffff; /* fondo general */
-  --fondo-header: #f6f8fa; /* header / sidebar */
+  --primario: #1e293b;
+  --secundario: #007bff;
+  --tercero: #2563eb;
+  --cuarto: #00bfff;
+  --quinto: #6366f1;
+  --fondo: #f8fafc;
+  --fondo-header: #e2e8f0;
   --fondo-formulario: #ffffff;
-  --sombra: #d0d7de;
-  --sombra-formulario: #d8dee4;
+  --sombra: #cbd5e1;
+  --sombra-formulario: #e5e7eb;
 
   --color-surface: #ffffff;
-  --color-texto-primario: #24292f;
-  --color-texto-secundario: #57606a;
-  --color-border: #d0d7de;
-  --color-tooltip-bg: #24292f;
+  --color-texto-primario: #1e293b;
+  --color-texto-secundario: #475569;
+  --color-border: #cbd5e1;
+  --color-tooltip-bg: #1e293b;
   --color-tooltip-text: #ffffff;
-  --color-bg: #f6f8fa;
+  --color-bg: #f1f5f9;
   --shadow-border: rgba(0, 0, 0, 0.1);
 }
+
 
 /* ======= RESET Y BASE ======= */
 * {
@@ -1227,213 +1229,206 @@ p{
 
 
 /* ===========?????? ZONE DE FORMULARIOS ????????=========== */
-
-/* ========== FORMULARIO DE LOGIN ========== */
-/* Fondo general */
-.fondo-login {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--fondo);
-  font-family: var(--tipografia);
+/* ======= LOGIN/REGISTER ======= */
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url(../img/img.png) no-repeat center;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
 }
 
-/* Caja del login */
-.login {
-  position: relative;
-  z-index: 2;
-  background: var(--fondo-formulario);
-  border: 1px solid var(--color-border);
-  padding: 80px 50px;        /* más espacio interno */
-  top: -80px;                /* sube un poco */
-  border-radius: 20px;
-  width: 550px;              /* más ancho */
-  text-align: center;
-  box-shadow: 0 12px 28px var(--shadow-border);
+/* Caja principal */
+.wrapper-login {
+    width: 480px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 50px 45px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    transition: 0.3s ease;
+}
+
+.wrapper-login:hover {
+    box-shadow: 0 0 35px rgba(64, 140, 255, 0.4);
 }
 
 /* Título */
-.login h2.bienvenida {
-  font-size: 2.2rem;         /* más grande */
-  font-weight: 700;
-  margin-bottom: 0.5em;
-  color: var(--secundario);
-  font-family: var(--tipografia);
-  overflow: hidden;              /* Oculta texto mientras se escribe */
-  border-right: 3px solid var(--secundario); /* Simula cursor */
-  white-space: nowrap;
-  width: 0;
-  animation: typing 4s steps(40, end) forwards, blink 0.8s infinite;
+.wrapper-login h1 {
+    font-size: 38px;
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
 }
 
-/* Subtítulo */
-.login h3 {
-  color: var(--secundario);
-  margin-bottom: 2.5em;
-  font-size: 2rem;
-  font-weight: 500;
+/* Inputs */
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 55px;
+    margin: 30px 0;
 }
 
-/* Footer con "Sign up" */
-.login .footer {
-  margin-top: 2em;
-  font-size: 15px;
-  color: var(--color-texto-secundario);
-  text-align: center;
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 40px;
+    outline: none;
+    color: #fff;
+    font-size: 17px;
+    padding: 0 50px 0 20px;
+    transition: all 0.3s ease;
 }
 
-.login .footer a {
-  display: inline-block;
-  font-weight: 600;
-  color: var(--secundario);
-  text-decoration: none;
-  margin-top: 10px;
-  transition: color 0.3s, transform 0.2s;
+.input-box input:focus {
+    border-color: #4da3ff;
+    box-shadow: 0 0 10px rgba(77, 163, 255, 0.5);
 }
 
-.login .footer a:hover {
-  color: var(--cuarto);
-  transform: translateY(-2px);
+.input-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
-/* Formulario */
-.login form {
-  display: grid;
-  gap: 16px;
-  width: 100%;
-  margin-bottom: 1.5em;
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.7);
 }
 
-.textbox {
-  position: relative;
+/* Recordarme / Olvidaste */
+.remember-forgot {
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    color: #ccc;
 }
 
-.textbox input {
-  width: 100%;
-  height: 52px;
-  padding: 0 14px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  color: var(--primario);
-  margin-top: 15px;
-  font-size: 15px;
-  transition: border 0.3s, box-shadow 0.3s;
+.remember-forgot label input {
+    accent-color: #4da3ff;
+    margin-right: 4px;
 }
 
-.textbox input:focus {
-  border-color: var(--secundario);
-  box-shadow: 0 0 6px var(--secundario);
-  outline: none;
-  scale: 1.02;
+.remember-forgot a {
+    color: #4da3ff;
+    text-decoration: none;
+    font-weight: 500;
 }
 
-.textbox label {
-  position: absolute;
-  left: 14px;
-  top: 5px;
-  transform: translateY(-50%);
-  font-size: 0.9rem;
-  color: var(--color-texto-secundario);
-  pointer-events: none;
-  transition: 0.3s ease;
-}
-
-.textbox input:focus + label,
-.textbox input:not(:placeholder-shown) + label {
-  top: -8px;
-  left: 10px;
-  font-size: 0.9rem;
-  margin-top: 10px;
-  background: var(--fondo-formulario);
-  padding: 0 4px;
-  color: var(--secundario);
+.remember-forgot a:hover {
+    text-decoration: underline;
 }
 
 /* Botón */
-.login button {
-  height: 52px;
-  border: none;
-  border-radius: 8px;
-  background: var(--secundario);
-  color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+.btn-login {
+    width: 100%;
+    height: 50px;
+    border: none;
+    background: linear-gradient(135deg, #4da3ff, #6a5cff);
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 0 15px rgba(77, 163, 255, 0.4);
 }
 
-.login button:hover {
-  background: #0969da;
+.btn-login:hover {
+    background: linear-gradient(135deg, #4da3ff, #1e64af);
+    box-shadow: 0 0 25px rgba(77, 163, 255, 0.6);
 }
 
-/* Links */
-.login a {
-  font-size: 15px;
-  color: var(--secundario);
-  text-decoration: none;
-  transition: color 0.3s;
+/* Enlace de registro */
+.register-link {
+    font-size: 15px;
+    text-align: center;
+    margin-top: 25px;
+    color: #ccc;
 }
 
-.login a:hover {
-  color: var(--cuarto);
+.register-link a {
+    color: #4da3ff;
+    font-weight: 600;
+    text-decoration: none;
 }
 
-/* Footer del formulario */
-.login .footer-login {
-  margin-top: 1.5em;
-  font-size: 20px;
-  color: var(--secundario);
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .login-body {
+        margin-left: 0;
+        width: 100%;
+        padding: 30px;
+    }
+
+    .wrapper-login {
+        width: 100%;
+        max-width: 400px;
+        padding: 40px 30px;
+    }
+
+    .wrapper-login h1 {
+        font-size: 32px;
+    }
+}
+/* ======= REGISTRO (usa base del login) ======= */
+.alerta-error {
+  background: rgba(255, 0, 60, 0.12);
+  border: 1px solid rgba(255, 100, 130, 0.3);
+  color: #ff8ca3;
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 14px;
   text-align: center;
+  backdrop-filter: blur(10px);
 }
 
-.login .footer-login a {
-  font-weight: 600;
+/* Adaptaciones específicas */
+.wrapper-login h1 {
   color: var(--secundario);
-  text-decoration: none;
-  margin-left: 4px;
-  position: relative;
-  transition: color 0.3s, transform 0.2s;
 }
 
-.login .footer-login a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 2px;
-  background: var(--secundario);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.3s ease;
+.input-box i.bx-envelope {
+  color: rgba(255, 255, 255, 0.8);
 }
 
-.login .footer-login a:hover {
-  color: var(--cuarto);
-  transform: translateY(-2px);
+.btn[type="submit"] {
+  background: linear-gradient(135deg, var(--secundario), var(--tercero));
+  box-shadow: 0 0 20px rgba(64, 140, 255, 0.4);
 }
 
-.login .footer-login a:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
+.btn[type="submit"]:hover {
+  background: linear-gradient(135deg, var(--secundario), var(--cuarto));
+  box-shadow: 0 0 25px rgba(77, 163, 255, 0.6);
 }
 
-/* Animación de escritura */
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+/* Links al final */
+.register-link p a {
+  color: var(--secundario);
 }
 
-/* Parpadeo del cursor */
-@keyframes blink {
-  50% { border-color: transparent }
+.register-link p a:hover {
+  text-decoration: underline;
 }
+
 
 /* ========== FORMULARIO DE CREAR ========== */
 
@@ -2465,6 +2460,89 @@ ul {
     margin-top: 1.5rem;
   }
 }
+/* =========================================
+   TARJETA DE IMAGEN - VERSIÓN PRO
+   ========================================= */
+.imagen-wrap {
+  margin-top: 1.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.imagen-card {
+  background: linear-gradient(180deg, rgba(32, 36, 42, 0.95), rgba(20, 22, 27, 0.95));
+  border-radius: 18px;
+  border: 1px solid rgba(46, 51, 58, 0.8);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+  padding: 1rem;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+}
+
+.imagen-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.65), 0 0 15px rgba(30,144,255,0.1);
+}
+
+/* título arriba */
+.imagen-card h3 {
+  color: #1e90ff;
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+/* contenedor central */
+.imagen-contenedor {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: inset 0 0 25px rgba(0,0,0,0.5);
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.15));
+}
+
+.imagen-dispositivo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.imagen-contenedor:hover .imagen-dispositivo {
+  transform: scale(1.06);
+  filter: brightness(1.08);
+}
+
+/* pie informativo */
+.imagen-pie {
+  margin-top: 0.6rem;
+  color: #9ca4b1;
+  font-size: 0.85rem;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  padding-top: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .imagen-card {
+    width: 240px;
+  }
+}
+@media (max-width: 600px) {
+  .imagen-card {
+    width: 200px;
+  }
+}
+
 /* =================== ESTILO DE CALIFICACIÓN (ESTRELLAS) =================== */
 
 .bloque-cliente.calificacion {
@@ -2563,6 +2641,131 @@ ul {
     margin-bottom: 8px;
   }
 }
+/* ==== Ajuste para layout info + imagen (mantiene tu diseño) ==== */
+.detalle-ticket-layout {
+  display: grid;
+  grid-template-columns: 65% 35%;
+  gap: 1.5rem;
+}
+
+@media(max-width: 900px){
+  .detalle-ticket-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==== Imagen más grande sin deformar ==== */
+.imagen-contenedor {
+  max-width: 380px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  cursor: zoom-in;
+}
+
+.imagen-dispositivo {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  transition: transform .25s ease, filter .25s ease;
+}
+
+/* Hover suave */
+.imagen-contenedor:hover .imagen-dispositivo {
+  transform: scale(1.07);
+  filter: brightness(1.15);
+}
+
+/* ==== Lightbox Pro ==== */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  backdrop-filter: blur(6px);
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 2px solid rgba(255,255,255,.15);
+}
+
+.lightbox.active {
+  display: flex;
+  cursor: zoom-out;
+}
+/* ====== NUEVA GRILLA PARA ORDENAR TODO ====== */
+.detalle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 18px;
+  align-items: start;
+}
+
+/* Caja de imagen dentro del GRID */
+.imagen-card {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(32,36,42,0.95), rgba(20,22,27,0.95));
+  border: 1px solid rgba(46, 51, 58, 0.8);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+}
+
+/* Imagen responsiva dentro del "slot" */
+.imagen-contenedor {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* imagen escala bien */
+.imagen-dispositivo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* descripción VA ANCHO COMPLETO */
+.descripcion-falla {
+  grid-column: 1 / -1;
+}
+
+/* responsive — pasa a 2 columnas */
+@media (max-width: 1020px) {
+  .detalle-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .imagen-card {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}
+
+/* mobile — todo apilado */
+@media (max-width: 650px) {
+  .detalle-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .descripcion-falla {
+    grid-column: 1 / 2;
+  }
+}
+
 /* ==============================
    SELECT MODERNO GLOBAL
    ============================== */
@@ -3354,18 +3557,63 @@ form.filtros .btn-outline:hover {
   flex-wrap: wrap;
   justify-content: center;
 }
-/* CARDS PARA CLIENTE-TICKET */
-/* === Contenedor general de las cards === */
-.cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: flex-start;
-  align-items: stretch;
+/* ================= Carousel de tarjetas ================= */
+/* === Contenedor general === */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 1rem 0;
 }
 
-/* === Tarjeta de dispositivo === */
+.titulo-carrusel {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 1rem;
+  font-size: 1.6em;
+}
+
+/* === Carril de tarjetas === */
+.carousel-track {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  flex-wrap: nowrap;
+}
+
+
+.carousel-track::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* === Botones === */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.3s;
+  z-index: 2;
+}
+
+.carousel-btn:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+.prev-btn { left: 10px; }
+.next-btn { right: 10px; }
+
+/* === Card estilo original === */
 .device-card {
+  flex: 0 0 280px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -3375,19 +3623,17 @@ form.filtros .btn-outline:hover {
   border-radius: 16px;
   backdrop-filter: blur(8px);
   color: #eaeaea;
-  width: 280px;
   min-height: 390px;
   overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.3s ease;
 }
 
-/* Hover effect */
 .device-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Barra lateral animada */
+/* Barra lateral */
 .device-card::before {
   content: "";
   position: absolute;
@@ -3405,11 +3651,7 @@ form.filtros .btn-outline:hover {
   opacity: 1;
 }
 
-/* === Imagen del dispositivo === */
-.device-img {
-  position: relative;
-}
-
+/* Imagen */
 .device-img img {
   width: 100%;
   height: 180px;
@@ -3418,7 +3660,6 @@ form.filtros .btn-outline:hover {
   border-radius: 16px 16px 0 0;
 }
 
-/* Overlay oscuro */
 .device-img::after {
   content: "";
   position: absolute;
@@ -3426,7 +3667,7 @@ form.filtros .btn-outline:hover {
   background: linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.4));
 }
 
-/* === Información === */
+/* Info */
 .device-info {
   padding: 20px;
   display: flex;
@@ -3441,7 +3682,6 @@ form.filtros .btn-outline:hover {
   font-weight: 600;
   color: #fff;
   text-align: center;
-  letter-spacing: 0.3px;
 }
 
 .device-info p {
@@ -3455,16 +3695,17 @@ form.filtros .btn-outline:hover {
   color: #fff;
 }
 
-/* === Responsive === */
+/* Responsive */
 @media (max-width: 768px) {
-  .cards-container {
-    justify-content: center;
+  .carousel-btn {
+    display: none;
   }
   .device-card {
-    width: 90%;
-    max-width: 340px;
+    flex: 0 0 85%;
+    margin: 0 auto;
   }
 }
+
 /* CARDS PERO PARA TECNICO-TICKET */
 /* === Contenedor general === */
 .ticket-grid {
@@ -3478,7 +3719,9 @@ form.filtros .btn-outline:hover {
 
 /* === Tarjeta individual === */
 .ticket-card {
-  flex: 1 1 260px;
+  flex: 0 0 280px; /* no crece ni se encoge, siempre 280px */
+  max-width: 280px;
+  min-height: 360px;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
@@ -3487,11 +3730,10 @@ form.filtros .btn-outline:hover {
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.25s ease, box-shadow 0.3s ease;
-  min-height: 360px;
-  max-width: 280px;
   backdrop-filter: blur(6px);
   overflow: hidden;
 }
+
 
 .ticket-card:hover {
   transform: translateY(-6px);
@@ -3577,6 +3819,56 @@ form.filtros .btn-outline:hover {
   .ticket-card {
     width: 90%;
     max-width: 340px;
+  }
+}
+/* Carousel específico para técnico */
+.carousel-container-tecnico {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 1rem 0;
+}
+
+.carousel-track-tecnico {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  flex-wrap: nowrap;
+  scrollbar-width: none;
+}
+
+.carousel-track-tecnico::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-btn-tecnico {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.3s;
+  z-index: 2;
+}
+
+.carousel-btn-tecnico:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+.prev-btn-tecnico { left: 10px; }
+.next-btn-tecnico { right: 10px; }
+
+@media (max-width: 768px) {
+  .carousel-btn-tecnico { display: none; }
+  .ticket-card {
+    flex: 0 0 85%;
+    margin: 0 auto;
   }
 }
 

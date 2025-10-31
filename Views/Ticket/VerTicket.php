@@ -9,44 +9,74 @@
 
       <!-- BLOQUE PRINCIPAL: INFO HORIZONTAL -->
       <div class="bloque-principal">
-        <?php if (!empty($view['ticket'])): ?>
-          <?php $t = $view['ticket']; ?>
-          <ul class="detalle-grid" id="detalleTicket" style="list-style:none;padding:0;margin:0;">
-              <li class="dato-item"><strong>ID Ticket:</strong><span><?= htmlspecialchars($t['id']) ?></span></li>
-              <li class="dato-item"><strong>Dispositivo:</strong><span><?= htmlspecialchars($t['marca']) ?> <?= htmlspecialchars($t['modelo']) ?></span></li>
-              <li class="dato-item"><strong>Cliente:</strong><span><?= htmlspecialchars($t['cliente'] ?? $t['cliente_nombre'] ?? $t['user_name'] ?? 'No disponible') ?></span></li>
-              <li class="dato-item"><strong>Estado:</strong><span id="estado-badge" class="<?= htmlspecialchars($view['estadoClass']) ?>"><?= htmlspecialchars($view['estadoStr']) ?></span></li>
-              <li class="dato-item dato-larga"><strong>Descripción de la falla:</strong><span><?= htmlspecialchars($t['descripcion'] ?? $t['descripcion_falla']) ?></span></li>
-              <li class="dato-item"><strong>Técnico asignado:</strong><span><?= !empty($t['tecnico']) ? htmlspecialchars($t['tecnico']) : '<span class="sin-asignar">Sin asignar</span>' ?></span></li>
-              <?php if (isset($t['fecha_creacion'])): ?>
-                <li class="dato-item"><strong>Fecha de creación:</strong>
-                  <time title="<?= htmlspecialchars(DateHelper::exact($t['fecha_creacion'])) ?>">
-                    <?= htmlspecialchars(DateHelper::smart($t['fecha_creacion'])) ?>
-                  </time>
-                </li>
-              <?php endif; ?>
-              <?php if (!empty($t['fecha_cierre'])): ?>
-                <li class="dato-item"><strong>Fecha de cierre:</strong>
-                  <time title="<?= htmlspecialchars(DateHelper::exact($t['fecha_cierre'])) ?>">
-                    <?= htmlspecialchars(DateHelper::smart($t['fecha_cierre'])) ?>
-                  </time>
-                </li>
-              <?php endif; ?>
+  <?php if (!empty($view['ticket'])): ?>
+    <?php $t = $view['ticket']; ?>
+    
+    <ul class="detalle-grid" id="detalleTicket" style="list-style:none;padding:0;margin:0;">
 
-              <!-- Zona imagen: destacada -->
-              <?php if (!empty($t['img_dispositivo'])): ?>
-                  <li class="dato-item imagen-wrap">
-                    <strong>Imagen del dispositivo:</strong>
-                    <div class="imagen-contenedor">
-                      <img class="imagen-dispositivo" src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($t['img_dispositivo']) ?>" alt="Imagen dispositivo">
-                    </div>
-                  </li>
-              <?php endif; ?>
-          </ul>
-        <?php else: ?>
-          <div class="alert alert-danger">No se encontró información para este ticket.</div>
+        <li class="dato-item"><strong>ID Ticket:</strong><span><?= htmlspecialchars($t['id']) ?></span></li>
+        <li class="dato-item"><strong>Dispositivo:</strong><span><?= htmlspecialchars($t['marca']) ?> <?= htmlspecialchars($t['modelo']) ?></span></li>
+        <li class="dato-item"><strong>Cliente:</strong>
+          <span><?= htmlspecialchars($t['cliente'] ?? $t['cliente_nombre'] ?? $t['user_name'] ?? 'No disponible') ?></span>
+        </li>
+
+        <li class="dato-item"><strong>Estado:</strong>
+          <span id="estado-badge" class="<?= htmlspecialchars($view['estadoClass']) ?>">
+            <?= htmlspecialchars($view['estadoStr']) ?>
+          </span>
+        </li>
+
+        <li class="dato-item"><strong>Técnico asignado:</strong>
+          <span>
+            <?= !empty($t['tecnico']) ? htmlspecialchars($t['tecnico']) : '<span class="sin-asignar">Sin asignar</span>' ?>
+          </span>
+        </li>
+
+        <?php if (isset($t['fecha_creacion'])): ?>
+          <li class="dato-item"><strong>Fecha de creación:</strong>
+            <time title="<?= htmlspecialchars(DateHelper::exact($t['fecha_creacion'])) ?>">
+              <?= htmlspecialchars(DateHelper::smart($t['fecha_creacion'])) ?>
+            </time>
+          </li>
         <?php endif; ?>
-      </div> <!-- .bloque-principal -->
+
+        <?php if (!empty($t['fecha_cierre'])): ?>
+          <li class="dato-item"><strong>Fecha de cierre:</strong>
+            <time title="<?= htmlspecialchars(DateHelper::exact($t['fecha_cierre'])) ?>">
+              <?= htmlspecialchars(DateHelper::smart($t['fecha_cierre'])) ?>
+            </time>
+          </li>
+        <?php endif; ?>
+
+        <!-- ✅ Descripción ocupa toda la fila -->
+        <li class="dato-item dato-larga descripcion-falla">
+          <strong>Descripción de la falla:</strong>
+          <span><?= htmlspecialchars($t['descripcion'] ?? $t['descripcion_falla']) ?></span>
+        </li>
+
+        <!-- ✅ Imagen del dispositivo como item -->
+        <?php if (!empty($t['img_dispositivo'])): ?>
+        <li class="dato-item imagen-card">
+          <h3 style="margin-top:0;">Imagen del dispositivo</h3>
+          <div class="imagen-contenedor">
+            <img
+              class="imagen-dispositivo"
+              src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($t['img_dispositivo']) ?>"
+              alt="Imagen del dispositivo"
+            >
+          </div>
+          <div class="imagen-pie">
+            Cargada el <?= htmlspecialchars($t['fecha_creacion'] ?? '---') ?>
+          </div>
+        </li>
+        <?php endif; ?>
+
+    </ul>
+
+  <?php else: ?>
+    <div class="alert alert-danger">No se encontró información para este ticket.</div>
+  <?php endif; ?>
+</div>
 
       <!-- BLOQUE: MENSAJES / ALERTAS YA EXISTENTES (NO TOCAR su CSS original) -->
       <?php if (!empty($view['flash']['error']) && $view['flash']['error']==='estado'): ?>
@@ -351,4 +381,17 @@
   };
   badge.className = classFor(badge.textContent);
 })();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const img = document.querySelector(".imagen-dispositivo");
+  if (!img) return;
+
+  const lightbox = document.createElement("div");
+  lightbox.className = "lightbox";
+  lightbox.innerHTML = `<img src="${img.src}">`;
+  document.body.appendChild(lightbox);
+
+  img.addEventListener("click", () => lightbox.classList.add("active"));
+  lightbox.addEventListener("click", () => lightbox.classList.remove("active"));
+});
 </script>

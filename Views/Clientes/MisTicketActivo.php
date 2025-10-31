@@ -25,47 +25,65 @@
     </form>
 
     <section class="section-mis-tickets">
-      <div class="cards-container">
-        <?php if (!empty($tickets)): ?>
-          <?php foreach ($tickets as $ticket): ?>
-            <?php 
-              $estadoStr = $ticket['estado'] ?? ''; 
-              $estadoClass = $ticket['estadoClass'] ?? 'badge'; 
-              $estadoLower = strtolower($estadoStr); 
-              $imgUrl = !empty($ticket['imagen']) 
-                ? htmlspecialchars($ticket['imagen']) 
-                : '/ProyectoPandora/Public/assets/img/default-device.jpg'; // Imagen por defecto
-            ?>
+  <h2 class="titulo-carrusel">Mis Tickets</h2>
 
-            <div class="device-card">
-              <!-- <div class="device-img">
-                <img src="<?= $imgUrl ?>" alt="Imagen del dispositivo">
-              </div> -->
+  <div class="carousel-container">
+    <button class="carousel-btn prev-btn" id="prevTicketBtn">&#10094;</button>
+    <div class="carousel-track" id="carouselTicketTrack">
+      <?php if (!empty($tickets)): ?>
+        <?php foreach ($tickets as $ticket): ?>
+          <?php 
+            $estadoStr = $ticket['estado'] ?? ''; 
+            $estadoClass = $ticket['estadoClass'] ?? 'badge'; 
+            $imgUrl = !empty($ticket['imagen']) 
+              ? htmlspecialchars($ticket['imagen']) 
+              : '/ProyectoPandora/Public/assets/img/default-device.jpg';
+          ?>
 
-              <div class="device-info u-flex-col u-flex-1">
-                <h3><?= htmlspecialchars($ticket['dispositivo']) ?> <?= htmlspecialchars($ticket['modelo']) ?></h3>
-                <p class="line-clamp-3"><strong>Descripción:</strong> <?= htmlspecialchars($ticket['descripcion_falla']) ?></p>
-                <p><strong>Estado:</strong> <span class="<?= $estadoClass ?>"><?= htmlspecialchars($estadoStr) ?></span></p>
-                <p><strong>Fecha:</strong> <time title="<?= htmlspecialchars($ticket['fecha_exact'] ?? '') ?>"><?= htmlspecialchars($ticket['fecha_human'] ?? '') ?></time></p>
-                <p><strong>Técnico:</strong> <?= htmlspecialchars($ticket['tecnico'] ?? 'Sin asignar') ?></p>
+          <article class="ticket-card">
 
-                <div class="card-actions">
-                  <a href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?= (int)$ticket['id'] ?>" class="btn btn-primary">Ver detalle</a>
-                  <a href="/ProyectoPandora/Public/index.php?route=Ticket/Editar&id=<?= (int)$ticket['id'] ?>" class="btn btn-edit">Editar</a>
-                  <?php if (!empty($ticket['puedeEliminar'])): ?>
-                    <a href="/ProyectoPandora/Public/index.php?route=Ticket/Eliminar&id=<?= (int)$ticket['id'] ?>" class="btn delete-btn" onclick="return confirm('¿Seguro que deseas eliminar este ticket? Esta acción no se puede deshacer.');">Eliminar</a>
-                  <?php endif; ?>
-                </div>
+            <div class="ticket-info u-flex-col u-flex-1">
+              <h3><?= htmlspecialchars($ticket['dispositivo']) ?> <?= htmlspecialchars($ticket['modelo']) ?></h3>
+              <p class="line-clamp-3"><strong>Descripción:</strong> <?= htmlspecialchars($ticket['descripcion_falla']) ?></p>
+              <p><strong>Estado:</strong> <span class="<?= $estadoClass ?>"><?= htmlspecialchars($estadoStr) ?></span></p>
+              <p><strong>Fecha:</strong> <time title="<?= htmlspecialchars($ticket['fecha_exact'] ?? '') ?>"><?= htmlspecialchars($ticket['fecha_human'] ?? '') ?></time></p>
+              <p><strong>Técnico:</strong> <?= htmlspecialchars($ticket['tecnico'] ?? 'Sin asignar') ?></p>
+
+              <div class="card-actions">
+                <a href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?= (int)$ticket['id'] ?>" class="btn btn-primary">Ver detalle</a>
+                <a href="/ProyectoPandora/Public/index.php?route=Ticket/Editar&id=<?= (int)$ticket['id'] ?>" class="btn btn-edit">Editar</a>
+                <?php if (!empty($ticket['puedeEliminar'])): ?>
+                  <a href="/ProyectoPandora/Public/index.php?route=Ticket/Eliminar&id=<?= (int)$ticket['id'] ?>" class="btn delete-btn" onclick="return confirm('¿Seguro que deseas eliminar este ticket? Esta acción no se puede deshacer.');">Eliminar</a>
+                <?php endif; ?>
               </div>
             </div>
+          </article>
 
-          <?php endforeach; ?>
-        <?php else: ?>
-          <p>No tienes tickets activos.</p>
-        <?php endif; ?>
-      </div>
-    </section>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p>No tienes tickets activos.</p>
+      <?php endif; ?>
+    </div>
+    <button class="carousel-btn next-btn" id="nextTicketBtn">&#10095;</button>
+  </div>
+</section>
+
 
     <a href="/ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear" class="btn-float-add" title="Agregar ticket">+</a>
   </div>
 </main>
+<script>
+  const ticketTrack = document.getElementById('carouselTicketTrack');
+  const prevTicketBtn = document.getElementById('prevTicketBtn');
+  const nextTicketBtn = document.getElementById('nextTicketBtn');
+
+  const ticketCardWidth = 300; // ancho aproximado de cada tarjeta + margen
+
+  nextTicketBtn.addEventListener('click', () => {
+    ticketTrack.scrollBy({ left: ticketCardWidth, behavior: 'smooth' });
+  });
+
+  prevTicketBtn.addEventListener('click', () => {
+    ticketTrack.scrollBy({ left: -ticketCardWidth, behavior: 'smooth' });
+  });
+</script>

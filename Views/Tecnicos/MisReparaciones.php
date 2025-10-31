@@ -21,36 +21,57 @@
     </form>
 
     <section class="section-mis-tickets">
-      <div class="ticket-grid">
-        <?php if (!empty($tickets)): ?>
-          <?php foreach ($tickets as $ticket): ?>
-            <div class="ticket-card">
-              <div class="ticket-img">
-                <img src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($ticket['img_dispositivo']) ?>" alt="Imagen dispositivo">
-              </div>
+  <h2 class="titulo-carrusel">Mis Tickets</h2>
 
-              <div class="ticket-info">
-                <h3><?= htmlspecialchars($ticket['marca']) ?> <?= htmlspecialchars($ticket['modelo']) ?></h3>
-                <p><strong>Cliente:</strong> <?= htmlspecialchars($ticket['cliente']) ?></p>
-                <p class="line-clamp-3"><strong>Descripción:</strong> <?= htmlspecialchars($ticket['descripcion_falla']) ?></p>
-                <?php 
-                  $estadoStr = $ticket['estado'] ?? ''; 
-                  $estadoClass = $ticket['estadoClass'] ?? 'badge'; 
-                ?>
-                <p><strong>Estado:</strong> <span class="<?= $estadoClass ?>"><?= htmlspecialchars($estadoStr) ?></span></p>
-                <p><strong>Fecha:</strong> <time title="<?= htmlspecialchars($ticket['fecha_exact'] ?? '') ?>"><?= htmlspecialchars($ticket['fecha_human'] ?? '') ?></time></p>
-              </div>
+  <div class="carousel-container carousel-container-tecnico">
+    <button class="carousel-btn-tecnico prev-btn-tecnico" id="prevTicketBtnTech">&#10094;</button>
 
-              <div class="ticket-actions">
-                <a href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?= $ticket['id'] ?>" class="btn">Ver detalle</a>
-              </div>
+    <div class="carousel-track-tecnico" id="carouselTicketTrackTech">
+      <?php if (!empty($tickets)): ?>
+        <?php foreach ($tickets as $ticket): ?>
+          <div class="ticket-card">
+            <div class="ticket-img">
+              <img src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($ticket['img_dispositivo']) ?>" alt="Imagen dispositivo">
             </div>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <p>No tienes reparaciones asignadas.</p>
-        <?php endif; ?>
-      </div>
-    </section>
+
+            <div class="ticket-info">
+              <h3><?= htmlspecialchars($ticket['marca']) ?> <?= htmlspecialchars($ticket['modelo']) ?></h3>
+              <p><strong>Cliente:</strong> <?= htmlspecialchars($ticket['cliente']) ?></p>
+              <p class="line-clamp-3"><strong>Descripción:</strong> <?= htmlspecialchars($ticket['descripcion_falla']) ?></p>
+              <p><strong>Estado:</strong> <span class="<?= $ticket['estadoClass'] ?>"><?= htmlspecialchars($ticket['estado']) ?></span></p>
+              <p><strong>Fecha:</strong> <time title="<?= htmlspecialchars($ticket['fecha_exact']) ?>"><?= htmlspecialchars($ticket['fecha_human']) ?></time></p>
+            </div>
+
+            <div class="ticket-actions">
+              <a href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?= $ticket['id'] ?>" class="btn">Ver detalle</a>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p>No tienes reparaciones asignadas.</p>
+      <?php endif; ?>
+    </div>
+
+    <button class="carousel-btn-tecnico next-btn-tecnico" id="nextTicketBtnTech">&#10095;</button>
   </div>
 </section>
+
+  </div>
+</section>
+<script>
+  const ticketTrackTech = document.getElementById('carouselTicketTrackTech');
+const prevTicketBtnTech = document.getElementById('prevTicketBtnTech');
+const nextTicketBtnTech = document.getElementById('nextTicketBtnTech');
+
+const ticketCardWidthTech = 300; // ancho aproximado de cada tarjeta + margen
+
+nextTicketBtnTech.addEventListener('click', () => {
+  ticketTrackTech.scrollBy({ left: ticketCardWidthTech, behavior: 'smooth' });
+});
+
+prevTicketBtnTech.addEventListener('click', () => {
+  ticketTrackTech.scrollBy({ left: -ticketCardWidthTech, behavior: 'smooth' });
+});
+
+</script>
 </main>
