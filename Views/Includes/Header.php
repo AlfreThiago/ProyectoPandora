@@ -1,28 +1,14 @@
 <?php
 require_once __DIR__ . '/../../Core/Auth.php';
 require_once __DIR__ . '/../../Core/I18n.php';
+require_once __DIR__ . '/../../Core/Storage.php';
 I18n::boot();
 $authUser = Auth::user();
 $rol = $authUser['role'] ?? '';
 $name = $authUser['name'] ?? '';
 $email = $authUser['email'] ?? '';
-$avatar = $authUser['img_perfil'] ?? '';
-
-$defaultAvatar = '/ProyectoPandora/Public/img/imgPerfil/default.png';
-$fallbackAvatar = '/ProyectoPandora/Public/img/Innovasys.png';
-
-if ($avatar && strpos($avatar, '/ProyectoPandora/') !== 0) {
-	$avatar = '/ProyectoPandora/Public/img/imgPerfil/' . ltrim($avatar, '/');
-}
-
-$avatarFs = rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') . $avatar;
-if (!$avatar || !is_file($avatarFs)) {
-	$avatar = $defaultAvatar;
-	$defaultFs = rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') . $defaultAvatar;
-	if (!is_file($defaultFs)) {
-		$avatar = $fallbackAvatar;
-	}
-}
+$avatarStored = $authUser['img_perfil'] ?? '';
+$avatar = \Storage::resolveProfileUrl($avatarStored);
 
 
 // Ruta actual (por si se requiere algún ajuste puntual)

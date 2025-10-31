@@ -7,6 +7,7 @@ require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/../Models/Ticket.php';
 require_once __DIR__ . '/../Models/Historial.php';
 require_once __DIR__ . '/../Controllers/HistorialController.php';
+require_once __DIR__ . '/../Core/Storage.php';
 
 class DeviceController
 {
@@ -112,14 +113,13 @@ class DeviceController
 
             // Manejo de imagen opcional: usar NoFoto.jpg si no se sube
             if (!empty($img_dispositivo)) {
-                $rutaDestinoDir = __DIR__ . '/../Public/img/imgDispositivos/';
-                if (!is_dir($rutaDestinoDir)) { @mkdir($rutaDestinoDir, 0777, true); }
-                $rutaDestino = $rutaDestinoDir . basename($img_dispositivo);
-                if (!move_uploaded_file($_FILES['img_dispositivo']['tmp_name'], $rutaDestino)) {
+                $stored = Storage::storeUploadedFile($_FILES['img_dispositivo'], 'device');
+                if (!$stored) {
                     $error = "Error al subir la imagen.";
                     include_once __DIR__ . '/../Views/Device/CrearDevice.php';
                     return;
                 }
+                $img_dispositivo = $stored['relative'];
             } else {
                 $img_dispositivo = 'NoFoto.jpg';
             }
@@ -226,11 +226,14 @@ class DeviceController
             if ($categoria_id && $marca && $modelo && $descripcion_falla) {
                 $img_dispositivo = $dispositivo['img_dispositivo'];
                 if (!empty($_FILES['img_dispositivo']['name'])) {
-                    $dir = __DIR__ . "/../Public/img/imgDispositivos/";
-                    if (!is_dir($dir)) mkdir($dir, 0777, true);
-                    $fileName = basename($_FILES['img_dispositivo']['name']);
-                    $img_dispositivo = $fileName;
-                    move_uploaded_file($_FILES['img_dispositivo']['tmp_name'], $dir . $fileName);
+                    $stored = Storage::storeUploadedFile($_FILES['img_dispositivo'], 'device');
+                    if (!$stored) {
+                        $error = "Error al subir la nueva imagen.";
+                        $categorias = $this->categoryModel->getAllCategories();
+                        include __DIR__ . '/../Views/Device/ActualizarDevice.php';
+                        return;
+                    }
+                    $img_dispositivo = $stored['relative'];
                 }
                 $this->deviceModel->updateDevice($id, $categoria_id, $marca, $modelo, $descripcion_falla, $img_dispositivo);
 

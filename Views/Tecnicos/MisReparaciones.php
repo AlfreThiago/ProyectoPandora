@@ -1,5 +1,6 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <?php require_once __DIR__ . '/../../Core/Date.php'; ?>
+<?php require_once __DIR__ . '/../../Core/Storage.php'; ?>
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 <section class="content">
@@ -29,9 +30,10 @@
     <div class="carousel-track-tecnico" id="carouselTicketTrackTech">
       <?php if (!empty($tickets)): ?>
         <?php foreach ($tickets as $ticket): ?>
+          <?php $imgDevice = \Storage::resolveDeviceUrl($ticket['img_dispositivo'] ?? ''); ?>
           <div class="ticket-card">
             <div class="ticket-img">
-              <img src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($ticket['img_dispositivo']) ?>" alt="Imagen dispositivo">
+              <img src="<?= htmlspecialchars($imgDevice) ?>" alt="Imagen dispositivo">
             </div>
 
             <div class="ticket-info">

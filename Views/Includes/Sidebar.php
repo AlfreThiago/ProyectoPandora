@@ -2,6 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 require_once __DIR__ . '/../../Core/Auth.php';
 require_once __DIR__ . '/../../Core/I18n.php';
+require_once __DIR__ . '/../../Core/Storage.php';
 I18n::boot();
 $authUser = Auth::user();
 $locale = I18n::getLocale();
@@ -38,12 +39,8 @@ $locale = I18n::getLocale();
                     <?php 
                         $name = $authUser['name'] ?? '';
                         $email = $authUser['email'] ?? '';
-                        $avatar = $authUser['img_perfil'] ?? '';
-                        $defaultAvatar = '/ProyectoPandora/Public/img/imgPerfil/default.png';
-                        if ($avatar && strpos($avatar, '/ProyectoPandora/') !== 0) {
-                            $avatar = '/ProyectoPandora/Public/img/imgPerfil/' . ltrim($avatar, '/');
-                        }
-                        if (!$avatar) { $avatar = $defaultAvatar; }
+                        $avatarStored = $authUser['img_perfil'] ?? '';
+                        $avatar = \Storage::resolveProfileUrl($avatarStored);
                     ?>
                     <?php if ($authUser): ?>
                     <li class="item menu-item user-block">

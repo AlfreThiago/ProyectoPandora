@@ -1,5 +1,6 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <?php require_once __DIR__ . '/../../Core/Date.php'; ?>
+<?php require_once __DIR__ . '/../../Core/Storage.php'; ?>
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 
@@ -12,9 +13,10 @@
         <div class="carousel-track" id="carouselTrack">
           <?php if (!empty($dispositivos)): ?>
             <?php foreach ($dispositivos as $d): ?>
+              <?php $imgDevice = \Storage::resolveDeviceUrl($d['img_dispositivo'] ?? ''); ?>
               <article class="device-card">
                 <div class="device-img">
-                  <img src="/ProyectoPandora/Public/img/imgDispositivos/<?= htmlspecialchars($d['img_dispositivo']) ?>" alt="Imagen dispositivo">
+                  <img src="<?= htmlspecialchars($imgDevice) ?>" alt="Imagen dispositivo">
                 </div>
                 <div class="device-info u-flex-col u-flex-1">
                   <h3><?= htmlspecialchars($d['marca']) ?> <?= htmlspecialchars($d['modelo']) ?></h3>
