@@ -3,6 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+require_once __DIR__ . '/../Core/Auth.php';
+Auth::user();
+
 // Zona horaria: Uruguay
 date_default_timezone_set('America/Montevideo');
 

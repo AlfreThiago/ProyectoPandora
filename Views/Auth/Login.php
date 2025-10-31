@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="remember-forgot">
-                    <label><input type="checkbox"> Acordarme</label>
+                    <label><input type="checkbox" name="remember" value="1"> Acordarme</label>
                     <a href="#">¿Olvidaste tu contraseña?</a>
                 </div>
 
