@@ -48,7 +48,7 @@
                                 |
                                 <form method="post" action="/ProyectoPandora/Public/index.php?route=Device/DeleteCategoria" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar esta categoría de dispositivos?');">
                                     <input type="hidden" name="id" value="<?= (int)$categoria['id'] ?>">
-                                    <button type="submit" class="btn delete-btn">Eliminar</button>
+                                    <button class="btn delete-btn">Eliminar</button>
                                 </form>
                             </div>
                         </td>

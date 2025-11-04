@@ -41,7 +41,7 @@
                         echo "<td>
                                 <div class='action-buttons'>
                                 <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=".htmlspecialchars($admin['id'])."&from=Admin/ListarAdmins' class='btn edit-btn'>Actualizar</a>
-                                    <a type='Submit' href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=".htmlspecialchars($admin['id'])."' class='btn delete-btn' onclick=\"return confirm('¿Eliminar este usuario?');\">Eliminar</a>
+                                    <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=".htmlspecialchars($admin['id'])."' class='btn delete-btn' onclick=\"return confirm('¿Eliminar este usuario?');\">Eliminar</a>
                                 </div>
                               </td>";
                         echo "</tr>";
