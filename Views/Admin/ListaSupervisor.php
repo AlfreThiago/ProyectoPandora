@@ -42,7 +42,7 @@
                             <div class='action-buttons'>
                                 <a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=".htmlspecialchars($super['id'])."&from=Admin/ListarSupers' class='btn edit-btn'>Actualizar</a>
                                 |
-                                <a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=".htmlspecialchars($super['id'])."' class='btn delete-btn' onclick=\"return confirm('¿Eliminar este usuario?');\">Eliminar</a>
+                                <a type='Submit' href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=".htmlspecialchars($super['id'])."' class='btn delete-btn' onclick=\"return confirm('¿Eliminar este usuario?');\">Eliminar</a>
                             </div>
                         </td>";
                         echo "</tr>";

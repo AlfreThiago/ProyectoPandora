@@ -48,7 +48,7 @@
                         echo "<td>";
                         echo "<div class='action-buttons'>";
                         echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=" . htmlspecialchars($user['id']) . "&from=Admin/ListarUsers' class='btn edit-btn'>Actualizar</a> |";
-                        echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=" . htmlspecialchars($user['id']) . "' class='btn delete-btn'>Eliminar</a>";
+                        echo "<a type='Submit' href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=" . htmlspecialchars($user['id']) . "' class='btn delete-btn'>Eliminar</a>";
                         echo "</div>";
                         echo "</td>";
                         echo "</tr>";
