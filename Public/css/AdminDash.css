@@ -6427,7 +6427,7 @@ body.dark-mode .notif-btn:hover {
 .btn-acciones-user,
 .btn-acciones-cate,
 .btn-acciones-inventario-cate {
-  background: var(--secundario);
+  background-color: #00c853;
   color: #fff;
   padding: 10px 15px;
   border-radius: 8px;
