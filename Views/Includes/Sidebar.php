@@ -185,44 +185,14 @@ $locale = I18n::getLocale();
         </nav>
     </aside>
 
-
-    <!-- === SCRIPT GLOBAL DE MODO OSCURO (Mover luego a la zona js) === -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const body = document.body;
-        const modo = localStorage.getItem("modo") || "claro";
-
-        // Aplicar el modo al cargar
-        if (modo === "oscuro") {
-          body.classList.add("dark-mode");
-        } else {
-          body.classList.remove("dark-mode");
-        }
-
-        // Si existe el toggle en la página actual, sincronizarlo
-        const toggle = document.getElementById("toggle-darkmode");
-        if (toggle) {
-          toggle.checked = (modo === "oscuro");
-          toggle.addEventListener("change", () => {
-            if (toggle.checked) {
-              body.classList.add("dark-mode");
-              localStorage.setItem("modo", "oscuro");
-            } else {
-              body.classList.remove("dark-mode");
-              localStorage.setItem("modo", "claro");
-            }
-          });
-        }
-      });
-    </script>
-
 </body>
 <?php 
     // Cargar JS de login (se auto-inicializa sólo si existe #loginForm)
     $authJsPath = rtrim($_SERVER['DOCUMENT_ROOT'],'/\\') . '/ProyectoPandora/Public/js/auth-login.js';
 ?>
 <script src="/ProyectoPandora/Public/js/auth-login.js?v=<?= file_exists($authJsPath) ? filemtime($authJsPath) : time(); ?>" defer></script>
-        <script src="/ProyectoPandora/Public/js/notifications.js?v=<?php echo time(); ?>" defer></script>
+    <script src="/ProyectoPandora/Public/js/notifications.js?v=<?php echo time(); ?>" defer></script>
+    <script src="/ProyectoPandora/Public/js/confirm-actions.js?v=<?php echo time(); ?>" defer></script>
         <script src="/ProyectoPandora/Public/js/ticket-actions.js?v=<?php echo time(); ?>" defer></script>
         <script src="/ProyectoPandora/Public/js/list-filters.js?v=<?php echo time(); ?>" defer></script>
         <script src="/ProyectoPandora/Public/js/presupuestos.js?v=<?php echo time(); ?>" defer></script>
