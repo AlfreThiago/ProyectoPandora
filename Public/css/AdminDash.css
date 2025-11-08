@@ -5364,7 +5364,7 @@ body.dark-mode .notif-btn-home:hover {
   padding: 10px 15px;
   border-radius: 8px;
   position: relative;
-  top: -9px;
+  top: 9px;
   text-decoration: none;
   border: none;
   font-weight: 600;
@@ -5993,4 +5993,170 @@ body.dark-mode .notif-btn-home:hover {
 /* 8.1) min-width: 1400px — Detalle-grid 3 columnas */
 @media (min-width: 1400px) {
   .detalle-grid { grid-template-columns: repeat(3, minmax(260px, 1fr)); }
+}
+
+@media screen and (max-width: 768px) {
+  /* Ocultar encabezado de tabla */
+  #userTable thead {
+    display: none;
+  }
+
+  /* Convertir tabla a formato de tarjetas (filas) */
+  #userTable,
+  #userTable tbody,
+  #userTable tr,
+  #userTable td {
+    display: block;
+    width: 100%;
+  }
+
+  #userTable tr {
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background-color: #0e1726;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  }
+
+  #userTable td {
+    padding: 1rem ;
+    text-align: right;
+    justify-content: space-between;
+    word-break: break-word;
+  }
+
+  #userTable td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #9aa0ac;
+    display: block;
+    position: relative;
+    left:0;
+    margin-bottom: 0.25rem;
+  }
+
+  /* Botones de acción */
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    margin-top: 0.6rem;
+  }
+
+
+  .edit-btn,
+  .delete-btn {
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+  }
+  .edit-btn{
+    margin-bottom: 0.5rem;
+  }
+  .delete-btn{
+    margin-bottom: 0.5rem;
+    position: relative;
+    top: -20px;
+  }
+
+  /* === Ajustes de los botones superiores === */
+  .botones {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: stretch;
+  }
+
+  .dropdown {
+    width: 100%;
+  }
+
+  .dropdown-label-admin {
+    width: 100%;
+    text-align: center;
+    display: block;
+    background: linear-gradient(90deg, #6c63ff, #3b82f6);
+    color: #fff;
+    font-weight: 600;
+    padding: 0.6rem;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .btn-acciones-user {
+    width: 100%;
+    display: block;
+    text-align: center;
+    background-color: #00c853;
+    color: #fff;
+    font-weight: 600;
+    position: relative;
+    left: auto;
+    padding: 0.7rem;
+    border-radius: 8px;
+  }
+
+  .dropdown-menu {
+    position: static;
+    width: 100%;
+    margin-top: 0.4rem;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+
+  .btn-table {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+/* ===================== Responsive Filtrador ===================== */
+@media (max-width: 768px) {
+  form.filtros {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  form.filtros select,
+  form.filtros input {
+    width: 100% !important;
+    font-size: 15px;
+  }
+
+  form.filtros .btn {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+  }
+
+  /* Que los botones estén uno al lado del otro solo si hay espacio */
+  form.filtros .btn-primary,
+  form.filtros .btn-outline {
+    flex: 1;
+  }
+
+  /* Si se quiere agrupar botones horizontalmente en pantallas algo más grandes */
+  @media (min-width: 500px) and (max-width: 768px) {
+    form.filtros {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    form.filtros select,
+    form.filtros input {
+      flex: 1 1 45%;
+      min-width: 150px;
+    }
+
+    form.filtros .btn {
+      flex: 1 1 45%;
+      min-width: 120px;
+    }
+  }
 }

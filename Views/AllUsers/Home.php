@@ -122,3 +122,4 @@ $homeJsPath = rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') . '/ProyectoPandora/Public
 $homeJsVersion = file_exists($homeJsPath) ? filemtime($homeJsPath) : time();
 ?>
 <script src="/ProyectoPandora/Public/js/home-dashboard.js?v=<?= $homeJsVersion ?>"></script>
+<script src="/ProyectoPandora/Public/js/DarkMode.js?v=<?= time(); ?>" defer></script>

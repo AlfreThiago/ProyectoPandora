@@ -101,12 +101,13 @@ $subtitle = __($subtitleKey);
 			
 		</div>
   </div>
-
-	<div class="hamburger" id="menuToggle">
-    <span></span><span></span><span></span>
-  </div>
+  <div class="hamburger" id="menuToggle">
+        <span></span><span></span><span></span>
+    </div>
 </header>
 
+<script src="/ProyectoPandora/Public/js/DarkMode.js?v=<?= time(); ?>" defer></script>
+<script src="/ProyectoPandora/Public/js/Sidebar.js?v=<?= time(); ?>" defer></script>
 
 <script src="/ProyectoPandora/Public/js/layout-header.js" defer></script>
 <!-- Auto-refresh global deshabilitado: la UI se actualiza por AJAX en puntos específicos -->

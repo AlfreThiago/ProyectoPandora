@@ -12,7 +12,8 @@
                 <a class="btn-all btn-acciones-cate" href="/ProyectoPandora/Public/index.php?route=Device/CrearCategoria">Añadir Categoria</a>
             </div>
         </div>
-        <table id="categoryTable">
+        <br>
+        <table id="userTable">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -23,9 +24,9 @@
             <tbody>
                 <?php foreach ($categorias as $categoria): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($categoria['id']); ?></td>
-                        <td><?php echo htmlspecialchars($categoria['name']); ?></td>
-                        <td>
+                        <td data-label="id"><?php echo htmlspecialchars($categoria['id']); ?></td>
+                        <td data-label="name"><?php echo htmlspecialchars($categoria['name']); ?></td>
+                        <td data-label="acciones">
                             <div class='action-buttons'>
                                 <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?= (int)$categoria['id'] ?>" class="btn edit-btn">Actualizar</a>
                                 |
