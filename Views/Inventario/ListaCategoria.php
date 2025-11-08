@@ -8,10 +8,13 @@
             </div>
         <?php endif; ?>
         <div class="botones">
-            <div class="btn-table-acciones">
-                <a class="btn-all btn-acciones-inventario-cate" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearCategoria">Añadir Categoría</a>
+            <div class="dropdown">
+                <div class="btn-table-acciones">
+                    <a class="btn-all btn-acciones-inventario-cate" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearCategoria">Añadir Categoría</a>
+                </div>
             </div>
         </div>
+        <br>
             <table id="userTable">
                 <thead>
                     <tr>
@@ -24,9 +27,9 @@
                     <?php if (!empty($categorias)): ?>
                         <?php foreach ($categorias as $cat): ?>
                             <tr>
-                                <td><?= $cat['id'] ?></td>
-                                <td><?= htmlspecialchars($cat['name']) ?></td>
-                                <td>
+                                <td data-label="id"><?= $cat['id'] ?></td>
+                                <td data-label="name"><?= htmlspecialchars($cat['name']) ?></td>
+                                <td data-label="acciones">
                                     <div class='action-buttons'>
                                         <a href="/ProyectoPandora/Public/index.php?route=Inventario/ActualizarCategoria&id=<?= $cat['id'] ?>" class="btn edit-btn">Actualizar</a>
                                         |
