@@ -83,6 +83,11 @@ CREATE TABLE users (
     remember_selector VARCHAR(100) DEFAULT NULL,
     remember_token VARCHAR(255) DEFAULT NULL,
     remember_expires_at DATETIME DEFAULT NULL,
+    -- Usamos 255 para almacenar password_hash del código (hash ~60 chars)
+    reset_code VARCHAR(255) DEFAULT NULL,
+    reset_expires_at DATETIME DEFAULT NULL,
+    reset_attempts INT DEFAULT 0,
+    reset_locked_until DATETIME DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     role ENUM(
         'Cliente',
