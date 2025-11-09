@@ -44,6 +44,7 @@
           </div>
         <?php endif; ?>
 
+        <br>
         <button type="submit" class="btn-perfil-guardar"><?= __('profile.actions.save') ?></button>
       </form>
     </div>
@@ -60,6 +61,7 @@
             <option value="Ocupado" <?= ($dispActual === 'Ocupado') ? 'selected' : '' ?>><?= __('profile.availability.unavailable') ?></option>
           </select>
         </div>
+        <br>
         <button type="submit" class="btn-perfil-guardar"><?= __('profile.actions.saveSettings') ?></button>
       </form>
       <?php endif; ?>
@@ -79,6 +81,7 @@
           <option value="en" <?= ($locale==='en'?'selected':'') ?>><?= __('lang.english') ?></option>
           <option value="pt" <?= ($locale==='pt'?'selected':'') ?>><?= __('lang.portuguese') ?></option>
         </select>
+        <br>
         <button type="submit"><?= __('profile.language.change') ?></button>
       </form>
 

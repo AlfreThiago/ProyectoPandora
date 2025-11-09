@@ -2665,19 +2665,27 @@ ul {
    SELECT MODERNO GLOBAL
    ============================== */
 select {
-
   background-color: var(--fondo-formulario, #1e1f26);
   color: var(--color-texto-primario, #e4e4e7);
   border: 1px solid var(--borde-select, rgba(255,255,255,0.15));
-  border-radius: 10px;
-  padding: 10px 40px 10px 15px;
+  border-radius: 12px;
+  padding: 10px 40px 10px 40px; /* igual en ambos lados */
   font-size: 0.95rem;
   font-family: 'Poppins', sans-serif;
   transition: all 0.25s ease;
   cursor: pointer;
-  position: relative;
   outline: none;
+  text-align: center;
+  display: flex;                /* 🔹 centrado real */
+  align-items: center;          /* vertical */
+  justify-content: center;      /* horizontal */
+  text-align: center;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23e4e4e7' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M5.25 7.5L10 12.25L14.75 7.5H5.25Z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
 }
+
 
 /* Flechita personalizada */
 select::-ms-expand {
@@ -2691,31 +2699,39 @@ select::after {
   top: 50%;
   transform: translateY(-50%);
 }
-
 /* Hover y focus */
 select:hover {
   border-color: var(--color-acento, #6366f1);
-  background-color: rgba(99,102,241,0.1);
+  background-color: rgba(99,102,241,0.08);
+  box-shadow: 0 0 4px rgba(99,102,241,0.4);
 }
 
 select:focus {
   border-color: var(--color-acento, #6366f1);
-  box-shadow: 0 0 6px rgba(99,102,241,0.5);
+  box-shadow: 0 0 8px rgba(99,102,241,0.6);
+  background-color: rgba(99,102,241,0.12);
 }
 
 /* Opciones del menú desplegable */
 select option {
   background-color: var(--fondo-select-opcion, #23242b);
   color: var(--color-texto-primario, #f1f1f1);
-  border: none;
   padding: 10px;
+  text-align: center;
+  font-size: 0.95rem;
 }
 
-/* Tema claro opcional */
+/* Efecto hover en opciones (solo visible en algunos navegadores) */
+select option:hover {
+  background-color: rgba(99,102,241,0.2);
+}
+
+/* Tema claro */
 body.light-mode select {
-  background-color: #f0f0f8;
+  background-color: #f9f9ff;
   color: #1a1a1a;
   border: 1px solid rgba(0,0,0,0.15);
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%231a1a1a' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M5.25 7.5L10 12.25L14.75 7.5H5.25Z'/></svg>");
 }
 
 body.light-mode select option {
@@ -4030,84 +4046,59 @@ form.filtros .btn-outline:hover {
 
 
 /* === PERFIL USUARIO (AllUsers/Perfil.php) === */
-.perfil-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-  background: var(--fondo-header);
-}
-
-/* === PERFIL WRAPPER === */
+/* === CONTENEDOR GENERAL === */
 .perfil-wrapper {
   max-width: 800px;
   margin: 60px auto;
-  background: var(--color-surface);
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(180deg, var(--color-surface) 0%, #0e1117 100%);
+  border-radius: 18px;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.25);
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .perfil-wrapper:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.25);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
 }
 
-/* === HEADER PERFIL === */
+/* === HEADER === */
 .perfil-header {
-  background: var(--fondo-header);
+  background: radial-gradient(circle at center, rgba(0, 153, 255, 0.15) 0%, var(--fondo-header) 100%);
   text-align: center;
-  padding: 32px 16px;
+  padding: 38px 16px;
   border-bottom: 1px solid var(--color-border);
   position: relative;
 }
-.img-label {
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
 
+/* Avatar con glow */
 .perfil-avatar {
   width: 120px;
   height: 120px;
   border-radius: 50%;
+  border: 3px solid rgba(0, 153, 255, 0.6);
   object-fit: cover;
-  border: 3px solid var(--secundario);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
   background: var(--fondo-formulario);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 18px rgba(0, 153, 255, 0.35);
+  transition: all 0.3s ease;
 }
 
 .perfil-avatar:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 28px rgba(0, 153, 255, 0.55);
 }
 
-.img-cambiar {
-  font-size: 0.9em;
-  color: var(--secundario);
-  text-decoration: underline;
-  margin-top: 8px;
-  transition: color 0.2s;
-}
-
-.img-cambiar:hover {
-  color: var(--cuarto);
-}
-
-/* === HEADER TEXTOS === */
+/* Títulos */
 .perfil-header h2 {
   color: var(--color-texto-primario);
-  margin-top: 14px;
-  font-size: 1.5em;
+  margin-top: 18px;
+  font-size: 1.6em;
   font-weight: 600;
 }
 
 .perfil-header p {
   color: var(--color-texto-secundario);
-  font-size: 0.95em;
+  font-size: 1em;
+  opacity: 0.8;
 }
 
 /* === TABS === */
@@ -4121,123 +4112,107 @@ form.filtros .btn-outline:hover {
 .perfil-tabs .tab {
   background: none;
   border: none;
-  padding: 14px 28px;
+  padding: 16px 32px;
   color: var(--color-texto-secundario);
   font-size: 1em;
   cursor: pointer;
-  transition: color 0.2s, border-bottom 0.2s, background 0.2s;
+  transition: all 0.3s ease;
   font-weight: 500;
+  position: relative;
 }
 
 .perfil-tabs .tab:hover {
   color: var(--secundario);
-  background: rgba(255, 255, 255, 0.04);
 }
 
 .perfil-tabs .tab.active {
   color: var(--secundario);
-  border-bottom: 2px solid var(--secundario);
   font-weight: 600;
 }
 
-/* === CONTENIDOS === */
+.perfil-tabs .tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  width: 50%;
+  height: 2px;
+  background: var(--secundario);
+  box-shadow: 0 0 8px var(--secundario);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* === CONTENIDO === */
 .perfil-content {
   display: none;
-  padding: 32px 40px;
+  padding: 36px 44px;
   background: var(--color-surface);
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.4s ease;
+  border-radius: 0 0 18px 18px;
 }
 .perfil-content.active {
   display: block;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* === CAMPOS === */
-.perfil-campo {
-  margin-bottom: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.perfil-campo label {
-  font-weight: 500;
-  color: var(--color-texto-primario);
-}
-
+/* Inputs */
 .perfil-campo input,
 .perfil-campo select {
-  padding: 10px 14px;
-  border-radius: 8px;
+  padding: 11px 14px;
+  border-radius: 10px;
   border: 1px solid var(--color-border);
   font-size: 1em;
-  background: var(--fondo-formulario);
+  background: #0f141b;
   color: var(--color-texto-primario);
-  outline: none;
-  transition: border 0.2s;
+  transition: border 0.25s ease, box-shadow 0.25s ease;
 }
 
 .perfil-campo input:focus,
 .perfil-campo select:focus {
   border-color: var(--secundario);
+  box-shadow: 0 0 8px rgba(0, 153, 255, 0.4);
 }
 
-/* === BOTONES === */
+/* Botones */
 .btn-perfil-guardar {
-  background: var(--secundario);
+  background: linear-gradient(135deg, var(--secundario), var(--cuarto));
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 10px 22px;
+  border-radius: 10px;
+  padding: 12px 24px;
   font-size: 1em;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-  font-weight: 500;
-  margin-top: 12px;
+  transition: all 0.25s ease;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(0, 153, 255, 0.4);
 }
 
 .btn-perfil-guardar:hover {
-  background: var(--cuarto);
-  transform: scale(1.02);
+  transform: translateY(-2px);
+  box-shadow: 0 0 16px rgba(0, 153, 255, 0.6);
 }
 
-/* === VOLVER PANEL === */
-.perfil-volver-panel {
-  display: flex;
-  justify-content: center;
-  margin: 28px 0 8px;
-}
+/* === AJUSTES === */
 
-.btn-volver-panel {
-  background: transparent;
-  color: var(--secundario);
-  border: 2px solid var(--secundario);
-  padding: 8px 22px;
-  border-radius: 8px;
-  font-size: 1em;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.btn-volver-panel:hover {
-  background: var(--secundario);
-  color: #fff;
-  transform: translateY(-1px);
-}
-
-/* === TOGGLE DARK MODE === */
+/* tarjeta ajustes general */
+.perfil-idioma,
 .modo-oscuro-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  padding: 16px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 22px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.perfil-idioma:hover,
+.modo-oscuro-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 153, 255, 0.25);
+}
+
+/* switch */
 .switch {
   position: relative;
   display: inline-block;
@@ -4251,10 +4226,9 @@ form.filtros .btn-outline:hover {
   position: absolute;
   cursor: pointer;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #ccc;
+  background-color: #333;
   transition: .4s;
   border-radius: 34px;
-  box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
 }
 
 .slider:before {
@@ -4269,111 +4243,150 @@ form.filtros .btn-outline:hover {
 
 input:checked + .slider {
   background: linear-gradient(135deg, var(--secundario), var(--cuarto));
+  box-shadow: 0 0 8px rgba(0, 153, 255, 0.5);
 }
 
 input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* === SELECTOR DE IDIOMA === */
-.perfil-idioma {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--fondo-formulario);
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  padding: 12px 16px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.perfil-idioma label {
-  font-weight: 500;
-  color: var(--color-texto-primario);
-}
-
+/* idioma */
 .perfil-idioma select {
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: var(--color-surface);
-  color: var(--color-texto-primario);
+  background: var(--fondo-header);
   border: 1px solid var(--color-border);
-  outline: none;
+  border-radius: 8px;
+  color: var(--color-texto-primario);
+  padding: 8px 12px;
   font-size: 0.95em;
-  transition: border 0.2s, background 0.2s;
+  transition: all 0.3s ease;
 }
 
-.perfil-idioma select:hover,
-.perfil-idioma select:focus {
+.perfil-idioma select:hover {
   border-color: var(--secundario);
-  background: var(--fondo-header);
 }
 
 .perfil-idioma button {
-  background: var(--secundario);
-  color: #fff;
+  background: linear-gradient(135deg, var(--secundario), var(--cuarto));
   border: none;
   border-radius: 8px;
-  padding: 8px 18px;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  padding: 8px 16px;
+  color: #fff;
   font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 8px rgba(0, 153, 255, 0.4);
 }
 
 .perfil-idioma button:hover {
-  background: var(--cuarto);
-  transform: scale(1.03);
-}
-  
-/* === BLOQUE USUARIO EN SIDEBAR === */
-.user-block {
-  padding: 12px 16px;
+  transform: translateY(-1px);
+  box-shadow: 0 0 14px rgba(0, 153, 255, 0.6);
 }
 
+/* Botón volver */
+.btn-volver-panel {
+  background: transparent;
+  color: var(--secundario);
+  border: 2px solid var(--secundario);
+  padding: 9px 24px;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-volver-panel:hover {
+  background: var(--secundario);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 153, 255, 0.5);
+}
+
+/* === BLOQUE USUARIO EN SIDEBAR (MEJORADO) === */
 .user-link {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   text-decoration: none;
-  padding: 8px;
-  border-radius: 8px;
-  transition: background 0.2s;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
 }
 
+/* efecto suave al pasar el mouse */
 .user-link:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 153, 255, 0.1);
+  box-shadow: 0 0 8px rgba(0, 153, 255, 0.3);
+  transform: translateY(-1px);
 }
 
+/* avatar más definido */
 .user-avatar {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
+  border: 2px solid rgba(0, 153, 255, 0.3);
+  box-shadow: 0 0 8px rgba(0, 153, 255, 0.15);
+  transition: all 0.3s ease;
 }
 
+.user-link:hover .user-avatar {
+  border-color: rgba(0, 153, 255, 0.6);
+  box-shadow: 0 0 12px rgba(0, 153, 255, 0.5);
+}
+
+/* info del usuario */
 .user-info {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  line-height: 1.2;
 }
 
+/* nombre con color destacado */
 .user-name {
   font-weight: 600;
   color: var(--color-texto-primario);
   font-size: 0.95rem;
+  letter-spacing: 0.3px;
+  transition: color 0.3s ease;
 }
 
+.user-link:hover .user-name {
+  color: #00aaff; /* resalta al pasar el mouse */
+}
+
+/* email más sutil */
 .user-email {
   color: var(--color-texto-secundario);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 150px;
+  max-width: 160px;
+  opacity: 0.8;
 }
+.user-avatar::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,153,255,0.25), transparent 60%);
+  filter: blur(8px);
+  z-index: -1;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+
+.user-link:hover .user-avatar::after {
+  opacity: 1;
+}
+
 /* === BOTÓN VOLVER MEJORADO === */
 .perfil-volver-panel {
   display: flex;
