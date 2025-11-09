@@ -2,11 +2,7 @@
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
-        <?php if (!empty($flash)): ?>
-            <div class="alert alert-<?= htmlspecialchars($flash['type']) ?>">
-                <?= htmlspecialchars($flash['message']) ?>
-            </div>
-        <?php endif; ?>
+        <!-- Bloque de $flash eliminado: ahora los mensajes se gestionan exclusivamente con Core/Flash y se renderizan en Includes/Header -> FlashMessages -->
         <div class="botones">
             <div class="dropdown">
                 <label for="menu-toggle" class="dropdown-label-admin">

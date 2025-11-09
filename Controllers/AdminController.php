@@ -5,6 +5,7 @@ require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/../Core/Auth.php';
 require_once __DIR__ . '/../Core/Date.php';
 require_once __DIR__ . '/../Controllers/HistorialController.php';
+require_once __DIR__ . '/../Core/Flash.php';
 Auth::checkRole('Administrador');
 class AdminController
 {
@@ -164,12 +165,14 @@ class AdminController
 
             // Validaciones básicas del servidor
             if ($name === '') {
-                header('Location: /ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id='.(int)$userId.'&error=NombreRequerido&from='.urlencode($from));
+                Flash::error('El nombre es obligatorio.');
+                header('Location: /ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id='.(int)$userId.'&from='.urlencode($from));
                 exit;
             }
             $rolesValidos = ['Cliente','Tecnico','Supervisor','Administrador'];
             if ($role === '' || !in_array($role, $rolesValidos, true)) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id='.(int)$userId.'&error=RolInvalido&from='.urlencode($from));
+                Flash::error('Seleccioná un rol válido.');
+                header('Location: /ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id='.(int)$userId.'&from='.urlencode($from));
                 exit;
             }
 
@@ -205,7 +208,9 @@ class AdminController
                 exit;
             }
 
-            header('Location: /ProyectoPandora/Public/index.php?route=' . $from . '&success=1');
+            require_once __DIR__ . '/../Core/Flash.php';
+            Flash::successQuiet('Usuario actualizado.');
+            header('Location: /ProyectoPandora/Public/index.php?route=' . $from);
             exit;
         }
         include_once __DIR__ . '/../Views/Admin/ActualizarUser.php';
@@ -231,7 +236,9 @@ class AdminController
         }
         $this->historialController->agregarAccion($accion, $detalle);
 
-        header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers&success=1');
+    require_once __DIR__ . '/../Core/Flash.php';
+    Flash::successQuiet('Usuario creado.');
+    header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers');
         exit;
     }
 

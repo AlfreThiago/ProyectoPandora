@@ -55,6 +55,7 @@
 				<td data-label="stock_minimo"><?php echo (int)$row['stock_minimo']; ?></td>
                 <td data-label="Acciones">
                   <form action="/ProyectoPandora/Public/index.php?route=Inventario/SumarStock" method="post" style="display:flex; gap:6px; align-items:center;">
+                    <?= Csrf::input(); ?>
                     <input type="hidden" name="id" value="<?php echo (int)$row['id']; ?>" />
                     <input type="number" name="cantidad" min="1" class="asignar-input asignar-input--small" placeholder="+cantidad" required />
                     <button class="btn btn-primary" type="submit">Sumar</button>

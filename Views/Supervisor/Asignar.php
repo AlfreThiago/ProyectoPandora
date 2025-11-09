@@ -95,6 +95,7 @@
 							</div>
 							<?php $dispOk = strcasecmp($estado, 'Disponible') === 0; ?>
 							<form action="/ProyectoPandora/Public/index.php?route=Supervisor/AsignarTecnico" method="post" class="asignar-assign-form">
+								<?= Csrf::input(); ?>
 								<input type="hidden" name="tecnico_id" value="<?php echo (int)$tec['id']; ?>" />
 								<select name="ticket_id" class="asignar-input asignar-input--small" <?php echo (!$dispOk || empty($ticketsSinTecnico)) ? 'disabled' : ''; ?>>
 									<?php if (empty($ticketsSinTecnico)): ?>

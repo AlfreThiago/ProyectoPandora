@@ -9,6 +9,7 @@ require_once __DIR__ . '/../Models/ItemTicket.php';
 require_once __DIR__ . '/../Models/TicketLabor.php';
 require_once __DIR__ . '/../Models/Rating.php';
 require_once __DIR__ . '/../Models/Notification.php';
+require_once __DIR__ . '/../Core/Flash.php';
 
 class SupervisorController {
     public function PanelSupervisor() {
@@ -59,7 +60,8 @@ class SupervisorController {
         $user = Auth::user();
         if (!$user) { $user = $_SESSION['user'] ?? null; }
         if (!$user || empty($user['id'])) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=Sesion%20invalida');
+            Flash::error('Sesión inválida.');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
             exit; 
         }
 
@@ -67,7 +69,8 @@ class SupervisorController {
         $ticket_id = isset($_POST['ticket_id']) ? (int)$_POST['ticket_id'] : 0;
         $tecnico_id = isset($_POST['tecnico_id']) ? (int)$_POST['tecnico_id'] : 0;
         if (!$ticket_id || !$tecnico_id) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=Datos incompletos');
+            Flash::error('Datos incompletos.');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
             exit;
         }
 
@@ -84,7 +87,8 @@ class SupervisorController {
             $stmtChk->execute();
             $rowChk = $stmtChk->get_result()->fetch_assoc();
             if (!empty($rowChk['tecnico_id'])) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=El ticket ya tiene técnico (no disponible para reasignar)');
+                Flash::error('El ticket ya tiene técnico (no disponible para reasignar)');
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
                 exit;
             }
         }
@@ -97,7 +101,8 @@ class SupervisorController {
             $rowTec = $stmtTec->get_result()->fetch_assoc();
             $disp = strtolower(trim($rowTec['disponibilidad'] ?? ''));
             if ($disp !== 'disponible') {
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=Técnico no disponible para asignación');
+                Flash::error('Técnico no disponible para asignación');
+                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
                 exit;
             }
         }
@@ -125,7 +130,8 @@ class SupervisorController {
             $activos = (int)($stmtAct->get_result()->fetch_assoc()['c'] ?? 0);
         }
         if ($activos >= $limit) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=Limite de tickets activos alcanzado segun honor');
+            Flash::error('Límite de tickets activos alcanzado según honor');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
             exit;
         }
 
@@ -196,9 +202,12 @@ class SupervisorController {
                     $nm->create($titleC, $bodyC, 'USER', null, (int)$cliUserId, (int)$user['id']);
                 }
             } catch (\Throwable $e) { /* noop */ }
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&success=1');
+            require_once __DIR__ . '/../Core/Flash.php';
+            Flash::successQuiet('Técnico asignado.');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=No se pudo asignar');
+            Flash::error('No se pudo asignar');
+            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
         }
         exit;
     }

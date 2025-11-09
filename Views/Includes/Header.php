@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../Core/Flash.php';
 // Dependencias principales ya cargadas por Sidebar (Auth, I18n, Storage)
 $authUser = Auth::user();
 $rol = $authUser['role'] ?? '';
@@ -105,6 +106,11 @@ $subtitle = __($subtitleKey);
         <span></span><span></span><span></span>
     </div>
 </header>
+
+<?php
+	$only = ['error','warning'];
+	include __DIR__ . '/FlashMessages.php';
+?>
 
 <script src="/ProyectoPandora/Public/js/DarkMode.js?v=<?= time(); ?>" defer></script>
 <script src="/ProyectoPandora/Public/js/Sidebar.js?v=<?= time(); ?>" defer></script>

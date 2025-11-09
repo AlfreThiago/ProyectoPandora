@@ -3,6 +3,7 @@ require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/../Core/Auth.php';
 require_once __DIR__ . '/../Controllers/HistorialController.php';
+require_once __DIR__ . '/../Core/Flash.php';
 
 class RegisterController
 {
@@ -22,18 +23,21 @@ class RegisterController
 
             // Requisito: nombre obligatorio
             if ($username === '') {
-                header('Location: /ProyectoPandora/Public/index.php?route=Register/Register&error=NombreRequerido');
+                Flash::error('El nombre es obligatorio.');
+                header('Location: /ProyectoPandora/Public/index.php?route=Register/Register');
                 exit;
             }
 
             // Requisito: prohibir espacios/blancos en contraseña
             if (preg_match('/\s/', (string)$password)) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Register/Register&error=PasswordEspacios');
+                Flash::error('La contraseña no puede contener espacios ni caracteres en blanco.');
+                header('Location: /ProyectoPandora/Public/index.php?route=Register/Register');
                 exit;
             }
             // Requisito: contraseña mínima de 8 caracteres
             if (strlen((string)$password) < 8) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Register/Register&error=PasswordCorta');
+                Flash::error('La contraseña debe tener al menos 8 caracteres.');
+                header('Location: /ProyectoPandora/Public/index.php?route=Register/Register');
                 exit;
             }
 
@@ -65,18 +69,21 @@ class RegisterController
 
             // Requisito: nombre obligatorio
             if ($username === '') {
-                header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin&error=NombreRequerido');
+                Flash::error('El nombre es obligatorio.');
+                header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin');
                 exit;
             }
 
             // Requisito: prohibir espacios/blancos en contraseña
             if (preg_match('/\s/', (string)$password)) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin&error=PasswordEspacios');
+                Flash::error('La contraseña no puede contener espacios ni caracteres en blanco.');
+                header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin');
                 exit;
             }
             // Requisito: contraseña mínima de 8 caracteres
             if (strlen((string)$password) < 8) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin&error=PasswordCorta');
+                Flash::error('La contraseña debe tener al menos 8 caracteres.');
+                header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin');
                 exit;
             }
 
@@ -103,7 +110,8 @@ class RegisterController
         $role = ($email === 'admin@admin.com') ? 'Administrador' : 'Cliente';
         $res = $userModel->registerIfNotExists($username, $email, $password, $role);
         if ($res === 'exists') {
-            header("Location: /ProyectoPandora/Public/index.php?route=Register/Register&error=EmailYaRegistrado");
+            Flash::error('El correo electrónico ya está registrado. Por favor, usa otro.');
+            header("Location: /ProyectoPandora/Public/index.php?route=Register/Register");
             exit;
         }
         return $res === 'ok' ? 'User registered successfully.' : 'Error registering user.';
@@ -119,8 +127,9 @@ class RegisterController
 
         $res = $userModel->registerIfNotExists($username, $email, $password, $role);
         if ($res === 'exists') {
-            // Simples y consistentes: volver al formulario de registro admin con error
-            header("Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin&error=EmailYaRegistrado");
+            // Simples y consistentes: volver al formulario con flash
+            Flash::error('El correo electrónico ya está registrado. Por favor, usa otro.');
+            header("Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin");
             exit;
         }
 

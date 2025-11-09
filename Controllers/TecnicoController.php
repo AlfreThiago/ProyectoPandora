@@ -10,6 +10,7 @@ require_once __DIR__ . '/../Core/Database.php';
 require_once __DIR__ . '/HistorialController.php';
 require_once __DIR__ . '/../Core/Date.php';
 require_once __DIR__ . '/../Core/Storage.php';
+require_once __DIR__ . '/../Core/Flash.php';
 
 class TecnicoController {  
     private $db;
@@ -31,11 +32,13 @@ class TecnicoController {
         $desde = trim((string)($_GET['desde'] ?? ''));
         $hasta = trim((string)($_GET['hasta'] ?? ''));
 
-        // Filtro por estado (activos: sin fecha_cierre; finalizados: con fecha_cierre)
+                    Flash::error('Técnico inválido.');
+                    header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisStats');
         if ($estado === 'activos' || $estado === 'finalizados') {
             $tickets = array_values(array_filter($tickets, function($t) use ($estado){
                 $cerrado = !empty($t['fecha_cierre']);
-                return $estado === 'activos' ? !$cerrado : $cerrado;
+                    Flash::error('Ticket no asociado.');
+                    header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisStats');
             }));
         }
 
@@ -204,7 +207,8 @@ class TecnicoController {
             exit;
         }
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=1');
+            Flash::error('Método inválido.');
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos');
             exit;
         }
     $ticket_id = (int)($_POST['ticket_id'] ?? 0);
@@ -213,7 +217,8 @@ class TecnicoController {
         $cantidad = (int)($_POST['cantidad'] ?? 0);
     $valor_unitario = 0.0; 
         if ($ticket_id <= 0 || $inventario_id <= 0 || $cantidad <= 0) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=1');
+            Flash::error('Parámetros inválidos.');
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos');
             exit;
         }
 
@@ -226,13 +231,15 @@ class TecnicoController {
         $tickets = (new Ticket($this->db->getConnection()))->getTicketsByTecnicoId($user['id']);
         $ticketIds = array_map(function($t){ return (int)$t['id']; }, $tickets);
         if (!in_array($ticket_id, $ticketIds, true)) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=ticket');
+            Flash::error('Ticket no asociado al técnico.');
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos');
             exit;
         }
 
         $inv = $inventarioModel->obtenerPorId($inventario_id);
         if (!$inv) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=inventario');
+            Flash::error('Ítem de inventario inexistente.');
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos');
             exit;
         }
         $valor_unitario = (float)$inv['valor_unitario'];
@@ -242,7 +249,8 @@ class TecnicoController {
         // Identificar técnico antes de alterar stock
         $tecnico_id = $this->obtenerTecnicoIdPorUserId($user['id']);
         if (!$tecnico_id) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=tecnico');
+            Flash::error('Identidad de técnico inválida.');
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos');
             exit;
         }
 
@@ -263,30 +271,33 @@ class TecnicoController {
         $serverRev = md5($estadoActualNombre.'|'.(string)$laborAmountNow.'|'.(string)$itemsCountNow);
 
         if ($clientRev && $clientRev !== $serverRev && $estadoActualNombre === 'presupuesto') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=stale&ticket_id='.(int)$ticket_id);
+            Flash::error('Estado desactualizado (presupuesto publicado).');
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&ticket_id='.(int)$ticket_id);
             exit;
         }
 
         // Permitir agregar repuestos en Diagnóstico; en En espera solo si ya hay mano de obra (diagnóstico finalizado) y no publicado
         if ($estadoActualNombre === 'presupuesto') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=locked&ticket_id='.(int)$ticket_id);
+            Flash::error('Ticket bloqueado: presupuesto ya publicado.');
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&ticket_id='.(int)$ticket_id);
             exit;
         }
         if ($estadoActualNombre === 'en espera' && $laborAmountNow <= 0) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=labor_required&ticket_id='.(int)$ticket_id);
+            Flash::error('Debe definir mano de obra antes de agregar repuestos.');
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&ticket_id='.(int)$ticket_id);
             exit;
         }
 
-        // Solo ahora, descontar stock
-        if (!$inventarioModel->reducirStock($inventario_id, $cantidad)) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=stock');
-            exit;
-        }
-
-        // Agregar el ítem al ticket cliente :3
+        // Transacción atómica: reducir stock y crear item_ticket
+        $conn->begin_transaction();
         $valor_total = $cantidad * $valor_unitario;
-        $ok = $itemTicketModel->crear($ticket_id, $inventario_id, $tecnico_id, $supervisor_id, $cantidad, $valor_total);
-        if ($ok) {
+        $stockOk = $inventarioModel->reducirStock($inventario_id, $cantidad);
+        $itemOk = false;
+        if ($stockOk) {
+            $itemOk = $itemTicketModel->crear($ticket_id, $inventario_id, $tecnico_id, $supervisor_id, $cantidad, $valor_total);
+        }
+        if ($stockOk && $itemOk) {
+            $conn->commit();
             // Registra en el historial
             $this->historial->agregarAccion(
                 'Solicitud de repuesto',
@@ -302,11 +313,16 @@ class TecnicoController {
                 $hist2 = new TicketEstadoHistorialModel($this->db->getConnection());
                 $hist2->add($ticket_id, (int)($ticketModel->ver($ticket_id)['estado_id'] ?? 0), (int)$user['id'], 'Tecnico', 'Repuestos listos + mano de obra definida: presupuesto listo para publicar');
             }
-            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&success=1&ticket_id=' . $ticket_id);
+            require_once __DIR__ . '/../Core/Flash.php';
+            Flash::successQuiet('Repuesto asignado.');
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&ticket_id=' . $ticket_id);
+            exit;
+        } else {
+            $conn->rollback();
+            Flash::error('Stock insuficiente o error al asignar.');
+            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos');
             exit;
         }
-        header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&error=1');
-        exit;
     }
 
     public function MisStats() {
@@ -380,7 +396,8 @@ class TecnicoController {
                 
                 // Permitir editar mano de obra durante Diagnóstico o En espera (mientras no esté publicado el presupuesto)
                 if (!in_array($estadoActualNombre, ['diagnóstico','diagnostico','en espera'], true)) {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id.'&error=labor_estado');
+                    Flash::error('Estado no permite definir mano de obra.');
+                    header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id);
                     exit;
                 }
                 
@@ -394,7 +411,8 @@ class TecnicoController {
                 }
                 
                 if (!in_array($estadoActualNombre, ['diagnóstico','diagnostico'], true)) {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&error=labor_estado');
+                    Flash::error('Estado no permite definir mano de obra.');
+                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos');
                     exit;
                 }
                 $saveTecnicoId = (int)$ticketTecnicoId;
@@ -408,9 +426,11 @@ class TecnicoController {
                 // Si ya existe mano de obra, permitir editarla SOLO si está en 'En espera' (antes de que el supervisor publique presupuesto)
                 if ($estadoActualNombre !== 'en espera') {
                     if ($isSupervisor) {
-                        header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&error=labor_locked');
+                        Flash::error('Mano de obra bloqueada.');
+                        header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos');
                     } else {
-                        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id.'&error=labor_locked');
+                        Flash::error('Mano de obra bloqueada.');
+                        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id);
                     }
                     exit;
                 }
@@ -426,7 +446,8 @@ class TecnicoController {
                 if (!$hadLabor || empty($itemsX_pre)) {
                     // No permitir crear mano de obra por primera vez en "En espera",
                     // ni editar si aún no hubo diagnóstico completo (sin ítems)
-                    header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id.'&error=labor_estado');
+                    Flash::error('No puede definir mano de obra en este estado.');
+                    header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id);
                     exit;
                 }
             }
@@ -453,7 +474,8 @@ class TecnicoController {
                 if ($revNow !== $clientRev) {
                     // If already published (estado pasó a 'Presupuesto'), block and redirect
                     if ($serverEstadoLower === 'presupuesto') {
-                        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id.'&error=stale');
+                        Flash::error('Cambios desactualizados.');
+                        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id);
                         exit;
                     }
                 }

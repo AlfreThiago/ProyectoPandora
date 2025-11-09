@@ -36,6 +36,7 @@
         <form method="post" action="/ProyectoPandora/Public/index.php?route=Device/Eliminar"
           data-confirm="¿Eliminar este dispositivo? Esta acción no se puede deshacer."
           style="display:inline-block">
+                      <?= Csrf::input(); ?>
                       <input type="hidden" name="device_id" value="<?= (int)$d['id'] ?>">
                       <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>

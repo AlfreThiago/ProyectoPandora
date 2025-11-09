@@ -119,8 +119,9 @@
                             $postAprobacion = in_array($sEstado, ['en reparación','en reparacion','en pruebas','listo para retirar','finalizado','cancelado'], true);
                         ?>
                         <?php if (!$postAprobacion): ?>
-                            <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/PublicarPresupuesto" 
+                                                        <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/PublicarPresupuesto" 
                                   style="margin-top:8px;display:flex;gap:8px;align-items:center;">
+                                                                <?= Csrf::input(); ?>
                                 <input type="hidden" name="ticket_id" value="<?= (int)$t['id'] ?>"/>
                                 <button class="btn btn-outline" type="submit" <?= ($ready && !$yaPublicado) ? '' : 'disabled' ?>>Publicar presupuesto</button>
                                 <?php if ($yaPublicado): ?>
@@ -139,12 +140,14 @@
                         <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
                             <?php if ($puedeListo): ?>
                             <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/MarcarListoParaRetirar">
+                                <?= Csrf::input(); ?>
                                 <input type="hidden" name="ticket_id" value="<?= (int)$t['id'] ?>" />
                                 <button class="btn btn-primary" type="submit">Marcar listo para retirar</button>
                             </form>
                             <?php endif; ?>
                             <?php if ($puedePagar): ?>
                             <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/MarcarPagadoYFinalizar">
+                                <?= Csrf::input(); ?>
                                 <input type="hidden" name="ticket_id" value="<?= (int)$t['id'] ?>" />
                                 <button class="btn btn-success" type="submit">Registrar pago y finalizar</button>
                             </form>

@@ -167,12 +167,14 @@
             </div>
 
             <?php if ($estadoLower === 'presupuesto'): ?>
-            <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/AprobarPresupuesto" class="inline-form">
+      <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/AprobarPresupuesto" class="inline-form">
+        <?= Csrf::input(); ?>
                 <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>" />
                 <input type="hidden" name="comentario" value="Aprobado por el cliente" />
                 <button class="btn btn-success" type="submit">Aprobar</button>
             </form>
-            <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/RechazarPresupuesto" class="inline-form">
+      <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/RechazarPresupuesto" class="inline-form">
+        <?= Csrf::input(); ?>
                 <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>" />
                 <input type="hidden" name="comentario" value="Rechazado por el cliente" />
                 <button class="btn btn-danger" type="submit">Rechazar</button>
@@ -187,7 +189,8 @@
           <div class="bloque-cliente calificacion">
             <hr>
             <h3>Calificar atención del técnico</h3>
-            <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/Calificar">
+      <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/Calificar">
+        <?= Csrf::input(); ?>
                 <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>"/>
                 <label>Estrellas:</label>
                 <div class="rating">
@@ -215,6 +218,7 @@
           <?php $label = (string)$accion['label']; $isFinDiag = (stripos($label,'diagnóstico finalizado') !== false || stripos($label,'diagnostico finalizado') !== false); ?>
           <?php if ($isFinDiag && !$readyDiag) continue; ?>
           <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/ActualizarEstado" class="inline-form">
+            <?= Csrf::input(); ?>
             <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>" />
             <input type="hidden" name="estado_id" value="<?= (int)$accion['estado_id'] ?>" />
             <input type="hidden" name="comentario" value="<?= htmlspecialchars($accion['comentario'], ENT_QUOTES, 'UTF-8') ?>" />
@@ -236,7 +240,8 @@
                 </div>
 
     <?php if (!empty($view['tecnico']['labor_editable'])): ?>
-                    <form method="post" action="/ProyectoPandora/Public/index.php?route=Tecnico/ActualizarStats" class="presu-labor">
+          <form method="post" action="/ProyectoPandora/Public/index.php?route=Tecnico/ActualizarStats" class="presu-labor">
+            <?= Csrf::input(); ?>
                         <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>"/>
             <input type="hidden" name="rev_state" value="<?= htmlspecialchars((string)($view['rev_state'] ?? ''), ENT_QUOTES, 'UTF-8') ?>"/>
             <label>Importe:</label>
@@ -245,6 +250,7 @@
                     </form>
         <?php elseif (!empty($view['tecnico']['labor_editable_en_espera'])): ?>
           <form method="post" action="/ProyectoPandora/Public/index.php?route=Tecnico/ActualizarStats" class="presu-labor">
+            <?= Csrf::input(); ?>
             <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>"/>
             <input type="hidden" name="rev_state" value="<?= htmlspecialchars((string)($view['rev_state'] ?? ''), ENT_QUOTES, 'UTF-8') ?>"/>
             <label>Importe:</label>
@@ -280,13 +286,15 @@
             <hr>
             <h3>Acciones del supervisor</h3>
             <?php if (!empty($view['supervisor']['puede_listo'])): ?>
-                <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/MarcarListoParaRetirar" class="inline-form">
+        <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/MarcarListoParaRetirar" class="inline-form">
+          <?= Csrf::input(); ?>
                     <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>" />
                     <button class="btn btn-primary" type="submit">Marcar listo para retirar</button>
                 </form>
             <?php endif; ?>
             <?php if (!empty($view['supervisor']['puede_finalizar'])): ?>
-                <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/MarcarPagadoYFinalizar" class="inline-form">
+        <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/MarcarPagadoYFinalizar" class="inline-form">
+          <?= Csrf::input(); ?>
                     <input type="hidden" name="ticket_id" value="<?= (int)$view['ticket']['id'] ?>" />
                     <button class="btn btn-success" type="submit">Registrar pago y finalizar</button>
                 </form>

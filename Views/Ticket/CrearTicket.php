@@ -16,6 +16,7 @@
                 <?php endif; ?>
 
                 <form method="POST" action="/ProyectoPandora/Public/index.php?route=Ticket/Crear">
+                    <?= Csrf::input(); ?>
                     <input type="hidden" name="recarga_cliente" value="1">
 
                     <?php if (isset($isAdmin) && $isAdmin && isset($clientes)): ?>

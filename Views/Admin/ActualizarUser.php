@@ -5,12 +5,7 @@
         <div class="actualizar-wrapper animated bounceInUp">
             <h3>Actualizar Usuario</h3>
 
-            <?php if (isset($_GET['error']) && $_GET['error'] === 'NombreRequerido'): ?>
-                <div class="alert alert-warning" role="alert" style="margin-bottom:10px;">El nombre es obligatorio.</div>
-            <?php endif; ?>
-            <?php if (isset($_GET['error']) && $_GET['error'] === 'RolInvalido'): ?>
-                <div class="alert alert-warning" role="alert" style="margin-bottom:10px;">Seleccioná un rol válido.</div>
-            <?php endif; ?>
+            <!-- Mensajes de validación migrados a Flash::error(); se muestran vía Includes/Header + FlashMessages -->
 
             <?php if (empty($user)): ?>
                 <p>Usuario no encontrado.</p>

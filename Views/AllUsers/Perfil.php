@@ -4,8 +4,9 @@
     <!-- HEADER -->
     <div class="perfil-header">
       <form method="POST" action="" enctype="multipart/form-data">
-        <label for="avatarUpload" title="Cambiar foto de perfil">
-          <img src="<?= htmlspecialchars($userImg) ?>" class="perfil-avatar" alt="Foto de perfil">
+        <?= Csrf::input(); ?>
+        <label for="avatarUpload" title="<?= __('profile.avatar.change'); ?>">
+          <img src="<?= htmlspecialchars($userImg) ?>" class="perfil-avatar" alt="<?= __('profile.avatar.alt'); ?>">
         </label>
         <input type="file" id="avatarUpload" name="avatar" accept="image/*" style="display: none;">
       </form>
@@ -22,6 +23,7 @@
     <!-- PERFIL -->
     <div class="perfil-content active" id="info">
       <form method="POST" action="">
+        <?= Csrf::input(); ?>
         <div class="perfil-campo">
           <label><?= __('profile.field.name') ?>:</label>
           <input type="text" name="name" value="<?= htmlspecialchars($userName) ?>">
@@ -40,7 +42,7 @@
         <?php if ($rol === 'Tecnico'): ?>
           <div class="perfil-campo">
             <label><?= __('profile.field.specialty') ?>:</label>
-            <input type="text" name="especialidad" value="<?= htmlspecialchars($tecnicoEspecialidad ?? '') ?>" placeholder="Ej: Electrónica, Microsoldadura, Software..." />
+            <input type="text" name="especialidad" value="<?= htmlspecialchars($tecnicoEspecialidad ?? '') ?>" placeholder="<?= __('profile.specialty.placeholder'); ?>" />
           </div>
         <?php endif; ?>
 
@@ -52,6 +54,7 @@
     <div class="perfil-content" id="ajustes">
       <?php if ($rol === 'Tecnico'): ?>
       <form method="POST" action="">
+        <?= Csrf::input(); ?>
         <div class="perfil-campo">
           <label><?= __('profile.field.availability') ?>:</label>
           <?php $dispActual = $tecnicoDisponibilidad ?? 'Disponible'; ?>

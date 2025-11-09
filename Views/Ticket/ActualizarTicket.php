@@ -7,6 +7,7 @@
                 <h3>Editar Ticket</h3>
 
                 <form id="formActualizar" method="POST" action="/ProyectoPandora/Public/index.php?route=Ticket/Actualizar" enctype="multipart/form-data">
+                    <?= Csrf::input(); ?>
                     <input type="hidden" name="id" value="<?= htmlspecialchars($ticket['id'] ?? '') ?>">
 
                     
