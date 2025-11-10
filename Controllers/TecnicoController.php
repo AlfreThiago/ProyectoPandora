@@ -32,13 +32,11 @@ class TecnicoController {
         $desde = trim((string)($_GET['desde'] ?? ''));
         $hasta = trim((string)($_GET['hasta'] ?? ''));
 
-                    Flash::error('Técnico inválido.');
-                    header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisStats');
+        // Filtrar por estado (activos = sin fecha_cierre, finalizados = con fecha_cierre)
         if ($estado === 'activos' || $estado === 'finalizados') {
             $tickets = array_values(array_filter($tickets, function($t) use ($estado){
                 $cerrado = !empty($t['fecha_cierre']);
-                    Flash::error('Ticket no asociado.');
-                    header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisStats');
+                return $estado === 'activos' ? !$cerrado : $cerrado;
             }));
         }
 

@@ -18,7 +18,7 @@ $locale = I18n::getLocale();
   <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
   <link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <title><?= __('app.name') ?></title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>scriptscript
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -124,13 +124,13 @@ $locale = I18n::getLocale();
 
           <?php elseif ($role === 'tecnico'): ?>
             <li class="item menu-item-static">
-              <a href="index.php?route=Tecnico/MisReparaciones" class="link flex">
+              <a href="/ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones" class="link flex">
                 <i class='bx bx-ticket'></i>
                 <span><?= __('nav.tickets') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
-              <a href="index.php?route=Tecnico/MisStats" class="link flex">
+              <a href="/ProyectoPandora/Public/index.php?route=Tecnico/MisStats" class="link flex">
                 <i class='bx bx-medal'></i>
                 <span><?= __('nav.my.stats') ?></span>
               </a>

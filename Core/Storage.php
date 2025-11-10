@@ -65,6 +65,9 @@ class Storage
         $custom = self::env('PANDORA_STORAGE_PATH');
         if ($custom) {
             self::$basePath = rtrim($custom, '/\\');
+            if (!is_dir(self::$basePath)) {
+                @mkdir(self::$basePath, 0775, true);
+            }
             return self::$basePath;
         }
         $documentRoot = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') : '';
@@ -106,6 +109,18 @@ class Storage
         }
         self::$baseUrl = '/ProyectoPandora/Public/uploads';
         return self::$baseUrl;
+    }
+
+    // Diagnóstico rápido: devuelve arreglo con rutas y flags para soporte remoto
+    public static function diagnostics(): array {
+        return [
+            'base_path' => self::basePath(),
+            'base_url' => self::baseUrl(),
+            'path_exists' => is_dir(self::basePath()),
+            'sample_public' => self::publicUrl('device/ejemplo.jpg'),
+            'env_path' => self::env('PANDORA_STORAGE_PATH'),
+            'env_url' => self::env('PANDORA_STORAGE_URL'),
+        ];
     }
 
     public static function ensure(string $subdir): string
