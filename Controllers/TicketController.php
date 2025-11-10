@@ -207,29 +207,33 @@ class TicketController
         }
         $s = strtolower(trim($estadoActual));
         $acciones = [];
-        $mensaje = '';
+        $mensajeKey = '';
 
+        // Usar claves i18n para mensajes y labels
         if ($s === 'nuevo') {
-            $mensaje = 'El supervisor debe asignar el ticket para pasarlo a "En espera".';
+            $mensajeKey = 'ticket.tech.msg.new';
         } elseif ($s === 'en espera') {
-            if (isset($mapId['diagnóstico'])) $acciones[] = ['label'=>'Comenzar diagnóstico','estado_id'=>$mapId['diagnóstico'],'comentario'=>'Diagnóstico iniciado'];
-            elseif (isset($mapId['diagnostico'])) $acciones[] = ['label'=>'Comenzar diagnóstico','estado_id'=>$mapId['diagnostico'],'comentario'=>'Diagnóstico iniciado'];
-            $mensaje = 'Al abrir el ticket por primera vez, pásalo a "Diagnóstico".';
+            if (isset($mapId['diagnóstico'])) $acciones[] = ['label'=>__('ticket.tech.action.startDiagnosis'),'estado_id'=>$mapId['diagnóstico'],'comentario'=>__('ticket.tech.action.startDiagnosis')];
+            elseif (isset($mapId['diagnostico'])) $acciones[] = ['label'=>__('ticket.tech.action.startDiagnosis'),'estado_id'=>$mapId['diagnostico'],'comentario'=>__('ticket.tech.action.startDiagnosis')];
+            $mensajeKey = 'ticket.tech.msg.wait';
         } elseif ($s === 'diagnóstico' || $s === 'diagnostico') {
-            if (isset($mapId['presupuesto'])) $acciones[] = ['label'=>'Diagnóstico finalizado','estado_id'=>$mapId['presupuesto'],'comentario'=>'Diagnóstico finalizado, esperando publicación de presupuesto'];
-            $mensaje = 'Asegúrate de definir mano de obra e insumos antes de finalizar el diagnóstico.';
+            if (isset($mapId['presupuesto'])) $acciones[] = ['label'=>__('ticket.tech.action.finishDiagnosis'),'estado_id'=>$mapId['presupuesto'],'comentario'=>__('ticket.tech.action.finishDiagnosis')];
+            $mensajeKey = 'ticket.tech.msg.diagnosis';
         } elseif ($s === 'presupuesto') {
-            $mensaje = 'Aguardando publicación del supervisor y la decisión del cliente.';
+            $mensajeKey = 'ticket.tech.msg.budget';
         } elseif ($s === 'en reparación' || $s === 'en reparacion') {
-            if (isset($mapId['en pruebas'])) $acciones[] = ['label'=>'Reparación terminada','estado_id'=>$mapId['en pruebas'],'comentario'=>'Reparación finalizada, iniciando pruebas'];
+            if (isset($mapId['en pruebas'])) $acciones[] = ['label'=>__('ticket.tech.action.repairFinished'),'estado_id'=>$mapId['en pruebas'],'comentario'=>__('ticket.tech.action.repairFinished')];
+            $mensajeKey = 'ticket.tech.msg.repair';
         } elseif ($s === 'en pruebas') {
-            if (isset($mapId['listo para retirar'])) $acciones[] = ['label'=>'Pruebas finalizadas','estado_id'=>$mapId['listo para retirar'],'comentario'=>'Pruebas finalizadas, equipo listo para retirar'];
+            if (isset($mapId['listo para retirar'])) $acciones[] = ['label'=>__('ticket.tech.action.testsFinished'),'estado_id'=>$mapId['listo para retirar'],'comentario'=>__('ticket.tech.action.testsFinished')];
+            $mensajeKey = 'ticket.tech.msg.tests';
         } elseif ($s === 'listo para retirar') {
-            $mensaje = 'Esperando que el cliente retire el equipo.';
+            $mensajeKey = 'ticket.tech.msg.ready';
         } elseif ($s === 'finalizado' || $s === 'cancelado') {
-            $mensaje = 'El ticket está cerrado; no hay más acciones disponibles.';
+            $mensajeKey = 'ticket.tech.msg.closed';
         }
 
+        $mensaje = $mensajeKey ? __($mensajeKey) : '';
         return [$acciones, $mensaje];
     }
 
@@ -317,7 +321,7 @@ class TicketController
             $hasLaborTech = $laborAmount > 0;
             if ($hasItemsTech && $hasLaborTech) {
                 $tecAcciones = [];
-                $tecMensaje = 'Diagnóstico finalizado. Puedes editar mano de obra y repuestos hasta la publicación del presupuesto.';
+                $tecMensaje = __('ticket.tech.msg.diagnosisFinishedEditable');
             }
         }
 
@@ -558,9 +562,10 @@ class TicketController
                 $stmtC->execute();
                 $uidRow = $stmtC->get_result()->fetch_assoc();
                 if ($uidRow && isset($uidRow['user_id'])) {
+                    I18n::boot();
                     $nm = new NotificationModel($cnn);
-                    $title = 'Estado de ticket actualizado';
-                    $body  = 'El estado de tu ticket #'.$ticket_id.' cambió a '.($estadoNuevo ?? '#').'.';
+                    $title = __('notification.ticket.stateUpdated.title');
+                    $body  = __('notification.ticket.stateUpdated.body', ['id'=>$ticket_id, 'state'=>($estadoNuevo ?? '#')]);
                     $nm->create($title, $body, 'USER', null, (int)$uidRow['user_id'], (int)$user['id']);
                 }
             }
@@ -1000,9 +1005,10 @@ class TicketController
                 $stmtC->execute();
                 $uidRow = $stmtC->get_result()->fetch_assoc();
                 if ($uidRow && isset($uidRow['user_id'])) {
+                    I18n::boot();
                     $nm = new NotificationModel($conn);
-                    $title = 'Presupuesto publicado';
-                    $body  = 'Se publicó el presupuesto del ticket #'.$ticket_id.' por '.LogFormatter::monto((float)$total).'.';
+                    $title = __('notification.ticket.budgetPublished.title');
+                    $body  = __('notification.ticket.budgetPublished.body', ['id'=>$ticket_id, 'total'=>LogFormatter::monto((float)$total)]);
                     $nm->create($title, $body, 'USER', null, (int)$uidRow['user_id'], (int)$user['id']);
                 }
             }
@@ -1149,7 +1155,8 @@ class TicketController
 
         
         if (empty($data)) {
-            $errorMsg = "Primero debes crear al menos un dispositivo antes de poder crear un ticket.";
+            // Mostrar la vista con un código de error traducible
+            $errorCode = 'noDevices';
             include __DIR__ . '/../Views/Ticket/CrearTicket.php';
             return;
         }
@@ -1181,7 +1188,7 @@ class TicketController
         $descripcion = $_POST['descripcion'] ?? '';
 
         if (empty($dispositivo_id)) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=Debe seleccionar un dispositivo');
+            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=deviceRequired');
             exit;
         }
 
@@ -1192,14 +1199,14 @@ class TicketController
             if ((int)($r['id'] ?? 0) === (int)$dispositivo_id) { $pertenece = true; break; }
         }
         if (!$pertenece) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=Dispositivo no pertenece al cliente');
+            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=deviceOwnership');
             exit;
         }
 
         // Regla: un ticket activo por dispositivo.
         // Verificar si ya existe ticket activo para este dispositivo
         if ($this->ticketModel->hasActiveTicketForDevice((int)$dispositivo_id)) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=Ya existe un ticket activo para este dispositivo');
+            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=deviceActive');
             exit;
         }
 

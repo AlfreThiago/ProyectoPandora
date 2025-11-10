@@ -10,6 +10,7 @@ require_once __DIR__ . '/../Models/TicketLabor.php';
 require_once __DIR__ . '/../Models/Rating.php';
 require_once __DIR__ . '/../Models/Notification.php';
 require_once __DIR__ . '/../Core/Flash.php';
+require_once __DIR__ . '/../Core/I18n.php';
 
 class SupervisorController {
     public function PanelSupervisor() {
@@ -20,6 +21,7 @@ class SupervisorController {
 
     public function Asignar() {
         Auth::checkRole(['Supervisor']);
+        I18n::boot();
 
         $db = new Database();
         $db->connectDatabase();
@@ -60,7 +62,7 @@ class SupervisorController {
         $user = Auth::user();
         if (!$user) { $user = $_SESSION['user'] ?? null; }
         if (!$user || empty($user['id'])) {
-            Flash::error('Sesión inválida.');
+            Flash::error('supervisor.assign.error.session');
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
             exit; 
         }
@@ -69,7 +71,7 @@ class SupervisorController {
         $ticket_id = isset($_POST['ticket_id']) ? (int)$_POST['ticket_id'] : 0;
         $tecnico_id = isset($_POST['tecnico_id']) ? (int)$_POST['tecnico_id'] : 0;
         if (!$ticket_id || !$tecnico_id) {
-            Flash::error('Datos incompletos.');
+            Flash::error('supervisor.assign.error.incomplete');
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
             exit;
         }
@@ -87,7 +89,7 @@ class SupervisorController {
             $stmtChk->execute();
             $rowChk = $stmtChk->get_result()->fetch_assoc();
             if (!empty($rowChk['tecnico_id'])) {
-                Flash::error('El ticket ya tiene técnico (no disponible para reasignar)');
+                Flash::error('supervisor.assign.error.ticketHasTech');
                 header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
                 exit;
             }
@@ -101,7 +103,7 @@ class SupervisorController {
             $rowTec = $stmtTec->get_result()->fetch_assoc();
             $disp = strtolower(trim($rowTec['disponibilidad'] ?? ''));
             if ($disp !== 'disponible') {
-                Flash::error('Técnico no disponible para asignación');
+                Flash::error('supervisor.assign.error.techUnavailable');
                 header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
                 exit;
             }
@@ -130,7 +132,7 @@ class SupervisorController {
             $activos = (int)($stmtAct->get_result()->fetch_assoc()['c'] ?? 0);
         }
         if ($activos >= $limit) {
-            Flash::error('Límite de tickets activos alcanzado según honor');
+            Flash::error('supervisor.assign.error.limitReached');
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
             exit;
         }
@@ -203,10 +205,10 @@ class SupervisorController {
                 }
             } catch (\Throwable $e) { /* noop */ }
             require_once __DIR__ . '/../Core/Flash.php';
-            Flash::successQuiet('Técnico asignado.');
+            Flash::successQuiet('supervisor.assign.success.assigned');
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
         } else {
-            Flash::error('No se pudo asignar');
+            Flash::error('supervisor.assign.error.assignFailed');
             header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
         }
         exit;
@@ -214,6 +216,7 @@ class SupervisorController {
 
     public function GestionInventario() {
         Auth::checkRole(['Supervisor']);
+        I18n::boot();
 
         $db = new Database();
         $db->connectDatabase();
@@ -226,6 +229,7 @@ class SupervisorController {
 
     public function Presupuestos() {
         Auth::checkRole(['Supervisor']);
+        I18n::boot();
 
         $db = new Database();
         $db->connectDatabase();

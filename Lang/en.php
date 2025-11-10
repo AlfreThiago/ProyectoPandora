@@ -124,6 +124,7 @@ return [
   'common.save' => 'Save',
   'common.back' => 'Back',
   'common.confirm.delete' => 'Are you sure you want to delete this?',
+  'common.notAvailable' => 'Not available',
 
   // Additional commons Auth
   'common.email' => 'Email',
@@ -211,4 +212,142 @@ return [
   'inventory.category.list.col.name' => 'Name',
   'inventory.category.list.empty' => 'No categories registered.',
   'inventory.category.confirm.delete' => 'Are you sure you want to delete this category?',
+  
+  // Tickets - Create / Edit / View
+  'ticket.common.ticket' => 'Ticket',
+  'ticket.common.new' => 'New',
+  'ticket.common.description' => 'Failure description',
+  'ticket.common.select' => '-- Select --',
+  'ticket.common.unassigned' => 'Unassigned',
+  'ticket.common.activeSuffix' => '— (with active ticket)',
+
+  // Common actions additions
+  'common.cancel' => 'Cancel',
+  'common.send' => 'Send',
+  'common.saveChanges' => 'Save Changes',
+  'common.unassignedOption' => '-- Unassigned --',
+
+  // Tickets - Create
+  'ticket.create.heading' => 'Create new ticket',
+  'ticket.create.select.client' => 'Select a client:',
+  'ticket.create.select.device' => 'Select a device:',
+  'ticket.create.select.device.placeholder' => 'Select a device',
+  'ticket.create.submit' => 'Create Ticket',
+  'ticket.create.error.deviceRequired' => 'You must select a device.',
+  'ticket.create.error.deviceOwnership' => 'The device does not belong to the authenticated client.',
+  'ticket.create.error.deviceActive' => 'There is already an active ticket for this device.',
+  'ticket.create.error.noDevices' => 'You need to create at least one device before creating a ticket.',
+
+  // Tickets - Edit
+  'ticket.edit.title' => 'Edit ticket',
+  'ticket.edit.device.brand' => 'Device brand',
+  'ticket.edit.device.model' => 'Device model',
+  'ticket.edit.state' => 'Ticket state',
+  'ticket.edit.assignTech' => 'Assign Technician',
+
+  // Tickets - View
+  'ticket.view.detailTitle' => 'Ticket detail',
+  'ticket.view.notFound' => 'No information found for this ticket.',
+  'ticket.field.idTicket' => 'Ticket ID',
+  'ticket.field.device' => 'Device',
+  'ticket.field.client' => 'Client',
+  'ticket.field.state' => 'State',
+  'ticket.field.technicianAssigned' => 'Assigned technician',
+  'ticket.field.creationDate' => 'Creation date',
+  'ticket.field.closeDate' => 'Closing date',
+  'ticket.field.description' => 'Failure description',
+  'ticket.field.deviceImage' => 'Device image',
+  'ticket.image.loadedOn' => 'Loaded on',
+  'ticket.unassigned' => 'Unassigned',
+
+  // Tickets - Alerts
+  'ticket.alert.rate.onlyFinal' => 'You can only rate when the ticket is finished.',
+  'ticket.alert.budget.pendingApproval' => 'Client approval for the budget is still pending.',
+  'ticket.alert.budget.approved' => 'Budget approved. The technician may continue with the repair.',
+  'ticket.alert.budget.rejected' => 'Budget rejected. The ticket has been marked as canceled.',
+  'ticket.alert.payment.registered' => 'Payment registered. Ticket finished.',
+  'ticket.alert.client.canRateWhenFinished' => 'You will be able to rate the technician when the ticket is finished.',
+  'ticket.alert.mustRateToClose' => 'Your ticket is finished. Please rate the service to complete closure.',
+  'ticket.alert.transition.invalid' => 'Invalid state transition.',
+  'ticket.alert.state.currentInvalid' => 'Action not allowed in current state.',
+  'ticket.success.stateUpdated' => 'State updated.',
+  'ticket.success.markedReady' => 'Marked as ready for pickup.',
+  'ticket.rating.thanks' => 'Thanks for rating! ',
+
+  // Tickets - Budget (Client)
+  'ticket.budget.publishedBy' => 'Budget published by',
+  'ticket.budget.preparedBy' => 'Budget prepared by',
+  'ticket.budget.pendingSupervisor' => '(pending supervisor publication)',
+  'ticket.budget.table.item' => 'Item',
+  'ticket.budget.table.category' => 'Category',
+  'ticket.budget.table.qty' => 'Qty.',
+  'ticket.budget.table.subtotal' => 'Subtotal',
+  'ticket.budget.noParts' => 'No parts',
+  'ticket.budget.subtotalParts' => 'Parts subtotal',
+  'ticket.budget.labor' => 'Labor',
+  'ticket.budget.laborMissing' => 'Labor not yet defined',
+  'ticket.budget.total' => 'Total',
+  'ticket.budget.approve' => 'Approve',
+  'ticket.budget.reject' => 'Reject',
+  'ticket.budget.comment.approvedByClient' => 'Approved by client',
+  'ticket.budget.comment.rejectedByClient' => 'Rejected by client',
+
+  // Tickets - Rating
+  'ticket.rating.title' => 'Rate technician service',
+  'ticket.rating.stars' => 'Stars:',
+  'ticket.rating.comment.optional' => 'Comment (optional):',
+  'ticket.rating.placeholder' => 'Your experience',
+
+  // Tickets - Technician
+  'ticket.tech.changeState' => 'Change state',
+  'ticket.tech.action.startDiagnosis' => 'Start diagnosis',
+  'ticket.tech.action.finishDiagnosis' => 'Diagnosis finished',
+  'ticket.tech.action.repairFinished' => 'Repair finished',
+  'ticket.tech.action.testsFinished' => 'Tests finished',
+  'ticket.tech.msg.new' => 'Supervisor must assign the ticket to move it to "En espera".',
+  'ticket.tech.msg.wait' => 'On first open, move the ticket to "Diagnóstico".',
+  'ticket.tech.msg.diagnosis' => 'Define labor and parts before finishing the diagnosis.',
+  'ticket.tech.msg.budget' => 'Waiting for supervisor publication and client decision.',
+  'ticket.tech.msg.repair' => 'Carry out the repair and then move to tests.',
+  'ticket.tech.msg.tests' => 'Run tests before marking ready for pickup.',
+  'ticket.tech.msg.ready' => 'Waiting for the client to pick up the device.',
+  'ticket.tech.msg.closed' => 'Ticket is closed; no further actions.',
+  'ticket.tech.msg.diagnosisFinishedEditable' => 'Diagnosis finished. You can edit labor and parts until budget publication.',
+  'ticket.labor.title' => 'Labor',
+  'ticket.labor.ready' => 'Budget ready to publish.',
+  'ticket.labor.hint' => 'To prepare the budget: add parts and define labor.',
+  'ticket.labor.amount' => 'Amount:',
+  'ticket.labor.save' => 'Save labor amount',
+  'ticket.labor.edit' => 'Edit labor amount',
+  'ticket.labor.defined' => 'Labor defined',
+  'ticket.labor.notEditable' => 'not available for editing',
+  'ticket.labor.onlyDuringDiagnosis' => 'Only editable during Diagnosis.',
+  'ticket.parts.addToThisTicket' => 'Add parts to this ticket',
+  'ticket.parts.edit' => 'Edit parts',
+
+  // Tickets - Supervisor
+  'ticket.supervisor.actions' => 'Supervisor actions',
+  'ticket.supervisor.markReadyForPickup' => 'Mark ready for pickup',
+  'ticket.supervisor.registerPaymentAndFinish' => 'Register payment and finish',
+
+  // Tickets - Photos
+  'ticket.photos.title' => 'Ticket photos',
+  'ticket.photos.alt' => 'Ticket photo',
+  'ticket.photos.addEdit' => 'Add/edit photos (multiple allowed)',
+
+  // Tickets - Overlay
+  'ticket.overlay.paid' => 'PAID',
+
+  // Tickets - Timeline
+  'ticket.timeline.title' => 'Timeline',
+  'ticket.timeline.state' => 'State:',
+  'roles.technician' => 'Technician',
+  'roles.client' => 'Client',
+  'roles.supervisor' => 'Supervisor',
+  
+  // Notifications
+  'notification.ticket.stateUpdated.title' => 'Ticket state updated',
+  'notification.ticket.stateUpdated.body' => 'The state of your ticket #{id} changed to {state}.',
+  'notification.ticket.budgetPublished.title' => 'Budget published',
+  'notification.ticket.budgetPublished.body' => 'The budget for ticket #{id} was published for {total}.',
 ];

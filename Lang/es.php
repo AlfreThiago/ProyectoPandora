@@ -124,6 +124,7 @@ return [
   'common.save' => 'Guardar',
   'common.back' => 'Volver',
   'common.confirm.delete' => '¿Seguro que deseas eliminar esto?',
+  'common.notAvailable' => 'No disponible',
 
   // Comunes adicionales Auth
   'common.email' => 'Email',
@@ -211,4 +212,142 @@ return [
   'inventory.category.list.col.name' => 'Nombre',
   'inventory.category.list.empty' => 'No hay categorías registradas.',
   'inventory.category.confirm.delete' => '¿Seguro que deseas eliminar esta categoría?',
+  
+  // Tickets - Crear / Editar / Ver
+  'ticket.common.ticket' => 'Ticket',
+  'ticket.common.new' => 'Nuevo',
+  'ticket.common.description' => 'Descripción de la falla',
+  'ticket.common.select' => '-- Seleccionar --',
+  'ticket.common.unassigned' => 'Sin asignar',
+  'ticket.common.activeSuffix' => '— (con ticket activo)',
+
+  // Acciones comunes
+  'common.cancel' => 'Cancelar',
+  'common.send' => 'Enviar',
+  'common.saveChanges' => 'Guardar Cambios',
+  'common.unassignedOption' => '-- Sin asignar --',
+
+  // Tickets - Crear
+  'ticket.create.heading' => 'Crear nuevo ticket',
+  'ticket.create.select.client' => 'Seleccione un cliente:',
+  'ticket.create.select.device' => 'Seleccione un dispositivo:',
+  'ticket.create.select.device.placeholder' => 'Selecciona un dispositivo',
+  'ticket.create.submit' => 'Crear Ticket',
+  'ticket.create.error.deviceRequired' => 'Debes seleccionar un dispositivo.',
+  'ticket.create.error.deviceOwnership' => 'El dispositivo no pertenece al cliente autenticado.',
+  'ticket.create.error.deviceActive' => 'Ya existe un ticket activo para este dispositivo.',
+  'ticket.create.error.noDevices' => 'Primero debes crear al menos un dispositivo antes de poder crear un ticket.',
+
+  // Tickets - Editar
+  'ticket.edit.title' => 'Editar ticket',
+  'ticket.edit.device.brand' => 'Marca del dispositivo',
+  'ticket.edit.device.model' => 'Modelo del dispositivo',
+  'ticket.edit.state' => 'Estado del ticket',
+  'ticket.edit.assignTech' => 'Asignar Técnico',
+
+  // Tickets - Ver
+  'ticket.view.detailTitle' => 'Detalle del ticket',
+  'ticket.view.notFound' => 'No se encontró información para este ticket.',
+  'ticket.field.idTicket' => 'ID Ticket',
+  'ticket.field.device' => 'Dispositivo',
+  'ticket.field.client' => 'Cliente',
+  'ticket.field.state' => 'Estado',
+  'ticket.field.technicianAssigned' => 'Técnico asignado',
+  'ticket.field.creationDate' => 'Fecha de creación',
+  'ticket.field.closeDate' => 'Fecha de cierre',
+  'ticket.field.description' => 'Descripción de la falla',
+  'ticket.field.deviceImage' => 'Imagen del dispositivo',
+  'ticket.image.loadedOn' => 'Cargada el',
+  'ticket.unassigned' => 'Sin asignar',
+
+  // Tickets - Mensajes
+  'ticket.alert.rate.onlyFinal' => 'Solo puedes calificar cuando el ticket esté finalizado.',
+  'ticket.alert.budget.pendingApproval' => 'Aún falta que el cliente apruebe el presupuesto.',
+  'ticket.alert.budget.approved' => 'Presupuesto aprobado. El técnico podrá continuar con la reparación.',
+  'ticket.alert.budget.rejected' => 'Presupuesto rechazado. El ticket ha sido marcado como cancelado.',
+  'ticket.alert.payment.registered' => 'Pago registrado. Ticket finalizado.',
+  'ticket.alert.client.canRateWhenFinished' => 'Podrás calificar al técnico cuando el ticket esté finalizado.',
+  'ticket.alert.mustRateToClose' => 'Tu ticket está finalizado. Por favor, califica la atención para completar el cierre.',
+  'ticket.alert.transition.invalid' => 'Transición de estado inválida.',
+  'ticket.alert.state.currentInvalid' => 'Acción no permitida en el estado actual.',
+  'ticket.success.stateUpdated' => 'Estado actualizado.',
+  'ticket.success.markedReady' => 'Marcado como listo para retirar.',
+  'ticket.rating.thanks' => '¡Gracias por calificar! ',
+
+  // Tickets - Presupuesto (Cliente)
+  'ticket.budget.publishedBy' => 'Presupuesto publicado por',
+  'ticket.budget.preparedBy' => 'Presupuesto preparado por',
+  'ticket.budget.pendingSupervisor' => '(pendiente de publicación del supervisor)',
+  'ticket.budget.table.item' => 'Ítem',
+  'ticket.budget.table.category' => 'Categoría',
+  'ticket.budget.table.qty' => 'Cant.',
+  'ticket.budget.table.subtotal' => 'Subtotal',
+  'ticket.budget.noParts' => 'Sin repuestos',
+  'ticket.budget.subtotalParts' => 'Subtotal repuestos',
+  'ticket.budget.labor' => 'Mano de obra',
+  'ticket.budget.laborMissing' => 'Falta definir mano de obra',
+  'ticket.budget.total' => 'Total',
+  'ticket.budget.approve' => 'Aprobar',
+  'ticket.budget.reject' => 'Rechazar',
+  'ticket.budget.comment.approvedByClient' => 'Aprobado por el cliente',
+  'ticket.budget.comment.rejectedByClient' => 'Rechazado por el cliente',
+
+  // Tickets - Calificación
+  'ticket.rating.title' => 'Calificar atención del técnico',
+  'ticket.rating.stars' => 'Estrellas:',
+  'ticket.rating.comment.optional' => 'Comentario (opcional):',
+  'ticket.rating.placeholder' => 'Tu experiencia',
+
+  // Tickets - Técnico
+  'ticket.tech.changeState' => 'Cambiar estado',
+  'ticket.tech.action.startDiagnosis' => 'Comenzar diagnóstico',
+  'ticket.tech.action.finishDiagnosis' => 'Diagnóstico finalizado',
+  'ticket.tech.action.repairFinished' => 'Reparación terminada',
+  'ticket.tech.action.testsFinished' => 'Pruebas finalizadas',
+  'ticket.tech.msg.new' => 'El supervisor debe asignar el ticket para pasarlo a "En espera".',
+  'ticket.tech.msg.wait' => 'Al abrir el ticket por primera vez, pásalo a "Diagnóstico".',
+  'ticket.tech.msg.diagnosis' => 'Asegúrate de definir mano de obra e insumos antes de finalizar el diagnóstico.',
+  'ticket.tech.msg.budget' => 'Aguardando publicación del supervisor y la decisión del cliente.',
+  'ticket.tech.msg.repair' => 'Realiza la reparación y luego pasa a pruebas.',
+  'ticket.tech.msg.tests' => 'Ejecuta pruebas antes de marcar listo para retirar.',
+  'ticket.tech.msg.ready' => 'Esperando que el cliente retire el equipo.',
+  'ticket.tech.msg.closed' => 'El ticket está cerrado; no hay más acciones disponibles.',
+  'ticket.tech.msg.diagnosisFinishedEditable' => 'Diagnóstico finalizado. Puedes editar mano de obra y repuestos hasta la publicación del presupuesto.',
+  'ticket.labor.title' => 'Mano de obra',
+  'ticket.labor.ready' => 'Presupuesto listo para publicar.',
+  'ticket.labor.hint' => 'Para preparar el presupuesto: agrega repuestos y define mano de obra.',
+  'ticket.labor.amount' => 'Importe:',
+  'ticket.labor.save' => 'Guardar mano de obra',
+  'ticket.labor.edit' => 'Editar mano de obra',
+  'ticket.labor.defined' => 'Mano de obra definida',
+  'ticket.labor.notEditable' => 'no disponible para edición',
+  'ticket.labor.onlyDuringDiagnosis' => 'Solo editable durante Diagnóstico.',
+  'ticket.parts.addToThisTicket' => 'Añadir repuestos a este ticket',
+  'ticket.parts.edit' => 'Editar repuestos',
+
+  // Tickets - Supervisor
+  'ticket.supervisor.actions' => 'Acciones del supervisor',
+  'ticket.supervisor.markReadyForPickup' => 'Marcar listo para retirar',
+  'ticket.supervisor.registerPaymentAndFinish' => 'Registrar pago y finalizar',
+
+  // Tickets - Fotos
+  'ticket.photos.title' => 'Fotos del ticket',
+  'ticket.photos.alt' => 'Foto ticket',
+  'ticket.photos.addEdit' => 'Agregar/editar fotos (puede seleccionar múltiples)',
+
+  // Tickets - Overlay
+  'ticket.overlay.paid' => 'PAGADO',
+
+  // Tickets - Timeline
+  'ticket.timeline.title' => 'Línea de tiempo',
+  'ticket.timeline.state' => 'Estado:',
+  'roles.technician' => 'Técnico',
+  'roles.client' => 'Cliente',
+  'roles.supervisor' => 'Supervisor',
+  
+  // Notificaciones
+  'notification.ticket.stateUpdated.title' => 'Estado de ticket actualizado',
+  'notification.ticket.stateUpdated.body' => 'El estado de tu ticket #{id} cambió a {state}.',
+  'notification.ticket.budgetPublished.title' => 'Presupuesto publicado',
+  'notification.ticket.budgetPublished.body' => 'Se publicó el presupuesto del ticket #{id} por {total}.',
 ];
