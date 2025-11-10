@@ -2,7 +2,7 @@
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
-        <!-- Bloque de $flash eliminado: ahora los mensajes se gestionan exclusivamente con Core/Flash y se renderizan en Includes/Header -> FlashMessages -->
+        
         <div class="botones">
             <div class="dropdown">
                 <label for="menu-toggle" class="dropdown-label-admin">
@@ -61,5 +61,5 @@
     </div>
 </main>
 
-<script src="/ProyectoPandora/Public/js/Tablas.js"></script>
+<script src="/ProyectoPandora/Public/js/Tablas.js"></script>scriptscript
 <script src="/ProyectoPandora/Public/js/DarkMode.js?v=<?= time(); ?>" defer></script>

@@ -12,7 +12,7 @@ http_response_code(404);
  a{color:#61dafb;text-decoration:none;border:1px solid #61dafb;padding:.6rem 1rem;border-radius:6px;margin-top:1rem;display:inline-block}
  a:hover{background:#61dafb;color:#0f0f10}
  .code{font-family:monospace;background:#1e1e22;padding:.3rem .5rem;border-radius:4px}
-</style>
+</style>stylestyle
 </head>
 <body>
  <h1>404</h1>

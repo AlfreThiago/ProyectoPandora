@@ -2,7 +2,7 @@
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
-        <!-- Bloque de $flash eliminado: usar Header + FlashMessages -->
+        
         <div class="dropdown">
             <label for="menu-toggle" class="dropdown-label">Opciones</label>
             <input type="checkbox" id="menu-toggle" />

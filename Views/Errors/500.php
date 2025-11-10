@@ -12,13 +12,13 @@ http_response_code(500);
  a{color:#61dafb;text-decoration:none;border:1px solid #61dafb;padding:.6rem 1rem;border-radius:6px;margin-top:1rem;display:inline-block}
  a:hover{background:#61dafb;color:#101012}
  pre{background:#1e1e22;padding:.75rem 1rem;border-radius:6px;overflow:auto;max-width:90vw}
-</style>
+</style>stylestyle
 </head>
 <body>
  <h1>Error 500</h1>
  <p>Ha ocurrido un problema interno. Nuestro equipo lo revisará. Intenta nuevamente más tarde.</p>
  <?php
- // Mostrar detalles solo si se definió una bandera de depuración y existe $GLOBALS['__last_exception']
+ 
  $debug = isset($GLOBALS['APP_DEBUG']) ? (bool)$GLOBALS['APP_DEBUG'] : false;
  if ($debug && isset($GLOBALS['__last_exception']) && $GLOBALS['__last_exception'] instanceof Throwable):
      $ex = $GLOBALS['__last_exception'];

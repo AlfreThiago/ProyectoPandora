@@ -1,15 +1,15 @@
 <?php
 require_once __DIR__ . '/../../Core/Flash.php';
-// Permite filtrar qué tipos mostrar. Uso:
-// $only = ['error','warning']; include 'FlashMessages.php';
-// Siempre obtener y limpiar de la sesión al renderizar
+
+
+
 $flashMessages = Flash::getAll();
-// Separar "quiet" (éxitos silenciosos) si en el futuro se marca type=success_quiet
+
 $filtered = [];
-$onlyTypes = $only ?? null; // array de tipos permitidos
+$onlyTypes = $only ?? null; 
 foreach ($flashMessages as $fm) {
     $type = $fm['type'] ?? 'info';
-    if ($type === 'success_quiet') { continue; } // no mostrar éxitos silenciosos
+    if ($type === 'success_quiet') { continue; } 
     if (is_array($onlyTypes) && !in_array($type, $onlyTypes, true)) { continue; }
     $filtered[] = $fm;
 }
@@ -38,7 +38,7 @@ if (!empty($filtered)): ?>
         .flash-info{background:#1e3d5a;color:#e6f4ff;border:1px solid #2d5f8f}
         .flash-container .flash-msg{animation:flashFade .4s ease-in}
         @keyframes flashFade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
-        </style>
+        </style>stylestyle
         <script>
         // Auto-hide de mensajes flash (10-15s con dispersión y fade)
         (function(){
@@ -58,5 +58,5 @@ if (!empty($filtered)): ?>
                 }, ttl);
             });
         })();
-        </script>
+        </script>scriptscript
 <?php endif; ?>

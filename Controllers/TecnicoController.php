@@ -42,7 +42,7 @@ class TecnicoController {
             }));
         }
 
-        // Filtro por texto
+        
         if ($q !== '') {
             $qLower = mb_strtolower($q, 'UTF-8');
             $tickets = array_values(array_filter($tickets, function($t) use ($qLower){
@@ -60,7 +60,7 @@ class TecnicoController {
             }));
         }
 
-        // Filtro por fechas (creación)
+        
         if ($desde !== '' || $hasta !== '') {
             $tickets = array_values(array_filter($tickets, function($t) use ($desde, $hasta){
                 $f = substr((string)($t['fecha_creacion'] ?? ''), 0, 10);
@@ -70,7 +70,7 @@ class TecnicoController {
             }));
         }
 
-        // Enriquecer (badge + fechas preformateadas)
+        
         foreach ($tickets as &$t) {
             $t['estadoClass'] = $this->estadoBadgeClass($t['estado'] ?? '');
             if (!empty($t['fecha_creacion'])) {
@@ -82,7 +82,7 @@ class TecnicoController {
         return $tickets;
     }
 
-    // Imagen de preview: última foto del ticket (uploads -> legacy) o imagen del dispositivo
+    
     private function ticketPreviewUrl(array $ticket): string {
         $imgDevice = \Storage::resolveDeviceUrl($ticket['img_dispositivo'] ?? '');
         $imgSrc = $imgDevice;
@@ -124,7 +124,7 @@ class TecnicoController {
                     }
                 }
             }
-        } catch (\Throwable $e) { /* noop */ }
+        } catch (\Throwable $e) {  }
         return $imgSrc;
     }
 
@@ -246,7 +246,7 @@ class TecnicoController {
         $supervisor_id = (int)($ticketModel->getSupervisorId($ticket_id) ?? 0);
         if ($supervisor_id <= 0) { $supervisor_id = 0; }
 
-        // Identificar técnico antes de alterar stock
+        
         $tecnico_id = $this->obtenerTecnicoIdPorUserId($user['id']);
         if (!$tecnico_id) {
             Flash::error('Identidad de técnico inválida.');
@@ -254,15 +254,15 @@ class TecnicoController {
             exit;
         }
 
-        // Reglas de estado y concurrencia (previas a descontar stock)
-        // Estado actual del ticket
+        
+        
         $conn = $this->db->getConnection();
         if ($st = $conn->prepare("SELECT e.name AS estado FROM tickets t INNER JOIN estados_tickets e ON e.id=t.estado_id WHERE t.id=? LIMIT 1")) {
             $st->bind_param('i', $ticket_id); $st->execute(); $row = $st->get_result()->fetch_assoc();
             $estadoActualNombre = strtolower(trim($row['estado'] ?? ''));
         } else { $estadoActualNombre = ''; }
 
-        // Labor e items actuales
+        
         $laborModel2 = new TicketLaborModel($conn);
         $labor = $laborModel2->getByTicket($ticket_id);
         $itemsTicket = $itemTicketModel->listarPorTicket($ticket_id);
@@ -276,7 +276,7 @@ class TecnicoController {
             exit;
         }
 
-        // Permitir agregar repuestos en Diagnóstico; en En espera solo si ya hay mano de obra (diagnóstico finalizado) y no publicado
+        
         if ($estadoActualNombre === 'presupuesto') {
             Flash::error('Ticket bloqueado: presupuesto ya publicado.');
             header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&ticket_id='.(int)$ticket_id);
@@ -288,7 +288,7 @@ class TecnicoController {
             exit;
         }
 
-        // Transacción atómica: reducir stock y crear item_ticket
+        
         $conn->begin_transaction();
         $valor_total = $cantidad * $valor_unitario;
         $stockOk = $inventarioModel->reducirStock($inventario_id, $cantidad);
@@ -298,17 +298,17 @@ class TecnicoController {
         }
         if ($stockOk && $itemOk) {
             $conn->commit();
-            // Registra en el historial
+            
             $this->historial->agregarAccion(
                 'Solicitud de repuesto',
                 "Técnico {$user['name']} solicitó {$cantidad} und(s) del inventario ID {$inventario_id} para ticket {$ticket_id} (total $valor_total)."
             );
             
-            // Recalcular tras agregar
+            
             $labor = $laborModel2->getByTicket($ticket_id);
             if ($labor && (float)($labor['labor_amount'] ?? 0) > 0) {
-                // No cambiamos el estado automáticamente para evitar retrocesos a "En espera".
-                // El técnico verá el botón "Diagnóstico finalizado" en la vista del ticket si está en Diagnóstico.
+                
+                
                 require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
                 $hist2 = new TicketEstadoHistorialModel($this->db->getConnection());
                 $hist2->add($ticket_id, (int)($ticketModel->ver($ticket_id)['estado_id'] ?? 0), (int)$user['id'], 'Tecnico', 'Repuestos listos + mano de obra definida: presupuesto listo para publicar');
@@ -394,14 +394,14 @@ class TecnicoController {
                     }
                 }
                 
-                // Permitir editar mano de obra durante Diagnóstico o En espera (mientras no esté publicado el presupuesto)
+                
                 if (!in_array($estadoActualNombre, ['diagnóstico','diagnostico','en espera'], true)) {
                     Flash::error('Estado no permite definir mano de obra.');
                     header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id);
                     exit;
                 }
                 
-                // Se elimina validación por rangos predefinidos (labor_min/labor_max)
+                
                 $saveTecnicoId = (int)$ticketTecnicoId;
             } elseif ($isSupervisor) {
                 
@@ -423,7 +423,7 @@ class TecnicoController {
             $laborModel = new TicketLaborModel($conn);
             $existing = $laborModel->getByTicket($ticket_id);
             if ($existing && (float)($existing['labor_amount'] ?? 0) > 0) {
-                // Si ya existe mano de obra, permitir editarla SOLO si está en 'En espera' (antes de que el supervisor publique presupuesto)
+                
                 if ($estadoActualNombre !== 'en espera') {
                     if ($isSupervisor) {
                         Flash::error('Mano de obra bloqueada.');
@@ -435,44 +435,44 @@ class TecnicoController {
                     exit;
                 }
             }
-            // Reglas de edición según estado
-            // 1) En Diagnóstico: permitir definir mano de obra solo si aún no existe (como ya se valida arriba)
-            // 2) En En espera: permitir editar mano de obra solo si YA existía mano de obra (>0) y hay ítems (diagnóstico finalizado previamente)
+            
+            
+            
             require_once __DIR__ . '/../Models/ItemTicket.php';
             $itemModelX_pre = new ItemTicketModel($conn);
             $itemsX_pre = $itemModelX_pre->listarPorTicket($ticket_id);
             if ($estadoActualNombre === 'en espera') {
                 $hadLabor = $existing && (float)($existing['labor_amount'] ?? 0) > 0;
                 if (!$hadLabor || empty($itemsX_pre)) {
-                    // No permitir crear mano de obra por primera vez en "En espera",
-                    // ni editar si aún no hubo diagnóstico completo (sin ítems)
+                    
+                    
                     Flash::error('No puede definir mano de obra en este estado.');
                     header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id);
                     exit;
                 }
             }
 
-            // Concurrency guard: if client sent a rev_state, compare with server-side current rev
+            
             $clientRev = isset($_POST['rev_state']) ? (string)$_POST['rev_state'] : null;
             if ($clientRev) {
-                // Build current rev like in verTicket
+                
                 $currLabor = (float)($existing['labor_amount'] ?? 0);
-                $currItems = $itemsX_pre; // set below but we compute early after we fetch
+                $currItems = $itemsX_pre; 
             }
             $laborModel->upsert($ticket_id, (int)$saveTecnicoId, $labor_amount);
             
-            // Reutilizamos lista de ítems
+            
             $itemModelX = $itemModelX_pre; $itemsX = $itemsX_pre;
 
-            // Rebuild server rev and compare if provided
+            
             if ($clientRev) {
                 $serverEstadoLower = strtolower($estadoActualNombre);
-                // After upsert, reload labor
+                
                 $reloaded = $laborModel->getByTicket($ticket_id);
                 $laborNow = (float)($reloaded['labor_amount'] ?? 0);
                 $revNow = md5($serverEstadoLower.'|'.(string)$laborNow.'|'.(string)count($itemsX));
                 if ($revNow !== $clientRev) {
-                    // If already published (estado pasó a 'Presupuesto'), block and redirect
+                    
                     if ($serverEstadoLower === 'presupuesto') {
                         Flash::error('Cambios desactualizados.');
                         header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.(int)$ticket_id);
@@ -488,9 +488,9 @@ class TecnicoController {
                 $enEsperaId = 0;
                 if ($stmtEstados) { while($r=$stmtEstados->fetch_assoc()){ if (strcasecmp($r['name'],'En espera')===0) { $enEsperaId=(int)$r['id']; break; } } }
                 if ($enEsperaId && $estadoActualNombre !== 'presupuesto') {
-                    // Si aún no fue publicado (no está en 'Presupuesto'), dejar/forzar 'En espera'
+                    
                     $conn->query("UPDATE tickets SET estado_id = ".$enEsperaId." WHERE id = ".$ticket_id);
-                    // Registrar en historial solo si provenía de Diagnóstico
+                    
                     if (in_array($estadoActualNombre, ['diagnóstico','diagnostico'], true)) {
                         require_once __DIR__ . '/../Models/TicketEstadoHistorial.php';
                         $histM = new TicketEstadoHistorialModel($conn);
@@ -507,7 +507,7 @@ class TecnicoController {
             exit;
         }
 
-        // Se elimina la ruta de configuración de labor_min/labor_max; no se aceptan más estos parámetros
+        
 
         header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
     }

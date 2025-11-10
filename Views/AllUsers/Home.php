@@ -7,7 +7,7 @@ $role = strtolower($authUser['role'] ?? 'invitado');
     <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 
     <div class="home-container">
-        <!-- HERO -->
+        
         <section class="home-hero">
             <div class="hero-left">
                 <h2><i class='bx bx-grid-alt'></i> <?= __('home.hero.title') ?></h2>
@@ -61,12 +61,12 @@ $role = strtolower($authUser['role'] ?? 'invitado');
             </div>
         </section>
 
-        <!-- CONTENIDO PRINCIPAL -->
+        
         <div class="home-wrap">
             <div class="home-grid">
 
             
-                <!-- NOVEDADES -->
+                
                 <section class="home-news card-wide">
                     <h3><i class='bx bx-news'></i> <?= __('home.news.title') ?></h3>
                     <ul>
@@ -76,25 +76,25 @@ $role = strtolower($authUser['role'] ?? 'invitado');
                     </ul>
                 </section>
 
-                <!-- ESTADÍSTICAS -->
+                
         <section class="home-charts card-wide">
     <h3><i class='bx bx-analyse'></i> <?= __('home.stats.title') ?></h3>
         <div id="chartsStatus" class="alert alert-warning" style="display:none;"></div>
         <div class="charts-grid">
 
-                    <!-- GRÁFICA 1: Tickets activos vs finalizados -->
+                    
                     <div class="chart-box">
                     <h4><i class='bx bx-pie-chart'></i> <?= __('home.chart.tickets') ?></h4>
                     <canvas id="ticketsChart"></canvas>
                     </div>
 
-                    <!-- GRÁFICA 2: Ranking de técnicos -->
+                    
                     <div class="chart-box">
                     <h4><i class='bx bx-medal'></i> <?= __('home.chart.ranking') ?></h4>
                     <canvas id="rankingChart"></canvas>
                     </div>
 
-                    <!-- GRÁFICA 3: Promedio general o reparaciones por categoría -->
+                    
                     <div class="chart-box">
                     <h4><i class='bx bx-bar-chart-alt'></i> <?= __('home.chart.category') ?></h4>
                     <canvas id="categoryChart"></canvas>
@@ -104,7 +104,7 @@ $role = strtolower($authUser['role'] ?? 'invitado');
                 </section>
 
 
-                <!-- AYUDA -->
+                
                 <section class="help card-wide">
                     <h3><i class='bx bx-question-mark'></i> <?= __('home.help.title') ?></h3>
                     <p><?= __('home.help.subtitle') ?></p>

@@ -21,27 +21,27 @@ class RegisterController
             $email = strtolower(trim($_POST['email'] ?? ''));
             $password = $_POST['password'] ?? '';
 
-            // Requisito: nombre obligatorio
+            
             if ($username === '') {
                 Flash::error('El nombre es obligatorio.');
                 header('Location: /ProyectoPandora/Public/index.php?route=Register/Register');
                 exit;
             }
 
-            // Requisito: prohibir espacios/blancos en contraseña
+            
             if (preg_match('/\s/', (string)$password)) {
                 Flash::error('La contraseña no puede contener espacios ni caracteres en blanco.');
                 header('Location: /ProyectoPandora/Public/index.php?route=Register/Register');
                 exit;
             }
-            // Requisito: contraseña mínima de 8 caracteres
+            
             if (strlen((string)$password) < 8) {
                 Flash::error('La contraseña debe tener al menos 8 caracteres.');
                 header('Location: /ProyectoPandora/Public/index.php?route=Register/Register');
                 exit;
             }
 
-            // Validación de email delegada al cliente (JS); servidor solo controla duplicados
+            
 
             $result = $this->RegisterUser($username, $email, $password);
             
@@ -58,7 +58,7 @@ class RegisterController
 
     public function RegisterAdmin()
     {
-        // Solo un Administrador puede acceder a esta acción (GET/POST)
+        
         Auth::checkRole('Administrador');
         $user = Auth::user();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -67,27 +67,27 @@ class RegisterController
             $password = $_POST['password'] ?? '';
             $role = $_POST['role'] ?? 'Cliente';
 
-            // Requisito: nombre obligatorio
+            
             if ($username === '') {
                 Flash::error('El nombre es obligatorio.');
                 header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin');
                 exit;
             }
 
-            // Requisito: prohibir espacios/blancos en contraseña
+            
             if (preg_match('/\s/', (string)$password)) {
                 Flash::error('La contraseña no puede contener espacios ni caracteres en blanco.');
                 header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin');
                 exit;
             }
-            // Requisito: contraseña mínima de 8 caracteres
+            
             if (strlen((string)$password) < 8) {
                 Flash::error('La contraseña debe tener al menos 8 caracteres.');
                 header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin');
                 exit;
             }
 
-            // Validación de email delegada al cliente (JS); servidor solo controla duplicados
+            
 
             $result = $this->RegisterUserWithRole($username, $email, $password, $role);
 
@@ -119,7 +119,7 @@ class RegisterController
 
     public function RegisterUserWithRole($username, $email, $password, $role)
     {
-        // Defensa en profundidad: aunque esta ruta ya está protegida, validamos aquí también
+        
         Auth::checkRole('Administrador');
         $db = new Database();
         $db->connectDatabase();
@@ -127,7 +127,7 @@ class RegisterController
 
         $res = $userModel->registerIfNotExists($username, $email, $password, $role);
         if ($res === 'exists') {
-            // Simples y consistentes: volver al formulario con flash
+            
             Flash::error('El correo electrónico ya está registrado. Por favor, usa otro.');
             header("Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin");
             exit;
@@ -162,5 +162,5 @@ class RegisterController
         }
     }
 
-    // Nota: validación de email realizada en el cliente (JS). Aquí solo se controla existencia y creación.
+    
 }

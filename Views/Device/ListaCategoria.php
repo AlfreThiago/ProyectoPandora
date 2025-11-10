@@ -2,7 +2,7 @@
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
-        <!-- Mensajes centralizados: se muestran mediante Includes/Header -> FlashMessages -->
+        
         <div class="botones">
             <div class="btn-table-acciones">
                 <a class="btn-all btn-acciones-cate" href="/ProyectoPandora/Public/index.php?route=Device/CrearCategoria"><?= __('device.category.list.add') ?></a>
@@ -43,5 +43,5 @@
             </tbody>
         </table>
     </div>
-    <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
+    <script src="/ProyectoPandora/Public/js/Buscador.js"></script>scriptscript
 </main>

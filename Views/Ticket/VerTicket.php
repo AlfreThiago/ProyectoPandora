@@ -4,11 +4,11 @@
 
 <main>
   <div class="detalle-ticket-layout">
-    <!-- ================== DETALLE IZQUIERDA ================== -->
+    
     <div class="detalle-izquierda">
   <h2 id="tituloDetalle"><?= __('ticket.view.detailTitle') ?></h2>
 
-      <!-- BLOQUE PRINCIPAL: INFO HORIZONTAL -->
+      
       <div class="bloque-principal">
   <?php if (!empty($view['ticket'])): ?>
     <?php $t = $view['ticket']; ?>
@@ -69,13 +69,13 @@
           </time>
         </li>
 
-        <!--  Descripción ocupa toda la fila -->
+        
         <li class="dato-item dato-larga descripcion-falla">
           <strong><?= __('ticket.field.description') ?>:</strong>
           <span data-field="descripcion-falla"><?= htmlspecialchars($t['descripcion'] ?? $t['descripcion_falla']) ?></span>
         </li>
 
-        <!--  Imagen del dispositivo como item -->
+        
         <?php
           $resolvedImg = \Storage::resolveDeviceUrl($t['img_dispositivo'] ?? '');
           $hasImg = $resolvedImg !== '';
@@ -102,7 +102,7 @@
   <?php endif; ?>
 </div>
 
-      <!-- BLOQUE: MENSAJES / ALERTAS YA EXISTENTES (NO TOCAR su CSS original) -->
+      
       <?php if (!empty($view['flash']['error']) && $view['flash']['error']==='estado'): ?>
           <div class="alert alert-warning"><?= __('ticket.alert.rate.onlyFinal') ?></div>
       <?php endif; ?>
@@ -143,7 +143,7 @@
           <div class="alert alert-info"><?= __('ticket.alert.client.canRateWhenFinished') ?></div>
       <?php endif; ?>
 
-      <!-- === BLOQUE CLIENTE (Presupuesto, botones aprobar/rechazar, calificación) === -->
+      
       <div class="bloque-cliente">
         <?php if (!empty($view['ticket']) && $rol === 'Cliente'): ?>
           <?php if (!empty($view['enPresu'])): ?>
@@ -197,9 +197,9 @@
             <?php endif; ?>
           <?php endif; ?>
         <?php endif; ?>
-      </div> <!-- .bloque-cliente -->
+      </div> 
 
-      <!-- === CALIFICACIÓN CLIENTE (si corresponde) === -->
+      
       <?php if (!empty($view['ticket']) && $rol === 'Cliente' && !empty($view['ticket']['tecnico']) && $finalizado): ?>
           <div class="bloque-cliente calificacion">
             <hr>
@@ -222,7 +222,7 @@
           </div>
       <?php endif; ?>
 
-      <!-- === BLOQUE TÉCNICO === -->
+      
       <div class="bloque-tecnico">
         <?php if (!empty($view['ticket']) && $rol === 'Tecnico'): ?>
             <hr>
@@ -282,7 +282,7 @@
             </div>
 
       <?php
-        // Botón para gestionar repuestos: durante Diagnóstico (añadir) o en Espera con diagnóstico listo (editar)
+        
         if (in_array($estadoLower, ['diagnóstico','diagnostico'])): ?>
                 <div style="margin-top:12px;">
                   <a class="btn btn-outline" href="/ProyectoPandora/Public/index.php?route=Tecnico/MisRepuestos&ticket_id=<?= (int)$view['ticket']['id'] ?>&rev=<?= urlencode((string)($view['rev_state'] ?? '')) ?>"><?= __('ticket.parts.addToThisTicket') ?></a>
@@ -293,9 +293,9 @@
         </div>
       <?php endif; ?>
         <?php endif; ?>
-      </div> <!-- .bloque-tecnico -->
+      </div> 
 
-      <!-- === BLOQUE SUPERVISOR === -->
+      
       <div class="bloque-supervisor">
         <?php if (!empty($view['ticket']) && $rol === 'Supervisor'): ?>
             <hr>
@@ -315,12 +315,12 @@
                 </form>
             <?php endif; ?>
         <?php endif; ?>
-      </div> <!-- .bloque-supervisor -->
+      </div> 
 
   <a href="<?= htmlspecialchars($view['backHref'] ?? '/ProyectoPandora/Public/index.php?route=Default/Index') ?>" class="boton-volver"><?= __('common.back') ?></a>
 
       <?php
-        // Galería de fotos del ticket (si el controlador las provee)
+        
         $fotos = $view['fotos_ticket'] ?? [];
         if (!empty($fotos)):
       ?>
@@ -333,7 +333,7 @@
         </div>
       <?php endif; ?>
 
-    <!-- === OVERLAY PAGADO (pasado desde el controlador) === -->
+    
     <?php if (!empty($view['mostrarPagadoOverlay'])): ?>
       <div class="overlay-pagado">
           <div class="overlay-box"><?= __('ticket.overlay.paid') ?></div>
@@ -347,7 +347,7 @@
   <?php endif; ?>
     </div>
 
-    <!-- ================== LÍNEA DE TIEMPO DERECHA ================== -->
+    
     <div class="timeline-box">
       <div class="Tabla-Contenedor">
   <h3 class="titulo-timeline"><?= __('ticket.timeline.title') ?></h3>
@@ -406,4 +406,4 @@
   </div>
 </main>
 
-<script src="/ProyectoPandora/Public/js/ticket-ver.js" defer></script>
+<script src="/ProyectoPandora/Public/js/ticket-ver.js" defer></script>scriptscript

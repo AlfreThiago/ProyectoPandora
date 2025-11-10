@@ -4,7 +4,7 @@
     <div class="panel-header">
       <h2>Notificaciones</h2>
       <?php
-        // Mostrar botón "Nueva" solo a Administrador y Supervisor
+        
         $role = strtolower($authUser['role'] ?? '');
         if ($role === 'administrador' || $role === 'supervisor'):
       ?>

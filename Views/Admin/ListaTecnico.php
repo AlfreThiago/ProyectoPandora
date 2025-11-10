@@ -2,7 +2,7 @@
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
-        <!-- Bloque de $flash eliminado: usar Header + FlashMessages -->
+        
         <div class="dropdown">
             <label for="menu-toggle" class="dropdown-label">Opciones</label>
             <input type="checkbox" id="menu-toggle" />
@@ -39,12 +39,12 @@
                         echo "<td>" . htmlspecialchars($tec['name']) . "</td>";
                         echo "<td>" . htmlspecialchars($tec['email']) . "</td>";
                         echo "<td><span class='role $role'>$role</span></td>";
-                        // Disponibilidad como badge con wording consistente
+                        
                         $dispRaw = $tec['disponibilidad'] ?? '';
                         $dispTxt = (strcasecmp($dispRaw, 'Ocupado') === 0) ? 'No disponible' : ($dispRaw ?: '—');
                         $dispClass = (strcasecmp($dispRaw, 'Disponible') === 0) ? 'badge badge--success' : ((strcasecmp($dispRaw, 'Ocupado') === 0) ? 'badge badge--danger' : 'badge badge--muted');
                         echo "<td><span class='".$dispClass."'>".htmlspecialchars($dispTxt)."</span></td>";
-                        // Honor (estrellas + promedio + conteo)
+                        
                         $avg = isset($tec['rating_avg']) ? (float)$tec['rating_avg'] : 0.0;
                         $count = (int)($tec['rating_count'] ?? 0);
                         if ($count === 0 && $avg <= 0) { $avg = 3.0; }

@@ -61,4 +61,4 @@
 
 <a href="/ProyectoPandora/Public/index.php?route=Device/MostrarCrearDispositivo" class="btn-float-add" id="btnAdd" title="Agregar dispositivo">+</a>
 
-<script src="/ProyectoPandora/Public/js/clientes-mis-device.js" defer></script>
+<script src="/ProyectoPandora/Public/js/clientes-mis-device.js" defer></script>scriptscript

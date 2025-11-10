@@ -39,20 +39,20 @@
             <?php foreach (($items ?? []) as $row): ?>
               <?php $low = (int)$row['stock_actual'] <= (int)$row['stock_minimo']; ?>
               <tr class="<?php echo $low ? 'row-low-stock' : ''; ?>">
-                <td data-label="id"><?php echo (int)$row['id']; ?></td>
-                <td data-label="Img">
+                <td data-label="<?= __('common.id'); ?>"><?php echo (int)$row['id']; ?></td>
+                <td data-label="<?= __('inventory.table.image'); ?>">
                   <?php 
                     $foto = $row['foto_item'] ?? '';
                     $imgSrc = \Storage::resolveInventoryUrl($foto);
                   ?>
                   <img class="inv-thumb" src="<?php echo htmlspecialchars($imgSrc); ?>" alt="<?php echo htmlspecialchars($row['name_item']); ?>"/>
                 </td>
-                <td data-label="categoria"><?php echo htmlspecialchars($row['categoria']); ?></td>
-                <td data-label="name_item"><?php echo htmlspecialchars($row['name_item']); ?></td>
-                <td data-label="Valor_unitario"><?php echo htmlspecialchars(LogFormatter::monto((float)$row['valor_unitario'])); ?></td>
-                <td data-label="stock_actual"><?php echo (int)$row['stock_actual']; ?></td>
-				<td data-label="stock_minimo"><?php echo (int)$row['stock_minimo']; ?></td>
-                <td data-label="Acciones">
+        <td data-label="<?= __('inventory.table.category'); ?>"><?php echo htmlspecialchars($row['categoria']); ?></td>
+        <td data-label="<?= __('inventory.table.item'); ?>"><?php echo htmlspecialchars($row['name_item']); ?></td>
+        <td data-label="<?= __('inventory.table.unitPrice'); ?>"><?php echo htmlspecialchars(LogFormatter::monto((float)$row['valor_unitario'])); ?></td>
+        <td data-label="<?= __('inventory.table.stock'); ?>"><?php echo (int)$row['stock_actual']; ?></td>
+				<td data-label="<?= __('inventory.table.minStock'); ?>"><?php echo (int)$row['stock_minimo']; ?></td>
+        <td data-label="<?= __('common.actions'); ?>">
                   <form action="/ProyectoPandora/Public/index.php?route=Inventario/SumarStock" method="post" style="display:flex; gap:6px; align-items:center;">
                     <?= Csrf::input(); ?>
                     <input type="hidden" name="id" value="<?php echo (int)$row['id']; ?>" />
@@ -68,5 +68,5 @@
     </div>
   </section>
 </main>
-<script src="/ProyectoPandora/Public/js/modal.js"></script>
+<script src="/ProyectoPandora/Public/js/modal.js"></script>scriptscript
 

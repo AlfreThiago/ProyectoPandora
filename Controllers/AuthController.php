@@ -70,10 +70,10 @@ class AuthController
         exit;
     }
 
-    /* === Flujo: Olvidé mi contraseña === */
+    
     public function Forgot()
     {
-        // Vista con formulario: ingresar email
+        
         include_once __DIR__ . '/../Views/Auth/ForgotPassword.php';
     }
 
@@ -92,8 +92,8 @@ class AuthController
         $db->connectDatabase();
         $userModel = new UserModel($db->getConnection());
         $user = $userModel->findByEmail($email);
-        // No revelar si existe o no (para enumeración); simplemente avanzar
-        // Throttle: máximo 1 solicitud cada 60s por usuario (derivado de reset_expires_at - 15min)
+        
+        
         if ($user && !empty($user['reset_expires_at'])) {
             try {
                 $exp = new DateTime($user['reset_expires_at']);
@@ -106,7 +106,7 @@ class AuthController
                     return;
                 }
             } catch (Exception $e) {
-                // Ignore parse errors and continue
+                
             }
         }
 
@@ -114,7 +114,7 @@ class AuthController
         $expires = (new DateTime('+15 minutes'))->format('Y-m-d H:i:s');
         if ($user) {
             $userModel->setResetCodeByEmail($email, (string)$code, $expires);
-            // Email HTML con formato legible
+            
             $htmlBody = '<p>Usá este código para restablecer tu contraseña:</p>' .
                         '<p style="font-size:28px;letter-spacing:6px;font-weight:700;margin:12px 0;">' . $code . '</p>' .
                         '<p style="color:#666;margin:0;">Vence en 15 minutos.</p>';

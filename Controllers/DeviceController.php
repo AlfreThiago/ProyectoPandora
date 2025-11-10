@@ -31,7 +31,7 @@ class DeviceController
 
     public function listarDevice()
     {
-        // Vista ListaDispositivos no existe; mantenemos compatibilidad redirigiendo.
+        
         $user = Auth::user();
         if (!$user) {
             header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
@@ -112,7 +112,7 @@ class DeviceController
                 return;
             }
 
-            // Manejo de imagen opcional: usar NoFoto.jpg si no se sube
+            
             if (!empty($img_dispositivo)) {
                 $stored = Storage::storeUploadedFile($_FILES['img_dispositivo'], 'device');
                 if (!$stored) {
@@ -299,7 +299,7 @@ class DeviceController
             exit;
         }
 
-        // Enforce POST for destructive action
+        
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
             header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria');
             exit;
@@ -312,7 +312,7 @@ class DeviceController
             exit;
         }
 
-        // Validar existencia
+        
         $categoria = $this->categoryModel->getCategoryById($categoryId);
         if (!$categoria) {
             Flash::error('Categoría no encontrada.');
@@ -320,7 +320,7 @@ class DeviceController
             exit;
         }
 
-        // Prevenir eliminación si hay dispositivos usando esta categoría
+        
         $usos = method_exists($this->deviceModel, 'countDevicesByCategory')
             ? $this->deviceModel->countDevicesByCategory($categoryId)
             : 0;

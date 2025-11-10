@@ -72,7 +72,7 @@
 						?>
 						<div class="asignar-card">
 							<div class="asignar-card__head">
-								<img src="<?php echo htmlspecialchars($avatar); ?>" alt="avatar" class="asignar-avatar" />
+								<img src="<?php echo htmlspecialchars($avatar); ?>" alt="<?= __('profile.avatar.alt'); ?>" class="asignar-avatar" />
 								<div class="asignar-card__title">
 									<div class="asignar-card__row">
 										<h3 class="asignar-card__name"><?php echo htmlspecialchars($tec['name'] ?? ''); ?></h3>
@@ -80,7 +80,7 @@
 									</div>
 									<div class="asignar-card__row" style="gap:6px; align-items:center;">
 										<?php $r = isset($tec['rating_avg']) ? (float)$tec['rating_avg'] : 0; $rc=(int)($tec['rating_count'] ?? 0); if ($rc===0 && $r<=0){ $r=3.0; } $full = (int)floor($r); $half = ($r - $full) >= 0.5; ?>
-										<span title="Promedio: <?php echo round($r,1); ?> (<?php echo $rc; ?> califs)" style="font-size:14px; color:#f5c518;">
+										<span title="<?= __('supervisor.assign.rating.title', ['avg'=>round($r,1), 'count'=>$rc]); ?>" style="font-size:14px; color:#f5c518;">
 											<?php for($i=1;$i<=5;$i++): ?>
 												<?php if ($i <= $full): ?>★<?php elseif ($half && $i==$full+1): ?>☆<?php else: ?>☆<?php endif; ?>
 											<?php endfor; ?>
@@ -119,4 +119,4 @@
 		</div>
 	</section>
 </main>
-<script src="/ProyectoPandora/Public/js/modal.js"></script>
+<script src="/ProyectoPandora/Public/js/modal.js"></script>scriptscript

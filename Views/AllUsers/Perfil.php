@@ -1,7 +1,7 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <main>
   <div class="perfil-wrapper">
-    <!-- HEADER -->
+    
     <div class="perfil-header">
       <form method="POST" action="" enctype="multipart/form-data">
         <?= Csrf::input(); ?>
@@ -14,13 +14,13 @@
       <p><?= htmlspecialchars($rol) ?></p>
     </div>
 
-    <!-- TABS -->
+    
     <div class="perfil-tabs">
       <button class="tab active" data-tab="info"><?= __('profile.tab.info') ?></button>
       <button class="tab" data-tab="ajustes"><?= __('profile.tab.settings') ?></button>
     </div>
 
-    <!-- PERFIL -->
+    
     <div class="perfil-content active" id="info">
       <form method="POST" action="">
         <?= Csrf::input(); ?>
@@ -50,7 +50,7 @@
       </form>
     </div>
 
-    <!-- AJUSTES -->
+    
     <div class="perfil-content" id="ajustes">
       <?php if ($rol === 'Tecnico'): ?>
       <form method="POST" action="">
@@ -67,7 +67,7 @@
       </form>
       <?php endif; ?>
 
-      <!-- Selector de idioma -->
+      
       <?php 
         $current = $_SERVER['REQUEST_URI'] ?? '/ProyectoPandora/Public/index.php?route=Default/Perfil';
         $prev = htmlspecialchars($current, ENT_QUOTES, 'UTF-8');
@@ -85,7 +85,7 @@
         <button type="submit"><?= __('profile.language.change') ?></button>
       </form>
 
-      <!-- TOGGLE GLOBAL -->
+      
       <div class="perfil-campo modo-oscuro-toggle">
         <label for="toggle-darkmode">🌙 <?= __('profile.darkmode.toggle') ?>:</label>
         <label class="switch">

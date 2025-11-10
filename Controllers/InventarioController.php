@@ -25,8 +25,8 @@ class InventarioController
 
     public function listarInventario()
     {
-        // Ruta legacy: no existe vista Inventario/InventarioLista.
-        // Redirigimos al panel vigente de gestión para mantener compatibilidad.
+        
+        
         Auth::checkRole(['Supervisor', 'Tecnico']);
         header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
         exit;
@@ -53,7 +53,7 @@ class InventarioController
             $stock_minimo = (int)($_POST['stock_minimo'] ?? 0);
             $foto_item = 'NoItem.jpg';
 
-            // Validaciones de negocio: no permitir negativos
+            
             $errores = [];
             if (!$categoria_id) { $errores[] = 'Seleccioná una categoría.'; }
             if ($name_item === '') { $errores[] = 'Indicá el nombre del ítem.'; }
@@ -102,7 +102,7 @@ class InventarioController
                     ? "{$user['name']} agregó {$stock_actual} unidad(es) a '{$name_item}' (ID {$existente['id']}). Nuevo stock reflejado en la ficha."
                     : "{$user['name']} dio de alta el ítem '{$name_item}' con stock inicial {$stock_actual} (stock mínimo sugerido {$stock_minimo}).";
                 $this->historialController->agregarAccion($accion, $detalle);
-                // Alerta stock mínimo si el stock queda por debajo del mínimo
+                
                 $finalStock = $existente ? ($existente['stock_actual'] + $stock_actual) : $stock_actual;
                 if ($finalStock < $stock_minimo) {
                     Flash::set('warning', "El ítem '{$name_item}' está por debajo del stock mínimo ({$finalStock} < {$stock_minimo}).");
@@ -155,7 +155,7 @@ class InventarioController
         }
     $item = $this->inventarioModel->obtenerPorId($id);
     $categorias = $this->inventarioModel->listarCategorias();
-    // Vista de actualización de item no existe; redirigimos al panel de gestión con foco por id.
+    
     header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&id=' . urlencode((string)$id));
     exit;
     }
@@ -182,7 +182,7 @@ class InventarioController
                 }
             }
 
-            // Validaciones de negocio
+            
             if (!$id || !$categoria_id || $name_item === '' || $valor_unitario < 0 || $stock_actual < 0 || $stock_minimo < 0) {
                 Flash::error('Datos inválidos para actualizar el ítem.');
                 header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
@@ -211,7 +211,7 @@ class InventarioController
                 exit;
             }
         }
-    // No hay vista dedicada; regresar al panel.
+    
     header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
     exit;
     }
@@ -230,7 +230,7 @@ class InventarioController
                         'Ingreso de stock',
                         "{$user['name']} sumó {$cantidad} unidad(es) al ítem ID {$id}."
                     );
-                    // Obtener datos finales para alerta
+                    
                     $item = $this->inventarioModel->obtenerPorId($id);
                     if ($item) {
                         $name_item = $item['name_item'] ?? 'Ítem';

@@ -2,7 +2,7 @@
 <main>
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
     <div class="Tabla-Contenedor">
-        <!-- Bloque legacy $flash eliminado: usar Header + FlashMessages -->
+        
         <div class="botones">
             <div class="dropdown">
                 <div class="btn-table-acciones">
