@@ -144,3 +144,6 @@ if (isset($routes[$route])) {
     http_response_code(404);
     include __DIR__ . '/../Views/Errors/404.php';
 }
+
+header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+exit;
