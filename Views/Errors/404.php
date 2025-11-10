@@ -12,12 +12,12 @@ http_response_code(404);
  a{color:#61dafb;text-decoration:none;border:1px solid #61dafb;padding:.6rem 1rem;border-radius:6px;margin-top:1rem;display:inline-block}
  a:hover{background:#61dafb;color:#0f0f10}
  .code{font-family:monospace;background:#1e1e22;padding:.3rem .5rem;border-radius:4px}
-</style>stylestyle
+</style>
 </head>
 <body>
  <h1>404</h1>
  <p>La página que buscas no existe o fue movida. Verifica la URL o regresa al inicio.</p>
  <p class="code">Ruta: <?php echo htmlspecialchars($_SERVER['REQUEST_URI'] ?? ''); ?></p>
- <a href="/">Ir al Inicio</a>
+ <a href="/ProyectoPandora/Public/index.php?route=Default/Index">Ir al Inicio</a>
 </body>
 </html>

@@ -22,7 +22,8 @@
         </li>
 
         <?php
-          $estado = strtolower(trim($ticket['estado'] ?? ''));
+          // Usar la variable $t definida arriba para evitar undefined variable
+          $estado = strtolower(trim($t['estado'] ?? ''));
           $estadoMap = [
               'nuevo' => 'estado-nuevo',
               'diagnóstico' => 'estado-diagnostico',
@@ -406,4 +407,4 @@
   </div>
 </main>
 
-<script src="/ProyectoPandora/Public/js/ticket-ver.js" defer></script>scriptscript
+<script src="/ProyectoPandora/Public/js/ticket-ver.js" defer></script>
