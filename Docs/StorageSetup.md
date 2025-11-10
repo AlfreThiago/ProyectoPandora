@@ -38,5 +38,23 @@ Visita como Administrador:
 
 Devolverá un JSON con `base_path`, `base_url` y otros datos útiles para verificar la configuración.
 
+## 6) (Opcional) Redirigir IP raíz a la aplicación
+Si al ingresar solo la IP (http://10.199.45.247/) quieres que cargue la app automáticamente y mantienes
+el proyecto en `/var/www/html/ProyectoPandora`, crea un `index.php` en `/var/www/html` con:
+
+```php
+<?php
+header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+exit;
+```
+
+O ejecuta (como root) el script incluido:
+
+```bash
+sudo bash Scripts/setup_root_redirect.sh
+```
+
+Luego abre: `http://10.199.45.247/` y debe redirigirte a la home.
+
 ## Notas sobre imágenes legadas
 Si en la BD quedaron rutas tipo `C:\...` (Windows), esas imágenes no existen en Ubuntu. Re-subirlas desde la app (ya con storage centralizado) o copiar los archivos al directorio de `uploads` y actualizar la columna en la BD al path relativo (por ejemplo, `device/mi_foto.jpg`).
