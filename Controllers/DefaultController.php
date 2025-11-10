@@ -166,6 +166,26 @@ class DefaultController
         exit;
     }
 
+    // Diagnóstico simple del almacenamiento. Sólo Administrador.
+    public function StorageDiag()
+    {
+        $user = Auth::user();
+        if (!$user || ($user['role'] ?? '') !== 'Administrador') {
+            http_response_code(403);
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(['error' => 'forbidden']);
+            return;
+        }
+        header('Content-Type: application/json; charset=utf-8');
+        try {
+            $diag = \Storage::diagnostics();
+            echo json_encode(['ok' => true, 'storage' => $diag], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        } catch (\Throwable $e) {
+            http_response_code(500);
+            echo json_encode(['ok' => false, 'message' => 'diag-failed']);
+        }
+    }
+
     private function buildTicketScope(?array $user): array
     {
         $role = $user['role'] ?? '';

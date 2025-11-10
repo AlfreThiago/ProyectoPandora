@@ -20,6 +20,10 @@ return [
         'controller' => 'Default',
         'action' => 'HomeMetrics'
     ],
+    'Default/StorageDiag' => [
+        'controller' => 'Default',
+        'action' => 'StorageDiag'
+    ],
     
     
     'Auth/Login' => [
