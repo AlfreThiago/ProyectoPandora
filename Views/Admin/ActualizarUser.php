@@ -5,13 +5,14 @@
         <div class="actualizar-wrapper animated bounceInUp">
             <h3>Actualizar Usuario</h3>
 
-            <!-- Mensajes de validación migrados a Flash::error(); se muestran vía Includes/Header + FlashMessages -->
+            
 
             <?php if (empty($user)): ?>
                 <p>Usuario no encontrado.</p>
             <?php else: ?>
             <?php $isSelf = isset($_SESSION['user']['id']) && isset($user['id']) && ((int)$_SESSION['user']['id'] === (int)$user['id']); ?>
             <form method="POST" action="">
+                <?= Csrf::input(); ?>
                 <input type="hidden" name="from" value="<?= $_GET['from'] ?? 'Admin/ListarUsers' ?>">
                 <input type="hidden" name="id" value="<?= $user['id'] ?? '' ?>">
 
