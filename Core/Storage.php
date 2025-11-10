@@ -224,7 +224,8 @@ class Storage
         }
         // Normalizar rutas Windows absolutas (C:\... o \\servidor\...): usar solo el nombre de archivo
         $norm = str_replace('\\', '/', $storedPath);
-        if (preg_match('/^[A-Za-z]:\//', $norm) || str_starts_with($norm, '//')) {
+    // str_starts_with es PHP >=8; usar strpos para compatibilidad
+    if (preg_match('/^[A-Za-z]:\//', $norm) || strpos($norm, '//') === 0) {
             $base = basename($norm);
             if ($base !== '') {
                 // Buscar primero en uploads/device
@@ -289,7 +290,8 @@ class Storage
         }
         // Normalizar rutas Windows absolutas
         $norm = str_replace('\\', '/', $storedPath);
-        if (preg_match('/^[A-Za-z]:\//', $norm) || str_starts_with($norm, '//')) {
+    // str_starts_with es PHP >=8; usar strpos para compatibilidad
+    if (preg_match('/^[A-Za-z]:\//', $norm) || strpos($norm, '//') === 0) {
             $base = basename($norm);
             if ($base !== '') {
                 $maybe = 'inventory/' . $base;
