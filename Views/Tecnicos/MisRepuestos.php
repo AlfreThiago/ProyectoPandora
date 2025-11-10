@@ -228,4 +228,4 @@
     </section>
 </main>
 
-<script src="/ProyectoPandora/Public/js/tecnicos-mis-repuestos.js" defer></script>scriptscript
+<script src="/ProyectoPandora/Public/js/tecnicos-mis-repuestos.js" defer></script>

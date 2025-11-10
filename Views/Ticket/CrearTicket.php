@@ -87,4 +87,4 @@
     </div>
 </main>
 
-<script src="/ProyectoPandora/Public/js/ticket-crear.js" defer></script>scriptscript
+<script src="/ProyectoPandora/Public/js/ticket-crear.js" defer></script>

@@ -96,5 +96,5 @@
   </div>
 </section>
 
-<script src="/ProyectoPandora/Public/js/tecnicos-mis-reparaciones.js" defer></script>scriptscript
+<script src="/ProyectoPandora/Public/js/tecnicos-mis-reparaciones.js" defer></script>
 </main>

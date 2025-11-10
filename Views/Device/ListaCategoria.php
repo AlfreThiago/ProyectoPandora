@@ -43,5 +43,5 @@
             </tbody>
         </table>
     </div>
-    <script src="/ProyectoPandora/Public/js/Buscador.js"></script>scriptscript
+    <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
 </main>

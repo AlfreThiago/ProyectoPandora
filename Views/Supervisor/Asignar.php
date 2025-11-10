@@ -119,4 +119,4 @@
 		</div>
 	</section>
 </main>
-<script src="/ProyectoPandora/Public/js/modal.js"></script>scriptscript
+<script src="/ProyectoPandora/Public/js/modal.js"></script>

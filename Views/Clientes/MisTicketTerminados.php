@@ -90,4 +90,4 @@
 
 </main>
 
-<script src="/ProyectoPandora/Public/js/clientes-mis-ticket-terminados.js" defer></script>scriptscript
+<script src="/ProyectoPandora/Public/js/clientes-mis-ticket-terminados.js" defer></script>

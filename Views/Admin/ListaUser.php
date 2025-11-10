@@ -61,5 +61,5 @@
     </div>
 </main>
 
-<script src="/ProyectoPandora/Public/js/Tablas.js"></script>scriptscript
+<script src="/ProyectoPandora/Public/js/Tablas.js"></script>
 <script src="/ProyectoPandora/Public/js/DarkMode.js?v=<?= time(); ?>" defer></script>

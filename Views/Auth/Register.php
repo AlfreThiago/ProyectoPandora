@@ -63,4 +63,4 @@
   <span class="sr-only" aria-live="assertive"></span>
 </div>
 
-<script src="/ProyectoPandora/Public/js/validation-register.js"></script>scriptscript
+<script src="/ProyectoPandora/Public/js/validation-register.js"></script>

@@ -38,7 +38,7 @@ if (!empty($filtered)): ?>
         .flash-info{background:#1e3d5a;color:#e6f4ff;border:1px solid #2d5f8f}
         .flash-container .flash-msg{animation:flashFade .4s ease-in}
         @keyframes flashFade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
-        </style>stylestyle
+        </style>
         <script>
         // Auto-hide de mensajes flash (10-15s con dispersión y fade)
         (function(){
@@ -58,5 +58,5 @@ if (!empty($filtered)): ?>
                 }, ttl);
             });
         })();
-        </script>scriptscript
+        </script>
 <?php endif; ?>

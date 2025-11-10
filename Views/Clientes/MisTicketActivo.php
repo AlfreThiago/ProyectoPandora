@@ -118,4 +118,4 @@
   </div>
 </main>
 
-<script src="/ProyectoPandora/Public/js/clientes-mis-ticket-activo.js" defer></script>scriptscript
+<script src="/ProyectoPandora/Public/js/clientes-mis-ticket-activo.js" defer></script>
