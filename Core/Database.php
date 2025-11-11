@@ -33,7 +33,7 @@ class Database
     public function connectDatabase(): void
     {
         // Permitir configuración vía .env, con defaults de respaldo
-        $host = (string)$this->env('DB_HOST', '127.0.0.1');
+        $host = (string)$this->env('DB_HOST', 'localhost');
         $user = (string)$this->env('DB_USER', 'root');
         $password = (string)$this->env('DB_PASS', '');
         $database = (string)$this->env('DB_NAME', 'pandoraDB');

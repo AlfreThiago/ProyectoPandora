@@ -104,7 +104,7 @@ if (isset($routes[$route])) {
     $controllerName = $routes[$route]['controller'];
     $action = $routes[$route]['action'];
 
-    $controllerFile = __DIR__ . "../../Controllers/{$controllerName}Controller.php";
+    $controllerFile = __DIR__ . "/../Controllers/{$controllerName}Controller.php";
 
     if (file_exists($controllerFile)) {
         require_once $controllerFile;
@@ -144,6 +144,3 @@ if (isset($routes[$route])) {
     http_response_code(404);
     include __DIR__ . '/../Views/Errors/404.php';
 }
-
-header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
-exit;
