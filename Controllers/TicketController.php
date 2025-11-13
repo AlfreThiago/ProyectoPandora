@@ -12,6 +12,7 @@ require_once __DIR__ . '/../Models/Notification.php';
 require_once __DIR__ . '/../Core/LogFormatter.php';
 require_once __DIR__ . '/../Core/Date.php';
 require_once __DIR__ . '/../Core/Storage.php';
+require_once __DIR__ . '/../Core/I18n.php';
 
 class TicketController
 {
@@ -32,6 +33,8 @@ class TicketController
         $this->estadoModel = new EstadoTicketModel($db->getConnection());
         $this->historialController = new HistorialController();
     $this->histEstadoModel = new TicketEstadoHistorialModel($db->getConnection());
+        // Inicializar i18n para poder usar __() en todo el controlador
+        I18n::boot();
     }
 
     
@@ -213,19 +216,19 @@ class TicketController
         if ($s === 'nuevo') {
             $mensajeKey = 'ticket.tech.msg.new';
         } elseif ($s === 'en espera') {
-            if (isset($mapId['diagnóstico'])) $acciones[] = ['label'=>__('ticket.tech.action.startDiagnosis'),'estado_id'=>$mapId['diagnóstico'],'comentario'=>__('ticket.tech.action.startDiagnosis')];
-            elseif (isset($mapId['diagnostico'])) $acciones[] = ['label'=>__('ticket.tech.action.startDiagnosis'),'estado_id'=>$mapId['diagnostico'],'comentario'=>__('ticket.tech.action.startDiagnosis')];
+            if (isset($mapId['diagnóstico'])) $acciones[] = ['label'=>I18n::t('ticket.tech.action.startDiagnosis'),'estado_id'=>$mapId['diagnóstico'],'comentario'=>I18n::t('ticket.tech.action.startDiagnosis')];
+            elseif (isset($mapId['diagnostico'])) $acciones[] = ['label'=>I18n::t('ticket.tech.action.startDiagnosis'),'estado_id'=>$mapId['diagnostico'],'comentario'=>I18n::t('ticket.tech.action.startDiagnosis')];
             $mensajeKey = 'ticket.tech.msg.wait';
         } elseif ($s === 'diagnóstico' || $s === 'diagnostico') {
-            if (isset($mapId['presupuesto'])) $acciones[] = ['label'=>__('ticket.tech.action.finishDiagnosis'),'estado_id'=>$mapId['presupuesto'],'comentario'=>__('ticket.tech.action.finishDiagnosis')];
+            if (isset($mapId['presupuesto'])) $acciones[] = ['label'=>I18n::t('ticket.tech.action.finishDiagnosis'),'estado_id'=>$mapId['presupuesto'],'comentario'=>I18n::t('ticket.tech.action.finishDiagnosis')];
             $mensajeKey = 'ticket.tech.msg.diagnosis';
         } elseif ($s === 'presupuesto') {
             $mensajeKey = 'ticket.tech.msg.budget';
         } elseif ($s === 'en reparación' || $s === 'en reparacion') {
-            if (isset($mapId['en pruebas'])) $acciones[] = ['label'=>__('ticket.tech.action.repairFinished'),'estado_id'=>$mapId['en pruebas'],'comentario'=>__('ticket.tech.action.repairFinished')];
+            if (isset($mapId['en pruebas'])) $acciones[] = ['label'=>I18n::t('ticket.tech.action.repairFinished'),'estado_id'=>$mapId['en pruebas'],'comentario'=>I18n::t('ticket.tech.action.repairFinished')];
             $mensajeKey = 'ticket.tech.msg.repair';
         } elseif ($s === 'en pruebas') {
-            if (isset($mapId['listo para retirar'])) $acciones[] = ['label'=>__('ticket.tech.action.testsFinished'),'estado_id'=>$mapId['listo para retirar'],'comentario'=>__('ticket.tech.action.testsFinished')];
+            if (isset($mapId['listo para retirar'])) $acciones[] = ['label'=>I18n::t('ticket.tech.action.testsFinished'),'estado_id'=>$mapId['listo para retirar'],'comentario'=>I18n::t('ticket.tech.action.testsFinished')];
             $mensajeKey = 'ticket.tech.msg.tests';
         } elseif ($s === 'listo para retirar') {
             $mensajeKey = 'ticket.tech.msg.ready';
@@ -233,7 +236,7 @@ class TicketController
             $mensajeKey = 'ticket.tech.msg.closed';
         }
 
-        $mensaje = $mensajeKey ? __($mensajeKey) : '';
+        $mensaje = $mensajeKey ? I18n::t($mensajeKey) : '';
         return [$acciones, $mensaje];
     }
 
@@ -321,7 +324,7 @@ class TicketController
             $hasLaborTech = $laborAmount > 0;
             if ($hasItemsTech && $hasLaborTech) {
                 $tecAcciones = [];
-                $tecMensaje = __('ticket.tech.msg.diagnosisFinishedEditable');
+                $tecMensaje = I18n::t('ticket.tech.msg.diagnosisFinishedEditable');
             }
         }
 
@@ -564,8 +567,8 @@ class TicketController
                 if ($uidRow && isset($uidRow['user_id'])) {
                     I18n::boot();
                     $nm = new NotificationModel($cnn);
-                    $title = __('notification.ticket.stateUpdated.title');
-                    $body  = __('notification.ticket.stateUpdated.body', ['id'=>$ticket_id, 'state'=>($estadoNuevo ?? '#')]);
+                    $title = I18n::t('notification.ticket.stateUpdated.title');
+                    $body  = I18n::t('notification.ticket.stateUpdated.body', ['id'=>$ticket_id, 'state'=>($estadoNuevo ?? '#')]);
                     $nm->create($title, $body, 'USER', null, (int)$uidRow['user_id'], (int)$user['id']);
                 }
             }
@@ -1007,8 +1010,8 @@ class TicketController
                 if ($uidRow && isset($uidRow['user_id'])) {
                     I18n::boot();
                     $nm = new NotificationModel($conn);
-                    $title = __('notification.ticket.budgetPublished.title');
-                    $body  = __('notification.ticket.budgetPublished.body', ['id'=>$ticket_id, 'total'=>LogFormatter::monto((float)$total)]);
+                    $title = I18n::t('notification.ticket.budgetPublished.title');
+                    $body  = I18n::t('notification.ticket.budgetPublished.body', ['id'=>$ticket_id, 'total'=>LogFormatter::monto((float)$total)]);
                     $nm->create($title, $body, 'USER', null, (int)$uidRow['user_id'], (int)$user['id']);
                 }
             }

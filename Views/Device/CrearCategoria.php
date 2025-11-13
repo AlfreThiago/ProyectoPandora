@@ -3,11 +3,11 @@
 <main>
     <div class="content">
 
-    <h1 class="logo"><?= __('device.category.new.title') ?></h1>
+    <h1 class="logo"><?= I18n::t('device.category.new.title') ?></h1>
 
         <div class="categoriadevice-wrapper animated bounceInUp">
             <div class="form-container">
-                <h3><?= __('device.category.new.heading') ?></h3>
+                <h3><?= I18n::t('device.category.new.heading') ?></h3>
 
                 <?php if (isset($_GET['error']) && $_GET['error'] === 'CamposRequeridos'): ?>
                     <div class="alert alert-warning">
@@ -29,14 +29,14 @@
 
                 <form action="" method="POST">
                     <?= Csrf::input(); ?>
-                    <label for="nombre"><?= __('device.category.field.name') ?>:</label>
+                    <label for="nombre"><?= I18n::t('device.category.field.name') ?>:</label>
                     <input type="text" id="nombre" name="nombre" autocomplete="off" required>
 
-                    <button type="submit"><?= __('device.category.button.add') ?></button>
+                    <button type="submit"><?= I18n::t('device.category.button.add') ?></button>
                 </form>
 
                 <a href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria" class="btn-volver">
-                    <?= __('device.category.link.backList') ?>
+                    <?= I18n::t('device.category.link.backList') ?>
                 </a>
             </div>
         </div>

@@ -27,8 +27,11 @@ require_once __DIR__ . '/../Core/Auth.php';
 require_once __DIR__ . '/../Core/Csrf.php';
 require_once __DIR__ . '/../Core/Logger.php';
 require_once __DIR__ . '/../Core/Flash.php';
+require_once __DIR__ . '/../Core/I18n.php';
 Auth::user();
 Csrf::init();
+// Inicializar internacionalización global
+I18n::boot();
 // Unificar mensajes antiguos por query (?success, ?error, etc.) con Flash
 Flash::adoptFromQuery();
 
@@ -75,28 +78,7 @@ if ($guardarPrevUrl && !$isJsonAccept) {
     $_SESSION['prev_url'] = $currentUrl;
 }
 
-// Captura global de errores para 500 y manejo 404
-set_exception_handler(function($e){
-    http_response_code(500);
-    $GLOBALS['__last_exception'] = $e;
-    include __DIR__ . '/../Views/Errors/500.php';
-    Logger::channel('error')->error('Excepción no capturada', [
-        'message' => $e->getMessage(),
-        'file' => $e->getFile(),
-        'line' => $e->getLine()
-    ]);
-});
-set_error_handler(function($severity, $message, $file, $line){
-    http_response_code(500);
-    include __DIR__ . '/../Views/Errors/500.php';
-    Logger::channel('php')->error('Error PHP', [
-        'severity' => $severity,
-        'message' => $message,
-        'file' => $file,
-        'line' => $line
-    ]);
-    return true; // manejado
-});
+// Nota: Se deshabilitó el manejo personalizado de 500 para dejar el error crudo por ahora.
 
 $routes = require __DIR__ . '/../Routes/web.php';
 $route = $_GET['route'] ?? 'Default/Index';

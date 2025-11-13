@@ -5,16 +5,16 @@
         
         <div class="botones">
             <div class="btn-table-acciones">
-                <a class="btn-all btn-acciones-cate" href="/ProyectoPandora/Public/index.php?route=Device/CrearCategoria"><?= __('device.category.list.add') ?></a>
+                <a class="btn-all btn-acciones-cate" href="/ProyectoPandora/Public/index.php?route=Device/CrearCategoria"><?= I18n::t('device.category.list.add') ?></a>
             </div>
         </div>
         <br>
         <table id="userTable">
             <thead>
                 <tr>
-                    <th><?= __('common.id') ?></th>
-                    <th><?= __('device.category.list.col.name') ?></th>
-                    <th><?= __('common.actions') ?></th>
+                    <th><?= I18n::t('common.id') ?></th>
+                    <th><?= I18n::t('device.category.list.col.name') ?></th>
+                    <th><?= I18n::t('common.actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -24,12 +24,12 @@
                         <td data-label="name"><?php echo htmlspecialchars($categoria['name']); ?></td>
                         <td data-label="acciones">
                             <div class='action-buttons'>
-                                <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?= (int)$categoria['id'] ?>" class="btn edit-btn"><?= __('common.update') ?></a>
+                                <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?= (int)$categoria['id'] ?>" class="btn edit-btn"><?= I18n::t('common.update') ?></a>
                                 |
-                                <form method="post" action="/ProyectoPandora/Public/index.php?route=Device/DeleteCategoria" style="display:inline;" data-confirm="<?= __('device.category.confirm.delete') ?>">
+                                <form method="post" action="/ProyectoPandora/Public/index.php?route=Device/DeleteCategoria" style="display:inline;" data-confirm="<?= I18n::t('device.category.confirm.delete') ?>">
                                     <?= Csrf::input(); ?>
                                     <input type="hidden" name="id" value="<?= (int)$categoria['id'] ?>">
-                                    <button class="btn delete-btn"><?= __('common.delete') ?></button>
+                                    <button class="btn delete-btn"><?= I18n::t('common.delete') ?></button>
                                 </form>
                             </div>
                         </td>
@@ -37,7 +37,7 @@
                 <?php endforeach; ?>
                 <?php if (empty($categorias)): ?>
                     <tr>
-                        <td colspan="3"><?= __('device.category.list.empty') ?></td>
+                        <td colspan="3"><?= I18n::t('device.category.list.empty') ?></td>
                     </tr>
                 <?php endif; ?>
             </tbody>

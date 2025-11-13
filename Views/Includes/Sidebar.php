@@ -17,7 +17,7 @@ $locale = I18n::getLocale();
   <link rel="stylesheet" href="/ProyectoPandora/Public/css/AdminDash.css?v=<?= file_exists($adminCssPath) ? filemtime($adminCssPath) : time(); ?>">
   <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
   <link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <title><?= __('app.name') ?></title>
+  <title><?= I18n::t('app.name') ?></title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -56,12 +56,12 @@ $locale = I18n::getLocale();
           <li class="item menu-item-static">
             <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" class="link flex logout-link">
               <i class='bx bx-log-out'></i>
-              <span><?= __('nav.logout') ?></span>
+              <span><?= I18n::t('nav.logout') ?></span>
             </a>
           </li>
         <?php endif; ?>
         <div class="menu_title flex">
-          <span class="title"><?= __('nav.menu') ?></span>
+          <span class="title"><?= I18n::t('nav.menu') ?></span>
           <span class="line"></span>
         </div>
             
@@ -69,7 +69,7 @@ $locale = I18n::getLocale();
         <li class="item menu-item-static">
           <a href="/ProyectoPandora/Public/index.php?route=Default/Index" class="link flex">
             <i class='bx bx-home'></i>
-            <span><?= __('nav.home') ?></span>
+            <span><?= I18n::t('nav.home') ?></span>
           </a>
         </li>
 
@@ -80,25 +80,25 @@ $locale = I18n::getLocale();
             <li class="item menu-item-static">
               <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="link flex">
                 <i class='bx bx-user-circle'></i>
-                <span><?= __('nav.users') ?></span>
+                <span><?= I18n::t('nav.users') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
               <a href="/ProyectoPandora/Public/index.php?route=Historial/ListarHistorial" class="link flex">
                 <i class='bx bx-time'></i>
-                <span><?= __('nav.history') ?></span>
+                <span><?= I18n::t('nav.history') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
               <a href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria" class="link flex">
                 <i class='bx bx-category'></i>
-                <span><?= __('nav.device.categories') ?></span>
+                <span><?= I18n::t('nav.device.categories') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
               <a href="/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias" class="link flex">
                 <i class='bx bx-purchase-tag'></i>
-                <span><?= __('nav.inventory.categories') ?></span>
+                <span><?= I18n::t('nav.inventory.categories') ?></span>
               </a>
             </li>
 
@@ -106,19 +106,19 @@ $locale = I18n::getLocale();
             <li class="item menu-item-static">
               <a href="/ProyectoPandora/Public/index.php?route=Supervisor/Asignar" class="link flex">
                 <i class='bx bx-task'></i>
-                <span><?= __('nav.assign.tech') ?></span>
+                <span><?= I18n::t('nav.assign.tech') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
               <a href="/ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario" class="link flex">
                 <i class='bx bx-package'></i>
-                <span><?= __('nav.inventory.manage') ?></span>
+                <span><?= I18n::t('nav.inventory.manage') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
               <a href="/ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos" class="link flex">
                 <i class='bx bx-dollar'></i>
-                <span><?= __('nav.budgets') ?></span>
+                <span><?= I18n::t('nav.budgets') ?></span>
               </a>
             </li>
 
@@ -126,13 +126,13 @@ $locale = I18n::getLocale();
             <li class="item menu-item-static">
               <a href="/ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones" class="link flex">
                 <i class='bx bx-ticket'></i>
-                <span><?= __('nav.tickets') ?></span>
+                <span><?= I18n::t('nav.tickets') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
               <a href="/ProyectoPandora/Public/index.php?route=Tecnico/MisStats" class="link flex">
                 <i class='bx bx-medal'></i>
-                <span><?= __('nav.my.stats') ?></span>
+                <span><?= I18n::t('nav.my.stats') ?></span>
               </a>
             </li>
 
@@ -140,13 +140,13 @@ $locale = I18n::getLocale();
             <li class="item menu-item-static">
               <a href="index.php?route=Cliente/MisDevice" class="link flex">
                 <i class='bx bx-devices'></i>
-                <span><?= __('nav.my.devices') ?></span>
+                <span><?= I18n::t('nav.my.devices') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
               <a href="index.php?route=Cliente/MisTicketActivo" class="link flex">
                 <i class='bx bx-ticket'></i>
-                <span><?= __('nav.my.tickets') ?></span>
+                <span><?= I18n::t('nav.my.tickets') ?></span>
               </a>
             </li>
           <?php endif; ?>
@@ -154,19 +154,19 @@ $locale = I18n::getLocale();
           <li class="item">
             <a href="/ProyectoPandora/Public/index.php?route=Auth/Login" class="link flex">
               <i class='bx bx-log-in'></i>
-              <span><?= __('nav.login') ?></span>
+              <span><?= I18n::t('nav.login') ?></span>
             </a>
           </li>
           <li class="item">
             <a href="/ProyectoPandora/Public/index.php?route=Register/Register" class="link flex">
               <i class='bx bx-user-plus'></i>
-              <span><?= __('nav.register') ?></span>
+              <span><?= I18n::t('nav.register') ?></span>
             </a>
           </li>
           <li class="item">
             <a href="/ProyectoPandora/Public/index.php?route=Default/Guia" class="link flex">
               <i class='bx bx-help-circle'></i>
-              <span><?= __('nav.guide') ?></span>
+              <span><?= I18n::t('nav.guide') ?></span>
             </a>
           </li>
         <?php endif; ?>

@@ -3,47 +3,47 @@
     <?php
     if (isset($_GET['error']) && $_GET['error'] === 'EmailYaRegistrado'): ?>
         <div style="color: red; margin-bottom: 10px; text-align:center;">
-            <?= __('auth.register.error.email_taken'); ?>
+            <?= I18n::t('auth.register.error.email_taken'); ?>
         </div>
     <?php endif; ?>
     <?php if (isset($_GET['error']) && $_GET['error'] === 'NombreRequerido'): ?>
         <div style="color: red; margin-bottom: 10px; text-align:center;">
-            <?= __('auth.register.error.name_required'); ?>
+            <?= I18n::t('auth.register.error.name_required'); ?>
         </div>
     <?php endif; ?>
     <?php if (isset($_GET['error']) && $_GET['error'] === 'PasswordCorta'): ?>
         <div style="color: red; margin-bottom: 10px; text-align:center;">
-            <?= __('auth.register.error.password_short'); ?>
+            <?= I18n::t('auth.register.error.password_short'); ?>
         </div>
     <?php endif; ?>
     <?php if (isset($_GET['error']) && $_GET['error'] === 'PasswordEspacios'): ?>
         <div style="color: red; margin-bottom: 10px; text-align:center;">
-            <?= __('auth.register.error.password_spaces'); ?>
+            <?= I18n::t('auth.register.error.password_spaces'); ?>
         </div>
     <?php endif; ?>
 
     <div class="form-vertical-wrapper">
         <div class="form-vertical">
-            <h3><?= __('common.add'); ?> <?= __('nav.users'); ?></h3>
+            <h3><?= I18n::t('common.add'); ?> <?= I18n::t('nav.users'); ?></h3>
 
         <form action="/ProyectoPandora/Public/index.php?route=Register/RegisterAdmin" method="POST" novalidate
-            data-msg-name-required="<?= __('auth.register.error.name_required'); ?>"
-            data-msg-email-invalid="<?= __('auth.register.error.email_invalid'); ?>"
-            data-msg-password-short="<?= __('auth.register.error.password_short'); ?>">
+            data-msg-name-required="<?= I18n::t('auth.register.error.name_required'); ?>"
+            data-msg-email-invalid="<?= I18n::t('auth.register.error.email_invalid'); ?>"
+            data-msg-password-short="<?= I18n::t('auth.register.error.password_short'); ?>">
                 <?= Csrf::input(); ?>
                 
                 <p>
-                    <label for="name"><?= __('auth.register.name'); ?>:</label>
+                    <label for="name"><?= I18n::t('auth.register.name'); ?>:</label>
                     <input type="text" name="name" id="name" autocomplete="off" required>
                 </p>
 
                 <p>
-                    <label for="email"><?= __('auth.register.email'); ?>:</label>
+                    <label for="email"><?= I18n::t('auth.register.email'); ?>:</label>
                     <input type="email" name="email" id="email" autocomplete="off" required pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$" title="Ingresá un email válido (debe incluir un dominio con punto, ej: usuario@dominio.com)">
                 </p>
 
                 <p>
-                    <label for="password"><?= __('auth.register.password'); ?>:</label>
+                    <label for="password"><?= I18n::t('auth.register.password'); ?>:</label>
                     <input type="password" name="password" id="password" autocomplete="off" required minlength="8" pattern="^\S{8,}$" title="La contraseña debe tener al menos 8 caracteres y no puede contener espacios">
                 </p>
 
@@ -71,18 +71,18 @@
                         $volverAdminUrl = $prevUrl;
                     }
                 ?>
-                <button type="submit"><?= __('auth.register.submit'); ?></button>
-                <a href="<?= htmlspecialchars($volverAdminUrl, ENT_QUOTES, 'UTF-8') ?>" class="btn-volver"><?= __('common.back'); ?></a>
+                <button type="submit"><?= I18n::t('auth.register.submit'); ?></button>
+                <a href="<?= htmlspecialchars($volverAdminUrl, ENT_QUOTES, 'UTF-8') ?>" class="btn-volver"><?= I18n::t('common.back'); ?></a>
             </form>
         </div>
     </div>
 </main>
 <div id="appValidationModal" class="app-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="appModalTitle" aria-describedby="appModalMsg">
     <div class="app-modal" role="document">
-    <div class="app-modal__header"><span id="appModalTitle"><?= __('auth.register.modal.title'); ?></span></div>
-    <div class="app-modal__body" id="appModalMsg"><?= __('auth.register.modal.message'); ?></div>
+    <div class="app-modal__header"><span id="appModalTitle"><?= I18n::t('auth.register.modal.title'); ?></span></div>
+    <div class="app-modal__body" id="appModalMsg"><?= I18n::t('auth.register.modal.message'); ?></div>
         <div class="app-modal__footer">
-            <button type="button" class="btn-primary" id="appModalOkBtn"><?= __('auth.register.modal.accept'); ?></button>
+            <button type="button" class="btn-primary" id="appModalOkBtn"><?= I18n::t('auth.register.modal.accept'); ?></button>
         </div>
     </div>
     <span class="sr-only" aria-live="assertive"></span>

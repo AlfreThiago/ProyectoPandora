@@ -103,5 +103,43 @@ class Csrf
             exit;
         }
     }
+
+    // Variante opcional: valida sin consumir el token en caso de éxito (útil si combinás con idempotencia)
+    public static function validateDetailedReusable(?string $provided): array
+    {
+        self::init();
+        if ($provided === null) {
+            return ['success' => false, 'reason' => self::REASON_MISSING];
+        }
+        if (!isset($_SESSION[self::SESSION_KEY][$provided])) {
+            return ['success' => false, 'reason' => self::REASON_NOT_FOUND];
+        }
+        $ts = (int)$_SESSION[self::SESSION_KEY][$provided];
+        $age = time() - $ts;
+        if ($age > self::TTL_SECONDS) {
+            // Consumir token igualmente para evitar replay tras TTL
+            unset($_SESSION[self::SESSION_KEY][$provided]);
+            return ['success' => false, 'reason' => self::REASON_EXPIRED, 'age' => $age];
+        }
+        // Reutilizable: no se elimina el token aquí
+        return ['success' => true, 'reason' => null, 'age' => $age];
+    }
+
+    public static function validateOrThrowReusable(): void
+    {
+        $provided = $_POST[self::TOKEN_NAME] ?? ($_SERVER['HTTP_X_CSRF_TOKEN'] ?? null);
+        $res = self::validateDetailedReusable($provided);
+        if (!$res['success']) {
+            http_response_code(403);
+            $reasonMsg = 'CSRF token inválido.';
+            switch ($res['reason']) {
+                case self::REASON_MISSING: $reasonMsg = 'CSRF faltante en el formulario.'; break;
+                case self::REASON_NOT_FOUND: $reasonMsg = 'CSRF no reconocido (probable refresh duplicado o sesión nueva).'; break;
+                case self::REASON_EXPIRED: $reasonMsg = 'CSRF expirado (refresca la página).'; break;
+            }
+            echo $reasonMsg;
+            exit;
+        }
+    }
 }
 ?>

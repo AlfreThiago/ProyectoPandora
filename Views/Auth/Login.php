@@ -5,27 +5,27 @@
         <div class="wrapper-login">
             <form action="/ProyectoPandora/Public/index.php?route=Auth/Login" method="post">
                 <?= Csrf::input(); ?>
-                <h1><?= __('auth.welcome'); ?></h1>
+                <h1><?= I18n::t('auth.welcome'); ?></h1>
 
                 <div class="input-box">
-                    <input type="email" name="email" id="email" placeholder="<?= __('auth.login.email'); ?>" required>
+                    <input type="email" name="email" id="email" placeholder="<?= I18n::t('auth.login.email'); ?>" required>
                     <i class='bx bx-user'></i> 
                 </div>
 
                 <div class="input-box">
-                    <input type="password" name="password" id="password" placeholder="<?= __('auth.login.password'); ?>" autocomplete="off" required>
+                    <input type="password" name="password" id="password" placeholder="<?= I18n::t('auth.login.password'); ?>" autocomplete="off" required>
                     <i class='bx bx-lock'></i> 
                 </div>
 
                 <div class="remember-forgot">
-                    <label><input type="checkbox" name="remember" value="1"> <?= __('auth.login.remember'); ?></label>
-                    <a href="/ProyectoPandora/Public/index.php?route=Auth/Forgot"><?= __('auth.login.forgot'); ?></a>
+                    <label><input type="checkbox" name="remember" value="1"> <?= I18n::t('auth.login.remember'); ?></label>
+                    <a href="/ProyectoPandora/Public/index.php?route=Auth/Forgot"><?= I18n::t('auth.login.forgot'); ?></a>
                 </div>
 
-                <button type="submit" class="btn-login"><?= __('auth.login.submit'); ?></button>
+                <button type="submit" class="btn-login"><?= I18n::t('auth.login.submit'); ?></button>
 
                 <div class="register-link">
-                    <p><?= __('auth.login.no.account'); ?> <a href="/ProyectoPandora/Public/index.php?route=Register/Register"><?= __('auth.login.register.link'); ?></a></p>
+                    <p><?= I18n::t('auth.login.no.account'); ?> <a href="/ProyectoPandora/Public/index.php?route=Register/Register"><?= I18n::t('auth.login.register.link'); ?></a></p>
                 </div>
             </form>
         </div>

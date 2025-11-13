@@ -4,7 +4,7 @@
 
         <div class="contact-wrapper animated bounceInUp">
             <div class="contact-form">
-                <h3><?= __('ticket.edit.title') ?></h3>
+                <h3><?= I18n::t('ticket.edit.title') ?></h3>
 
                 <form id="formActualizar" method="POST" action="/ProyectoPandora/Public/index.php?route=Ticket/Actualizar" enctype="multipart/form-data">
                     <?= Csrf::input(); ?>
@@ -12,19 +12,19 @@
 
                     
                     <p class="block">
-                        <label for="descripcionFalla"><?= __('ticket.common.description') ?></label>
+                        <label for="descripcionFalla"><?= I18n::t('ticket.common.description') ?></label>
                         <textarea name="descripcion_falla" id="descripcionFalla" rows="3" required><?= htmlspecialchars($ticket['descripcion_falla'] ?? $ticket['descripcion'] ?? '') ?></textarea>
                     </p>
 
                     
                     <?php if ($rol === 'Cliente'): ?>
                         <p>
-                            <label for="marca"><?= __('ticket.edit.device.brand') ?></label>
+                            <label for="marca"><?= I18n::t('ticket.edit.device.brand') ?></label>
                             <input type="text" id="marca" name="marca" value="<?= htmlspecialchars($ticket['marca'] ?? '') ?>" required>
                         </p>
 
                         <p>
-                            <label for="modelo"><?= __('ticket.edit.device.model') ?></label>
+                            <label for="modelo"><?= I18n::t('ticket.edit.device.model') ?></label>
                             <input type="text" id="modelo" name="modelo" value="<?= htmlspecialchars($ticket['modelo'] ?? '') ?>" required>
                         </p>
                     <?php endif; ?>
@@ -32,7 +32,7 @@
                     
                     <?php if (in_array($rol, ['Tecnico', 'Supervisor', 'Administrador'])): ?>
                         <p>
-                            <label for="estado_id"><?= __('ticket.edit.state') ?></label>
+                            <label for="estado_id"><?= I18n::t('ticket.edit.state') ?></label>
                             <select id="estado_id" name="estado_id" required>
                                 <?php foreach ($estados as $estado): ?>
                                     <option value="<?= $estado['id'] ?>" <?= ($estado['id'] == ($ticket['estado_id'] ?? '')) ? 'selected' : '' ?>>
@@ -46,9 +46,9 @@
                         
                         <?php if (in_array($rol, ['Supervisor'])): ?>
                         <p>
-                            <label for="tecnico_id"><?= __('ticket.edit.assignTech') ?></label>
+                            <label for="tecnico_id"><?= I18n::t('ticket.edit.assignTech') ?></label>
                             <select id="tecnico_id" name="tecnico_id">
-                                <option value=""><?= __('common.unassignedOption') ?></option>
+                                <option value=""><?= I18n::t('common.unassignedOption') ?></option>
                                 <?php foreach ($tecnicos as $tecnico): ?>
                                     <option value="<?= $tecnico['id'] ?>" <?= ($tecnico['id'] == ($ticket['tecnico_id'] ?? '')) ? 'selected' : '' ?>>
                                         <?= htmlspecialchars($tecnico['name'] ?? '') ?>
@@ -59,26 +59,26 @@
                     <?php endif; ?>
 
                     <fieldset style="margin-top:12px;">
-                        <legend><?= __('ticket.photos.title') ?></legend>
+                        <legend><?= I18n::t('ticket.photos.title') ?></legend>
                         <p class="block">
-                            <label for="fotos"><?= __('ticket.photos.addEdit') ?></label>
+                            <label for="fotos"><?= I18n::t('ticket.photos.addEdit') ?></label>
                             <input type="file" id="fotos" name="fotos[]" accept="image/*" multiple />
                         </p>
                         <?php if (!empty($fotos ?? [])): ?>
                             <div class="galeria-slider" style="display:flex; gap:8px; overflow-x:auto; padding:6px 0;">
                                 <?php foreach (($fotos ?? []) as $src): ?>
-                                    <img src="<?= htmlspecialchars($src) ?>" alt="<?= __('ticket.photos.alt') ?>" style="height:120px; border-radius:8px; object-fit:cover;"/>
+                                    <img src="<?= htmlspecialchars($src) ?>" alt="<?= I18n::t('ticket.photos.alt') ?>" style="height:120px; border-radius:8px; object-fit:cover;"/>
                                 <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
                     </fieldset>
 
                     <p class="block" style="margin-top:12px;">
-                        <button type="submit"><?= __('common.saveChanges') ?></button>
+                        <button type="submit"><?= I18n::t('common.saveChanges') ?></button>
                     </p>
                 </form>
 
-                <a href="<?= $_SESSION['prev_url'] ?? '/ProyectoPandora/Public/index.php?route=Default/Index' ?>" class="btn-volver"><?= __('common.back') ?></a>
+                <a href="<?= $_SESSION['prev_url'] ?? '/ProyectoPandora/Public/index.php?route=Default/Index' ?>" class="btn-volver"><?= I18n::t('common.back') ?></a>
             </div>
         </div>
 

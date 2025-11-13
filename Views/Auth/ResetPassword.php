@@ -5,27 +5,27 @@
     <div class="wrapper-login">
       <form action="/ProyectoPandora/Public/index.php?route=Auth/DoResetPassword" method="post" autocomplete="off">
         <?= Csrf::input(); ?>
-  <h1><?= __('auth.reset.title'); ?></h1>
+  <h1><?= I18n::t('auth.reset.title'); ?></h1>
         <?php if ($ok): ?>
-          <p style="color:#2ecc71"><?= __('auth.reset.verified'); ?></p>
+          <p style="color:#2ecc71"><?= I18n::t('auth.reset.verified'); ?></p>
         <?php endif; ?>
         <?php if ($err === 'invalid'): ?>
-          <p style="color:#ff6b6b"><?= __('auth.reset.error.invalid'); ?></p>
+          <p style="color:#ff6b6b"><?= I18n::t('auth.reset.error.invalid'); ?></p>
         <?php elseif ($err === 'save'): ?>
-          <p style="color:#ff6b6b"><?= __('auth.reset.error.save'); ?></p>
+          <p style="color:#ff6b6b"><?= I18n::t('auth.reset.error.save'); ?></p>
         <?php endif; ?>
         <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>">
         <div class="input-box">
-          <input type="password" name="password" placeholder="<?= __('auth.reset.field.new'); ?>" minlength="6" required>
+          <input type="password" name="password" placeholder="<?= I18n::t('auth.reset.field.new'); ?>" minlength="6" required>
           <i class='bx bx-lock'></i>
         </div>
         <div class="input-box">
-          <input type="password" name="password_confirm" placeholder="<?= __('auth.reset.field.confirm'); ?>" minlength="6" required>
+          <input type="password" name="password_confirm" placeholder="<?= I18n::t('auth.reset.field.confirm'); ?>" minlength="6" required>
           <i class='bx bx-lock-alt'></i>
         </div>
-  <button type="submit" class="btn-login"><?= __('auth.reset.submit'); ?></button>
+  <button type="submit" class="btn-login"><?= I18n::t('auth.reset.submit'); ?></button>
         <div class="register-link">
-          <p><a href="/ProyectoPandora/Public/index.php?route=Auth/Login"><?= __('auth.reset.back.login'); ?></a></p>
+          <p><a href="/ProyectoPandora/Public/index.php?route=Auth/Login"><?= I18n::t('auth.reset.back.login'); ?></a></p>
         </div>
       </form>
     </div>

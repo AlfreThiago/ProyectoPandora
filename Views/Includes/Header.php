@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../../Core/Flash.php';
+require_once __DIR__ . '/../../Core/I18n.php';
+I18n::boot();
 
 $authUser = Auth::user();
 $rol = $authUser['role'] ?? '';
@@ -58,8 +60,8 @@ function headerMeta(string $route, string $rol): array {
 }
 
 list($titleKey, $subtitleKey) = headerMeta($route, $rol);
-$title = __($titleKey);
-$subtitle = __($subtitleKey);
+$title = I18n::t($titleKey);
+$subtitle = I18n::t($subtitleKey);
 ?>
 
 
@@ -69,8 +71,8 @@ $subtitle = __($subtitleKey);
 			<?php if (isHomeRoute($route)): ?>
 				<p class="hero-greet">
 					<?= $authUser 
-						? __('header.greet.hello', ['name' => htmlspecialchars($name)]) 
-						: __('header.greet.welcome', ['app' => __('app.name')]) 
+						? I18n::t('header.greet.hello', ['name' => htmlspecialchars($name)]) 
+						: I18n::t('header.greet.welcome', ['app' => I18n::t('app.name')]) 
 					?>
 				</p>
 			<?php endif; ?>
@@ -119,3 +121,4 @@ $subtitle = __($subtitleKey);
 <script src="/ProyectoPandora/Public/js/DarkMode.js?v=<?= time(); ?>" defer></script>
 <script src="/ProyectoPandora/Public/js/Sidebar.js?v=<?= time(); ?>" defer></script>
 <script src="/ProyectoPandora/Public/js/layout-header.js" defer></script>
+<script src="/ProyectoPandora/Public/js/no-double-submit.js?v=<?= time(); ?>" defer></script>
