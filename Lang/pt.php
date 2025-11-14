@@ -1,10 +1,9 @@
 <?php
 return [
   'app.name' => 'Innovasys',
-  'lang.spanish' => 'Espanhol',
-  'lang.english' => 'Inglês',
+  'lang.spanish' => 'Español',
+  'lang.english' => 'English',
   'lang.portuguese' => 'Português',
-
   'nav.menu' => 'Menu',
   'nav.home' => 'Início',
   'nav.logout' => 'Sair',
@@ -23,13 +22,11 @@ return [
   'nav.register' => 'Registrar',
   'nav.guide' => 'Guia',
   'nav.language' => 'Idioma',
-
   'auth.login.welcome' => 'Bem-vindo à {app}',
   'auth.login.title' => 'Entrar',
   'auth.login.email' => 'Email',
   'auth.login.password' => 'Senha',
   'auth.login.submit' => 'Entrar',
-
   'auth.register.title' => 'Registrar',
   // Cabeçalho
   'header.default.title' => 'Home Portal',
