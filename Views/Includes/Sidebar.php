@@ -1,152 +1,195 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
+require_once __DIR__ . '/../../Core/Auth.php';
+require_once __DIR__ . '/../../Core/I18n.php';
+require_once __DIR__ . '/../../Core/Storage.php';
+I18n::boot();
+$authUser = Auth::user();
+$locale = I18n::getLocale();
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="<?= htmlspecialchars($locale) ?>">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/ProyectoPandora/Public/css/AdminDash.css">
-    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
-    <link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <title>Home Portal</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <?php $adminCssPath = rtrim($_SERVER['DOCUMENT_ROOT'],'/\\') . 'css/AdminDash.css'; ?>
+  <link rel="stylesheet" href="css/AdminDash.css?v=<?= file_exists($adminCssPath) ? filemtime($adminCssPath) : time(); ?>">
+  <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+  <link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <title><?= I18n::t('app.name') ?></title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-    <Aside class="sidebar">
-        <nav class="sidebar">
-            <div>
-                <div class="nav_image flex">
-                    <div class="brand">
-                        <img class="brand-dark" src="/ProyectoPandora/Public/img/Innovasys_V2.png" alt="logo">
-                    </div>
-                </div>
-            </div>
-            <div class="menu-conteiner">
-                <ul class="menu-items">
-                    <div class="menu_title flex">
-                        <span class="title">Menu</span>
-                        <span class="line"></span>
-                    </div>
-                    <li class="item menu-item menu-item-static">
-                        <a href="/ProyectoPandora/Public/index.php?route=Default/Index" class="link flex">
-                            <i class='bx bx-home'></i>
-                            <span>Home</span>
-                        </a>
-                    </li>
-                    <?php if (isset($_SESSION['user'])): ?>
-                        <?php $role = strtolower($_SESSION['user']['role']); ?>
+  
+  <aside class="sidebar">
+    <div class=" flex">
+      <span class="nav_image">
+        <a href="index.php?route=Default/Index" style="cursor: pointer;">
+          <img src="img/Innovasys_V2.png" alt="logo">
+        </a>
+      </span>
+    </div>
 
-                        <?php if ($role === 'administrador'): ?>
-                            <!-- Admin: ve todos los usuarios y opción de añadir -->
-                            <li class="item menu-item menu-item-static">
-                                <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="link flex">
-                                    <i class='bx  bx-iframe'></i>
-                                    <span>Panel Admin</span>
-                                </a>
-                            </li>
-                            <!-- Historial -->
-                            <li class="item">
-                                <a href="/ProyectoPandora/Public/index.php?route=Historial/ListarHistorial" class="link flex">
-                                    <i class='bxr  bx-history'></i>
-                                    <span>Historial</span>
-                                </a>
-                            </li>
-                            <!-- Ticket //NO CORREJIDO 🥺 -->
-                            <!-- <li class="item menu-item menu-item-dropdown">
-                                <a href="#" class="link flex">
-                                    <i class='bx bx-ticket'></i>
-                                    <span>Tickets</span>
-                                    <i class="bx bx-arrow-down-stroke oculto"></i>
-                                </a>
-                                <ul class="sub-menu">
-                                    <li class="sub-menu">
+    <div class="menu_container">
+      <ul class="menu_items">
+        <?php 
+          $name = $authUser['name'] ?? '';
+          $email = $authUser['email'] ?? '';
+          $avatarStored = $authUser['img_perfil'] ?? '';
+          $avatar = \Storage::resolveProfileUrl($avatarStored);
+        ?>
+        <?php if ($authUser): ?>
+          <li class="item user-block">
+            <a href="index.php?route=Default/Perfil" class="user-link flex">
+              <img src="<?= htmlspecialchars($avatar) ?>" alt="Perfil" class="user-avatar"/>
+              <div class="user-info">
+                <span class="user-name"><?= htmlspecialchars($name) ?></span>
+                <small class="user-email"><?= htmlspecialchars($email) ?></small>
+              </div>
+            </a>
+          </li>
+        <?php endif; ?>
 
-                                    <li><a href="/ProyectoPandora/Public/index.php?route=Ticket/Listar" class="sub-menu-link">Lista de Tickets</a></li>
-                                    <li><a href="/ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados" class="sub-menu-link">Lista de Estados</a></li>
-                                </ul>
-                            </li> -->
-                        <?php elseif ($role === 'supervisor'): ?>
-                            <li class="item menu-item-static">
-                                <a href="index.php?route=Dash/PanelSupervisor" class="link flex">
-                                    <i class='bxr  bx-ticket'></i>
-                                    <span>Panel Supervisor</span>
-                                </a>
-                            </li>
-                            <!-- Supervisor: ve técnicos y clientes -->
-                            <!-- <li class="item menu-item-dropdown">
-                                <a href="#" class="link flex">
-                                    <i class='bx bx-user'></i>
-                                    <span>Usuarios</span>
-                                    <i class='bx bx-arrow-down-stroke'></i>
-                                </a>
-                                Submenu de usuarios 
-                                <ul class="sub-menu">
-                                    <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaCliente" class="sub-menu-link">Clientes</a></li>
-                                    <li><a href="/ProyectoPandora/Public/index.php?route=Dash/ListaTecnico" class="sub-menu-link">Técnicos</a></li>
-                                </ul>
-                            </li> -->
-                            <li class="item menu-item menu-item-static">
-                                <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
-                                    <i class='bx  bx-help-circle'></i>
-                                    <span>Guia</span>
-                                    </i>
-                                </a>
-                            </li>
-                        <?php elseif ($role === 'tecnico'): ?>
-                            <!-- Técnico: solo ve Reparaciones y tickets -->
-                            <li class="item menu-item-static">
-                                <a href="index.php?route=Dash/PanelTecnico" class="link flex">
-                                    <i class='bxr  bx-ticket'></i>
-                                    <span>Panel Tecnico</span>
-                                </a>
-                            </li>
-                            <li class="item menu-item menu-item-static">
-                                <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
-                                    <i class='bx  bx-help-circle'></i>
-                                    <span>Guia</span>
-                                    </i>
-                                </a>
-                            </li>
-                        <?php elseif ($role === 'cliente'): ?>
-                            <li class="item menu-item-static">
-                                <a href="index.php?route=Dash/PanelCliente" class="link flex">
-                                    <i class='bx  bx-devices'></i>
-                                    <span>Panel Cliente</span>
-                                </a>
-                            </li>
-                            <li class="item menu-item menu-item-static">
-                                <a href="/ProyectoPandora/Public/index.php?route=Dash/Guia" class="link flex">
-                                    <i class='bx  bx-help-circle'></i>
-                                    <span>Guia</span>
-                                    </i>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                    <?php else: ?>
-                        <!-- No logueado -->
-                        <!-- Iniciar sesion y Registro -->
-                        <li class="item ">
-                            <a href="/ProyectoPandora/Public/index.php?route=Auth/Login" class="link flex">
-                                <i class='bx bx-arrow-out-right-square-half'></i>
-                                <span>Iniciar sesión</span>
-                            </a>
-                        </li>
-                        <li class="item ">
-                            <a href="/ProyectoPandora/Public/index.php?route=Register/Register" class="link flex">
-                                <i class='bxr  bx-form'></i>
-                                <span>Registrarse</span>
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </nav>
-    </aside>
+        <?php if ($authUser): ?>
+          <li class="item menu-item-static">
+            <a href="index.php?route=Auth/Logout" class="link flex logout-link">
+              <i class='bx bx-log-out'></i>
+              <span><?= I18n::t('nav.logout') ?></span>
+            </a>
+          </li>
+        <?php endif; ?>
+        <div class="menu_title flex">
+          <span class="title"><?= I18n::t('nav.menu') ?></span>
+          <span class="line"></span>
+        </div>
+            
+        
+        <li class="item menu-item-static">
+          <a href="index.php?route=Default/Index" class="link flex">
+            <i class='bx bx-home'></i>
+            <span><?= I18n::t('nav.home') ?></span>
+          </a>
+        </li>
+
+        <?php if ($authUser): ?>
+          <?php $role = strtolower($authUser['role'] ?? ''); ?>
+
+          <?php if ($role === 'administrador'): ?>
+            <li class="item menu-item-static">
+              <a href="index.php?route=Admin/ListarUsers" class="link flex">
+                <i class='bx bx-user-circle'></i>
+                <span><?= I18n::t('nav.users') ?></span>
+              </a>
+            </li>
+            <li class="item menu-item-static">
+              <a href="index.php?route=Historial/ListarHistorial" class="link flex">
+                <i class='bx bx-time'></i>
+                <span><?= I18n::t('nav.history') ?></span>
+              </a>
+            </li>
+            <li class="item menu-item-static">
+              <a href="index.php?route=Device/ListarCategoria" class="link flex">
+                <i class='bx bx-category'></i>
+                <span><?= I18n::t('nav.device.categories') ?></span>
+              </a>
+            </li>
+            <li class="item menu-item-static">
+              <a href="index.php?route=Inventario/ListarCategorias" class="link flex">
+                <i class='bx bx-purchase-tag'></i>
+                <span><?= I18n::t('nav.inventory.categories') ?></span>
+              </a>
+            </li>
+
+          <?php elseif ($role === 'supervisor'): ?>
+            <li class="item menu-item-static">
+              <a href="index.php?route=Supervisor/Asignar" class="link flex">
+                <i class='bx bx-task'></i>
+                <span><?= I18n::t('nav.assign.tech') ?></span>
+              </a>
+            </li>
+            <li class="item menu-item-static">
+              <a href="index.php?route=Supervisor/GestionInventario" class="link flex">
+                <i class='bx bx-package'></i>
+                <span><?= I18n::t('nav.inventory.manage') ?></span>
+              </a>
+            </li>
+            <li class="item menu-item-static">
+              <a href="index.php?route=Supervisor/Presupuestos" class="link flex">
+                <i class='bx bx-dollar'></i>
+                <span><?= I18n::t('nav.budgets') ?></span>
+              </a>
+            </li>
+
+          <?php elseif ($role === 'tecnico'): ?>
+            <li class="item menu-item-static">
+              <a href="index.php?route=Tecnico/MisReparaciones" class="link flex">
+                <i class='bx bx-ticket'></i>
+                <span><?= I18n::t('nav.tickets') ?></span>
+              </a>
+            </li>
+            <li class="item menu-item-static">
+              <a href="index.php?route=Tecnico/MisStats" class="link flex">
+                <i class='bx bx-medal'></i>
+                <span><?= I18n::t('nav.my.stats') ?></span>
+              </a>
+            </li>
+
+          <?php elseif ($role === 'cliente'): ?>
+            <li class="item menu-item-static">
+              <a href="index.php?route=Cliente/MisDevice" class="link flex">
+                <i class='bx bx-devices'></i>
+                <span><?= I18n::t('nav.my.devices') ?></span>
+              </a>
+            </li>
+            <li class="item menu-item-static">
+              <a href="index.php?route=Cliente/MisTicketActivo" class="link flex">
+                <i class='bx bx-ticket'></i>
+                <span><?= I18n::t('nav.my.tickets') ?></span>
+              </a>
+            </li>
+          <?php endif; ?>
+        <?php else: ?>
+          <li class="item">
+            <a href="index.php?route=Auth/Login" class="link flex">
+              <i class='bx bx-log-in'></i>
+              <span><?= I18n::t('nav.login') ?></span>
+            </a>
+          </li>
+          <li class="item">
+            <a href="index.php?route=Register/Register" class="link flex">
+              <i class='bx bx-user-plus'></i>
+              <span><?= I18n::t('nav.register') ?></span>
+            </a>
+          </li>
+          <li class="item">
+            <a href="index.php?route=Default/Guia" class="link flex">
+              <i class='bx bx-help-circle'></i>
+              <span><?= I18n::t('nav.guide') ?></span>
+            </a>
+          </li>
+        <?php endif; ?>
+
+        
+      </ul>
+    </div>
+  </aside>
 
 </body>
+
+
+<?php 
+  $authJsPath = rtrim($_SERVER['DOCUMENT_ROOT'],'/\\') . 'js/auth-login.js';
+?>
+<script src="js/auth-login.js?v=<?= file_exists($authJsPath) ? filemtime($authJsPath) : time(); ?>" defer></script>
+<script src="js/notifications.js?v=<?= time(); ?>" defer></script>
+<script src="js/confirm-actions.js?v=<?= time(); ?>" defer></script>
+<script src="js/ticket-actions.js?v=<?= time(); ?>" defer></script>
+<script src="js/list-filters.js?v=<?= time(); ?>" defer></script>
+<script src="js/presupuestos.js?v=<?= time(); ?>" defer></script>
+<script src="js/ticket-sync.js?v=<?= time(); ?>" defer></script>
+<script src="js/DarkMode.js?v=<?= time(); ?>" defer></script>
+<script src="js/Sidebar.js?v=<?= time(); ?>" defer></script>
 
 </html>

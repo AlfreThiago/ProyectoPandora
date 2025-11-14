@@ -1,16 +1,28 @@
-<?php include_once __DIR__ . '/../Includes/Sidebar.php' ?>
+<?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <main>
-    <div class="contenedor">
-        <h2>Actualizar Categoria</h2>
-        <form method="POST" action="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?= $categorias['id'] ?>">
+    <div class="content">
 
-            <input type="hidden" name="id" value="<?= $categorias['id'] ?>">
+        <div class="contact-wrapper animated bounceInUp">
+            <div class="contact-form">
+                <h3><?= I18n::t('device.category.button.update') ?> <?= I18n::t('device.category.title') ?></h3>
 
-            <label>Nombre</label>
-            <input type="text" name="nombre" value="<?= htmlspecialchars($categorias['name']) ?>" required>
+                <form method="POST" action="index.php?route=Device/ActualizarCategoria&id=<?= htmlspecialchars($categoria['id'] ?? '') ?>">
+                    <?= Csrf::input(); ?>
+                    <input type="hidden" name="id" value="<?= htmlspecialchars($categoria['id'] ?? '') ?>">
 
-            <button type="submit">Guardar</button>
-        </form>
+                    <p>
+                        <label for="nombre"><?= I18n::t('device.category.field.name') ?>:</label>
+                        <input type="text" id="nombre" name="nombre" value="<?= htmlspecialchars($categoria['name'] ?? '') ?>" required>
+                    </p>    
+
+                    <p class="block">
+                        <button type="submit"><?= I18n::t('device.category.button.update') ?></button>
+                    </p>
+                </form>
+
+                <a href="index.php?route=Device/ListarCategoria" class="btn-volver"><?= I18n::t('device.category.link.backList') ?></a>
+            </div>
+        </div>
+
     </div>
 </main>
-<?php include_once __DIR__ . '/../Includes/Footer.php' ?>

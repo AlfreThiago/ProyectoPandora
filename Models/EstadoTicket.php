@@ -10,17 +10,14 @@ class EstadoTicketModel
 
     public function obtenerTodos()
     {
-        $stmt = $this->connection->prepare("SELECT * FROM estados_tickets ORDER BY id ASC");
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        
+        return $this->getAllEstados();
     }
 
     public function obtenerPorId($id)
     {
-        $stmt = $this->connection->prepare("SELECT * FROM estados_tickets WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
+        
+        return $this->getById($id);
     }
 
     public function crear($name)
@@ -55,5 +52,15 @@ class EstadoTicketModel
         $stmt = $this->connection->prepare("DELETE FROM estados_tickets WHERE id = ?");
         $stmt->bind_param("i", $id);
         return $stmt->execute();
+    }
+
+    public function getAllEstados()
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM estados_tickets ORDER BY id ASC");
+        if ($stmt) {
+            $stmt->execute();
+            return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        }
+        return [];
     }
 }

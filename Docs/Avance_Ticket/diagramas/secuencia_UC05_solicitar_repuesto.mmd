@@ -1,0 +1,26 @@
+sequenceDiagram
+  autonumber
+  participant T as Técnico
+  participant V as Vista: Views/Tecnicos/MisRepuestos.php
+  participant TC as Controllers/TecnicoController.php
+  participant IT as Models/ItemTicket.php
+  participant I as Models/Inventario.php
+  participant TK as Models/Ticket.php
+  participant DB as MySQL
+
+  T->>V: Ingresa cantidad para item
+  V->>TC: POST /Tecnico/SolicitarRepuesto
+  TC->>TK: getSupervisorId(ticket_id)
+  TK->>DB: SELECT supervisor_id
+  DB-->>TK: supervisor_id
+  TC->>I: obtenerPorId(inventario_id)
+  I->>DB: SELECT precio, stock
+  DB-->>I: datos
+  TC->>I: reducirStock(inventario_id, cantidad)
+  I->>DB: UPDATE inventario SET stock = stock - cantidad
+  DB-->>I: ok
+  TC->>IT: crear(ticket_id, inventario_id, tecnico_id, supervisor_id, cantidad, total)
+  IT->>DB: INSERT item_ticket
+  DB-->>IT: ok
+  TC-->>V: éxito
+  V-->>T: Solicitud confirmada
