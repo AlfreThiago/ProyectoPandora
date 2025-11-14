@@ -29,6 +29,6 @@ $isDebug = defined('APP_DEBUG') ? constant('APP_DEBUG') : ($GLOBALS['APP_DEBUG']
   echo '<pre>' . htmlspecialchars($msg) . '</pre>';
  }
  ?>
- <a href="/ProyectoPandora/Public/index.php?route=Default/Index">Volver al Inicio</a>
+ <a href="index.php?route=Default/Index">Volver al Inicio</a>
 </body>
 </html>

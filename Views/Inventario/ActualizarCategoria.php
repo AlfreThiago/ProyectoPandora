@@ -6,7 +6,7 @@
             <div class="contact-form">
                 <h3><?= I18n::t('inventory.category.update.title') ?? I18n::t('inventory.category.new.heading') ?></h3>
 
-                <form method="POST" action="/ProyectoPandora/Public/index.php?route=Inventario/EditarCategoria&id=<?= htmlspecialchars($categoria['id']) ?>">
+                <form method="POST" action="index.php?route=Inventario/EditarCategoria&id=<?= htmlspecialchars($categoria['id']) ?>">
                     <?= Csrf::input(); ?>
                     <input type="hidden" name="id" value="<?= htmlspecialchars($categoria['id']) ?>">
 
@@ -20,7 +20,7 @@
                     </p>
                 </form>
 
-                <a href="<?= isset($backUrl) ? $backUrl : '/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias' ?>" class="btn-volver"><?= I18n::t('inventory.category.link.back') ?></a>
+                <a href="<?= isset($backUrl) ? $backUrl : 'index.php?route=Inventario/ListarCategorias' ?>" class="btn-volver"><?= I18n::t('inventory.category.link.back') ?></a>
             </div>
         </div>
 

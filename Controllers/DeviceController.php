@@ -34,13 +34,13 @@ class DeviceController
         
         $user = Auth::user();
         if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if (($user['role'] ?? '') === 'Cliente') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice');
+            header('Location: index.php?route=Cliente/MisDevice');
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            header('Location: index.php?route=Default/Index');
         }
         exit;
     }
@@ -49,7 +49,7 @@ class DeviceController
     {
         $user = Auth::user();
         if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         $categorias = $this->categoryModel->getAllCategories();
@@ -60,12 +60,12 @@ class DeviceController
     {
         $user = Auth::user();
         if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if ($user['role'] === 'Administrador') {
             
-            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            header('Location: index.php?route=Default/Index');
             exit;
         }
         $isAdmin = false;
@@ -86,11 +86,11 @@ class DeviceController
     {
         $user = Auth::user();
         if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if ($user['role'] === 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            header('Location: index.php?route=Default/Index');
             exit;
         }
         $isAdmin = false;
@@ -132,7 +132,7 @@ class DeviceController
 
                 
                 Flash::successQuiet('Dispositivo creado.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice');
+                header('Location: index.php?route=Cliente/MisDevice');
                 exit;
             } else {
                 $error = "Error al registrar el dispositivo.";
@@ -147,7 +147,7 @@ class DeviceController
     {
         $user = Auth::user();
         if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
 
@@ -156,17 +156,17 @@ class DeviceController
 
             if (empty($nombreCategoria)) {
                 Flash::error('Campos requeridos faltantes.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Device/CrearCategoria');
+                header('Location: index.php?route=Device/CrearCategoria');
                 exit;
             }
 
             if ($this->categoryModel->createCategory($nombreCategoria)) {
                 Flash::successQuiet('Categoría creada.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria');
+                header('Location: index.php?route=Device/ListarCategoria');
                 exit;
             } else {
                 Flash::error('No se pudo agregar la categoría.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Device/CrearCategoria');
+                header('Location: index.php?route=Device/CrearCategoria');
                 exit;
             }
         }
@@ -177,7 +177,7 @@ class DeviceController
     {
         $user = Auth::user();
         if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         $id = (int) ($_GET['id'] ?? 0);
@@ -192,18 +192,18 @@ class DeviceController
             $nombreCategoria = $_POST['nombre'] ?? '';
             if (empty($nombreCategoria)) {
                 Flash::error('Campos requeridos faltantes.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria');
+                header('Location: index.php?route=Device/ListarCategoria');
                 exit;
             }
 
             if ($this->categoryModel->updateCategory($id, $nombreCategoria)) {
                 Flash::successQuiet('Categoría actualizada.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria');
+                header('Location: index.php?route=Device/ListarCategoria');
                 exit;
             }
 
             Flash::error('No se pudo actualizar la categoría.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria');
+            header('Location: index.php?route=Device/ListarCategoria');
             exit;
         }
         require_once __DIR__ . '/../Views/Device/ActualizarCategoria.php';
@@ -215,7 +215,7 @@ class DeviceController
         Auth::checkRole(['Supervisor', 'Tecnico', 'Cliente']);
         $u = Auth::user();
         if ($u && $u['role'] === 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            header('Location: index.php?route=Default/Index');
             exit;
         }
 
@@ -250,7 +250,7 @@ class DeviceController
                     "Actualización de dispositivo",
                     "{$admin['name']} actualizó el dispositivo #{$id} ({$marca} {$modelo})."
                 );
-                header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice');
+                header('Location: index.php?route=Device/ListarDevice');
                 exit;
             }
             $error = "Todos los campos son obligatorios.";
@@ -263,17 +263,17 @@ class DeviceController
     {
         $user = Auth::user();
         if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if ($user['role'] === 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            header('Location: index.php?route=Default/Index');
             exit;
         }
         $deviceId = $_GET['id'] ?? 0;
         if (!$deviceId) {
             Flash::error('Dispositivo no encontrado.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice');
+            header('Location: index.php?route=Device/ListarDevice');
             exit;
         }
         if ($this->deviceModel->deleteDevice($deviceId)) {
@@ -283,11 +283,11 @@ class DeviceController
             $this->historialController->agregarAccion($accion, $detalle);
 
             Flash::successQuiet('Dispositivo eliminado.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice');
+            header('Location: index.php?route=Device/ListarDevice');
             exit;
         }
     Flash::error('No se pudo eliminar el dispositivo.');
-    header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarDevice');
+    header('Location: index.php?route=Device/ListarDevice');
     exit;
     }
 
@@ -295,20 +295,20 @@ class DeviceController
     {
         $user = Auth::user();
         if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
 
         
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria');
+            header('Location: index.php?route=Device/ListarCategoria');
             exit;
         }
 
         $categoryId = isset($_POST['id']) ? (int)$_POST['id'] : 0;
         if ($categoryId <= 0) {
             Flash::error('Categoría no encontrada.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria');
+            header('Location: index.php?route=Device/ListarCategoria');
             exit;
         }
 
@@ -316,7 +316,7 @@ class DeviceController
         $categoria = $this->categoryModel->getCategoryById($categoryId);
         if (!$categoria) {
             Flash::error('Categoría no encontrada.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria');
+            header('Location: index.php?route=Device/ListarCategoria');
             exit;
         }
 
@@ -326,7 +326,7 @@ class DeviceController
             : 0;
         if ($usos > 0) {
             Flash::error('No se puede eliminar: categoría en uso.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria');
+            header('Location: index.php?route=Device/ListarCategoria');
             exit;
         }
 
@@ -336,11 +336,11 @@ class DeviceController
             $this->historialController->agregarAccion($accion, $detalle);
 
             Flash::successQuiet('Categoría eliminada.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria');
+            header('Location: index.php?route=Device/ListarCategoria');
             exit;
         }
     Flash::error('No se pudo eliminar la categoría.');
-    header('Location: /ProyectoPandora/Public/index.php?route=Device/ListarCategoria');
+    header('Location: index.php?route=Device/ListarCategoria');
     exit;
     }
 
@@ -349,14 +349,14 @@ class DeviceController
         Auth::checkRole('Cliente');
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice');
+            header('Location: index.php?route=Cliente/MisDevice');
             return;
         }
 
         $deviceId = isset($_POST['device_id']) ? (int)$_POST['device_id'] : 0;
         if ($deviceId <= 0) {
             Flash::error('Parámetros inválidos.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice');
+            header('Location: index.php?route=Cliente/MisDevice');
             return;
         }
         $db = new Database();
@@ -373,24 +373,24 @@ class DeviceController
         $ownerId = $deviceModel->getOwnerId($deviceId);
         if ($ownerId !== $userId) {
             Flash::error('No autorizado.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice');
+            header('Location: index.php?route=Cliente/MisDevice');
             return;
         }
 
         if ($ticketModel->hasActiveTicketForDevice($deviceId)) {
             Flash::error('No se puede eliminar: hay un ticket activo.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice');
+            header('Location: index.php?route=Cliente/MisDevice');
             return;
         }
 
         if ($deviceModel->deleteByIdAndUser($deviceId, $userId)) {
             $hist->agregarAccion('Eliminación de dispositivo', "Usuario ID {$userId} eliminó el dispositivo ID {$deviceId}");
             Flash::successQuiet('Dispositivo eliminado.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice');
+            header('Location: index.php?route=Cliente/MisDevice');
             return;
         }
 
         Flash::error('Error al eliminar.');
-        header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice');
+        header('Location: index.php?route=Cliente/MisDevice');
     }
 }

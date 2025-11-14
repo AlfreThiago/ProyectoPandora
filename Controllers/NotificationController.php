@@ -39,14 +39,14 @@ class NotificationController
     {
         Auth::check();
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Notification/Index'); exit;
+            header('Location: index.php?route=Notification/Index'); exit;
         }
         $user = Auth::user();
         $id = (int)($_POST['id'] ?? 0);
         $db = new Database(); $db->connectDatabase();
         $model = new NotificationModel($db->getConnection());
         if ($id) { $model->markRead((int)$user['id'], $id); }
-        header('Location: /ProyectoPandora/Public/index.php?route=Notification/Index');
+        header('Location: index.php?route=Notification/Index');
         exit;
     }
 
@@ -58,7 +58,7 @@ class NotificationController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $token = $_POST['csrf'] ?? '';
             if (!isset($_SESSION['csrf']) || !hash_equals((string)$_SESSION['csrf'], (string)$token)) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Notification/Create&error=csrf');
+                header('Location: index.php?route=Notification/Create&error=csrf');
                 exit;
             }
             $title = trim((string)($_POST['title'] ?? ''));
@@ -75,30 +75,30 @@ class NotificationController
             if ($isSupervisor) {
                 
                 if ($aud === 'ALL') {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Notification/Create&error=aud');
+                    header('Location: index.php?route=Notification/Create&error=aud');
                     exit;
                 }
                 if ($aud === 'ROLE') {
                     if (!in_array((string)$role, ['Cliente','Tecnico'], true)) {
-                        header('Location: /ProyectoPandora/Public/index.php?route=Notification/Create&error=role');
+                        header('Location: index.php?route=Notification/Create&error=role');
                         exit;
                     }
                 } elseif ($aud === 'USER') {
                     if (!$target || $target <= 0) {
-                        header('Location: /ProyectoPandora/Public/index.php?route=Notification/Create&error=target');
+                        header('Location: index.php?route=Notification/Create&error=target');
                         exit;
                     }
                     $um = new UserModel($db->getConnection());
                     $tu = $um->findById($target);
                     $tRole = $tu['role'] ?? '';
                     if (!in_array($tRole, ['Cliente','Tecnico'], true)) {
-                        header('Location: /ProyectoPandora/Public/index.php?route=Notification/Create&error=target_role');
+                        header('Location: index.php?route=Notification/Create&error=target_role');
                         exit;
                     }
                 }
             }
             if ($title === '' || $body === '') {
-                header('Location: /ProyectoPandora/Public/index.php?route=Notification/Create&error=required');
+                header('Location: index.php?route=Notification/Create&error=required');
                 exit;
             }
             $notifId = $model->create($title, $body, $aud, $role, $target, (int)$user['id']);
@@ -110,7 +110,7 @@ class NotificationController
                 if ($aud === 'USER') { $audTxt = 'Usuario ID: '.(int)$target; }
                 $hist->agregarAccion('Notificación creada', ($user['name'] ?? 'Usuario').' creó una notificación ('.$audTxt.") titulada '".$title."'.");
             } catch (\Throwable $e) {  }
-            header('Location: /ProyectoPandora/Public/index.php?route=Notification/Index');
+            header('Location: index.php?route=Notification/Index');
             exit;
         }
         

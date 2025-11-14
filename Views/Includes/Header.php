@@ -93,7 +93,7 @@ $subtitle = I18n::t($subtitleKey);
 			}
 			?>
 			<?php if ($authUser): ?>
-			<a href="/ProyectoPandora/Public/index.php?route=Notification/Index" class="notif-btn-home" title="Notificaciones" id="notifBell">
+			<a href="index.php?route=Notification/Index" class="notif-btn-home" title="Notificaciones" id="notifBell">
 				<i class='bx bx-bell'></i>
 				<span class="notif-badge" id="notifBadge" style="display: <?= ($unread>0?'inline-block':'none') ?>;">
 					<?= (int)$unread ?>
@@ -116,9 +116,9 @@ $subtitle = I18n::t($subtitleKey);
 
 <!-- CSRF para AJAX: meta con token de un solo uso y helper JS global -->
 <meta name="csrf-token" content="<?= htmlspecialchars(Csrf::generate(), ENT_QUOTES, 'UTF-8') ?>">
-<script src="/ProyectoPandora/Public/js/csrf.js?v=<?= time(); ?>" defer></script>
+<script src="js/csrf.js?v=<?= time(); ?>" defer></script>
 
-<script src="/ProyectoPandora/Public/js/DarkMode.js?v=<?= time(); ?>" defer></script>
-<script src="/ProyectoPandora/Public/js/Sidebar.js?v=<?= time(); ?>" defer></script>
-<script src="/ProyectoPandora/Public/js/layout-header.js" defer></script>
-<script src="/ProyectoPandora/Public/js/no-double-submit.js?v=<?= time(); ?>" defer></script>
+<script src="js/DarkMode.js?v=<?= time(); ?>" defer></script>
+<script src="js/Sidebar.js?v=<?= time(); ?>" defer></script>
+<script src="js/layout-header.js" defer></script>
+<script src="js/no-double-submit.js?v=<?= time(); ?>" defer></script>

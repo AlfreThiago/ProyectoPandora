@@ -35,7 +35,7 @@
 
                 <button type="submit">Guardar</button>
             </form>
-            <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="btn-volver">Volver a la lista de Usuarios</a>
+            <a href="index.php?route=Admin/ListarUsers" class="btn-volver">Volver a la lista de Usuarios</a>
             <?php endif; ?>
         </div>
 

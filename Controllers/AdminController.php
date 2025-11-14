@@ -21,7 +21,7 @@ class AdminController
     }
         
         public function PanelAdmin(){
-        header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers');
+        header('Location: index.php?route=Admin/ListarUsers');
         exit;
     }
 
@@ -152,7 +152,7 @@ class AdminController
 
         if (!$userId) {
             
-            header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers');
+            header('Location: index.php?route=Admin/ListarUsers');
             exit;
         }
 
@@ -166,13 +166,13 @@ class AdminController
             
             if ($name === '') {
                 Flash::error('El nombre es obligatorio.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id='.(int)$userId.'&from='.urlencode($from));
+                header('Location: index.php?route=Admin/ActualizarUser&id='.(int)$userId.'&from='.urlencode($from));
                 exit;
             }
             $rolesValidos = ['Cliente','Tecnico','Supervisor','Administrador'];
             if ($role === '' || !in_array($role, $rolesValidos, true)) {
                 Flash::error('Seleccioná un rol válido.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id='.(int)$userId.'&from='.urlencode($from));
+                header('Location: index.php?route=Admin/ActualizarUser&id='.(int)$userId.'&from='.urlencode($from));
                 exit;
             }
 
@@ -204,13 +204,13 @@ class AdminController
                 
                 session_unset();
                 session_destroy();
-                header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login&info=Reinicio%20de%20sesion%20por%20cambio%20de%20rol');
+                header('Location: index.php?route=Auth/Login&info=Reinicio%20de%20sesion%20por%20cambio%20de%20rol');
                 exit;
             }
 
             require_once __DIR__ . '/../Core/Flash.php';
             Flash::successQuiet('Usuario actualizado.');
-            header('Location: /ProyectoPandora/Public/index.php?route=' . $from);
+            header('Location: index.php?route=' . $from);
             exit;
         }
         include_once __DIR__ . '/../Views/Admin/ActualizarUser.php';
@@ -238,7 +238,7 @@ class AdminController
 
     require_once __DIR__ . '/../Core/Flash.php';
     Flash::successQuiet('Usuario creado.');
-    header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers');
+    header('Location: index.php?route=Admin/ListarUsers');
         exit;
     }
 
@@ -335,7 +335,7 @@ class AdminController
             echo '</tr>';
         }
         echo '</tbody></table>';
-        echo '<p><a class="btn btn-outline" href="/ProyectoPandora/Public/index.php?route=Admin/PanelAdmin">Volver al panel</a></p>';
+        echo '<p><a class="btn btn-outline" href="index.php?route=Admin/PanelAdmin">Volver al panel</a></p>';
         echo '</div></main>';
     }
 }

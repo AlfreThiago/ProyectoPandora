@@ -6,7 +6,7 @@
         <div class="botones">
             <div class="dropdown">
                 <div class="btn-table-acciones">
-                    <a class="btn-all btn-acciones-inventario-cate" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearCategoria"><?= I18n::t('inventory.category.list.add') ?></a>
+                    <a class="btn-all btn-acciones-inventario-cate" href="index.php?route=Inventario/MostrarCrearCategoria"><?= I18n::t('inventory.category.list.add') ?></a>
                 </div>
             </div>
         </div>
@@ -27,9 +27,9 @@
                                 <td data-label="name"><?= htmlspecialchars($cat['name']) ?></td>
                                 <td data-label="acciones">
                                     <div class='action-buttons'>
-                                        <a href="/ProyectoPandora/Public/index.php?route=Inventario/ActualizarCategoria&id=<?= $cat['id'] ?>" class="btn edit-btn"><?= I18n::t('common.update') ?></a>
+                                        <a href="index.php?route=Inventario/ActualizarCategoria&id=<?= $cat['id'] ?>" class="btn edit-btn"><?= I18n::t('common.update') ?></a>
                                         |
-                                        <a href="/ProyectoPandora/Public/index.php?route=Inventario/EliminarCategoriaInventario&id=<?= $cat['id'] ?>" class="btn delete-btn" data-confirm="<?= I18n::t('inventory.category.confirm.delete') ?>"><?= I18n::t('common.delete') ?></a>
+                                        <a href="index.php?route=Inventario/EliminarCategoriaInventario&id=<?= $cat['id'] ?>" class="btn delete-btn" data-confirm="<?= I18n::t('inventory.category.confirm.delete') ?>"><?= I18n::t('common.delete') ?></a>
                                     </div>
                                 </td>
                             </tr>

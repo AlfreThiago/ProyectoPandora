@@ -3,7 +3,7 @@
 <main>
   <section class="login-body">
     <div class="wrapper-login">
-      <form action="/ProyectoPandora/Public/index.php?route=Auth/VerifyResetCode" method="post">
+      <form action="index.php?route=Auth/VerifyResetCode" method="post">
         <?= Csrf::input(); ?>
     <h1><?= I18n::t('auth.code.title'); ?></h1>
   <p><?= I18n::t('auth.code.instructions'); ?> <strong><?php echo htmlspecialchars($email); ?></strong></p>
@@ -35,7 +35,7 @@
         </div>
   <button type="submit" class="btn-login"><?= I18n::t('auth.code.submit'); ?></button>
         <div class="register-link">
-          <p><a href="/ProyectoPandora/Public/index.php?route=Auth/Forgot"><?= I18n::t('auth.code.resend.link'); ?></a></p>
+          <p><a href="index.php?route=Auth/Forgot"><?= I18n::t('auth.code.resend.link'); ?></a></p>
         </div>
       </form>
     </div>

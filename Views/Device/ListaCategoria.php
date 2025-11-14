@@ -5,7 +5,7 @@
         
         <div class="botones">
             <div class="btn-table-acciones">
-                <a class="btn-all btn-acciones-cate" href="/ProyectoPandora/Public/index.php?route=Device/CrearCategoria"><?= I18n::t('device.category.list.add') ?></a>
+                <a class="btn-all btn-acciones-cate" href="index.php?route=Device/CrearCategoria"><?= I18n::t('device.category.list.add') ?></a>
             </div>
         </div>
         <br>
@@ -24,9 +24,9 @@
                         <td data-label="name"><?php echo htmlspecialchars($categoria['name']); ?></td>
                         <td data-label="acciones">
                             <div class='action-buttons'>
-                                <a href="/ProyectoPandora/Public/index.php?route=Device/ActualizarCategoria&id=<?= (int)$categoria['id'] ?>" class="btn edit-btn"><?= I18n::t('common.update') ?></a>
+                                <a href="index.php?route=Device/ActualizarCategoria&id=<?= (int)$categoria['id'] ?>" class="btn edit-btn"><?= I18n::t('common.update') ?></a>
                                 |
-                                <form method="post" action="/ProyectoPandora/Public/index.php?route=Device/DeleteCategoria" style="display:inline;" data-confirm="<?= I18n::t('device.category.confirm.delete') ?>">
+                                <form method="post" action="index.php?route=Device/DeleteCategoria" style="display:inline;" data-confirm="<?= I18n::t('device.category.confirm.delete') ?>">
                                     <?= Csrf::input(); ?>
                                     <input type="hidden" name="id" value="<?= (int)$categoria['id'] ?>">
                                     <button class="btn delete-btn"><?= I18n::t('common.delete') ?></button>
@@ -43,5 +43,5 @@
             </tbody>
         </table>
     </div>
-    <script src="/ProyectoPandora/Public/js/Buscador.js"></script>
+    <script src="js/Buscador.js"></script>
 </main>

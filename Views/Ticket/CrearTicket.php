@@ -30,7 +30,7 @@
                     </div>
                 <?php endif; ?>
 
-                <form method="POST" action="/ProyectoPandora/Public/index.php?route=Ticket/Crear">
+                <form method="POST" action="index.php?route=Ticket/Crear">
                     <?= Csrf::input(); ?>
                     <input type="hidden" name="recarga_cliente" value="1">
 
@@ -76,8 +76,8 @@
 
                     <p>
                         <a href="<?php echo (isset($isAdmin) && $isAdmin) 
-                            ? '/ProyectoPandora/Public/index.php?route=Ticket/Listar' 
-                            : '/ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo'; ?>" 
+                            ? 'index.php?route=Ticket/Listar' 
+                            : 'index.php?route=Cliente/MisTicketActivo'; ?>" 
                             class="btn-volver"><?= I18n::t('common.cancel') ?></a>
                     </p>
                 </form>
@@ -87,4 +87,4 @@
     </div>
 </main>
 
-<script src="/ProyectoPandora/Public/js/ticket-crear.js" defer></script>
+<script src="js/ticket-crear.js" defer></script>

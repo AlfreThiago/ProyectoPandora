@@ -5,7 +5,7 @@
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 
 <div class="Contenedor">
-    <form method="get" action="/ProyectoPandora/Public/index.php" class="filtros" style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;align-items:center;">
+    <form method="get" action="index.php" class="filtros" style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;align-items:center;">
         <input type="hidden" name="route" value="Cliente/MisTicketTerminados" />
         <?php $estadoSel = strtolower($_GET['estado'] ?? 'finalizados'); ?>
         <select name="estado" class="asignar-input asignar-input--small">
@@ -17,7 +17,7 @@
         <input name="desde" value="<?= htmlspecialchars($_GET['desde'] ?? '') ?>" class="asignar-input asignar-input--small" type="date" />
         <input name="hasta" value="<?= htmlspecialchars($_GET['hasta'] ?? '') ?>" class="asignar-input asignar-input--small" type="date" />
         <button class="btn btn-primary" type="submit">Filtrar</button>
-        <a class="btn btn-outline" href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketTerminados">Limpiar</a>
+        <a class="btn btn-outline" href="index.php?route=Cliente/MisTicketTerminados">Limpiar</a>
     </form>
 
     <section class="section-mis-tickets">
@@ -74,7 +74,7 @@
                             </div>
 
                             <div class="card-actions">
-                                <a href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?= (int)$ticket['id'] ?>" class="btn btn-primary">Ver detalle</a>
+                                <a href="index.php?route=Ticket/Ver&id=<?= (int)$ticket['id'] ?>" class="btn btn-primary">Ver detalle</a>
                             </div>
                         </article>
                     <?php endforeach; ?>
@@ -90,4 +90,4 @@
 
 </main>
 
-<script src="/ProyectoPandora/Public/js/clientes-mis-ticket-terminados.js" defer></script>
+<script src="js/clientes-mis-ticket-terminados.js" defer></script>

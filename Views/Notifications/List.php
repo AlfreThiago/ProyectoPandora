@@ -8,7 +8,7 @@
         $role = strtolower($authUser['role'] ?? '');
         if ($role === 'administrador' || $role === 'supervisor'):
       ?>
-        <a class="btn" href="/ProyectoPandora/Public/index.php?route=Notification/Create">Nueva</a>
+        <a class="btn" href="index.php?route=Notification/Create">Nueva</a>
       <?php endif; ?>
     </div>
     <div class="panel-body">
@@ -29,7 +29,7 @@
                 </span>
               </div>
               <?php if (!$n['is_read']): ?>
-                <form method="POST" action="/ProyectoPandora/Public/index.php?route=Notification/MarkRead" class="js-mark-read" style="display:inline;">
+                <form method="POST" action="index.php?route=Notification/MarkRead" class="js-mark-read" style="display:inline;">
                   <?= Csrf::input(); ?>
                   <input type="hidden" name="id" value="<?= (int)$n['id'] ?>">
                   <button class="btn small" type="submit">Marcar como leída</button>

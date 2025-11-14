@@ -18,6 +18,6 @@ http_response_code(404);
  <h1>404</h1>
  <p>La página que buscas no existe o fue movida. Verifica la URL o regresa al inicio.</p>
  <p class="code">Ruta: <?php echo htmlspecialchars($_SERVER['REQUEST_URI'] ?? ''); ?></p>
- <a href="/ProyectoPandora/Public/index.php?route=Default/Index">Ir al Inicio</a>
+ <a href="index.php?route=Default/Index">Ir al Inicio</a>
 </body>
 </html>

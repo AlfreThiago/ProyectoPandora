@@ -10,7 +10,7 @@
                 </div>
             <?php endif; ?>
 
-            <form action="/ProyectoPandora/Public/index.php?route=Inventario/CrearCategoria" method="POST">
+            <form action="index.php?route=Inventario/CrearCategoria" method="POST">
                 <?= Csrf::input(); ?>
                 <label for="name"><?= I18n::t('inventory.category.field.name') ?>:</label>
                 <input type="text" id="name" name="name" required>
@@ -18,7 +18,7 @@
                 <button type="submit"><?= I18n::t('inventory.category.button.add') ?></button>
             </form>
             <?php
-                $fallbackUrl = '/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias';
+                $fallbackUrl = 'index.php?route=Inventario/ListarCategorias';
                 $prevUrl = $_SESSION['prev_url'] ?? '';
                 $prevUrlLower = strtolower($prevUrl);
                 if (

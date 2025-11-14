@@ -6,7 +6,7 @@
 
     <?php  ?>
 
-    <form method="get" action="/ProyectoPandora/Public/index.php" class="filtros" style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;align-items:center;">
+    <form method="get" action="index.php" class="filtros" style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;align-items:center;">
       <input type="hidden" name="route" value="Cliente/MisTicketActivo" />
       <?php $estadoSel = strtolower($_GET['estado'] ?? 'activos'); ?>
 
@@ -21,7 +21,7 @@
       <input name="hasta" value="<?= htmlspecialchars($_GET['hasta'] ?? '') ?>" class="asignar-input asignar-input--small" type="date" />
 
       <button class="btn btn-primary" type="submit">Filtrar</button>
-      <a class="btn btn-outline" href="/ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo">Limpiar</a>
+      <a class="btn btn-outline" href="index.php?route=Cliente/MisTicketActivo">Limpiar</a>
     </form>
 
     <section class="section-mis-tickets">
@@ -93,10 +93,10 @@
 
 
                   <div class="card-actions">
-                    <a href="/ProyectoPandora/Public/index.php?route=Ticket/Ver&id=<?= (int)$ticket['id'] ?>" class="btn btn-primary">Ver detalle</a>
-                    <a href="/ProyectoPandora/Public/index.php?route=Ticket/Editar&id=<?= (int)$ticket['id'] ?>" class="btn btn-edit">Editar</a>
+                    <a href="index.php?route=Ticket/Ver&id=<?= (int)$ticket['id'] ?>" class="btn btn-primary">Ver detalle</a>
+                    <a href="index.php?route=Ticket/Editar&id=<?= (int)$ticket['id'] ?>" class="btn btn-edit">Editar</a>
                       <?php if (!empty($ticket['puedeEliminar'])): ?>
-                        <a href="/ProyectoPandora/Public/index.php?route=Ticket/Eliminar&id=<?= (int)$ticket['id'] ?>" class="btn delete-btn" data-confirm="¿Seguro que deseas eliminar este ticket? Esta acción no se puede deshacer.">Eliminar</a>
+                        <a href="index.php?route=Ticket/Eliminar&id=<?= (int)$ticket['id'] ?>" class="btn delete-btn" data-confirm="¿Seguro que deseas eliminar este ticket? Esta acción no se puede deshacer.">Eliminar</a>
                       <?php endif; ?>
                   </div>
                 </div>
@@ -106,7 +106,7 @@
           <?php else: ?>
             <div class="no-device">
               <p>No tienes tickets activos.</p>
-              <a href="/ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear" class="btn-float-add btn-center" title="Agregar ticket">+</a>
+              <a href="index.php?route=Ticket/mostrarCrear" class="btn-float-add btn-center" title="Agregar ticket">+</a>
             </div>
           <?php endif; ?>
         </div>
@@ -114,8 +114,8 @@
       </div>
     </section>
 
-    <a href="/ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear" class="btn-float-add" id="btnAddTicket" title="Agregar ticket">+</a>
+    <a href="index.php?route=Ticket/mostrarCrear" class="btn-float-add" id="btnAddTicket" title="Agregar ticket">+</a>
   </div>
 </main>
 
-<script src="/ProyectoPandora/Public/js/clientes-mis-ticket-activo.js" defer></script>
+<script src="js/clientes-mis-ticket-activo.js" defer></script>

@@ -32,7 +32,7 @@ class ClienteController {
             }
             if ($imgSrc === $imgDevice) {
                 $legacyDir = __DIR__ . '/../Public/img/imgTickets/' . (int)($ticket['id'] ?? 0) . '/';
-                $legacyUrlBase = '/ProyectoPandora/Public/img/imgTickets/' . (int)($ticket['id'] ?? 0) . '/';
+                $legacyUrlBase = 'img/imgTickets/' . (int)($ticket['id'] ?? 0) . '/';
                 if (is_dir($legacyDir)) {
                     $files = @scandir($legacyDir) ?: [];
                     $latestFile = '';
@@ -116,14 +116,14 @@ class ClienteController {
     }
     
     public function PanelCliente(){
-        header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisDevice');
+        header('Location: index.php?route=Cliente/MisDevice');
         exit;
     }
 
     public function MisDevice() {
         $user = Auth::user();
         if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
 
@@ -153,13 +153,13 @@ class ClienteController {
 
     
     public function MisTicket() {
-        header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo');
+        header('Location: index.php?route=Cliente/MisTicketActivo');
         exit;
     }
 
     public function MisTicketActivo() {
         $user = Auth::user();
-        if (!$user) { header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login'); exit; }
+        if (!$user) { header('Location: index.php?route=Auth/Login'); exit; }
         $db = new Database(); $db->connectDatabase(); $ticketModel = new Ticket($db->getConnection());
         
         $estado = strtolower(trim($_GET['estado'] ?? 'activos'));
@@ -171,7 +171,7 @@ class ClienteController {
         } elseif ($estado === 'finalizados') {
             
             $qs = $_GET; $qs['route'] = 'Cliente/MisTicketTerminados';
-            $url = '/ProyectoPandora/Public/index.php?' . http_build_query($qs);
+            $url = 'index.php?' . http_build_query($qs);
             header('Location: ' . $url);
             exit;
         } else {
@@ -188,7 +188,7 @@ class ClienteController {
 
     public function MisTicketTerminados() {
         $user = Auth::user();
-        if (!$user) { header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login'); exit; }
+        if (!$user) { header('Location: index.php?route=Auth/Login'); exit; }
         $db = new Database(); $db->connectDatabase(); $ticketModel = new Ticket($db->getConnection());
         
         $estado = strtolower(trim($_GET['estado'] ?? 'finalizados'));
@@ -199,7 +199,7 @@ class ClienteController {
             );
         } elseif ($estado === 'activos') {
             $qs = $_GET; $qs['route'] = 'Cliente/MisTicketActivo';
-            $url = '/ProyectoPandora/Public/index.php?' . http_build_query($qs);
+            $url = 'index.php?' . http_build_query($qs);
             header('Location: ' . $url);
             exit;
         } else {

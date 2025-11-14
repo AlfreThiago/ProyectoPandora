@@ -5,7 +5,7 @@
 <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 <div class="Contenedor">
     <section class="section-presupuestos">
-        <form method="get" action="/ProyectoPandora/Public/index.php" class="presu-filtros">
+        <form method="get" action="index.php" class="presu-filtros">
             <input type="hidden" name="route" value="Supervisor/Presupuestos">
             <label for="ticket_id"><?= I18n::t('supervisor.budgets.filter.ticketId'); ?></label>
             <input type="number" name="ticket_id" id="ticket_id" min="1" 
@@ -19,7 +19,7 @@
                 <option value="finalizados" <?= $cierreSel==='finalizados'?'selected':'' ?>><?= I18n::t('supervisor.budgets.filter.closure.closed'); ?></option>
             </select>
             <button class="btn btn-outline" type="submit"><?= I18n::t('supervisor.budgets.actions.filter'); ?></button>
-            <a href="/ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos" class="btn btn-outline"><?= I18n::t('supervisor.budgets.actions.clear'); ?></a>
+            <a href="index.php?route=Supervisor/Presupuestos" class="btn btn-outline"><?= I18n::t('supervisor.budgets.actions.clear'); ?></a>
         </form>
 
         <?php if (empty($presupuestos)): ?>
@@ -120,7 +120,7 @@
                             $postAprobacion = in_array($sEstado, ['en reparación','en reparacion','en pruebas','listo para retirar','finalizado','cancelado'], true);
                         ?>
                         <?php if (!$postAprobacion): ?>
-                                                        <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/PublicarPresupuesto" 
+                                                        <form method="post" action="index.php?route=Ticket/PublicarPresupuesto" 
                                   style="margin-top:8px;display:flex;gap:8px;align-items:center;">
                                                                 <?= Csrf::input(); ?>
                                 <input type="hidden" name="ticket_id" value="<?= (int)$t['id'] ?>"/>
@@ -140,14 +140,14 @@
                         ?>
                         <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
                             <?php if ($puedeListo): ?>
-                            <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/MarcarListoParaRetirar">
+                            <form method="post" action="index.php?route=Ticket/MarcarListoParaRetirar">
                                 <?= Csrf::input(); ?>
                                 <input type="hidden" name="ticket_id" value="<?= (int)$t['id'] ?>" />
                                 <button class="btn btn-primary" type="submit"><?= I18n::t('ticket.supervisor.markReadyForPickup'); ?></button>
                             </form>
                             <?php endif; ?>
                             <?php if ($puedePagar): ?>
-                            <form method="post" action="/ProyectoPandora/Public/index.php?route=Ticket/MarcarPagadoYFinalizar">
+                            <form method="post" action="index.php?route=Ticket/MarcarPagadoYFinalizar">
                                 <?= Csrf::input(); ?>
                                 <input type="hidden" name="ticket_id" value="<?= (int)$t['id'] ?>" />
                                 <button class="btn btn-success" type="submit"><?= I18n::t('ticket.supervisor.registerPaymentAndFinish'); ?></button>

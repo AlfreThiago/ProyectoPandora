@@ -11,7 +11,7 @@ class LanguageController {
         if ($prev && strpos($prev, '/ProyectoPandora/') === 0) {
             header('Location: ' . $prev);
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            header('Location: index.php?route=Default/Index');
         }
         exit;
     }

@@ -3,7 +3,7 @@
 <main>
   <section class="login-body">
     <div class="wrapper-login">
-  <form action="/ProyectoPandora/Public/index.php?route=Register/Register" method="POST" novalidate
+  <form action="index.php?route=Register/Register" method="POST" novalidate
     data-msg-name-required="<?= I18n::t('auth.register.error.name_required'); ?>"
     data-msg-email-invalid="<?= I18n::t('auth.register.error.email_invalid'); ?>"
     data-msg-password-short="<?= I18n::t('auth.register.error.password_short'); ?>">
@@ -44,8 +44,8 @@
   <button type="submit" class="btn-login"><?= I18n::t('auth.register.submit'); ?></button>
 
         <div class="register-link">
-          <p><?= I18n::t('auth.register.have.account'); ?> <a href="/ProyectoPandora/Public/index.php?route=Auth/Login"><?= I18n::t('auth.register.login.link'); ?></a></p>
-          <p><a href="/ProyectoPandora/Public/index.php?route=Default/Index"><?= I18n::t('auth.register.back.home'); ?></a></p>
+          <p><?= I18n::t('auth.register.have.account'); ?> <a href="index.php?route=Auth/Login"><?= I18n::t('auth.register.login.link'); ?></a></p>
+          <p><a href="index.php?route=Default/Index"><?= I18n::t('auth.register.back.home'); ?></a></p>
         </div>
       </form>
     </div>
@@ -63,4 +63,4 @@
   <span class="sr-only" aria-live="assertive"></span>
 </div>
 
-<script src="/ProyectoPandora/Public/js/validation-register.js"></script>
+<script src="js/validation-register.js"></script>

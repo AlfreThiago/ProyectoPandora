@@ -3,7 +3,7 @@
   function updateBellCount(){
     const badge = document.getElementById('notifBadge');
     if (!badge) return;
-    fetch('/ProyectoPandora/Public/index.php?route=Notification/Count', { cache: 'no-store' })
+    fetch('index.php?route=Notification/Count', { cache: 'no-store' })
       .then(r => r.ok ? r.text() : '0')
       .then(txt => {
         const n = parseInt((txt||'0').trim(), 10);

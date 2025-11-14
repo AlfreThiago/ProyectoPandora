@@ -35,7 +35,7 @@
                     <button type="submit"><?= I18n::t('device.category.button.add') ?></button>
                 </form>
 
-                <a href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria" class="btn-volver">
+                <a href="index.php?route=Device/ListarCategoria" class="btn-volver">
                     <?= I18n::t('device.category.link.backList') ?>
                 </a>
             </div>

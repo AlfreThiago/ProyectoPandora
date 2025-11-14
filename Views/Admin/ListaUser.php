@@ -10,15 +10,15 @@
                 </label>
                 <input type="checkbox" id="menu-toggle" />
                 <div class="dropdown-menu">
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers">Todos</a>
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Admin/ListarClientes">Clientes</a>
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Admin/ListarAdmins">Admin</a>
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Admin/ListarSupervisores">Supervisor</a>
-                    <a class="btn-table" href="/ProyectoPandora/Public/index.php?route=Admin/ListarTecnicos">Técnico</a>
+                    <a class="btn-table" href="index.php?route=Admin/ListarUsers">Todos</a>
+                    <a class="btn-table" href="index.php?route=Admin/ListarClientes">Clientes</a>
+                    <a class="btn-table" href="index.php?route=Admin/ListarAdmins">Admin</a>
+                    <a class="btn-table" href="index.php?route=Admin/ListarSupervisores">Supervisor</a>
+                    <a class="btn-table" href="index.php?route=Admin/ListarTecnicos">Técnico</a>
                 </div>
             </div>
             <div class="btn-table-acciones">
-                <a class="btn-acciones-user" href="/ProyectoPandora/Public/index.php?route=Register/RegisterAdmin">Añadir Usuario</a>
+                <a class="btn-acciones-user" href="index.php?route=Register/RegisterAdmin">Añadir Usuario</a>
             </div>
         </div>
 
@@ -46,8 +46,8 @@
                         echo "<td data-label='Fecha de creación'><span class='created-at'>🕒 <time title='" . htmlspecialchars($user['created_exact'] ?? '') . "'>" . htmlspecialchars($user['created_human'] ?? '') . "</time></span></td>";
                         echo "<td data-label='Acciones'>";
                         echo "<div class='action-buttons'>";
-                        echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/ActualizarUser&id=" . htmlspecialchars($user['id']) . "&from=Admin/ListarUsers' class='btn edit-btn'>Actualizar</a> | ";
-                        echo "<a href='/ProyectoPandora/Public/index.php?route=Admin/DeleteUser&id=" . htmlspecialchars($user['id']) . "' class='btn delete-btn' data-confirm='¿Eliminar este usuario?'>Eliminar</a>";
+                        echo "<a href='index.php?route=Admin/ActualizarUser&id=" . htmlspecialchars($user['id']) . "&from=Admin/ListarUsers' class='btn edit-btn'>Actualizar</a> | ";
+                        echo "<a href='index.php?route=Admin/DeleteUser&id=" . htmlspecialchars($user['id']) . "' class='btn delete-btn' data-confirm='¿Eliminar este usuario?'>Eliminar</a>";
                         echo "</div>";
                         echo "</td>";
                         echo "</tr>";
@@ -61,5 +61,5 @@
     </div>
 </main>
 
-<script src="/ProyectoPandora/Public/js/Tablas.js"></script>
-<script src="/ProyectoPandora/Public/js/DarkMode.js?v=<?= time(); ?>" defer></script>
+<script src="js/Tablas.js"></script>
+<script src="js/DarkMode.js?v=<?= time(); ?>" defer></script>

@@ -74,4 +74,4 @@
   </div>
 </main>
 
-<script src="/ProyectoPandora/Public/js/notifications-create.js?v=<?= time(); ?>" defer></script>
+<script src="js/notifications-create.js?v=<?= time(); ?>" defer></script>

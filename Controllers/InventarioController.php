@@ -28,7 +28,7 @@ class InventarioController
         
         
         Auth::checkRole(['Supervisor', 'Tecnico']);
-        header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+        header('Location: index.php?route=Supervisor/GestionInventario');
         exit;
     }
 
@@ -112,11 +112,11 @@ class InventarioController
                     Flash::set('info', "El ítem '{$name_item}' está cerca del stock mínimo ({$finalStock} / {$stock_minimo}). Considera reponer pronto.");
                 }
                 Flash::successQuiet('Inventario actualizado.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+                header('Location: index.php?route=Supervisor/GestionInventario');
                 exit;
             } else {
                 Flash::error('No se pudo crear o actualizar el ítem de inventario.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/CrearItem');
+                header('Location: index.php?route=Inventario/CrearItem');
                 exit;
             }
         }
@@ -135,11 +135,11 @@ class InventarioController
                 "{$user['name']} eliminó el ítem con ID {$id} del inventario."
             );
             Flash::successQuiet('Ítem eliminado.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+            header('Location: index.php?route=Supervisor/GestionInventario');
             exit;
         } else {
             Flash::error('No se pudo eliminar el ítem.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+            header('Location: index.php?route=Supervisor/GestionInventario');
             exit;
         }
     }
@@ -150,13 +150,13 @@ class InventarioController
         Auth::checkRole(['Supervisor']);
         $id = $_GET['id'] ?? null;
         if (!$id) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&error=1');
+            header('Location: index.php?route=Supervisor/GestionInventario&error=1');
             exit;
         }
     $item = $this->inventarioModel->obtenerPorId($id);
     $categorias = $this->inventarioModel->listarCategorias();
     
-    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&id=' . urlencode((string)$id));
+    header('Location: index.php?route=Supervisor/GestionInventario&id=' . urlencode((string)$id));
     exit;
     }
 
@@ -185,7 +185,7 @@ class InventarioController
             
             if (!$id || !$categoria_id || $name_item === '' || $valor_unitario < 0 || $stock_actual < 0 || $stock_minimo < 0) {
                 Flash::error('Datos inválidos para actualizar el ítem.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+                header('Location: index.php?route=Supervisor/GestionInventario');
                 exit;
             }
 
@@ -203,16 +203,16 @@ class InventarioController
                     Flash::set('info', "El ítem '{$name_item}' está cerca del stock mínimo ({$stock_actual} / {$stock_minimo}). Considera reponer pronto.");
                 }
                 Flash::successQuiet('Stock sumado correctamente.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+                header('Location: index.php?route=Supervisor/GestionInventario');
                 exit;
             } else {
                 Flash::error('No se pudo guardar los cambios del ítem.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+                header('Location: index.php?route=Supervisor/GestionInventario');
                 exit;
             }
         }
     
-    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+    header('Location: index.php?route=Supervisor/GestionInventario');
     exit;
     }
 
@@ -245,13 +245,13 @@ class InventarioController
                         }
                     }
                     Flash::successQuiet('Item actualizado.');
-                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+                    header('Location: index.php?route=Supervisor/GestionInventario');
                     exit;
                 }
             }
         }
         Flash::error('Operación inválida para sumar stock.');
-        header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+        header('Location: index.php?route=Supervisor/GestionInventario');
         exit;
     }
     
@@ -284,20 +284,20 @@ class InventarioController
                 
                 if (($user['role'] ?? '') === 'Supervisor') {
                     Flash::successQuiet('Item actualizado.');
-                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+                    header('Location: index.php?route=Supervisor/GestionInventario');
                 } else {
                     Flash::successQuiet('Categoría creada.');
-                    header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias');
+                    header('Location: index.php?route=Inventario/ListarCategorias');
                 }
                 exit;
             } else {
                 $user = Auth::user();
                 if (($user['role'] ?? '') === 'Supervisor') {
                     Flash::error('No se pudo crear la categoría.');
-                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+                    header('Location: index.php?route=Supervisor/GestionInventario');
                 } else {
                     Flash::error('No se pudo crear la categoría.');
-                    header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias');
+                    header('Location: index.php?route=Inventario/ListarCategorias');
                 }
                 exit;
             }
@@ -317,20 +317,20 @@ class InventarioController
             $this->historialController->agregarAccion($accion, $detalle);
             if (($user['role'] ?? '') === 'Supervisor') {
                 Flash::successQuiet('Categoría actualizada.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+                header('Location: index.php?route=Supervisor/GestionInventario');
             } else {
                 Flash::successQuiet('Categoría actualizada.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias');
+                header('Location: index.php?route=Inventario/ListarCategorias');
             }
             exit;
         } else {
             $user = Auth::user();
             if (($user['role'] ?? '') === 'Supervisor') {
                 Flash::error('No se pudo eliminar la categoría.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+                header('Location: index.php?route=Supervisor/GestionInventario');
             } else {
                 Flash::error('No se pudo eliminar la categoría.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias');
+                header('Location: index.php?route=Inventario/ListarCategorias');
             }
             exit;
         }
@@ -346,17 +346,17 @@ class InventarioController
             $user = Auth::user();
             if (($user['role'] ?? '') === 'Supervisor') {
                 Flash::error('ID de categoría inválido.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+                header('Location: index.php?route=Supervisor/GestionInventario');
             } else {
                 Flash::error('ID de categoría inválido.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias');
+                header('Location: index.php?route=Inventario/ListarCategorias');
             }
             exit;
         }
         $user = Auth::user();
         $backUrl = (($user['role'] ?? '') === 'Supervisor')
-            ? '/ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario'
-            : '/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias';
+            ? 'index.php?route=Supervisor/GestionInventario'
+            : 'index.php?route=Inventario/ListarCategorias';
         $categoria = $this->categoryModel->obtenerCategoryPorId($id);
         include_once __DIR__ . '/../Views/Inventario/ActualizarCategoria.php';
     }
@@ -376,20 +376,20 @@ class InventarioController
                 $this->historialController->agregarAccion($accion, $detalle);
                 if (($user['role'] ?? '') === 'Supervisor') {
                     Flash::successQuiet('Categoría eliminada.');
-                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+                    header('Location: index.php?route=Supervisor/GestionInventario');
                 } else {
                     Flash::successQuiet('Categoría eliminada.');
-                    header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias');
+                    header('Location: index.php?route=Inventario/ListarCategorias');
                 }
                 exit;
             } else {
                 $user = Auth::user();
                 if (($user['role'] ?? '') === 'Supervisor') {
                     Flash::error('No se pudo actualizar la categoría.');
-                    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+                    header('Location: index.php?route=Supervisor/GestionInventario');
                 } else {
                     Flash::error('No se pudo actualizar la categoría.');
-                    header('Location: /ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias');
+                    header('Location: index.php?route=Inventario/ListarCategorias');
                 }
                 exit;
             }
@@ -405,12 +405,12 @@ class InventarioController
         $id = $_GET['id'] ?? null;
         if (!$id) {
             Flash::error('ID inválido.');
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario');
+            header('Location: index.php?route=Supervisor/GestionInventario');
             exit;
         }
     $item = $this->inventarioModel->obtenerPorId($id);
     $categorias = $this->inventarioModel->listarCategorias();
-    header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario&id=' . urlencode((string)$id));
+    header('Location: index.php?route=Supervisor/GestionInventario&id=' . urlencode((string)$id));
     exit;
     }
 }

@@ -3,7 +3,7 @@
 <main>
   <section class="login-body">
     <div class="wrapper-login">
-      <form action="/ProyectoPandora/Public/index.php?route=Auth/SendResetCode" method="post">
+      <form action="index.php?route=Auth/SendResetCode" method="post">
         <?= Csrf::input(); ?>
   <h1><?= I18n::t('auth.forgot.title'); ?></h1>
   <p><?= I18n::t('auth.forgot.instructions'); ?></p>
@@ -16,7 +16,7 @@
   <button type="submit" class="btn-login"><?= I18n::t('auth.forgot.submit'); ?></button>
 
         <div class="register-link">
-          <p><a href="/ProyectoPandora/Public/index.php?route=Auth/Login"><?= I18n::t('auth.forgot.back.login'); ?></a></p>
+          <p><a href="index.php?route=Auth/Login"><?= I18n::t('auth.forgot.back.login'); ?></a></p>
         </div>
       </form>
     </div>

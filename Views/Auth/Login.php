@@ -3,7 +3,7 @@
 <main>
     <section class="login-body">
         <div class="wrapper-login">
-            <form action="/ProyectoPandora/Public/index.php?route=Auth/Login" method="post">
+            <form action="index.php?route=Auth/Login" method="post">
                 <?= Csrf::input(); ?>
                 <h1><?= I18n::t('auth.welcome'); ?></h1>
 
@@ -19,13 +19,13 @@
 
                 <div class="remember-forgot">
                     <label><input type="checkbox" name="remember" value="1"> <?= I18n::t('auth.login.remember'); ?></label>
-                    <a href="/ProyectoPandora/Public/index.php?route=Auth/Forgot"><?= I18n::t('auth.login.forgot'); ?></a>
+                    <a href="index.php?route=Auth/Forgot"><?= I18n::t('auth.login.forgot'); ?></a>
                 </div>
 
                 <button type="submit" class="btn-login"><?= I18n::t('auth.login.submit'); ?></button>
 
                 <div class="register-link">
-                    <p><?= I18n::t('auth.login.no.account'); ?> <a href="/ProyectoPandora/Public/index.php?route=Register/Register"><?= I18n::t('auth.login.register.link'); ?></a></p>
+                    <p><?= I18n::t('auth.login.no.account'); ?> <a href="index.php?route=Register/Register"><?= I18n::t('auth.login.register.link'); ?></a></p>
                 </div>
             </form>
         </div>

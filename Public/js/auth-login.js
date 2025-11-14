@@ -8,7 +8,7 @@
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
-    const url = form.getAttribute('action') || '/ProyectoPandora/Public/index.php?route=Auth/Login';
+    const url = form.getAttribute('action') || 'index.php?route=Auth/Login';
     const fd = new FormData(form);
 
   // CSRF: el wrapper de fetch (csrf.js) agregará el token si falta

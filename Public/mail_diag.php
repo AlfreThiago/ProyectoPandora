@@ -1,6 +1,6 @@
 <?php
 /* Diagnóstico de envío de correo en XAMPP/Windows
-// Abre: http://localhost/ProyectoPandora/Public/mail_diag.php
+// Abre: http://localhostmail_diag.php
 header('Content-Type: text/plain; charset=UTF-8');
 
 function line($k, $v) { echo str_pad($k.':', 26) . ($v === '' ? '(vacio)' : $v) . "\n"; }

@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   const loadMetrics = () => {
-    fetch('/ProyectoPandora/Public/index.php?route=Default/HomeMetrics', {
+    fetch('index.php?route=Default/HomeMetrics', {
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
         'Accept': 'application/json'

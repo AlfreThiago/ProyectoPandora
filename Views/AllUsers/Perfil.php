@@ -69,11 +69,11 @@
 
       
       <?php 
-        $current = $_SERVER['REQUEST_URI'] ?? '/ProyectoPandora/Public/index.php?route=Default/Perfil';
+        $current = $_SERVER['REQUEST_URI'] ?? 'index.php?route=Default/Perfil';
         $prev = htmlspecialchars($current, ENT_QUOTES, 'UTF-8');
         $locale = function_exists('I18n\\getLocale') ? I18n::getLocale() : ($_SESSION['lang'] ?? 'es');
       ?>
-      <form method="get" action="/ProyectoPandora/Public/index.php" class="perfil-idioma">
+      <form method="get" action="index.php" class="perfil-idioma">
         <input type="hidden" name="route" value="Language/Set" />
         <input type="hidden" name="prev" value="<?= $prev ?>" />
         <label for="langSelect"><?= I18n::t('profile.language.label') ?>:</label>
@@ -96,11 +96,11 @@
     </div>
 
     <div class="perfil-volver-panel">
-      <a href="/ProyectoPandora/Public/index.php?route=Default/Index" class="btn-volver-panel">
+      <a href="index.php?route=Default/Index" class="btn-volver-panel">
         <i class="bx bx-arrow-back"></i> <?= I18n::t('profile.back') ?>
       </a>
     </div>
   </div>
 </main>
-<script src="/ProyectoPandora/Public/js/perfil-tabs.js?v=<?= time(); ?>" defer></script>
-<script src="/ProyectoPandora/Public/js/DarkMode.js?v=<?= time(); ?>" defer></script>
+<script src="js/perfil-tabs.js?v=<?= time(); ?>" defer></script>
+<script src="js/DarkMode.js?v=<?= time(); ?>" defer></script>

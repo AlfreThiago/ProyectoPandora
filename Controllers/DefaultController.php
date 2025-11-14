@@ -476,11 +476,11 @@ class DefaultController
             if ($curPass !== '' || $newPass !== '' || $confPass !== '') {
                 
                 if ($curPass === '' || $newPass === '' || $confPass === '') {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Default/Perfil&error=pass');
+                    header('Location: index.php?route=Default/Perfil&error=pass');
                     exit;
                 }
                 if ($newPass !== $confPass || strlen($newPass) < 8) {
-                    header('Location: /ProyectoPandora/Public/index.php?route=Default/Perfil&error=pass');
+                    header('Location: index.php?route=Default/Perfil&error=pass');
                     exit;
                 }
                 
@@ -491,12 +491,12 @@ class DefaultController
                     $rowPw = $stGet->get_result()->fetch_assoc();
                     $hashOld = $rowPw['password'] ?? '';
                     if (!$hashOld || !password_verify($curPass, $hashOld)) {
-                        header('Location: /ProyectoPandora/Public/index.php?route=Default/Perfil&error=wrongpass');
+                        header('Location: index.php?route=Default/Perfil&error=wrongpass');
                         exit;
                     }
                     
                     if (password_verify($newPass, $hashOld)) {
-                        header('Location: /ProyectoPandora/Public/index.php?route=Default/Perfil&error=passsame');
+                        header('Location: index.php?route=Default/Perfil&error=passsame');
                         exit;
                     }
                 }
@@ -517,7 +517,7 @@ class DefaultController
                     }
                 }
                 
-                header('Location: /ProyectoPandora/Public/index.php?route=Default/Perfil&ok=pass');
+                header('Location: index.php?route=Default/Perfil&ok=pass');
                 exit;
             }
 
@@ -540,7 +540,7 @@ class DefaultController
 
             
             $suffix = ($shouldUpdateProfile ? '&ok=perfil' : '');
-            header('Location: /ProyectoPandora/Public/index.php?route=Default/Perfil' . $suffix);
+            header('Location: index.php?route=Default/Perfil' . $suffix);
             exit;
         }
 

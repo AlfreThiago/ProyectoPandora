@@ -9,7 +9,7 @@ INDEX_FILE="$TARGET_DIR/index.php"
 
 cat <<'PHP' | sudo tee "$INDEX_FILE" > /dev/null
 <?php
-header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+header('Location: index.php?route=Default/Index');
 exit;
 PHP
 

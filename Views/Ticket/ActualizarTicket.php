@@ -6,7 +6,7 @@
             <div class="contact-form">
                 <h3><?= I18n::t('ticket.edit.title') ?></h3>
 
-                <form id="formActualizar" method="POST" action="/ProyectoPandora/Public/index.php?route=Ticket/Actualizar" enctype="multipart/form-data">
+                <form id="formActualizar" method="POST" action="index.php?route=Ticket/Actualizar" enctype="multipart/form-data">
                     <?= Csrf::input(); ?>
                     <input type="hidden" name="id" value="<?= htmlspecialchars($ticket['id'] ?? '') ?>">
 
@@ -78,7 +78,7 @@
                     </p>
                 </form>
 
-                <a href="<?= $_SESSION['prev_url'] ?? '/ProyectoPandora/Public/index.php?route=Default/Index' ?>" class="btn-volver"><?= I18n::t('common.back') ?></a>
+                <a href="<?= $_SESSION['prev_url'] ?? 'index.php?route=Default/Index' ?>" class="btn-volver"><?= I18n::t('common.back') ?></a>
             </div>
         </div>
 

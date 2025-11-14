@@ -118,8 +118,8 @@ $role = strtolower($authUser['role'] ?? 'invitado');
     </div>
 </main>
 <?php
-$homeJsPath = rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') . '/ProyectoPandora/Public/js/home-dashboard.js';
+$homeJsPath = rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') . 'js/home-dashboard.js';
 $homeJsVersion = file_exists($homeJsPath) ? filemtime($homeJsPath) : time();
 ?>
-<script src="/ProyectoPandora/Public/js/home-dashboard.js?v=<?= $homeJsVersion ?>"></script>
-<script src="/ProyectoPandora/Public/js/DarkMode.js?v=<?= time(); ?>" defer></script>
+<script src="js/home-dashboard.js?v=<?= $homeJsVersion ?>"></script>
+<script src="js/DarkMode.js?v=<?= time(); ?>" defer></script>

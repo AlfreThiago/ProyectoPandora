@@ -36,7 +36,7 @@ public function listar()
                 $detalle = "{$user['name']} creó el estado de ticket '{$name}'.";
                 $this->historialController->agregarAccion($accion, $detalle);
 
-                header('Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados');
+                header('Location: index.php?route=EstadoTicket/ListarEstados');
                 exit;
             }
         }
@@ -66,10 +66,10 @@ public function listar()
             $name = $_POST['name'];
 
             if ($this->estadoModel->updateEstado($id, $name)) {
-                header("Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados");
+                header("Location: index.php?route=EstadoTicket/ListarEstados");
                 exit();
             } else {
-                header('Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados');
+                header('Location: index.php?route=EstadoTicket/ListarEstados');
                 exit();
             }
         }
@@ -86,7 +86,7 @@ public function listar()
             $detalle = "{$user['name']} eliminó el estado (ID {$id}).";
             $this->historialController->agregarAccion($accion, $detalle);
 
-            header('Location: /ProyectoPandora/Public/index.php?route=EstadoTicket/ListarEstados');
+            header('Location: index.php?route=EstadoTicket/ListarEstados');
             exit;
         }
     }

@@ -33,7 +33,7 @@
                 </div>
                 <div class="device-card__actions">
                   <?php if (empty($d['has_active_ticket'])): ?>
-        <form method="post" action="/ProyectoPandora/Public/index.php?route=Device/Eliminar"
+        <form method="post" action="index.php?route=Device/Eliminar"
           data-confirm="¿Eliminar este dispositivo? Esta acción no se puede deshacer."
           style="display:inline-block">
                       <?= Csrf::input(); ?>
@@ -49,7 +49,7 @@
           <?php else: ?>
             <div class="no-device">
               <p>No tienes dispositivos registrados aún.</p>
-              <a href="/ProyectoPandora/Public/index.php?route=Device/MostrarCrearDispositivo" class="btn-float-add btn-center" title="Agregar dispositivo">+</a>
+              <a href="index.php?route=Device/MostrarCrearDispositivo" class="btn-float-add btn-center" title="Agregar dispositivo">+</a>
             </div>
           <?php endif; ?>
         </div>
@@ -59,6 +59,6 @@
   </div>
 </main>
 
-<a href="/ProyectoPandora/Public/index.php?route=Device/MostrarCrearDispositivo" class="btn-float-add" id="btnAdd" title="Agregar dispositivo">+</a>
+<a href="index.php?route=Device/MostrarCrearDispositivo" class="btn-float-add" id="btnAdd" title="Agregar dispositivo">+</a>
 
-<script src="/ProyectoPandora/Public/js/clientes-mis-device.js" defer></script>
+<script src="js/clientes-mis-device.js" defer></script>

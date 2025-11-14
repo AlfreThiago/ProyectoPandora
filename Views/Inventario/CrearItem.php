@@ -13,7 +13,7 @@
                     <div class="alert alert-warning"><?= htmlspecialchars($errorMsg) ?></div>
                 <?php endif; ?>
 
-        <form action="/ProyectoPandora/Public/index.php?route=Inventario/CrearItem" method="POST" enctype="multipart/form-data">
+        <form action="index.php?route=Inventario/CrearItem" method="POST" enctype="multipart/form-data">
             <?= Csrf::input(); ?>
                         <p>
                             <label for="categoria_id">Categoría:</label>
@@ -49,7 +49,7 @@
                         </p>
                     </form>
                 <?php
-                    $fallbackUrl = '/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias';
+                    $fallbackUrl = 'index.php?route=Inventario/ListarCategorias';
                     $prevUrl = $_SESSION['prev_url'] ?? '';
                     $prevUrlLower = strtolower($prevUrl);
                     if (

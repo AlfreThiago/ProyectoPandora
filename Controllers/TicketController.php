@@ -246,7 +246,7 @@ class TicketController
         $rolesPermitidos = ['Supervisor', 'Tecnico', 'Cliente', 'Administrador'];
         $user = Auth::user();
         if (!$user || !in_array($user['role'] ?? '', $rolesPermitidos, true)) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
 
@@ -257,7 +257,7 @@ class TicketController
                 'ticket' => null,
                 'rol' => $user['role'] ?? '',
                 'flash' => $_GET ?? [],
-                'volverUrl' => '/ProyectoPandora/Public/index.php?route=Default/Index',
+                'volverUrl' => 'index.php?route=Default/Index',
                 'timeline' => ['Tecnico'=>[], 'Cliente'=>[], 'Supervisor'=>[]],
             ];
             require __DIR__ . '/../Views/Ticket/VerTicket.php';
@@ -272,11 +272,11 @@ class TicketController
 
         
         $rol = $user['role'] ?? '';
-    if ($rol === 'Cliente') $volverUrl = "/ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo";
-        elseif ($rol === 'Tecnico') $volverUrl = "/ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones";
-        elseif ($rol === 'Supervisor') $volverUrl = "/ProyectoPandora/Public/index.php?route=Supervisor/Asignar";
-        elseif ($rol === 'Administrador') $volverUrl = "/ProyectoPandora/Public/index.php?route=Admin/ListarUsers";
-        else $volverUrl = "/ProyectoPandora/Public/index.php?route=Default/Index";
+    if ($rol === 'Cliente') $volverUrl = "index.php?route=Cliente/MisTicketActivo";
+        elseif ($rol === 'Tecnico') $volverUrl = "index.php?route=Tecnico/MisReparaciones";
+        elseif ($rol === 'Supervisor') $volverUrl = "index.php?route=Supervisor/Asignar";
+        elseif ($rol === 'Administrador') $volverUrl = "index.php?route=Admin/ListarUsers";
+        else $volverUrl = "index.php?route=Default/Index";
     $prev = $_SESSION['prev_url'] ?? '';
     
     if ($prev) {
@@ -396,7 +396,7 @@ class TicketController
             
             if (empty($fotos)) {
                 $legacyDir = __DIR__ . '/../Public/img/imgTickets/' . (int)$ticket['id'] . '/';
-                $legacyUrlBase = '/ProyectoPandora/Public/img/imgTickets/' . (int)$ticket['id'] . '/';
+                $legacyUrlBase = 'img/imgTickets/' . (int)$ticket['id'] . '/';
                 if (is_dir($legacyDir)) {
                     $files = @scandir($legacyDir) ?: [];
                     foreach ($files as $fn) {
@@ -478,11 +478,11 @@ class TicketController
     public function ActualizarEstado() {
         $user = Auth::user();
         if (!$user || $user['role'] !== 'Tecnico') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones');
+            header('Location: index.php?route=Tecnico/MisReparaciones');
             exit;
         }
         $ticket_id = (int)($_POST['ticket_id'] ?? 0);
@@ -490,17 +490,17 @@ class TicketController
         $comentario = trim($_POST['comentario'] ?? '');
 
         $tk = $this->ticketModel->ver($ticket_id);
-        if (!$tk) { header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones&error=tk'); exit; }
+        if (!$tk) { header('Location: index.php?route=Tecnico/MisReparaciones&error=tk'); exit; }
 
         
         $estadoActual = $tk['estado'] ?? '';
         $nuevo = $this->estadoModel->getById($estado_id);
-        if (!$nuevo) { header('Location: /ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones&error=estado'); exit; }
+        if (!$nuevo) { header('Location: index.php?route=Tecnico/MisReparaciones&error=estado'); exit; }
         $estadoNuevo = $nuevo['name'];
 
         
         if (!$this->puedeTransicionar($estadoActual, $estadoNuevo) || strcasecmp($estadoNuevo, 'Finalizado')===0) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=transicion');
+            header('Location: index.php?route=Ticket/Ver&id='.$ticket_id.'&error=transicion');
             exit;
         }
 
@@ -518,7 +518,7 @@ class TicketController
             $labor = $laborModel->getByTicket($ticket_id);
             $mano = (float)($labor['labor_amount'] ?? 0);
             if (!$hasItems || $mano <= 0) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=presupuesto');
+                header('Location: index.php?route=Ticket/Ver&id='.$ticket_id.'&error=presupuesto');
                 exit;
             }
             
@@ -528,7 +528,7 @@ class TicketController
                 if ($ev['user_role']==='Cliente' && stripos($ev['comentario'] ?? '', 'aprob') !== false) { $aprobado = true; break; }
             }
             if (!$aprobado) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=aprobacion');
+                header('Location: index.php?route=Ticket/Ver&id='.$ticket_id.'&error=aprobacion');
                 exit;
             }
         }
@@ -574,7 +574,7 @@ class TicketController
             }
         } catch (\Throwable $e) {  }
 
-        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&ok=estado');
+        header('Location: index.php?route=Ticket/Ver&id='.$ticket_id.'&ok=estado');
         exit;
     }
 
@@ -582,18 +582,18 @@ class TicketController
     public function AprobarPresupuesto() {
         $user = Auth::user();
         if (!$user || $user['role'] !== 'Cliente') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo');
+            header('Location: index.php?route=Cliente/MisTicketActivo');
             exit;
         }
         $ticket_id = (int)($_POST['ticket_id'] ?? 0);
         $comentario = trim($_POST['comentario'] ?? 'Aprobado presupuesto');
 
         $tk = $this->ticketModel->ver($ticket_id);
-    if (!$tk) { header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&error=ticket'); exit; }
+    if (!$tk) { header('Location: index.php?route=Cliente/MisTicketActivo&error=ticket'); exit; }
 
         
         $db = new Database(); $db->connectDatabase(); $conn = $db->getConnection();
@@ -606,14 +606,14 @@ class TicketController
         $stmtT->execute();
         $rowT = $stmtT->get_result()->fetch_assoc();
         if (!$cliente || (int)($rowT['cliente_id'] ?? 0) !== (int)$cliente['id']) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&error=forbidden');
+            header('Location: index.php?route=Cliente/MisTicketActivo&error=forbidden');
             exit;
         }
 
         
         $estadoActual = strtolower(trim($tk['estado'] ?? ''));
         if ($estadoActual !== 'presupuesto') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=estado_actual');
+            header('Location: index.php?route=Ticket/Ver&id='.$ticket_id.'&error=estado_actual');
             exit;
         }
 
@@ -669,7 +669,7 @@ class TicketController
             if ($comentario) { $detalle .= " Comentario: " . trim($comentario); }
             $this->historialController->agregarAccion($accion, $detalle);
         } catch (\Throwable $e) {  }
-        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&ok=aprobado');
+        header('Location: index.php?route=Ticket/Ver&id='.$ticket_id.'&ok=aprobado');
         exit;
     }
 
@@ -677,16 +677,16 @@ class TicketController
     public function MarcarListoParaRetirar() {
         $user = Auth::user();
         if (!$user || ($user['role'] ?? '') !== 'Supervisor') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+            header('Location: index.php?route=Supervisor/Asignar');
             exit;
         }
         $ticket_id = (int)($_POST['ticket_id'] ?? 0);
         if ($ticket_id <= 0) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=ticket');
+            header('Location: index.php?route=Supervisor/Asignar&error=ticket');
             exit;
         }
         $estadoId = $this->estadoIdPorNombre('Listo para retirar');
@@ -719,7 +719,7 @@ class TicketController
             } catch (\Throwable $e) {  }
 
         }
-        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&ok=listo');
+        header('Location: index.php?route=Ticket/Ver&id=' . $ticket_id . '&ok=listo');
         exit;
     }
 
@@ -727,16 +727,16 @@ class TicketController
     public function MarcarPagadoYFinalizar() {
         $user = Auth::user();
         if (!$user || ($user['role'] ?? '') !== 'Supervisor') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+            header('Location: index.php?route=Supervisor/Asignar');
             exit;
         }
         $ticket_id = (int)($_POST['ticket_id'] ?? 0);
         if ($ticket_id <= 0) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar&error=ticket');
+            header('Location: index.php?route=Supervisor/Asignar&error=ticket');
             exit;
         }
         
@@ -748,7 +748,7 @@ class TicketController
         $dbA = new Database(); $dbA->connectDatabase(); $histM = new TicketEstadoHistorialModel($dbA->getConnection());
         $aprobado = false; foreach ($histM->listByTicket($ticket_id) as $ev) { if ($ev['user_role']==='Cliente' && stripos($ev['comentario'] ?? '', 'aprob') !== false) { $aprobado = true; break; } }
         if (!$aprobado) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&error=aprobacion');
+            header('Location: index.php?route=Ticket/Ver&id=' . $ticket_id . '&error=aprobacion');
             exit;
         }
         
@@ -812,7 +812,7 @@ class TicketController
                 $this->historialController->agregarAccion($accion, $detalle);
             } catch (\Throwable $e) {  }
         }
-        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&ok=pagado');
+        header('Location: index.php?route=Ticket/Ver&id=' . $ticket_id . '&ok=pagado');
         exit;
     }
 
@@ -820,18 +820,18 @@ class TicketController
     public function RechazarPresupuesto() {
         $user = Auth::user();
         if (!$user || $user['role'] !== 'Cliente') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo');
+            header('Location: index.php?route=Cliente/MisTicketActivo');
             exit;
         }
         $ticket_id = (int)($_POST['ticket_id'] ?? 0);
         $comentario = trim($_POST['comentario'] ?? 'Rechazado presupuesto');
 
         $tk = $this->ticketModel->ver($ticket_id);
-    if (!$tk) { header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&error=ticket'); exit; }
+    if (!$tk) { header('Location: index.php?route=Cliente/MisTicketActivo&error=ticket'); exit; }
 
         
         $db = new Database(); $db->connectDatabase(); $conn = $db->getConnection();
@@ -844,14 +844,14 @@ class TicketController
     $stmtT->execute();
     $rowT = $stmtT->get_result()->fetch_assoc();
         if (!$cliente || (int)($rowT['cliente_id'] ?? 0) !== (int)$cliente['id']) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&error=forbidden');
+            header('Location: index.php?route=Cliente/MisTicketActivo&error=forbidden');
             exit;
         }
 
         
         $estadoActual = strtolower(trim($tk['estado'] ?? ''));
         if ($estadoActual !== 'presupuesto') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&error=estado_actual');
+            header('Location: index.php?route=Ticket/Ver&id='.$ticket_id.'&error=estado_actual');
             exit;
         }
 
@@ -863,7 +863,7 @@ class TicketController
             $stmtU->execute();
         }
         $this->histEstadoModel->add($ticket_id, (int)$estadoId, (int)$user['id'], 'Cliente', $comentario);
-        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id='.$ticket_id.'&ok=rechazado');
+        header('Location: index.php?route=Ticket/Ver&id='.$ticket_id.'&ok=rechazado');
         exit;
     }
 
@@ -871,11 +871,11 @@ class TicketController
     {
         $user = Auth::user();
         if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if ($user['role'] === 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            header('Location: index.php?route=Default/Index');
             exit;
         }
         $tickets = $this->ticketModel->listar();
@@ -889,11 +889,11 @@ class TicketController
     public function Calificar() {
         $user = Auth::user();
         if (!$user || $user['role'] !== 'Cliente') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo');
+            header('Location: index.php?route=Cliente/MisTicketActivo');
             exit;
         }
         $ticket_id = (int)($_POST['ticket_id'] ?? 0);
@@ -906,12 +906,12 @@ class TicketController
         $ratingModel = new RatingModel($db->getConnection());
 
         $tk = $ticketModel->ver($ticket_id);
-    if (!$tk) { header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&error=ticket'); exit; }
+    if (!$tk) { header('Location: index.php?route=Cliente/MisTicketActivo&error=ticket'); exit; }
 
         
         $estadoTxt = strtolower(trim($tk['estado'] ?? ''));
         if (!in_array($estadoTxt, ['finalizado', 'cerrado'], true)) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&error=estado');
+            header('Location: index.php?route=Ticket/Ver&id=' . $ticket_id . '&error=estado');
             exit;
         }
 
@@ -931,12 +931,12 @@ class TicketController
 
         
         if (!$cliente || !$tecnico_id || (int)$owner_cliente_id !== (int)$cliente['id']) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&error=forbidden');
+            header('Location: index.php?route=Cliente/MisTicketActivo&error=forbidden');
             exit;
         }
 
         $ratingModel->save($ticket_id, (int)$tecnico_id, (int)$cliente['id'], $stars, $comment);
-        header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Ver&id=' . $ticket_id . '&rated=1');
+        header('Location: index.php?route=Ticket/Ver&id=' . $ticket_id . '&rated=1');
         exit;
     }
 
@@ -944,16 +944,16 @@ class TicketController
     public function PublicarPresupuesto() {
         $user = Auth::user();
         if (!$user || ($user['role'] ?? '') !== 'Supervisor') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos');
+            header('Location: index.php?route=Supervisor/Presupuestos');
             exit;
         }
         $ticket_id = (int)($_POST['ticket_id'] ?? 0);
         if ($ticket_id <= 0) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&error=ticket');
+            header('Location: index.php?route=Supervisor/Presupuestos&error=ticket');
             exit;
         }
 
@@ -970,7 +970,7 @@ class TicketController
         $mano = (float)($labor['labor_amount'] ?? 0);
         
         if (empty($items) || $mano <= 0) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&error=presupuesto_incompleto');
+            header('Location: index.php?route=Supervisor/Presupuestos&error=presupuesto_incompleto');
             exit;
         }
         $total = $subtotal + $mano;
@@ -1019,7 +1019,7 @@ class TicketController
 
         
 
-        header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos&ok=publicado');
+        header('Location: index.php?route=Supervisor/Presupuestos&ok=publicado');
         exit;
     }
 
@@ -1028,7 +1028,7 @@ class TicketController
         $user = Auth::user();
         $rol = $user['role'];
         if ($rol === 'Administrador') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            header('Location: index.php?route=Default/Index');
             exit;
         }
         $ticket = $this->ticketModel->ver($id);
@@ -1053,7 +1053,7 @@ class TicketController
             }
             if (empty($fotos)) {
                 $legacyDir = __DIR__ . '/../Public/img/imgTickets/' . (int)$ticket['id'] . '/';
-                $legacyUrlBase = '/ProyectoPandora/Public/img/imgTickets/' . (int)$ticket['id'] . '/';
+                $legacyUrlBase = 'img/imgTickets/' . (int)$ticket['id'] . '/';
                 if (is_dir($legacyDir)) {
                     $files = @scandir($legacyDir) ?: [];
                     foreach ($files as $fn) {
@@ -1118,9 +1118,9 @@ class TicketController
 
         
         if ($rol === 'Cliente') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo');
+            header('Location: index.php?route=Cliente/MisTicketActivo');
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar');
+            header('Location: index.php?route=Ticket/Listar');
         }
         exit;
     }
@@ -1129,18 +1129,18 @@ class TicketController
     {
         $user = Auth::user();
         if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if (($user['role'] ?? '') !== 'Cliente') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            header('Location: index.php?route=Default/Index');
             exit;
         }
 
         
         $cliente = $this->ticketModel->obtenerClientePorUser($user['id']);
         if (!$cliente || !isset($cliente['id'])) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&error=cliente_no_asociado');
+            header('Location: index.php?route=Cliente/MisTicketActivo&error=cliente_no_asociado');
             exit;
         }
     $cliente_id = (int)($cliente['id']);
@@ -1171,18 +1171,18 @@ class TicketController
     {
         $user = Auth::user();
         if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         if (($user['role'] ?? '') !== 'Cliente') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            header('Location: index.php?route=Default/Index');
             exit;
         }
 
         
         $cliente = $this->ticketModel->obtenerClientePorUser($user['id']);
         if (!$cliente || !isset($cliente['id'])) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&error=cliente_no_asociado');
+            header('Location: index.php?route=Cliente/MisTicketActivo&error=cliente_no_asociado');
             exit;
         }
         $cliente_id = (int)($cliente['id']);
@@ -1191,7 +1191,7 @@ class TicketController
         $descripcion = $_POST['descripcion'] ?? '';
 
         if (empty($dispositivo_id)) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=deviceRequired');
+            header('Location: index.php?route=Ticket/mostrarCrear&error=deviceRequired');
             exit;
         }
 
@@ -1202,14 +1202,14 @@ class TicketController
             if ((int)($r['id'] ?? 0) === (int)$dispositivo_id) { $pertenece = true; break; }
         }
         if (!$pertenece) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=deviceOwnership');
+            header('Location: index.php?route=Ticket/mostrarCrear&error=deviceOwnership');
             exit;
         }
 
         
         
         if ($this->ticketModel->hasActiveTicketForDevice((int)$dispositivo_id)) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/mostrarCrear&error=deviceActive');
+            header('Location: index.php?route=Ticket/mostrarCrear&error=deviceActive');
             exit;
         }
 
@@ -1240,9 +1240,9 @@ class TicketController
 
         
         if ($user['role'] === 'Cliente') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicket');
+            header('Location: index.php?route=Cliente/MisTicket');
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Ticket/Listar');
+            header('Location: index.php?route=Ticket/Listar');
         }
         exit;
     }
@@ -1251,25 +1251,25 @@ class TicketController
     {
         $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
         if ($id <= 0) {
-            header("Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&error=id");
+            header("Location: index.php?route=Cliente/MisTicketActivo&error=id");
             exit;
         }
         $user = Auth::user();
         if (!$user) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
         
         
         if (($user['role'] ?? '') !== 'Cliente') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Default/Index');
+            header('Location: index.php?route=Default/Index');
             exit;
         }
 
         
         $tk = $this->ticketModel->ver($id);
         if (!$tk) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&error=ticket');
+            header('Location: index.php?route=Cliente/MisTicketActivo&error=ticket');
             exit;
         }
 
@@ -1288,7 +1288,7 @@ class TicketController
             $stmtT->execute();
             $rowT = $stmtT->get_result()->fetch_assoc();
             if (!$cliente || (int)($rowT['cliente_id'] ?? 0) !== (int)$cliente['id']) {
-                header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&error=forbidden');
+                header('Location: index.php?route=Cliente/MisTicketActivo&error=forbidden');
                 exit;
             }
         }
@@ -1296,7 +1296,7 @@ class TicketController
         $estadoTxt = strtolower(trim($tk['estado'] ?? $tk['estado_actual'] ?? ''));
         $allowed = ['nuevo','finalizado','cerrado'];
         if (!in_array($estadoTxt, $allowed, true)) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&error=estado');
+            header('Location: index.php?route=Cliente/MisTicketActivo&error=estado');
             exit;
         }
 
@@ -1305,9 +1305,9 @@ class TicketController
             $detalle = "Usuario {$user['name']} eliminó el ticket ID {$id}";
             $this->historialController->agregarAccion($accion, $detalle);
 
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&deleted=1');
+            header('Location: index.php?route=Cliente/MisTicketActivo&deleted=1');
         } else {
-            header('Location: /ProyectoPandora/Public/index.php?route=Cliente/MisTicketActivo&error=delete');
+            header('Location: index.php?route=Cliente/MisTicketActivo&error=delete');
         }
         exit;
     }

@@ -26,7 +26,7 @@
         <div class="form-vertical">
             <h3><?= I18n::t('common.add'); ?> <?= I18n::t('nav.users'); ?></h3>
 
-        <form action="/ProyectoPandora/Public/index.php?route=Register/RegisterAdmin" method="POST" novalidate
+        <form action="index.php?route=Register/RegisterAdmin" method="POST" novalidate
             data-msg-name-required="<?= I18n::t('auth.register.error.name_required'); ?>"
             data-msg-email-invalid="<?= I18n::t('auth.register.error.email_invalid'); ?>"
             data-msg-password-short="<?= I18n::t('auth.register.error.password_short'); ?>">
@@ -58,7 +58,7 @@
                 </p>
 
                 <?php
-                    $defaultBack = '/ProyectoPandora/Public/index.php?route=Admin/ListarUsers';
+                    $defaultBack = 'index.php?route=Admin/ListarUsers';
                     $prevUrl = $_SESSION['prev_url'] ?? '';
                     $prevUrlLower = strtolower($prevUrl);
                     if (
@@ -87,4 +87,4 @@
     </div>
     <span class="sr-only" aria-live="assertive"></span>
 </div>
-<script src="/ProyectoPandora/Public/js/validation-register.js"></script>
+<script src="js/validation-register.js"></script>

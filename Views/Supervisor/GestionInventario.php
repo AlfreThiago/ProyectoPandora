@@ -20,7 +20,7 @@
       <div class="Tabla-Contenedor">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <h2 style="margin:0;"><?= I18n::t('inventory.stock.current'); ?></h2>
-          <a class="btn btn-outline" href="/ProyectoPandora/Public/index.php?route=Inventario/MostrarCrearItem"><?= I18n::t('inventory.item.addNew'); ?></a>
+          <a class="btn btn-outline" href="index.php?route=Inventario/MostrarCrearItem"><?= I18n::t('inventory.item.addNew'); ?></a>
         </div>
         <table id="userTable">
           <thead>
@@ -53,7 +53,7 @@
         <td data-label="<?= I18n::t('inventory.table.stock'); ?>"><?php echo (int)$row['stock_actual']; ?></td>
 				<td data-label="<?= I18n::t('inventory.table.minStock'); ?>"><?php echo (int)$row['stock_minimo']; ?></td>
         <td data-label="<?= I18n::t('common.actions'); ?>">
-                  <form action="/ProyectoPandora/Public/index.php?route=Inventario/SumarStock" method="post" style="display:flex; gap:6px; align-items:center;">
+                  <form action="index.php?route=Inventario/SumarStock" method="post" style="display:flex; gap:6px; align-items:center;">
                     <?= Csrf::input(); ?>
                     <input type="hidden" name="id" value="<?php echo (int)$row['id']; ?>" />
                     <input type="number" name="cantidad" min="1" class="asignar-input asignar-input--small" placeholder="<?= I18n::t('inventory.stock.addQtyPlaceholder'); ?>" required />
@@ -68,5 +68,5 @@
     </div>
   </section>
 </main>
-<script src="/ProyectoPandora/Public/js/modal.js"></script>
+<script src="js/modal.js"></script>
 

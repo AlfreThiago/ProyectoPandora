@@ -24,20 +24,20 @@ class RegisterController
             
             if ($username === '') {
                 Flash::error('El nombre es obligatorio.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Register/Register');
+                header('Location: index.php?route=Register/Register');
                 exit;
             }
 
             
             if (preg_match('/\s/', (string)$password)) {
                 Flash::error('La contraseña no puede contener espacios ni caracteres en blanco.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Register/Register');
+                header('Location: index.php?route=Register/Register');
                 exit;
             }
             
             if (strlen((string)$password) < 8) {
                 Flash::error('La contraseña debe tener al menos 8 caracteres.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Register/Register');
+                header('Location: index.php?route=Register/Register');
                 exit;
             }
 
@@ -49,7 +49,7 @@ class RegisterController
             $detalle = "Se creó la cuenta de {$username} (email {$email}). Resultado: {$result}.";
             $this->historialController->agregarAccion($accion, $detalle);
 
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         } else {
             include_once __DIR__ . '/../Views/Auth/Register.php';
@@ -70,20 +70,20 @@ class RegisterController
             
             if ($username === '') {
                 Flash::error('El nombre es obligatorio.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin');
+                header('Location: index.php?route=Register/RegisterAdmin');
                 exit;
             }
 
             
             if (preg_match('/\s/', (string)$password)) {
                 Flash::error('La contraseña no puede contener espacios ni caracteres en blanco.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin');
+                header('Location: index.php?route=Register/RegisterAdmin');
                 exit;
             }
             
             if (strlen((string)$password) < 8) {
                 Flash::error('La contraseña debe tener al menos 8 caracteres.');
-                header('Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin');
+                header('Location: index.php?route=Register/RegisterAdmin');
                 exit;
             }
 
@@ -95,7 +95,7 @@ class RegisterController
             $detalle = "Se creó la cuenta {$username} (email {$email}) con rol {$role} desde el panel de administración. Resultado: {$result}.";
             $this->historialController->agregarAccion($accion, $detalle);
 
-            header('Location: /ProyectoPandora/Public/index.php?route=Admin/ListarUsers');
+            header('Location: index.php?route=Admin/ListarUsers');
             exit;
         } else {
             include_once __DIR__ . '/../Views/Admin/Register.php';
@@ -111,7 +111,7 @@ class RegisterController
         $res = $userModel->registerIfNotExists($username, $email, $password, $role);
         if ($res === 'exists') {
             Flash::error('El correo electrónico ya está registrado. Por favor, usa otro.');
-            header("Location: /ProyectoPandora/Public/index.php?route=Register/Register");
+            header("Location: index.php?route=Register/Register");
             exit;
         }
         return $res === 'ok' ? 'User registered successfully.' : 'Error registering user.';
@@ -129,7 +129,7 @@ class RegisterController
         if ($res === 'exists') {
             
             Flash::error('El correo electrónico ya está registrado. Por favor, usa otro.');
-            header("Location: /ProyectoPandora/Public/index.php?route=Register/RegisterAdmin");
+            header("Location: index.php?route=Register/RegisterAdmin");
             exit;
         }
 

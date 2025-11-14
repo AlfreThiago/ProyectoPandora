@@ -15,7 +15,7 @@ require_once __DIR__ . '/../Core/I18n.php';
 class SupervisorController {
     public function PanelSupervisor() {
         Auth::checkRole(['Supervisor']);
-        header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+        header('Location: index.php?route=Supervisor/Asignar');
         exit;
     }
 
@@ -55,7 +55,7 @@ class SupervisorController {
         I18n::boot();
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+            header('Location: index.php?route=Supervisor/Asignar');
             exit;
         }
 
@@ -64,7 +64,7 @@ class SupervisorController {
         if (!$user) { $user = $_SESSION['user'] ?? null; }
         if (!$user || empty($user['id'])) {
             Flash::error('supervisor.assign.error.session');
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+            header('Location: index.php?route=Supervisor/Asignar');
             exit; 
         }
 
@@ -73,7 +73,7 @@ class SupervisorController {
         $tecnico_id = isset($_POST['tecnico_id']) ? (int)$_POST['tecnico_id'] : 0;
         if (!$ticket_id || !$tecnico_id) {
             Flash::error('supervisor.assign.error.incomplete');
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+            header('Location: index.php?route=Supervisor/Asignar');
             exit;
         }
 
@@ -91,7 +91,7 @@ class SupervisorController {
             $rowChk = $stmtChk->get_result()->fetch_assoc();
             if (!empty($rowChk['tecnico_id'])) {
                 Flash::error('supervisor.assign.error.ticketHasTech');
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+                header('Location: index.php?route=Supervisor/Asignar');
                 exit;
             }
         }
@@ -105,7 +105,7 @@ class SupervisorController {
             $disp = strtolower(trim($rowTec['disponibilidad'] ?? ''));
             if ($disp !== 'disponible') {
                 Flash::error('supervisor.assign.error.techUnavailable');
-                header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+                header('Location: index.php?route=Supervisor/Asignar');
                 exit;
             }
         }
@@ -134,7 +134,7 @@ class SupervisorController {
         }
         if ($activos >= $limit) {
             Flash::error('supervisor.assign.error.limitReached');
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+            header('Location: index.php?route=Supervisor/Asignar');
             exit;
         }
 
@@ -207,10 +207,10 @@ class SupervisorController {
             } catch (\Throwable $e) {  }
             require_once __DIR__ . '/../Core/Flash.php';
             Flash::successQuiet('supervisor.assign.success.assigned');
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+            header('Location: index.php?route=Supervisor/Asignar');
         } else {
             Flash::error('supervisor.assign.error.assignFailed');
-            header('Location: /ProyectoPandora/Public/index.php?route=Supervisor/Asignar');
+            header('Location: index.php?route=Supervisor/Asignar');
         }
         exit;
     }

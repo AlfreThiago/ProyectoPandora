@@ -3,7 +3,7 @@
 <main>
   <section class="login-body">
     <div class="wrapper-login">
-      <form action="/ProyectoPandora/Public/index.php?route=Auth/DoResetPassword" method="post" autocomplete="off">
+      <form action="index.php?route=Auth/DoResetPassword" method="post" autocomplete="off">
         <?= Csrf::input(); ?>
   <h1><?= I18n::t('auth.reset.title'); ?></h1>
         <?php if ($ok): ?>
@@ -25,7 +25,7 @@
         </div>
   <button type="submit" class="btn-login"><?= I18n::t('auth.reset.submit'); ?></button>
         <div class="register-link">
-          <p><a href="/ProyectoPandora/Public/index.php?route=Auth/Login"><?= I18n::t('auth.reset.back.login'); ?></a></p>
+          <p><a href="index.php?route=Auth/Login"><?= I18n::t('auth.reset.back.login'); ?></a></p>
         </div>
       </form>
     </div>

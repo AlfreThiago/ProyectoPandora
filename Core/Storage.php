@@ -72,7 +72,7 @@ class Storage
         }
         $documentRoot = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') : '';
         if ($documentRoot !== '') {
-            $guess = $documentRoot . '/ProyectoPandora/Public/uploads';
+            $guess = $documentRoot . 'uploads';
             if (!is_dir($guess)) {
                 @mkdir($guess, 0775, true);
             }
@@ -107,7 +107,7 @@ class Storage
             self::$baseUrl = rtrim($base, '/');
             return self::$baseUrl;
         }
-        self::$baseUrl = '/ProyectoPandora/Public/uploads';
+        self::$baseUrl = 'uploads';
         return self::$baseUrl;
     }
 
@@ -208,7 +208,7 @@ class Storage
             return self::fallbackProfileUrl();
         }
         if (!self::exists($storedPath)) {
-            $legacy = '/ProyectoPandora/Public/img/imgPerfil/' . ltrim($storedPath, '/');
+            $legacy = 'img/imgPerfil/' . ltrim($storedPath, '/');
             $legacyFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $legacy;
             if ($legacyFs && is_file($legacyFs)) {
                 return $legacy;
@@ -220,12 +220,12 @@ class Storage
 
     public static function fallbackProfileUrl(): string
     {
-        $default = '/ProyectoPandora/Public/img/imgPerfil/default.png';
+        $default = 'img/imgPerfil/default.png';
         $defaultFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $default;
         if ($defaultFs && is_file($defaultFs)) {
             return $default;
         }
-        $fallback = '/ProyectoPandora/Public/img/Innovasys_V2.png';
+        $fallback = 'img/Innovasys_V2.png';
         return $fallback;
     }
     public static function resolveDeviceUrl(?string $storedPath): string
@@ -249,7 +249,7 @@ class Storage
                 // Luego en uploads raíz
                 if (self::exists($base)) { return self::publicUrl($base); }
                 // Y por último en carpeta pública legacy
-                $legacy = '/ProyectoPandora/Public/img/imgDispositivos/' . $base;
+                $legacy = 'img/imgDispositivos/' . $base;
                 $legacyFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $legacy;
                 if ($legacyFs && is_file($legacyFs)) { return $legacy; }
                 return self::fallbackDeviceUrl();
@@ -275,7 +275,7 @@ class Storage
         }
 
         // Carpeta pública legacy
-        $legacy = '/ProyectoPandora/Public/img/imgDispositivos/' . ltrim($storedPath, '/');
+        $legacy = 'img/imgDispositivos/' . ltrim($storedPath, '/');
         $legacyFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $legacy;
         if ($legacyFs && is_file($legacyFs)) {
             return $legacy;
@@ -286,7 +286,7 @@ class Storage
 
     public static function fallbackDeviceUrl(): string
     {
-        $candidate = '/ProyectoPandora/Public/img/imgDispositivos/NoFoto.jpg';
+        $candidate = 'img/imgDispositivos/NoFoto.jpg';
         $candidateFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $candidate;
         if ($candidateFs && is_file($candidateFs)) {
             return $candidate;
@@ -312,7 +312,7 @@ class Storage
                 $maybe = 'inventory/' . $base;
                 if (self::exists($maybe)) { return self::publicUrl($maybe); }
                 if (self::exists($base)) { return self::publicUrl($base); }
-                $legacy = '/ProyectoPandora/Public/img/imgInventario/' . $base;
+                $legacy = 'img/imgInventario/' . $base;
                 $legacyFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $legacy;
                 if ($legacyFs && is_file($legacyFs)) { return $legacy; }
                 return self::fallbackInventoryUrl();
@@ -332,7 +332,7 @@ class Storage
         if ($maybeInventory !== $storedPath && self::exists($maybeInventory)) {
             return self::publicUrl($maybeInventory);
         }
-        $legacy = '/ProyectoPandora/Public/img/imgInventario/' . ltrim($storedPath, '/');
+        $legacy = 'img/imgInventario/' . ltrim($storedPath, '/');
         $legacyFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $legacy;
         if ($legacyFs && is_file($legacyFs)) {
             return $legacy;
@@ -342,7 +342,7 @@ class Storage
 
     public static function fallbackInventoryUrl(): string
     {
-        $candidate = '/ProyectoPandora/Public/img/imgInventario/NoItem.jpg';
+        $candidate = 'img/imgInventario/NoItem.jpg';
         $candidateFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $candidate;
         if ($candidateFs && is_file($candidateFs)) {
             return $candidate;

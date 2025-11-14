@@ -13,8 +13,8 @@ $locale = I18n::getLocale();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <?php $adminCssPath = rtrim($_SERVER['DOCUMENT_ROOT'],'/\\') . '/ProyectoPandora/Public/css/AdminDash.css'; ?>
-  <link rel="stylesheet" href="/ProyectoPandora/Public/css/AdminDash.css?v=<?= file_exists($adminCssPath) ? filemtime($adminCssPath) : time(); ?>">
+  <?php $adminCssPath = rtrim($_SERVER['DOCUMENT_ROOT'],'/\\') . 'css/AdminDash.css'; ?>
+  <link rel="stylesheet" href="css/AdminDash.css?v=<?= file_exists($adminCssPath) ? filemtime($adminCssPath) : time(); ?>">
   <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
   <link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <title><?= I18n::t('app.name') ?></title>
@@ -26,8 +26,8 @@ $locale = I18n::getLocale();
   <aside class="sidebar">
     <div class=" flex">
       <span class="nav_image">
-        <a href="/ProyectoPandora/Public/index.php?route=Default/Index" style="cursor: pointer;">
-          <img src="/ProyectoPandora/Public/img/Innovasys_V2.png" alt="logo">
+        <a href="index.php?route=Default/Index" style="cursor: pointer;">
+          <img src="img/Innovasys_V2.png" alt="logo">
         </a>
       </span>
     </div>
@@ -42,7 +42,7 @@ $locale = I18n::getLocale();
         ?>
         <?php if ($authUser): ?>
           <li class="item user-block">
-            <a href="/ProyectoPandora/Public/index.php?route=Default/Perfil" class="user-link flex">
+            <a href="index.php?route=Default/Perfil" class="user-link flex">
               <img src="<?= htmlspecialchars($avatar) ?>" alt="Perfil" class="user-avatar"/>
               <div class="user-info">
                 <span class="user-name"><?= htmlspecialchars($name) ?></span>
@@ -54,7 +54,7 @@ $locale = I18n::getLocale();
 
         <?php if ($authUser): ?>
           <li class="item menu-item-static">
-            <a href="/ProyectoPandora/Public/index.php?route=Auth/Logout" class="link flex logout-link">
+            <a href="index.php?route=Auth/Logout" class="link flex logout-link">
               <i class='bx bx-log-out'></i>
               <span><?= I18n::t('nav.logout') ?></span>
             </a>
@@ -67,7 +67,7 @@ $locale = I18n::getLocale();
             
         
         <li class="item menu-item-static">
-          <a href="/ProyectoPandora/Public/index.php?route=Default/Index" class="link flex">
+          <a href="index.php?route=Default/Index" class="link flex">
             <i class='bx bx-home'></i>
             <span><?= I18n::t('nav.home') ?></span>
           </a>
@@ -78,25 +78,25 @@ $locale = I18n::getLocale();
 
           <?php if ($role === 'administrador'): ?>
             <li class="item menu-item-static">
-              <a href="/ProyectoPandora/Public/index.php?route=Admin/ListarUsers" class="link flex">
+              <a href="index.php?route=Admin/ListarUsers" class="link flex">
                 <i class='bx bx-user-circle'></i>
                 <span><?= I18n::t('nav.users') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
-              <a href="/ProyectoPandora/Public/index.php?route=Historial/ListarHistorial" class="link flex">
+              <a href="index.php?route=Historial/ListarHistorial" class="link flex">
                 <i class='bx bx-time'></i>
                 <span><?= I18n::t('nav.history') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
-              <a href="/ProyectoPandora/Public/index.php?route=Device/ListarCategoria" class="link flex">
+              <a href="index.php?route=Device/ListarCategoria" class="link flex">
                 <i class='bx bx-category'></i>
                 <span><?= I18n::t('nav.device.categories') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
-              <a href="/ProyectoPandora/Public/index.php?route=Inventario/ListarCategorias" class="link flex">
+              <a href="index.php?route=Inventario/ListarCategorias" class="link flex">
                 <i class='bx bx-purchase-tag'></i>
                 <span><?= I18n::t('nav.inventory.categories') ?></span>
               </a>
@@ -104,19 +104,19 @@ $locale = I18n::getLocale();
 
           <?php elseif ($role === 'supervisor'): ?>
             <li class="item menu-item-static">
-              <a href="/ProyectoPandora/Public/index.php?route=Supervisor/Asignar" class="link flex">
+              <a href="index.php?route=Supervisor/Asignar" class="link flex">
                 <i class='bx bx-task'></i>
                 <span><?= I18n::t('nav.assign.tech') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
-              <a href="/ProyectoPandora/Public/index.php?route=Supervisor/GestionInventario" class="link flex">
+              <a href="index.php?route=Supervisor/GestionInventario" class="link flex">
                 <i class='bx bx-package'></i>
                 <span><?= I18n::t('nav.inventory.manage') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
-              <a href="/ProyectoPandora/Public/index.php?route=Supervisor/Presupuestos" class="link flex">
+              <a href="index.php?route=Supervisor/Presupuestos" class="link flex">
                 <i class='bx bx-dollar'></i>
                 <span><?= I18n::t('nav.budgets') ?></span>
               </a>
@@ -124,13 +124,13 @@ $locale = I18n::getLocale();
 
           <?php elseif ($role === 'tecnico'): ?>
             <li class="item menu-item-static">
-              <a href="/ProyectoPandora/Public/index.php?route=Tecnico/MisReparaciones" class="link flex">
+              <a href="index.php?route=Tecnico/MisReparaciones" class="link flex">
                 <i class='bx bx-ticket'></i>
                 <span><?= I18n::t('nav.tickets') ?></span>
               </a>
             </li>
             <li class="item menu-item-static">
-              <a href="/ProyectoPandora/Public/index.php?route=Tecnico/MisStats" class="link flex">
+              <a href="index.php?route=Tecnico/MisStats" class="link flex">
                 <i class='bx bx-medal'></i>
                 <span><?= I18n::t('nav.my.stats') ?></span>
               </a>
@@ -152,19 +152,19 @@ $locale = I18n::getLocale();
           <?php endif; ?>
         <?php else: ?>
           <li class="item">
-            <a href="/ProyectoPandora/Public/index.php?route=Auth/Login" class="link flex">
+            <a href="index.php?route=Auth/Login" class="link flex">
               <i class='bx bx-log-in'></i>
               <span><?= I18n::t('nav.login') ?></span>
             </a>
           </li>
           <li class="item">
-            <a href="/ProyectoPandora/Public/index.php?route=Register/Register" class="link flex">
+            <a href="index.php?route=Register/Register" class="link flex">
               <i class='bx bx-user-plus'></i>
               <span><?= I18n::t('nav.register') ?></span>
             </a>
           </li>
           <li class="item">
-            <a href="/ProyectoPandora/Public/index.php?route=Default/Guia" class="link flex">
+            <a href="index.php?route=Default/Guia" class="link flex">
               <i class='bx bx-help-circle'></i>
               <span><?= I18n::t('nav.guide') ?></span>
             </a>
@@ -180,16 +180,16 @@ $locale = I18n::getLocale();
 
 
 <?php 
-  $authJsPath = rtrim($_SERVER['DOCUMENT_ROOT'],'/\\') . '/ProyectoPandora/Public/js/auth-login.js';
+  $authJsPath = rtrim($_SERVER['DOCUMENT_ROOT'],'/\\') . 'js/auth-login.js';
 ?>
-<script src="/ProyectoPandora/Public/js/auth-login.js?v=<?= file_exists($authJsPath) ? filemtime($authJsPath) : time(); ?>" defer></script>
-<script src="/ProyectoPandora/Public/js/notifications.js?v=<?= time(); ?>" defer></script>
-<script src="/ProyectoPandora/Public/js/confirm-actions.js?v=<?= time(); ?>" defer></script>
-<script src="/ProyectoPandora/Public/js/ticket-actions.js?v=<?= time(); ?>" defer></script>
-<script src="/ProyectoPandora/Public/js/list-filters.js?v=<?= time(); ?>" defer></script>
-<script src="/ProyectoPandora/Public/js/presupuestos.js?v=<?= time(); ?>" defer></script>
-<script src="/ProyectoPandora/Public/js/ticket-sync.js?v=<?= time(); ?>" defer></script>
-<script src="/ProyectoPandora/Public/js/DarkMode.js?v=<?= time(); ?>" defer></script>
-<script src="/ProyectoPandora/Public/js/Sidebar.js?v=<?= time(); ?>" defer></script>
+<script src="js/auth-login.js?v=<?= file_exists($authJsPath) ? filemtime($authJsPath) : time(); ?>" defer></script>
+<script src="js/notifications.js?v=<?= time(); ?>" defer></script>
+<script src="js/confirm-actions.js?v=<?= time(); ?>" defer></script>
+<script src="js/ticket-actions.js?v=<?= time(); ?>" defer></script>
+<script src="js/list-filters.js?v=<?= time(); ?>" defer></script>
+<script src="js/presupuestos.js?v=<?= time(); ?>" defer></script>
+<script src="js/ticket-sync.js?v=<?= time(); ?>" defer></script>
+<script src="js/DarkMode.js?v=<?= time(); ?>" defer></script>
+<script src="js/Sidebar.js?v=<?= time(); ?>" defer></script>
 
 </html>

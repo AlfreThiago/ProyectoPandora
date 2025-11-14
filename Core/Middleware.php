@@ -11,7 +11,7 @@ class Middleware
     {
         $u = Auth::user();
         if (!$u) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
     }
@@ -20,7 +20,7 @@ class Middleware
     {
         $u = Auth::user();
         if (!$u || !in_array($u['role'] ?? '', $roles, true)) {
-            header('Location: /ProyectoPandora/Public/index.php?route=Auth/Login');
+            header('Location: index.php?route=Auth/Login');
             exit;
         }
     }
