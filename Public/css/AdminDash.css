@@ -2738,6 +2738,29 @@ body.light-mode select option {
   background-color: #fff;
   color: #1a1a1a;
 }
+.language-switcher-login {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    z-index: 2000;
+}
+
+.language-switcher-login select {
+    background: #1c1f27;
+    color: #fff;
+    border: 1px solid #3b4d63;
+    padding: 7px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    transition: 0.2s ease-in-out;
+}
+
+.language-switcher-login select:hover {
+    background: #2a3140;
+    border-color: #4a5c77;
+}
 
 
 /* === SUBMENU === */
