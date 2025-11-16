@@ -5,6 +5,7 @@ class Storage
     private static ?string $basePath = null;
     private static ?string $baseUrl = null;
     private static ?array $envFile = null;
+    private static ?string $documentRoot = null;
 
     private static function loadEnvFile(): array
     {
@@ -70,9 +71,9 @@ class Storage
             }
             return self::$basePath;
         }
-        $documentRoot = isset($_SERVER['DOCUMENT_ROOT']) ? rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') : '';
+        $documentRoot = self::documentRoot();
         if ($documentRoot !== '') {
-            $guess = $documentRoot . 'uploads';
+            $guess = $documentRoot . '/uploads';
             if (!is_dir($guess)) {
                 @mkdir($guess, 0775, true);
             }
@@ -184,8 +185,8 @@ class Storage
             return false;
         }
         if ($relativePath[0] === '/') {
-            $abs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $relativePath;
-            return $abs !== '' && is_file($abs);
+            $abs = self::documentRootPath($relativePath);
+            return $abs !== null && is_file($abs);
         }
         $relativePath = str_replace(['..', '\\'], ['', '/'], $relativePath);
         $full = self::basePath() . '/' . ltrim($relativePath, '/');
@@ -209,7 +210,7 @@ class Storage
         }
         if (!self::exists($storedPath)) {
             $legacy = 'img/imgPerfil/' . ltrim($storedPath, '/');
-            $legacyFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $legacy;
+            $legacyFs = self::documentRootPath($legacy);
             if ($legacyFs && is_file($legacyFs)) {
                 return $legacy;
             }
@@ -221,7 +222,7 @@ class Storage
     public static function fallbackProfileUrl(): string
     {
         $default = 'img/imgPerfil/default.png';
-        $defaultFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $default;
+        $defaultFs = self::documentRootPath($default);
         if ($defaultFs && is_file($defaultFs)) {
             return $default;
         }
@@ -250,13 +251,13 @@ class Storage
                 if (self::exists($base)) { return self::publicUrl($base); }
                 // Y por último en carpeta pública legacy
                 $legacy = 'img/imgDispositivos/' . $base;
-                $legacyFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $legacy;
+                $legacyFs = self::documentRootPath($legacy);
                 if ($legacyFs && is_file($legacyFs)) { return $legacy; }
                 return self::fallbackDeviceUrl();
             }
         }
         if ($storedPath[0] === '/') {
-            $fs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $storedPath;
+            $fs = self::documentRootPath($storedPath);
             if ($fs && is_file($fs)) {
                 return $storedPath;
             }
@@ -276,7 +277,7 @@ class Storage
 
         // Carpeta pública legacy
         $legacy = 'img/imgDispositivos/' . ltrim($storedPath, '/');
-        $legacyFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $legacy;
+        $legacyFs = self::documentRootPath($legacy);
         if ($legacyFs && is_file($legacyFs)) {
             return $legacy;
         }
@@ -287,7 +288,7 @@ class Storage
     public static function fallbackDeviceUrl(): string
     {
         $candidate = 'img/imgDispositivos/NoFoto.jpg';
-        $candidateFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $candidate;
+        $candidateFs = self::documentRootPath($candidate);
         if ($candidateFs && is_file($candidateFs)) {
             return $candidate;
         }
@@ -313,13 +314,13 @@ class Storage
                 if (self::exists($maybe)) { return self::publicUrl($maybe); }
                 if (self::exists($base)) { return self::publicUrl($base); }
                 $legacy = 'img/imgInventario/' . $base;
-                $legacyFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $legacy;
+                $legacyFs = self::documentRootPath($legacy);
                 if ($legacyFs && is_file($legacyFs)) { return $legacy; }
                 return self::fallbackInventoryUrl();
             }
         }
         if ($storedPath[0] === '/') {
-            $fs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $storedPath;
+            $fs = self::documentRootPath($storedPath);
             if ($fs && is_file($fs)) {
                 return $storedPath;
             }
@@ -333,7 +334,7 @@ class Storage
             return self::publicUrl($maybeInventory);
         }
         $legacy = 'img/imgInventario/' . ltrim($storedPath, '/');
-        $legacyFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $legacy;
+        $legacyFs = self::documentRootPath($legacy);
         if ($legacyFs && is_file($legacyFs)) {
             return $legacy;
         }
@@ -343,11 +344,35 @@ class Storage
     public static function fallbackInventoryUrl(): string
     {
         $candidate = 'img/imgInventario/NoItem.jpg';
-        $candidateFs = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . $candidate;
+        $candidateFs = self::documentRootPath($candidate);
         if ($candidateFs && is_file($candidateFs)) {
             return $candidate;
         }
         return self::fallbackDeviceUrl();
+    }
+
+    private static function documentRoot(): string
+    {
+        if (self::$documentRoot !== null) {
+            return self::$documentRoot;
+        }
+        $root = $_SERVER['DOCUMENT_ROOT'] ?? '';
+        self::$documentRoot = rtrim((string)$root, '/\\');
+        return self::$documentRoot;
+    }
+
+    private static function documentRootPath(string $path): ?string
+    {
+        $path = trim($path);
+        $docRoot = self::documentRoot();
+        if ($docRoot === '' || $path === '') {
+            return null;
+        }
+        $normalized = str_replace('\\', '/', $path);
+        if ($normalized[0] === '/') {
+            return $docRoot . $normalized;
+        }
+        return $docRoot . '/' . ltrim($normalized, '/');
     }
 }
 

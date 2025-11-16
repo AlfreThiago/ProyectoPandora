@@ -25,7 +25,7 @@
     </form>
 
     <section class="section-mis-tickets">
-      <h2 class="titulo-carrusel">Mis Tickets</h2>
+      <h2 class="titulo-carrusel"></h2>
 
       <div class="carousel-container">
         <button class="carousel-btn prev-btn" id="prevTicketBtn">&#10094;</button>
