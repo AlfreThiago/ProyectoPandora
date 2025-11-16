@@ -7,7 +7,6 @@ $role = strtolower($authUser['role'] ?? 'invitado');
     <?php include_once __DIR__ . '/../Includes/Header.php'; ?>
 
     <div class="home-container">
-        
         <section class="home-hero">
             <div class="hero-left">
                 <h2><i class='bx bx-grid-alt'></i> <?= I18n::t('home.hero.title') ?></h2>

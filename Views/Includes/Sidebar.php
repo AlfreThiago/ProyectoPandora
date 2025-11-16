@@ -6,6 +6,12 @@ require_once __DIR__ . '/../../Core/Storage.php';
 I18n::boot();
 $authUser = Auth::user();
 $locale = I18n::getLocale();
+$i18nPayload = [
+  'locale' => $locale,
+  'messages' => I18n::messages()
+];
+$i18nJson = json_encode($i18nPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG);
+if ($i18nJson === false) { $i18nJson = '{}'; }
 ?>
 <!DOCTYPE html>
 <html lang="<?= htmlspecialchars($locale) ?>">
@@ -19,6 +25,9 @@ $locale = I18n::getLocale();
   <link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <title><?= I18n::t('app.name') ?></title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    window.APP_I18N = <?= $i18nJson ?>;
+  </script>
 </head>
 
 <body>
@@ -181,7 +190,9 @@ $locale = I18n::getLocale();
 
 <?php 
   $authJsPath = rtrim($_SERVER['DOCUMENT_ROOT'],'/\\') . 'js/auth-login.js';
+  $i18nRuntimePath = __DIR__ . '/../../Public/js/i18n-runtime.js';
 ?>
+<script src="js/i18n-runtime.js?v=<?= file_exists($i18nRuntimePath) ? filemtime($i18nRuntimePath) : time(); ?>" defer></script>
 <script src="js/auth-login.js?v=<?= file_exists($authJsPath) ? filemtime($authJsPath) : time(); ?>" defer></script>
 <script src="js/notifications.js?v=<?= time(); ?>" defer></script>
 <script src="js/confirm-actions.js?v=<?= time(); ?>" defer></script>
