@@ -69,24 +69,15 @@ class Storage
             if (!is_dir(self::$basePath)) {
                 @mkdir(self::$basePath, 0775, true);
             }
+            self::ensureDefaultSubdirs();
             return self::$basePath;
         }
-        $documentRoot = self::documentRoot();
-        if ($documentRoot !== '') {
-            $guess = $documentRoot . '/uploads';
-            if (!is_dir($guess)) {
-                @mkdir($guess, 0775, true);
-            }
-            if (is_dir($guess)) {
-                self::$basePath = $guess;
-                return self::$basePath;
-            }
-        }
-        $fallback = dirname(__DIR__) . '/Public/uploads';
+        $fallback = dirname(__DIR__) . '/Public/img';
         if (!is_dir($fallback)) {
             @mkdir($fallback, 0775, true);
         }
-        self::$basePath = $fallback;
+        self::$basePath = rtrim($fallback, '/\\');
+        self::ensureDefaultSubdirs();
         return self::$basePath;
     }
 
@@ -104,11 +95,20 @@ class Storage
         $script = $_SERVER['SCRIPT_NAME'] ?? '';
         $marker = '/ProyectoPandora/Public';
         if ($script && ($pos = strpos($script, $marker)) !== false) {
-            $base = substr($script, 0, $pos) . $marker . '/uploads';
+            $base = substr($script, 0, $pos) . $marker . '/img';
             self::$baseUrl = rtrim($base, '/');
             return self::$baseUrl;
         }
-        self::$baseUrl = 'uploads';
+        $docRoot = self::documentRoot();
+        $publicImg = str_replace('\\', '/', dirname(__DIR__) . '/Public/img');
+        $docRootNormalized = $docRoot !== '' ? rtrim(str_replace('\\', '/', $docRoot), '/') : '';
+        if ($docRootNormalized !== '' && strpos($publicImg, $docRootNormalized) === 0) {
+            $relative = trim(substr($publicImg, strlen($docRootNormalized)), '/');
+            $relative = $relative === '' ? 'img' : $relative;
+            self::$baseUrl = '/' . trim($relative, '/');
+            return self::$baseUrl;
+        }
+        self::$baseUrl = 'img';
         return self::$baseUrl;
     }
 
@@ -244,10 +244,10 @@ class Storage
     if (preg_match('/^[A-Za-z]:\//', $norm) || strpos($norm, '//') === 0) {
             $base = basename($norm);
             if ($base !== '') {
-                // Buscar primero en uploads/device
+                // Buscar primero en img/device (nuevo storage)
                 $maybe = 'device/' . $base;
                 if (self::exists($maybe)) { return self::publicUrl($maybe); }
-                // Luego en uploads raíz
+                // Luego en img raíz
                 if (self::exists($base)) { return self::publicUrl($base); }
                 // Y por último en carpeta pública legacy
                 $legacy = 'img/imgDispositivos/' . $base;
@@ -264,7 +264,7 @@ class Storage
             return self::fallbackDeviceUrl();
         }
 
-        // Nuevo storage (uploads/...)
+        // Nuevo storage (img/...)
         if (self::exists($storedPath)) {
             return self::publicUrl($storedPath);
         }
@@ -373,6 +373,19 @@ class Storage
             return $docRoot . $normalized;
         }
         return $docRoot . '/' . ltrim($normalized, '/');
+    }
+
+    private static function ensureDefaultSubdirs(): void
+    {
+        if (self::$basePath === null) {
+            return;
+        }
+        foreach (['device', 'profile', 'inventory', 'ticket'] as $dir) {
+            $path = self::$basePath . '/' . $dir;
+            if (!is_dir($path)) {
+                @mkdir($path, 0775, true);
+            }
+        }
     }
 }
 
