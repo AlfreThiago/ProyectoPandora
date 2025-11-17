@@ -6,6 +6,7 @@ require_once __DIR__ . '/../Core/Auth.php';
 require_once __DIR__ . '/../Core/Date.php';
 require_once __DIR__ . '/../Controllers/HistorialController.php';
 require_once __DIR__ . '/../Core/Flash.php';
+require_once __DIR__ . '/../Core/ImageHelper.php';
 Auth::checkRole('Administrador');
 class AdminController
 {
@@ -242,16 +243,8 @@ class AdminController
         exit;
     }
 
-    
-
-
-
-
-
-
     public function MigrarTicketImages()
     {
-        require_once __DIR__ . '/../Core/Storage.php';
         $isMove = (isset($_GET['mode']) && strtolower((string)$_GET['mode']) === 'move');
         $onlyId = isset($_GET['id']) ? (int)$_GET['id'] : null;
 
@@ -280,7 +273,8 @@ class AdminController
             $srcDir = rtrim($legacyBase, '/\\') . '/' . $dir . '/';
             if (!is_dir($srcDir)) continue;
 
-            $destDir = \Storage::ensure('ticket/' . $ticketId);
+            $destRel = 'img/ticket/' . $ticketId;
+            $destDir = ensure_public_dir($destRel);
             $files = @scandir($srcDir) ?: [];
             $movedForTicket = 0; $skippedForTicket = 0; $deletedForTicket = 0; $errorsForTicket = 0;
             foreach ($files as $fn) {
@@ -307,7 +301,7 @@ class AdminController
                 'skipped' => $skippedForTicket,
                 'deleted' => $deletedForTicket,
                 'errors' => $errorsForTicket,
-                'dest' => \Storage::publicUrl('ticket/' . $ticketId)
+                'dest' => $destRel
             ];
         }
 

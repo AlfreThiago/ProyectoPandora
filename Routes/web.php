@@ -20,9 +20,9 @@ return [
         'controller' => 'Default',
         'action' => 'HomeMetrics'
     ],
-    'Default/StorageDiag' => [
+    'Default/MediaDiag' => [
         'controller' => 'Default',
-        'action' => 'StorageDiag'
+        'action' => 'MediaDiag'
     ],
     
     
@@ -357,6 +357,10 @@ return [
     'Inventario/SumarStock'=> [
         'controller' => 'Inventario',
         'action' => 'sumarStock'
+    ],
+    'Inventario/ReducirStock'=> [
+        'controller' => 'Inventario',
+        'action' => 'reducirStock'
     ],
     'Inventario/EliminarItem'=> [
         'controller' => 'Inventario',
