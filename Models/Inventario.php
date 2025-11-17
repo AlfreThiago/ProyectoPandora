@@ -246,6 +246,9 @@ class InventarioModel
 
     public function reducirStock(int $id, int $cantidad): bool
     {
+        if ($cantidad <= 0) {
+            return false;
+        }
         $stmtSelect = $this->conn->prepare('SELECT stock_actual FROM inventarios WHERE id = ?');
         if (!$stmtSelect) {
             return false;

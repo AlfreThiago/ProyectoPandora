@@ -53,12 +53,20 @@
         <td data-label="<?= I18n::t('inventory.table.stock'); ?>"><?php echo (int)$row['stock_actual']; ?></td>
 				<td data-label="<?= I18n::t('inventory.table.minStock'); ?>"><?php echo (int)$row['stock_minimo']; ?></td>
         <td data-label="<?= I18n::t('common.actions'); ?>">
-                  <form action="index.php?route=Inventario/SumarStock" method="post" style="display:flex; gap:6px; align-items:center;">
-                    <?= Csrf::input(); ?>
-                    <input type="hidden" name="id" value="<?php echo (int)$row['id']; ?>" />
-                    <input type="number" name="cantidad" min="1" class="asignar-input asignar-input--small" placeholder="<?= I18n::t('inventory.stock.addQtyPlaceholder'); ?>" required />
-                    <button class="btn btn-primary" type="submit"><?= I18n::t('inventory.stock.add'); ?></button>
-                  </form>
+                  <div style="display:flex; flex-direction:column; gap:8px;">
+                    <form action="index.php?route=Inventario/SumarStock" method="post" style="display:flex; gap:6px; align-items:center;">
+                      <?= Csrf::input(); ?>
+                      <input type="hidden" name="id" value="<?php echo (int)$row['id']; ?>" />
+                      <input type="number" name="cantidad" min="1" class="asignar-input asignar-input--small" placeholder="<?= I18n::t('inventory.stock.addQtyPlaceholder'); ?>" required />
+                      <button class="btn btn-primary" type="submit"><?= I18n::t('inventory.stock.add'); ?></button>
+                    </form>
+                    <form action="index.php?route=Inventario/ReducirStock" method="post" style="display:flex; gap:6px; align-items:center;">
+                      <?= Csrf::input(); ?>
+                      <input type="hidden" name="id" value="<?php echo (int)$row['id']; ?>" />
+                      <input type="number" name="cantidad" min="1" class="asignar-input asignar-input--small" placeholder="<?= I18n::t('inventory.stock.removeQtyPlaceholder'); ?>" required />
+                      <button class="btn btn-danger" type="submit"><?= I18n::t('inventory.stock.remove'); ?></button>
+                    </form>
+                  </div>
                 </td>
               </tr>
             <?php endforeach; ?>

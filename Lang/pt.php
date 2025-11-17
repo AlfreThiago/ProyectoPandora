@@ -434,6 +434,8 @@ return [
   'inventory.table.minStock' => 'Estoque Mín.',
   'inventory.stock.addQtyPlaceholder' => '+qtd',
   'inventory.stock.add' => 'Somar',
+  'inventory.stock.removeQtyPlaceholder' => '-qtd',
+  'inventory.stock.remove' => 'Subtrair',
   // Notificações - atribuição
   'notification.ticket.assigned.tech.title' => 'Novo ticket atribuído',
   'notification.ticket.assigned.tech.body' => 'Foi atribuído a você o ticket #{id}. Veja Minhas Reparações.',

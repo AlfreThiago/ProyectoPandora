@@ -358,6 +358,10 @@ return [
         'controller' => 'Inventario',
         'action' => 'sumarStock'
     ],
+    'Inventario/ReducirStock'=> [
+        'controller' => 'Inventario',
+        'action' => 'reducirStock'
+    ],
     'Inventario/EliminarItem'=> [
         'controller' => 'Inventario',
         'action' => 'eliminar'

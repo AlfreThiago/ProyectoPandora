@@ -19,7 +19,17 @@ if ($i18nJson === false) { $i18nJson = '{}'; }
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <?php $adminCssPath = rtrim($_SERVER['DOCUMENT_ROOT'],'/\\') . 'css/AdminDash.css'; ?>
+  <?php
+    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+    $scriptDir = str_replace('\\', '/', dirname($scriptName ?: '/index.php'));
+    if ($scriptDir === '/' || $scriptDir === '.' || $scriptDir === '') {
+      $baseHref = '/';
+    } else {
+      $baseHref = rtrim($scriptDir, '/') . '/';
+    }
+    $adminCssPath = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\') . '/css/AdminDash.css';
+  ?>
+  <base href="<?= htmlspecialchars($baseHref, ENT_QUOTES, 'UTF-8') ?>">
   <link rel="stylesheet" href="css/AdminDash.css?v=<?= file_exists($adminCssPath) ? filemtime($adminCssPath) : time(); ?>">
   <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
   <link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>

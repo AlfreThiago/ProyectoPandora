@@ -180,6 +180,8 @@ return [
   'inventory.item.addNew' => 'Agregar nuevo item',
   'inventory.stock.add' => 'Sumar',
   'inventory.stock.addQtyPlaceholder' => '+cantidad',
+  'inventory.stock.remove' => 'Restar',
+  'inventory.stock.removeQtyPlaceholder' => '-cantidad',
   'inventory.stock.current' => 'Stock actual',
   'inventory.table.category' => 'Categoría',
   'inventory.table.image' => 'Img',
