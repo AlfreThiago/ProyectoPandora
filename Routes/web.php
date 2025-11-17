@@ -93,10 +93,6 @@ return [
         'controller' => 'Admin',
         'action' => 'listarAdmins'
     ],
-    'Admin/MigrarTicketImages' => [
-        'controller' => 'Admin',
-        'action' => 'MigrarTicketImages'
-    ],
     'Admin/ActualizarUser' => [
         'controller' => 'Admin',
         'action' => 'ActualizarUser'
