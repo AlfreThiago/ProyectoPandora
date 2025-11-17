@@ -20,9 +20,9 @@ return [
         'controller' => 'Default',
         'action' => 'HomeMetrics'
     ],
-    'Default/StorageDiag' => [
+    'Default/MediaDiag' => [
         'controller' => 'Default',
-        'action' => 'StorageDiag'
+        'action' => 'MediaDiag'
     ],
     
     

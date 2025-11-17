@@ -4,7 +4,7 @@ require_once __DIR__ . '/../Core/Auth.php';
 require_once __DIR__ . '/../Models/Inventario.php';
 require_once __DIR__ . '/HistorialController.php';
 require_once __DIR__ . '/../Models/InventoryCategory.php';
-require_once __DIR__ . '/../Core/Storage.php';
+require_once __DIR__ . '/../Core/ImageHelper.php';
 require_once __DIR__ . '/../Core/Middleware.php';
 require_once __DIR__ . '/../Core/Flash.php';
 
@@ -70,14 +70,14 @@ class InventarioController
             }
 
             if (!empty($_FILES['foto_item']['name'])) {
-                $stored = Storage::storeUploadedFile($_FILES['foto_item'], 'inventory');
+                $stored = save_inventory_photo($_FILES['foto_item']);
                 if (!$stored) {
                     $categorias = $this->inventarioModel->listarCategorias();
                     $errorMsg = "Error al subir la imagen del ítem.";
                     include_once __DIR__ . '/../Views/Inventario/CrearItem.php';
                     return;
                 }
-                $foto_item = $stored['relative'];
+                $foto_item = $stored;
             }
 
             
@@ -176,9 +176,12 @@ class InventarioController
             $foto_item = $foto_item_actual !== '' ? $foto_item_actual : 'NoItem.jpg';
 
             if (!empty($_FILES['foto_item']['name'])) {
-                $stored = Storage::storeUploadedFile($_FILES['foto_item'], 'inventory');
+                $stored = save_inventory_photo($_FILES['foto_item']);
                 if ($stored) {
-                    $foto_item = $stored['relative'];
+                    if ($foto_item_actual && $foto_item_actual !== 'NoItem.jpg' && $foto_item_actual !== $stored) {
+                        remove_file_if_exists($foto_item_actual);
+                    }
+                    $foto_item = $stored;
                 }
             }
 

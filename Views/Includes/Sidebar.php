@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 require_once __DIR__ . '/../../Core/Auth.php';
 require_once __DIR__ . '/../../Core/I18n.php';
-require_once __DIR__ . '/../../Core/Storage.php';
+require_once __DIR__ . '/../../Core/ImageHelper.php';
 I18n::boot();
 $authUser = Auth::user();
 $locale = I18n::getLocale();
@@ -57,7 +57,7 @@ if ($i18nJson === false) { $i18nJson = '{}'; }
           $name = $authUser['name'] ?? '';
           $email = $authUser['email'] ?? '';
           $avatarStored = $authUser['img_perfil'] ?? '';
-          $avatar = \Storage::resolveProfileUrl($avatarStored);
+          $avatar = profile_image_url($avatarStored);
         ?>
         <?php if ($authUser): ?>
           <li class="item user-block">

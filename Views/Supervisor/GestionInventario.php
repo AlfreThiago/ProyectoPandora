@@ -1,5 +1,7 @@
 <?php include_once __DIR__ . '/../Includes/Sidebar.php'; ?>
 <?php require_once __DIR__ . '/../../Core/LogFormatter.php'; ?>
+<?php require_once __DIR__ . '/../../Core/ImageHelper.php'; ?>
+<?php $fallbackInventoryImg = inventory_image_url(''); ?>
 <?php I18n::boot(); ?>
 
 <main class="inv-page">
@@ -43,9 +45,9 @@
                 <td data-label="<?= I18n::t('inventory.table.image'); ?>">
                   <?php 
                     $foto = $row['foto_item'] ?? '';
-                    $imgSrc = \Storage::resolveInventoryUrl($foto);
+                    $imgSrc = inventory_image_url($foto);
                   ?>
-                  <img class="inv-thumb" src="<?php echo htmlspecialchars($imgSrc); ?>" alt="<?php echo htmlspecialchars($row['name_item']); ?>"/>
+                  <img class="inv-thumb" src="<?php echo htmlspecialchars($imgSrc); ?>" alt="<?php echo htmlspecialchars($row['name_item']); ?>" onerror="this.onerror=null;this.src='<?php echo htmlspecialchars($fallbackInventoryImg, ENT_QUOTES, 'UTF-8'); ?>'" />
                 </td>
         <td data-label="<?= I18n::t('inventory.table.category'); ?>"><?php echo htmlspecialchars($row['categoria']); ?></td>
         <td data-label="<?= I18n::t('inventory.table.item'); ?>"><?php echo htmlspecialchars($row['name_item']); ?></td>
